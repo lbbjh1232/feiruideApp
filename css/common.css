@@ -1,0 +1,365 @@
+html{
+	font-size: 16px; 	/* 即10px */
+	background: #FFFFFF;
+}
+@media(max-width:540px){ html { font-size:13.5px; } } /*Android常用宽度*/
+@media(max-width:480px){ html { font-size:12px; } }		/*Android常用宽度*/
+@media(max-width:414px){ html { font-size:10.35px; } }  /*i6Plus,i7Plus宽度*/  
+@media(max-width:375px){ html { font-size:9.375px; } }	/*i6,i7宽度*/
+@media(max-width:360px){ html { font-size:9px; } }	/*Android常用宽度*/
+@media(max-width:320px){ html { font-size:8px; } }		/*i5宽度*/
+
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+/* *{touch-action: none;} */
+* { touch-action: pan-y; } 
+
+[v-cloak] {
+  display: none;
+}
+.blue{
+	color:#1874CD; 
+}
+.gray{
+	color:gray;
+}
+.green{
+	color : green;
+}
+.mui-scroll{
+	position: static;
+}
+.mui-scroll-wrapper{
+	padding:0.5rem 1rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing:border-box;
+}
+.red{
+	color:red;
+}
+.mui-content{
+	background: #FFFFFF;
+}
+.mui-bar{
+	background: #00C5CD;
+}
+.mui-title{
+	color: #FFFFFF;
+}
+.mui-icon-left-nav:before{
+	color: #FFFFFF;
+}
+
+/*----------------mui.showLoading---------------*/  
+.mui-show-loading {  
+    position: fixed;  
+    padding: 5px;  
+    width: 13rem;  
+    min-height: 13rem;  
+    top: 45%;  
+    left: 50%;  
+    margin-left: -60px;  
+    background: rgba(0, 0, 0, 0.6);  
+    text-align: center;  
+    border-radius: 5px;  
+    color: #FFFFFF;  
+    visibility: hidden;  
+    margin: 0;  
+    z-index: 2000;  
+
+    -webkit-transition-duration: .2s;  
+    transition-duration: .2s;  
+    opacity: 0;  
+    -webkit-transform: scale(0.9) translate(-50%, -50%);  
+    transform: scale(0.9) translate(-50%, -50%);  
+    -webkit-transform-origin: 0 0;  
+    transform-origin: 0 0;  
+}  
+.mui-show-loading.loading-visible {  
+    opacity: 1;  
+    visibility: visible;  
+    -webkit-transform: scale(1) translate(-50%, -50%);  
+    transform: scale(1) translate(-50%, -50%);  
+}  
+.mui-show-loading .mui-spinner{  
+    margin-top: 24px;  
+    width: 36px;  
+    height: 36px;  
+}  
+.mui-show-loading .text {  
+    line-height: 1.6;  
+    font-family: -apple-system-font,"Helvetica Neue",sans-serif;  
+    font-size: 14px;  
+    margin: 10px 0 0;  
+    color: #fff;  
+}  
+
+.mui-show-loading-mask {  
+  position: fixed;  
+  z-index: 1000;  
+  top: 0;  
+  right: 0;  
+  left: 0;  
+  bottom: 0;  
+}  
+.mui-show-loading-mask-hidden{  
+    display: none !important;  
+}  
+/*----------------mui.showLoading---------------*/  
+.drug-list-box{
+  position: relative;
+  width: 100%;
+  /* margin: 0 auto; */
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  padding:0.8rem 0.6rem;
+  margin-bottom: 0.6rem;
+  text-align: justify;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.drug-list-left-part{
+  width: 90%;
+  
+}
+.drug-list-title{
+  font-size: 1.2rem;
+  color:#808080;
+  display: inline-block;
+  padding-right:0.6rem;
+}
+.standard{
+  display: inline-block;
+  padding-right: 2.7rem;
+}
+.drug-list-name{
+  font-size:1.2rem;
+  text-align: justify;
+}
+.drug-list-right-part{
+  width: 10%;
+}
+.drug-detail-box{
+  width: 85%;
+  height: 70%;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding:1rem;
+}
+.detail-box-top{
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.8rem;
+  border-bottom: 0.1rem solid rgba(0,0,0,.1);
+}
+.text-detail{
+  font-size: 1.6rem;
+  color:rgba(0,191,255,1);
+}
+/* .detail-box-body{
+  margin-top:0.9rem;
+  width: 100%;
+  height:calc(100% - 70rpx);
+} */
+.detail-row{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.text-clip{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden
+}
+
+.mask{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: 250;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadMore{
+	width: 70%;
+	margin: 2rem auto;
+	text-align: center;
+}
+.loadMore button{
+	width: 100%;
+}
+.none-text{
+	font-size: 1.4rem;
+	color: rgba(0,0,0,.85);
+}
+.list-box{
+	width: 100%;
+}
+.close-box{
+	border-bottom: 1px solid rgba(105,105,105,.1);
+}
+.choosed{
+	border:2px solid #28a54c;
+}
+
+/* 查看票据 */
+.ticket-title{
+	font-size: 1.2rem;
+	color: #999999;
+	border-bottom: 1px solid rgba(0,0,0,.1);
+	padding: 0.4rem 0 0.1rem 0.8rem;
+}
+.ticket-img-box{
+	padding: 0.6rem 0.8rem ;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.ticket-img-box .image-item{
+	width: 80px;
+	height: 80px;
+	margin-right: 8px;
+	margin-top: 8px;
+}
+.ticket-img-box .image-item img{
+	height: 100%;
+}
+
+/* 下拉刷新 */
+#pullDown-box{
+	height:20px;
+	position: relative;
+}
+.pullDown{
+	text-align: center;
+	font-size: 1.4rem;
+	padding-bottom: 0.8rem;
+	position: absolute;
+	bottom:-5px;
+	z-index: 200;
+	width: 100%;
+}
+.pullDown .pullDown-text{
+	font-size: 1.2rem;
+}
+
+/* 表单 */
+.input-disabled label , .input-disabled input{
+	color : rgba(0,0,0,.5) 
+}
+
+.padding-9{
+	padding: 9px 0;
+}
+
+
+/* 上传按钮 */
+.weui-uploader__input-box{
+	/* display: inline-block; */
+	float: left;
+	position: relative;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	width: 7rem;
+	height: 7rem;
+	border: 1px solid #D9D9D9;
+	border-radius: 4px;
+	box-sizing:border-box;
+}
+.weui-uploader__input-box:before,
+.weui-uploader__input-box:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+ -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background-color: #D9D9D9;
+}
+.weui-uploader__input-box:before {
+  width: 2px;
+  height: 3.5rem;
+}
+.weui-uploader__input-box:after {
+  width: 3.5rem;
+  height: 2px;
+}
+.weui-uploader__input-box:active {
+  border-color: #999999;
+}
+.weui-uploader__input-box:active:before,
+.weui-uploader__input-box:active:after {
+  background-color: #999999;
+}
+
+.upload-img-box{
+	float:left;
+	width:7rem;
+	height:7rem;
+	margin:0 5px 5px 0;
+	padding:4px;
+	border-radius:4px;
+	border:1px solid #D9D9D9;
+	position:relative;
+	box-sizing:border-box;
+
+}
+.upload-img-box img{
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+}
+
+.upload-img-box .delete-icon{
+	position: absolute;
+	top: -5px;
+	right: -3px;
+	z-index: 10;
+}
+
+/* 上传提示 */
+.upload-tip{
+	font-size: 1.2rem;
+	color: gray;
+	/* padding-bottom: 5px; */
+}
+.clear{
+	clear: both;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

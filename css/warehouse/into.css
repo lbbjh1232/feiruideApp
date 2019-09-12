@@ -1,0 +1,103 @@
+/* body{
+	background-color : #FFFFFF;
+} */
+.mui-bar-nav~.mui-content{
+	padding-top: 44px;
+}
+.into-box{
+	margin: 0 5px;
+}
+.form-title{
+	font-size: 1.6rem;
+	text-align: center;
+	padding: 12px 0 5px 0;
+	color:rgba(0,191,255,1);
+}
+.form-box{
+	border-top: 1px solid rgba(105,105,105,.1);
+	border-bottom: 1px solid rgba(105,105,105,.1);
+}
+.btn-box{
+	padding: 0 15px 11px 15px;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+.operation-btn{
+	width: 33.3%;
+	padding-right:0.5rem;
+	box-sizing: border-box;
+}
+.operation-btn button{
+	width: 100%;
+	font-size: 1rem;
+}
+.report-btn{
+	margin-top: 1.5rem;
+	width: 20%;
+}
+.report-btn button{
+	font-size: 1rem;
+	width: 100%;
+}
+.into_submit{
+	width: 70%;
+	margin : 1rem auto;
+}
+.into_submit button{
+	width: 100%;
+	font-size: 1.2rem;
+}
+
+.mui-input-row #upload-trade{
+	float: none;
+	width: auto;
+	font-size: 1.2rem;
+	display: block;
+	margin:0 auto 5px;
+	font-size: 1rem;
+}
+#scroll-trade,#scroll-agent{
+	top: 4rem;
+	height: calc(99% - 3.5rem);
+}
+#scroll-trade .mui-scroll,#scroll-agent .mui-scroll{
+	text-align: justify;
+	width: 100%;
+}
+.into-options{
+    width: 70%;
+    margin: 1rem auto;
+}
+.into-options button{
+	width: 100%;
+	font-size:1.8rem;
+}
+.mui-btn-primary{
+	border: 1px solid #11c1f3;
+    background-color: #11c1f3;
+}
+.allot-note{
+    padding:0 1.5rem;
+    color:white;
+    font-size: 1.2rem;
+    text-align: justify;
+}
+.close-icon{
+	position: absolute;
+	top:50px;
+	right: 50px;
+}
+.close-icon::before{
+	font-size: 1.8rem;
+	color: white;
+}
+.add-group{
+	position: absolute;
+	top: 2px;
+	left: 0;
+	z-index: 3;
+}
+
+
+

@@ -1,0 +1,67 @@
+.operation-btn{
+	height: 4rem;
+	width: 25%;
+	float: left;
+	line-height: 5rem;
+	padding: 0.5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+.operation-btn button{
+	height: 4rem;
+	font-size: 1.4rem;
+	width: 100%;
+	text-align: center;
+}
+.search-box{
+	height:auto;
+}
+.mui-scroll-wrapper{
+	top: calc(44px + 5rem);
+    height: calc(99% - 44px - 5rem);
+}
+.drug-list-left-part{
+	width: 75%;
+}
+.drug-list-right-part{
+	width: 25%;
+}
+.drug-list-right-part button{
+	display: inline-block;
+	width: 100%;
+	font-size:1.2rem ;
+	margin: 4px auto 4px;
+}
+#scroll-four{
+	top:4rem;
+	height: calc(99% - 3.5rem);
+	padding: 0.5rem 1rem;
+}
+.item-input-wrap textarea{
+	font-size: 1.2rem;
+}
+.fast-radio{
+	font-size: 1.2rem;
+	margin-bottom: 0.5rem;
+}
+.mui-table-view-cell>a:not(.mui-btn) {
+	font-size: 1.2rem;
+	padding-top: 0.4rem;
+	padding-bottom: 0.4rem;
+}
+textarea{
+	margin-bottom: 0.8rem; 
+}
+.reason-btn{
+	margin-top: 1rem;
+}
+.reason-btn button{
+	font-size: 1.2rem;
+	padding: 0.3rem 1rem;
+}
+.reason-btn button:nth-child(2){
+	margin-left:0.5rem;
+}
+.reason-content{
+	font-size:1.2rem ;
+}

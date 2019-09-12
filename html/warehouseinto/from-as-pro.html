@@ -1,0 +1,1140 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>入库添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/icon.css','../../css/common.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/LCalendar.css','../../css/warehouse/into.css'],true);
+		</script>  
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">入库添加(可视生产企业)</h1>
+		</header>
+		
+		<div class="mui-content into-box" id="app">
+			
+			<div class="form-title">基本信息</div>
+			<div class="form-box">
+				<div class="mui-input-row choose">
+					<label>总代类型</label>
+					<input type="text" id="agentType" class="mui-input-clear" readonly v-model="agentTypeText" placeholder="进口总代">
+				</div>
+				<div class="mui-input-row choose">
+					<label>生产企业</label>
+					<input type="text" class="mui-input-clear" v-model="producer.name" id="chooseProducer" readonly  placeholder="选择生产企业">
+					
+				</div>
+				
+				<div class="mui-input-row">
+					<label>发货单号</label>
+					<input type="text" class="mui-input-clear" v-model="sendNumber"  placeholder="输入发货单号 (选填)">
+				</div>
+				
+				<div class="mui-input-row input-disabled">
+					<label>来源类型</label>
+					<input type="text" class="mui-input-clear" readonly placeholder="生产企业 ☞ 本公司">
+				</div>
+				
+				<div class="mui-input-row choose">
+					<label>票制类型</label>
+					<input type="text" id="ticketType" class="mui-input-clear" readonly v-model="ticketTypeText" placeholder="两票制">
+				</div>
+				
+				<div class="mui-input-row choose">
+					<label>入库日期</label>
+					<input type="text" id="intoTime" class="mui-input-clear" v-model="intoTime" readonly  placeholder="选择入库日期">
+				</div>
+				
+				<div class="mui-input-row" v-cloak v-if="agentTypeValue==3 && producer.sid">
+					<button type="button" v-if="tradeInfo.agentCompany && tradeImage.length > 0" id="upload-trade" @tap="uploadTrade" class="mui-btn mui-btn-success" >修改科工贸一体证明</button>
+					<button type="button" v-else id="upload-trade" @tap="uploadTrade" class="mui-btn mui-btn-success" >上传科工贸一体证明</button>
+				</div>
+			</div>
+			
+			<template v-if="Object.keys(producer).length !== 0">
+			
+			<div class="form-title">药品信息</div>
+			<div class="drug-box">
+				
+				<div class="form-box" v-for="(item,index) in drug">
+					<div :data-index="index" :class="'mui-input-row ' + (item.is_add?' input-disabled':' choose-drug') ">
+						<label>药品名称</label>
+						<input type="text" class="mui-input-clear" v-model="item.generic_name" readonly placeholder="选择药品">
+					</div>
+					<div class="mui-input-row input-disabled">
+						<label>规格</label>
+						<input type="text" class="mui-input-clear" v-model="item.specifications" readonly  placeholder="输入规格">
+					</div>
+					<div :class="'mui-input-row' + (item.is_add?' input-disabled':'') ">
+						<label>批号</label>
+						<input type="text" class="mui-input-clear" :disabled="item.is_add?true:false" :data-index="index" @blur="checkBatchNumber" v-model = "item.batch_number"  placeholder="输入批号">
+					</div>
+					
+					<div :class="'mui-input-row' + (item.is_add?' input-disabled':'') ">
+						<label>入库数量</label>
+						<input type="number" class="mui-input-clear" :disabled="item.is_add?true:false" :data-index="index" @input="checkIntoCount" v-model.lazy="item.into_count"  placeholder="输入入库数量">
+					</div>
+					
+					<div class="btn-box">
+						<div class="operation-btn" v-if="!item.is_add">
+							<button type="button" :data-index="index" @tap="addDrug" class="mui-btn mui-btn-success">增加药品</button>
+						</div>
+						
+						<div class="operation-btn" v-if="!item.reportId">
+							<button type="button" :data-index="index" @tap="uploadReport" class="mui-btn mui-btn-success">{{item.reportUrl?"修改药检报告":"上传药检报告"}}</button>
+						</div>
+						
+						<div class="operation-btn" v-if="!item.agentId && agentTypeValue != 3">
+							<button type="button" :data-index="index" @tap="uploadAgent" class="mui-btn mui-btn-success">{{item.agentUrl?"修改总代证明":"上传总代证明"}}</button>
+						</div>
+						
+						
+						<div class="operation-btn" v-if="index==0 && drug.length==1?false:true">
+							<button type="button" :data-index="index" @tap="delDrug" class="mui-btn mui-btn-danger">删除</button>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<template v-if="tickeTypeValue != 1">
+				<div class="form-title">上传随货同行单(第一票)</div>
+				<div class="form-box padding-9 ">
+					<!-- 上传说明 -->
+					<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">15</span>张</div>
+					<upload :file="billImage" :group="1" :formdata="formData2" :max="15" :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
+				</div> 
+				
+				<div class="form-title">上传发票(第一票)</div>
+				<div class="form-box padding-9 ">
+					<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">15</span>张</div>
+					<upload :file="invoiceImage" :group="2" :formdata="formData3" :max="15"  :url="url" @oncomplete="complete2" @ondelete="delete2" ></upload>
+				</div>
+			</template>
+			
+			<!-- 三票 -->
+			<template v-if="tickeTypeValue==3">
+				<div class="form-title">上传随货同行单(第二票)</div>
+				<div class="form-box padding-9 ">
+					<!-- 上传说明 -->
+					<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">15</span>张</div>
+					<upload :file="billImage1" :group="4" :formdata="formData4" :max="15" :url="url" @oncomplete="complete4" @ondelete="delete4" ></upload>
+				</div> 
+				
+				<div class="form-title">上传发票(第二票)</div>
+				<div class="form-box padding-9 ">
+					<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">15</span>张</div>
+					<upload :file="invoiceImage1" :group="5" :formdata="formData5" :max="15"  :url="url" @oncomplete="complete5" @ondelete="delete5" ></upload>
+				</div>
+			</template>
+			
+			</template>
+			
+			<!-- 上传药检报告弹窗 -->
+			<template v-if="reportShow">
+				<div class='mask' id="report-mask" style="z-index: 12;">
+				<div class='drug-detail-box'>
+					<div class='detail-box-top'>
+						<div class='text-detail'>上传药检报告</div>
+						<div class='iconfont icon-shanchu2 close' id="close-btn"></div>
+					</div>
+					<div class="mui-scroll-wrapper" id="scroll-two">
+						<div class="mui-scroll reason-content">
+							
+							<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">5</span>张</div>
+							<upload :file="reportImage" :formdata="formData1" :group="3" :max="5" :url="url" @oncomplete="complete3" @ondelete="delete3" ></upload>
+							
+							<div class="report-btn">
+								<button type="button" id="report-sure" class="mui-btn mui-btn-success">提 交</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				</div>
+			</template>
+			
+			<!-- 上传科工贸证明-->
+			<template v-if="tradeShow">
+				<div class='mask' id="trade-mask" style="z-index: 12;">
+				<div class='drug-detail-box'>
+					<div class='detail-box-top'>
+						<div class='text-detail'>上传科工贸证明</div>
+						<div class='iconfont icon-shanchu2 close' id="close-trade"></div>
+					</div>
+					<div class="mui-scroll-wrapper" id="scroll-trade">
+						<div class="mui-scroll reason-content">
+							<div class="mui-input-row input-disabled">
+								<label>生产企业</label>
+								<input type="text" class="mui-input-clear" v-model="tradeInfo.producer" readonly placeholder="生产企业">
+							</div>
+							<div class="mui-input-row">
+								<label>代理企业</label>
+								<input type="text" class="mui-input-clear" v-model="tradeInfo.agentCompany" placeholder="输入代理企业">
+							</div>
+							
+							
+							<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">5</span>张</div>
+							<upload :file="tradeImage" :formdata="formData6" :group="6" :max="5" :url="url" @oncomplete="complete6" @ondelete="delete6" ></upload>
+							
+							<div class="report-btn">
+								<button type="button" id="trade-sure" class="mui-btn mui-btn-success">提 交</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				</div>
+			</template>
+			
+			<!-- 上传国产、进口总代证明 -->
+			<template v-if="agentShow">
+				<div class='mask' id="trade-mask" style="z-index: 12;">
+				<div class='drug-detail-box'>
+					<div class='detail-box-top'>
+						<div class='text-detail'>上传总代证明</div>
+						<div class='iconfont icon-shanchu2 close' id="close-agent"></div>
+					</div>
+					<div class="mui-scroll-wrapper" id="scroll-agent">
+						<div class="mui-scroll reason-content">
+							<div class="mui-input-row input-disabled">
+								<label>药品名称</label>
+								<input type="text" class="mui-input-clear" v-model="agentInfo.name" readonly placeholder="药品名称">
+							</div>
+							<div class="mui-input-row">
+								<label>代理企业</label>
+								<input type="text" class="mui-input-clear" v-model="agentInfo.agentCompany" placeholder="输入代理企业">
+							</div>
+							<div class="mui-input-row choose">
+								<label>有效类型</label>
+								<input type="text" id="valideType" class="mui-input-clear" readonly v-model="valideTypeText" placeholder="有效类型">
+							</div>
+							<div class="mui-input-row choose" v-if="valideTypeValue == 1">
+								<label>有效时限</label>
+								<input type="text" id="valideTime" class="mui-input-clear" v-model="valideTime" readonly  placeholder="选择有效时限">
+							</div>
+							
+							
+							<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">5</span>张</div>
+							<upload :file="agentImage" :formdata="formData7" :group="7" :max="5" :url="url" @oncomplete="complete7" @ondelete="delete7" ></upload>
+							
+							<div class="report-btn">
+								<button type="button" id="agent-sure" class="mui-btn mui-btn-success">提 交</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				</div>
+			</template>
+			
+			<!-- 提交 -->
+			<div class="into_submit">
+				<button type="button" id="submit" class="mui-btn mui-btn-success">提 交</button>
+			</div>
+			
+			 
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/lib/mui.zoom.js','../../js/lib/mui.previewimage.js','../../js/lib/picker/mui.picker.min.js"','../../js/lib/picker/mui.poppicker.js','../../js/lib/LCalendar.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<!-- 上传组件模板 -->
+		<script type="text/x-template" id="upload-template">
+			<div class="upload-box">
+				
+				<template v-for="(item,index) in file">
+					<div class="upload-img-box">
+						<img :src="item.url" data-preview-src="" :data-preview-group="group" />
+						<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+					</div>
+				</template>
+				
+				<div v-if="file.length < max " class="weui-uploader__input-box" @tap="onSelect"></div>
+				<div class="clear"></div>
+				
+			</div>
+		</script>
+			
+
+		<script>
+			//定义上传组件
+			var upload = {
+				template : '#upload-template',
+				data : function(){
+					return {
+						
+					}
+				},
+				// 定义组件属性
+				props : {
+					url : String,
+					formdata : {type : Object,default : function(){ return {}}},
+					file : {type :Array,default: function(){ return []} },
+					max : {type : Number,default:2},
+					group : {type : Number }
+				},
+				methods:{
+					// 上传方法
+					imgUpload : function(path,url){
+						var that = this;
+						plus.nativeUI.showWaiting()
+						var task = plus.uploader.createUpload(url,{method:"POST",blocksize:204800,priority:100},function(t,status){
+							plus.nativeUI.closeWaiting();
+							
+							// 上传完成,成功或失败
+							var datas = JSON.parse(t.responseText); //返回图片存储地址
+							if( status == 200 ){
+								// 上传成功
+								that.$emit("oncomplete",{url:datas});
+								
+							}else{
+								
+								mui.alert(datas.err,'提示','确认',function (e) {
+								},'div');
+								
+							}
+							
+						});
+						task.addFile(path,{key:'upload'});
+						// 添加参数
+						for(var key in that.formdata){
+							task.addData(key,that.formdata[key].toString());
+						}
+						task.start();
+					},
+					// 选择图片
+					onSelect : function(){ 
+						var btnArray = [{
+							title: "拍照"
+						}, {
+							title: "从相册选择"
+						}],that = this;
+						
+						plus.nativeUI.actionSheet({
+							title: "选择照片",
+							cancel: "取消",
+							buttons: btnArray
+						}, function(e) {
+							var index = e.index;
+							switch (index) {
+								case 0:
+									break;
+								case 1:
+								// 拍照
+									var cmr = plus.camera.getCamera();
+									cmr.captureImage(function(path) {
+										var localUrl = "file://" + plus.io.convertLocalFileSystemURL(path);
+										that.imgUpload(localUrl,that.url);
+									});
+									break;
+									
+								case 2:
+								//选择相册
+									plus.gallery.pick(function(path) {
+										that.imgUpload(path,that.url);
+									}, function(err) {}, {maximum:1});
+									break;
+							}
+						});
+						
+					},
+					// 删除
+					onDelete : function(e){
+						this.$emit("ondelete",{index:e})
+					}
+				}
+			}
+			
+			
+			mui.init();
+			window.onload = function(){
+				mui.plusReady(function (){
+				
+					var vm = new Vue({
+						el :'#app',
+						data : {
+							formData1:{text : '药检报告'},						//上传附带参数
+							formData2:{text:'随货同行单-第一票'},					//上传附带参数
+							formData3:{text:'发票-第一票'},						//上传附带参数
+							formData4:{text:'随货同行单(三票制)-第二票'},			//上传附带参数
+							formData5:{text:'发票(三票制)-第二票'},				//上传附带参数
+							formData6:{text:'科工贸一体证明'},					//上传附带参数
+							formData7:{text:'总代证明'},							//上传附带参数
+							billImage : [],  									//随货同行单 - 第一票
+							invoiceImage : [],  								//发票 - 第一票
+							billImage1 : [],  									//随货同行单-三票制 第二票
+							invoiceImage1 : [],  								//发票-三票制 第二票
+							url : API.HOST + API.UPLOAD_TICKET,
+							pruducerShow : true,								//显示生产企业选择框
+							producer : {},										//生产企业
+							sendNumber : '',									//发货单号
+							 //总代类型
+							agentType:[{
+								value:1,
+								text: '进口总代'
+							},{
+								value: 2,
+								text: '国产总代'
+							},{
+								value: 3,
+								text: '科工贸一体化总代'
+							}],
+							agentTypeValue: 1,
+							agentTypeText: '进口总代',
+							ticketType: [{
+								value: 1,
+								text: '一票制'
+							},{
+								value: 2,
+								text: '两票制'
+							},{
+								value: 3,
+								text: '三票制'
+							}],
+							tickeTypeValue : 2,
+							ticketTypeText : '两票制',
+							intoTime : '',										//入库日期
+							drug : [{}],										//药品信息
+							currentIndex : 0,
+							reportShow : false,
+							reportImage:[],
+							reportBefore : [],
+							// 上传科工贸证明
+							tradeShow : false,
+							tradeImage : [],
+							tradeInfo : {},
+							// 上传总代证明
+							agentShow : false,
+							agentImage : [],
+							agentInfo : {},
+							valideType : [{
+								value :1,
+								text : '有效期限'
+							},{
+								value : 2,
+								text : '长期有效'
+							}],
+							valideTypeValue : 1,
+							valideTypeText : '有效期限',
+							valideTime : '',			//有效时限
+							
+						},
+						components:{
+							upload : upload
+						},
+						methods:{
+			
+							//检测批号
+							checkBatchNumber(e){
+								var value = e.target.value;
+								var index = e.target.dataset.index;
+								var current = this.drug[index];
+								if(!current.id){
+									mui.toast('请选择药品');
+									vm.$set(this.drug[index],'batch_number','');
+									return;
+								}
+								// 药检报告是否存在
+								if(!value){
+									mui.toast('未填写批号');
+									return;
+								}
+								
+								var res = mui.http_post(API.CHECK_DRUG_REPORT,{batchNumber : value , drugId : current.id});
+								if(res.data.id){
+									mui.toast('药检报告已存在');
+								}else{
+									mui.toast('请上传药检报告');
+								}
+								vm.$set(this.drug[index],'reportId',res.data.id);
+								vm.$set(this.drug[index],'reportUrl',res.data.picture_paths);
+								
+							},
+							
+							// 检测入库数量
+							checkIntoCount(e){
+								var value = e.target.value;
+								var index = e.target.dataset.index;
+								var current = this.drug[index];
+								if(!current.id){
+									mui.toast('请选择药品');
+									vm.$set(this.drug[index],'into_count','');
+									return;
+								}
+								if(!value){
+									mui.toast('未填写入库数量');
+									return;
+								}
+								
+								// 检查数据是否合法
+								if(value.indexOf('.') != -1 ||  value.indexOf(0)===0 || isNaN(value) ){
+									mui.toast('入库数量不合法');
+									vm.$set(this.drug[index],'into_count','');
+									return;
+								}
+								
+							},
+							
+							// 增加药品
+							addDrug(e){
+								var index = e.target.dataset.index;
+								// 判定批号,入库数量是否填写
+								if(!this.drug[index].batch_number){
+									mui.toast('未填写批号');
+									return ;
+								}
+								if(!this.drug[index].into_count){
+									mui.toast('未填写入库数量');
+									return ;
+								}
+								
+								// 检查数据是否合法
+								if(this.drug[index].into_count.indexOf('.') != -1 ||  this.drug[index].into_count.indexOf(0)===0 || isNaN(this.drug[index].into_count) ){
+									mui.toast('入库数量不合法');
+									vm.$set(this.drug[index],'into_count','');
+									return;
+								}
+								
+								// 判断是否存在同样的药品及批号
+								
+								for(var i=0,len=this.drug.length;i<len;i++){
+									if ( i!=index && this.drug[index].system_number == this.drug[i].system_number && this.drug[index].batch_number == this.drug[i].batch_number){
+										mui.toast('当前药品及批号已重复');
+										return;
+									}
+								}
+								
+								vm.$set(this.drug[index],'is_add',true);
+								vm.drug.push({});
+							},
+							
+							// 删除药品
+							delDrug(e){
+								var index = e.target.dataset.index;
+								// 存在多个且不是最后一个
+								if( this.drug.length > parseInt(index)+1 ){
+									console.log(1)
+									this.drug.splice(index,1);
+									return;
+								}
+								
+								// 存在多个且是最后一个
+								if(this.drug.length == parseInt(index)+1 && index != 0 ){
+									this.drug.splice(index,1);
+									vm.$set(this.drug[index-1],'is_add',false);
+									return;
+								}
+								
+							},
+							
+							// 上传药检报告
+							uploadReport(e){
+								var that = this;
+								this.currentIndex = e.target.dataset.index;
+								// 判断是否选择药品及批号
+								if(!this.drug[this.currentIndex].id){
+									mui.toast('请选择入库药品');
+									return;
+								}
+								if(!this.drug[this.currentIndex].batch_number){
+									mui.toast('请填写批号');
+									return;
+								}
+								this.reportShow = true;
+								var images = this.drug[e.target.dataset.index].reportUrl;
+								if(images != ''){
+									// 组合数据
+									var split = images.split(','),arr = [],arr1 = [];
+									for(var i = 0,len = split.length;i<len;i++){
+										arr.push({
+											url : API.TICKET_HOST + '/' + split[i],
+											save : split[i]
+										})
+										arr1.push({
+											url : API.TICKET_HOST + '/' + split[i],
+											save : split[i]
+										})
+									}
+									
+									this.reportImage = arr;
+									this.reportBefore = arr1;
+								}else{
+									this.reportImage = [];
+									this.reportBefore = [];
+								}
+								
+								this.$nextTick(function(){
+									var scorll_two = mui('#scroll-two').scroll({deceleration: 0.001});
+									// 监听关闭
+									document.getElementById('close-btn').addEventListener('tap',function(e){
+										// 判断是否保存
+										if( !mui.isEqualArr(that.reportImage,that.reportBefore) ){
+											mui.alert('还未保存哟?','提示','确认',function (e) {},'div')
+											return;
+											
+										}else{
+											that.reportShow = false;
+										}
+										
+										
+									});
+									
+									// 监听提交
+									document.getElementById('report-sure').addEventListener('tap',function(){
+										if(that.reportImage.length == 0){
+											mui.alert('上传不能为空','提示','确认',function(){},'div');
+											return;
+										}
+										var str = '';
+										for( var i=0,len = that.reportImage.length ; i<len ; i++ ){
+											if(i==len-1){
+												str += that.reportImage[i].save;
+											}else{
+												str += that.reportImage[i].save + ',';
+											}
+										}
+										that.$set(that.drug[that.currentIndex],'reportUrl',str)
+										that.reportShow = false;
+										that.reportImage = [];
+										that.reportBefore = [];
+									})
+									
+								})
+							},
+							
+							// 删除票据
+							deleteTicket(indexs,target){
+								var that = this;
+								mui.confirm('确认删除吗?','提示',['取消','确认'],function (e) {
+									if(e.index == 1){
+										plus.nativeUI.showWaiting();
+										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
+										if(res.code == 200){
+											that[target].splice(indexs,1)
+										}else{
+											mui.alert(res.message,'提示','确认',function (e) {},'div')
+										}
+										plus.nativeUI.closeWaiting();
+									}
+									
+								},'div')
+							},
+							
+							// 上传科工贸
+							uploadTrade(){
+								var that = this;
+								vm.tradeShow = true;
+								vm.tradeInfo.producer = vm.producer.name;
+								vm.$nextTick(function(){
+									var scorll_three = mui('#scroll-trade').scroll({deceleration: 0.001});
+									
+									// 监听关闭
+									document.getElementById('close-trade').addEventListener('tap',function(e){
+										
+										that.tradeInfo = {};
+										that.tradeImage = [];
+										that.tradeShow = false;
+									});
+									
+									// 监听提交
+									document.getElementById('trade-sure').addEventListener('tap',function(){
+										// 判断是否填写完整
+										if(!that.tradeInfo.agentCompany){
+											mui.toast('未填写代理企业');
+											return;
+										}
+										// 判断是否上传图片
+										if(that.tradeImage.length == 0){
+											mui.toast('未上传图片证明');
+											return;
+										}
+										that.tradeShow = false;
+									})
+									
+								})
+							}, 
+							
+							// 上传总代证明
+							uploadAgent(e){
+								var that = this;
+								var index = e.target.dataset.index;
+								this.currentIndex = index;
+								var drugs = that.drug;
+								
+								if(!this.drug[this.currentIndex].id){
+									mui.toast('请选择入库药品');
+									return;
+								}
+								
+								// 判断同种药品是否已上传
+								for(var i=0,len=drugs.length;i<len;i++){
+									var sid = drugs[index].system_number;
+									if (i != index && sid == drugs[i].system_number && drugs[i].agentUrl){
+										mui.toast('" '+drugs[i].generic_name +'" 不能重复上传');
+										return;
+									}
+								}
+								this.agentShow = true;
+								// 组合数据
+								var agent = drugs[index].agentUrl;
+								var info = drugs[index].agentInfo;
+								if(info){
+									this.agentInfo = info;
+									this.valideTypeValue = info.valideType;
+									this.valideTypeText = this.valideType[parseInt(info.valideType)-1].text;
+									this.valideTime = info.valideTime;
+								}
+								
+								var currentAgent = [];
+								if (agent) {
+									var arr = new Array();
+									var item = {};
+									currentAgent = agent.split(',');
+									for (var i = 0, len = currentAgent.length; i < len; i++) {
+										item = {
+											url: API.TICKET_HOST +'/'+currentAgent[i],
+											save: currentAgent[i]
+										}
+										arr.push(item);
+									}
+									currentAgent = arr;
+								}
+								
+								
+								this.agentInfo.name = drugs[index].generic_name;
+								this.agentImage = currentAgent;
+								
+								this.$nextTick(function(){
+									// 初始化滚动
+									mui('#scroll-agent').scroll({deceleration: 0.001});
+									
+									// 选择有效时限
+									var calendar = new LCalendar();
+									
+									// 选择有效类型
+									var picker = new mui.PopPicker();
+									document.getElementById('valideType').addEventListener('tap',function(){
+										picker.setData(that.valideType);
+										picker.pickers[0].setSelectedIndex(that.valideTypeValue-1)
+										
+										picker.show(function(item){
+											var value = item[0];
+											that.valideTypeValue = value.value;
+											that.valideTypeText = value.text;
+											that.$nextTick(function(){
+												
+												if(value.value==2){
+													return;
+												}
+												var start = calendar.init({
+													'trigger': '#valideTime',
+													'type': 'date',
+													'minDate':'',
+													'maxDate':''
+												});
+												
+												document.getElementById('valideTime').addEventListener('tap',function(){
+													var max = mui.date( parseInt( new Date().getTime() /1000 ) );
+													start.show({minDate : max , type : 'date' });
+												});
+												
+											})
+											
+										})
+									})
+									
+									if(that.valideTypeValue != '2'){
+										var start = calendar.init({
+											'trigger': '#valideTime',
+											'type': 'date',
+											'minDate':'',
+											'maxDate':''
+										});
+										
+										document.getElementById('valideTime').addEventListener('tap',function(){
+											var max = mui.date( parseInt( new Date().getTime() /1000 ) );
+											start.show({minDate : max , type : 'date' });
+										});
+									}
+									
+									
+									// 监听关闭
+									document.getElementById('close-agent').addEventListener('tap',function(){
+										mui.confirm('未保存，确认保存吗?','提示',['取消','确认'],function (e) {
+											if(e.index == 0){
+												that.agentShow = false;
+												// 清空数据
+												that.agentInfo = {};
+												that.agentImage = [];
+												that.valideTime = '';
+												that.valideTypeText = '有效期限';
+												that.valideTypeValue = 1;
+											}
+										},'div')
+									})
+									
+									// 提交保存
+									document.getElementById('agent-sure').addEventListener('tap',function(){
+										// 判断数据
+										if(!that.agentInfo.agentCompany){
+											mui.toast('未填写代理企业');
+											return;
+										}
+										if(that.valideTypeValue==1 && !that.valideTime){
+											mui.toast('未选择有效时限');
+											return;
+										}
+										if(that.valideTypeValue==2){
+											that.valideTime = '';
+										}
+										if(that.agentImage.length == 0){
+											mui.toast('未上传总代证明');
+											return;
+										}
+										
+										// 组合路径
+										var url = '';
+										for (var i = 0, len = that.agentImage.length; i < len; i++) {
+											if (i == len - 1) {
+												url += that.agentImage[i].save;
+											} else {
+												url += that.agentImage[i].save + ',';
+											}
+										}
+										that.agentInfo.valideType = that.valideTypeValue;
+										that.agentInfo.valideTime = that.valideTime;
+										that.$set(that.drug[index],'agentUrl',url);
+										that.$set(that.drug[index],'agentInfo',that.agentInfo);
+										
+										that.agentInfo = {};
+										that.agentImage = [];
+										that.valideTypeValue = 1
+										that.valideTypeText = '有效期限';
+										that.valideTime = '';
+										that.agentShow = false;
+									})
+									
+								})
+								
+							},
+							
+							// 上传
+							complete1:function(e){
+								this.billImage.push(e.url)
+							},
+							complete2:function(e){
+								this.invoiceImage.push(e.url)
+							},
+							complete4:function(e){
+								this.billImage1.push(e.url)
+							},
+							complete5:function(e){
+								this.invoiceImage1.push(e.url)
+							},
+							// 删除
+							delete1:function(e){
+								this.deleteTicket(e.index,'billImage')
+							},
+							delete2:function(e){
+								this.deleteTicket(e.index,'invoiceImage')
+							},
+							delete4:function(e){
+								this.deleteTicket(e.index,'billImage1')
+							},
+							delete5:function(e){
+								this.deleteTicket(e.index,'invoiceImage1')
+							},
+							
+							// 上传药检报告
+							complete3:function(e){
+								this.reportImage.push(e.url)
+							},
+							
+							delete3:function(e){
+								this.deleteTicket(e.index,'reportImage')
+							},
+							// 上传科工贸一体证明
+							complete6:function(e){
+								this.tradeImage.push(e.url)
+							},
+							
+							delete6:function(e){
+								this.deleteTicket(e.index,'tradeImage')
+							},
+							// 上传总代证明
+							complete7:function(e){
+								this.agentImage.push(e.url)
+							},
+							
+							delete7:function(e){
+								this.deleteTicket(e.index,'agentImage')
+							},
+							
+						}
+					});
+					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+					vm.formData1.cid = accountInfo.userid;
+					vm.formData2.cid = accountInfo.userid;
+					vm.formData3.cid = accountInfo.userid;
+					vm.formData4.cid = accountInfo.userid;
+					vm.formData5.cid = accountInfo.userid;
+					vm.formData6.cid = accountInfo.userid;
+					vm.formData7.cid = accountInfo.userid;
+					
+					// 预览图片
+					mui.previewImage();
+					
+					// 选择票制类型
+					var picker = new mui.PopPicker();
+					document.getElementById('ticketType').addEventListener('tap',function(){
+						picker.setData(vm.ticketType);
+						picker.pickers[0].setSelectedIndex(vm.tickeTypeValue-1)
+						
+						picker.show(function(item){
+							value = item[0];
+							vm.tickeTypeValue = value.value;
+							vm.ticketTypeText = value.text;
+							vm.billImage = [];
+							vm.billImage1 = [];
+							vm.invoiceImage = [];
+							vm.invoiceImage1 = [];
+							
+						})
+					})
+					
+					// 选择总代类型
+					document.getElementById('agentType').addEventListener('tap',function(){
+						picker.setData(vm.agentType);
+						picker.pickers[0].setSelectedIndex(vm.agentTypeValue-1)
+						
+						picker.show(function(item){
+							value = item[0];
+							vm.agentTypeValue = value.value;
+							vm.agentTypeText = value.text;
+							vm.producer = {};
+							vm.drug = [{}];
+						})
+					})
+					
+					// 选择入库日期
+					var calendar = new LCalendar();
+					var start = calendar.init({
+						'trigger': '#intoTime',//标签id
+						'type': 'date',//date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择
+						'minDate':'',//最小日期 注意：该值会覆盖标签内定义的日期范围
+						'maxDate':''//最大日期 注意：该值会覆盖标签内定义的日期范围
+					});
+					mui('.choose').on('tap','#intoTime',function(){
+						// 获取截止时间
+						var max = mui.date( parseInt( new Date().getTime() /1000 ) );
+						start.show({maxDate : max , type : 'date' });
+					})
+					
+					
+					
+					// 选择生产企业
+					document.getElementById('chooseProducer').addEventListener('tap',function(){
+						var producer = vm.producer;
+						if(producer.sid){
+							mui.confirm('更改生产企业会清空当前药品信息,确认更改?','提示',['取消','确认'],function (e) {
+								if(e.index == 0){
+									return;
+								}
+								mui.openWindow({
+									id : 'choose-producer.html',
+									url : 'choose-producer.html',
+									show:{
+										autoShow:false,
+									},
+									extras : {
+										sign : 'from-as-pro.html'
+									}
+								});
+								
+							},'div')
+						}else{
+							mui.openWindow({
+								id : 'choose-producer.html',
+								url : 'choose-producer.html',
+								show:{
+									autoShow:false,
+								},
+								extras : {
+									sign : 'from-as-pro.html'
+								}
+							});
+						}
+						
+					});
+					
+					// 自定义获取生产企业事件
+					window.addEventListener('getPro',function(e){
+						vm.producer = e.detail;
+						vm.drug = [{}];
+						// 判断科工贸一体化证明是否存在
+						if(vm.agentTypeValue == 3){
+							var res = mui.http_post(API.CHECK_TRADE_EXIST,{sid : e.detail.sid});
+							if(res.code ==201){
+								mui.toast(res.message);
+							}
+						}
+						vm.$nextTick(function(){
+							// 选择药品
+							mui('.drug-box').on('tap','.choose-drug',function(){
+							
+								vm.currentIndex = this.dataset.index;
+								mui.openWindow({
+									id : 'choose-drug.html',
+									url : 'choose-drug.html',
+									show : {
+										autoShow : false
+									},
+									extras : {
+										sign : 'from-as-pro.html',
+										sid : vm.producer.sid,
+										agentType : vm.agentTypeValue,	
+									}
+								})
+								
+							});
+						})
+					});
+				 
+					// 自定义获取药品 
+					window.addEventListener('getDrug',function(e){
+						var index = vm.currentIndex;
+						var drug = e.detail;
+						if(vm.agentTypeValue != 3){
+							var res = mui.http_post(API.CHECK_AGENT_EXIST,{
+								drugNumber: drug.system_number,
+								domestic: vm.agentTypeValue
+							});
+							if (res.data.id) {
+								mui.toast('总代证明已存在');
+							} else {
+								mui.toast('总代证明不存在，请上传');
+							}
+							drug.agentId = res.data.id;  
+							drug.agentUrl = res.data.agency_photo;
+						}
+						vm.$set(vm.drug,index,drug);
+						
+					})
+					
+					// 入库提交
+					document.getElementById('submit').addEventListener('tap',function(){
+						// 判断是否选择生产企业
+						if(!vm.producer.sid){
+							mui.toast('请选择生产企业');
+							return;
+						}
+						
+						// 判断入库日期
+						if(!vm.intoTime){
+							mui.toast('请选择入库日期');
+							return;
+						}
+						//验证药品清单
+						var drugs = vm.drug,arr = [];
+						for(var i=0;i<drugs.length;i++){
+							arr = Object.keys(drugs[i]);
+							if(arr.length == 0){
+								mui.toast('请填写药品信息');
+								return;
+							}
+						}
+						//循环验证是否填写批号和入库数量
+						let item = {};
+						for(var i=0,len=drugs.length;i<len;i++){
+							item = drugs[i];
+							if(!item.batch_number){
+								mui.toast('"'+item.generic_name+'" 未填写批号');
+								return;
+							}
+							if (!item.into_count) {
+								mui.toast('"' + item.generic_name + '" 未填写入库数量');
+								return;
+							}
+							//判断数字是否合法
+							if (item.into_count.indexOf('.') != -1 || item.into_count.indexOf(0) === 0 || isNaN(item.into_count)) {
+								mui.toast('"' + item.generic_name + '" 入库数量不合法');
+								return;
+							}
+						}
+						
+						//验证是否有重复的药品及批号
+						for (var i = 0, len = drugs.length; i < len; i++) {
+							for (var j = 0, leng = drugs.length; j < leng; j++) {
+								if (i != j && drugs[i].batch_number == drugs[j].batch_number && drugs[i].sid == drugs[j].sid){
+									mui.toast('"'+drugs[i].generic_name+'" 存在重复批号');
+									return;
+								}
+							}
+						}
+						
+						
+						// 两票类型,是否上传随同第一票
+						if(vm.tickeTypeValue == 2 && vm.billImage.length == 0){
+							mui.toast('未上传随货同行单');
+							return ;
+						}
+						// 三票制,是否上传随同第一票和第二票
+						if(vm.tickeTypeValue == 3 &&  (vm.billImage.length == 0 || vm.billImage1.length == 0)){
+							mui.toast('未上传随货同行单');
+							return;
+						}
+						
+						// 组合数据
+						let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+						let params = {
+							agentType : vm.agentTypeValue,
+							currentPro : vm.producer,
+							sendNumber : vm.sendNumber,
+							ticketType : vm.tickeTypeValue,
+							intoTime : vm.intoTime,
+							drugs : vm.drug,
+							billImage : vm.billImage.length == 0 ?'' : vm.billImage,
+							billImage1 : vm.billImage1.length == 0 ?'' : vm.billImage1,
+							invoiceImage : vm.invoiceImage.length == 0 ?'' : vm.invoiceImage,
+							invoiceImage1 : vm.invoiceImage1.length == 0 ?'' : vm.invoiceImage1,
+							accountInfo : accountInfo,
+							tradeImage : vm.tradeImage.length== 0 ?'' : vm.tradeImage,
+							tradeInfo : Object.keys(vm.tradeInfo).length == 0 ?'':vm.tradeInfo
+						};
+						
+						plus.nativeUI.showWaiting();
+						var res = mui.http_post(API.WAREHOUSE_INTO_FROM_AS_PRO,params);
+						plus.nativeUI.closeWaiting()
+						
+						if(res.code == 200){
+							mui.toast('入库成功 '+res.data.info+' 条记录')
+							setTimeout(function(){
+								mui.back();
+							},800)
+						}else{
+							mui.alert(res.message,'提示','确认',function (e) {},'div')
+						}
+						
+						
+					})
+						
+					
+				})
+			}
+		</script>
+	</body>
+</html>

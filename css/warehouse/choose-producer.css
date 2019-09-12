@@ -1,0 +1,37 @@
+.mui-scroll-wrapper{
+	background: #FFFFFF;
+}
+.list-item{
+	font-size: 1.5rem;
+	padding: 1rem 0;
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.list-item:active{
+	background: rgba(0,0,0,.1);
+}
+.blue-btn{
+	border: 1px solid #11c1f3;
+    background-color: #11c1f3;
+}
+.pre-next-box{
+	margin-top: 1rem;
+}
+.pre-next-box .mui-col-sm-6{
+	text-align: center;
+}
+.pre-next-box .mui-col-sm-6 button{
+	font-size: 1.5rem;
+}
+.drug-list-right-part button{
+	display: inline-block;
+	width: 100%;
+	font-size:1.2rem ;
+	margin: 4px auto 4px;
+}
+
+
+
+
+
+
+

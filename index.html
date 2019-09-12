@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script type="text/javascript">
+			document.write('<script src="js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		
+		<script type="text/javascript">
+			link(['css/mui.min.css','css/iconfont.css','css/common.css','css/animate.css','css/index/index.css'],true);
+		</script>
+		
+	</head>
+
+	<body>
+		
+		<div class="mui-content" id="app">
+			<!-- 轮播图 -->
+			<div class="banner-box">		
+				<div class="mui-slider" id="slider">
+					  <div class="mui-slider-group mui-slider-loop">
+						  <!-- 最后一张 -->
+							<div class="mui-slider-item mui-slider-item-duplicate">
+								<img class="slide-img" src="images/banner2.png" >
+							</div>
+						
+							<div class="mui-slider-item">
+								<img class="slide-img" src="images/banner.png" >
+							</div>
+							<div class="mui-slider-item">
+								<img class="slide-img" src="images/banner1.png" >
+							</div>
+							<div class="mui-slider-item">
+								<img class="slide-img" src="images/banner2.png" >
+							</div>
+							<!-- 第一张 -->
+							<div class="mui-slider-item mui-slider-item-duplicate">
+								<img class="slide-img" src="images/banner.png" >
+							</div>
+						
+					  </div>
+				  
+					  <div class="mui-slider-indicator">
+						  <div class="mui-indicator mui-active"></div>
+						  <div class="mui-indicator"></div>
+						  <div class="mui-indicator"></div>
+					  </div>
+				</div>
+			</div>
+			
+			<!-- 通知栏 -->
+			<div class="notice-box">
+				<div class="notice-content">
+					<span class="iconfont icon-tongzhi"></span>&nbsp;<span id="notice" class="notice-title animated"></span>
+				</div>
+				<div class="notice-more">更多</div>
+			</div>
+			
+			
+				
+			<div class="nav-title">药品两票</div>
+			<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="javascript:void(0)" data-href="html/drug/net-drug.html">
+						<span class="mui-icon iconfont icon--liuchengguanli"></span>
+						<div class="mui-media-body">挂网药品</div>
+					</a>
+				</li>
+				 
+				<!-- 经营企业 -->
+				<template v-if="accountInfo.roleid == 6 ? true : false">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/drug/com-drug.html">
+							<span class="mui-icon iconfont icon-shengdanjieicon-"></span>
+							<div class="mui-media-body">本企药品</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/warehouseinto/index.html">
+							<span class="mui-icon iconfont icon-jiashu"></span>
+							<div class="mui-media-body">票据入库</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/warehouseout/index.html">
+							<span class="mui-icon iconfont icon-jianshu"></span>
+							<div class="mui-media-body">票据出库</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/short/index.html">
+							<span class="mui-icon iconfont icon-xuqiu"></span>
+							<div class="mui-media-body">短缺药品</div>
+						</a>
+					</li>
+				</template>
+				 
+				<!-- 临床科室 -->
+				<template v-if="accountInfo.roleid == 11 ? true : false">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/drug/hos-drug.html">
+							<span class="mui-icon iconfont icon-shengdanjieicon-"></span>
+							<div class="mui-media-body">本院药品</div>
+						</a> 
+					</li>
+				</template>
+				
+				<!-- 医疗机构 -->
+				<template v-if="accountInfo.roleid == 7 ? true : false">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/drug/hos-drug.html">
+							<span class="mui-icon iconfont icon-shengdanjieicon-"></span>
+							<div class="mui-media-body">本院药品</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/drug/check-ticket.html">
+							<span class="mui-icon iconfont icon--jiandinggujia"></span>
+							<div class="mui-media-body">票据查验</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/short/index.html">
+							<span class="mui-icon iconfont icon-xuqiu"></span>
+							<div class="mui-media-body">短缺药品</div>
+						</a>
+					</li>
+				</template>
+				
+				<template v-if="'6,7,9'.indexOf(accountInfo.roleid) != -1 ? true : false">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-href="html/report/index.html">
+							<span class="mui-icon iconfont icon--biaodanguanli"></span>
+							<div class="mui-media-body">药检报告</div>
+						</a> 
+					</li>
+				</template>
+			 
+			</ul>
+			
+			<div class="nav-title">新药申报</div>
+			<ul class="mui-table-view mui-grid-view mui-grid-9">
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" id="push-test">
+					<a href="javascript:void(0)">
+						<span class="mui-icon iconfont icon--gonggaoguanli"></span>
+						<div class="mui-media-body">申报通知</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="#">
+						<span class="mui-icon iconfont icon--cangpindengbian"></span>
+						<div class="mui-media-body">发布通知</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="#">
+						<span class="mui-icon iconfont icon--suoyouzhengji"></span>
+						<div class="mui-media-body">本院发布</div>
+					</a>
+				</li>
+			</ul>
+			
+			<div class="nav-title">电子首营</div>
+			<ul class="mui-table-view mui-grid-view mui-grid-9">
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="#">
+						<span class="mui-icon iconfont icon--cangpinyijiao"></span>
+						<div class="mui-media-body">首营交换</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="#">
+						<span class="mui-icon iconfont icon-xiangshang2"></span>
+						<div class="mui-media-body">我的请求</div>
+					</a>
+				</li> 
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="#">
+						<span class="mui-icon iconfont icon-xiangxia2"></span>
+						<div class="mui-media-body">客户请求</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="#">
+						<span class="mui-icon iconfont icon--shoucangzheguanli"></span>
+						<div class="mui-media-body">客户资料库</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+					<a href="#">
+						<span class="mui-icon iconfont icon--jiaoseguanli"></span>
+						<div class="mui-media-body">我的首营</div>
+					</a>
+				</li>
+			</ul>
+			
+			
+		</div>
+
+		<script type="text/javascript">
+			script(['js/mui.min.js','js/vue.js','js/util.js','js/api.js','js/app.js','js/lib/permission.js']);
+			
+		</script>
+		
+		<script type="text/javascript">
+			// vue实例挂载
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					accountInfo:''
+				}
+			});
+			
+			(function() {
+				
+				mui.init({
+					swipeBack: true //启用右滑关闭功能
+				});
+				
+				var loadView = function(){
+					var accountInfo = plus.storage.getItem('accountInfo');
+					if(accountInfo != null){
+						vm.accountInfo = JSON.parse( accountInfo );
+					}else{
+						vm.accountInfo = '';
+					} 
+				}
+				
+				mui.plusReady(function() {
+					
+					// 获取设备clientid并存储
+					mui.getClientId();
+					
+					//监听系统通知栏消息点击事件  
+					plus.push.addEventListener('click', function(msg){
+						//alert('点击 '+ JSON.stringify(msg));
+					}, false);
+					
+					//接收透传消息
+					plus.push.addEventListener('receive',function(msg){
+						//alert('接收 '+ JSON.stringify(msg))
+						var payload = msg.payload;
+						var content = msg.content;
+						
+						if(mui.os.ios){
+							//苹果系统
+							
+						}else{
+							//安卓系统
+							switch(payload.type){
+								case 'chat':
+									//来自聊天消息推送,无操作
+									break;
+								
+							}
+						}
+						
+						
+						
+					},false)
+					
+					// 直接将app后台运行
+					mui.back = function(){
+						var main = plus.android.runtimeMainActivity();   
+						main.moveTaskToBack(false); 
+					}
+				
+					
+					loadView();
+					
+					// 自动banner轮播
+					 var slider = mui("#slider");
+					 slider.slider({
+						interval: 1000
+					 });
+					
+					
+						
+					// 通知文字轮播
+					var noticeArr = ['你爱上对方阿斯蒂芬as的阿萨德否','阿斯蒂芬阿斯','客户看见你空间就'];
+					var title = document.getElementById('notice'),index = 0;
+					var myset = setInterval(function(){
+						var count = noticeArr.length;
+						if(index <= count-1){
+							title.innerText = '';
+							title.classList.remove('slideInUp');
+							
+							title.innerText = noticeArr[index];
+							title.classList.add('slideInUp');
+							++index;
+						}else{
+							index = 0;
+						}
+						
+					},1200)
+					
+					//网络错误监听
+					mui.networkError();
+					
+					var self = plus.webview.currentWebview();
+					
+					// 监听首页show事件
+					self.addEventListener('show',function(){
+						loadView();
+					})
+					
+					//监听登录/退出后重载
+					window.addEventListener('loginLoad',function(){
+						mui.updateMessCount(true,false);
+						loadView();
+
+					})
+					
+					
+					// 创建子webview窗口 并初始化 
+					var aniShow = {};
+					util.initSubpage(aniShow);
+					
+					// 消息总数提示 
+					mui.updateMessCount(true,false);
+					
+					var nview = plus.nativeObj.View.getViewById('tabBar'),
+						activePage = plus.webview.currentWebview(),
+						targetPage,
+						subpages = util.options.subpages,
+						pageW = window.innerWidth,
+						currIndex = 0;
+						
+					/**
+					 * 根据判断view控件点击位置判断切换的tab
+					 */
+					nview.addEventListener('click', function(e) {
+						var clientX = e.clientX;
+						if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
+							currIndex = 0;
+						} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.5)) {
+							currIndex = 1;
+						} else if(clientX > parseInt(pageW * 0.5) && clientX <= parseInt(pageW * 0.75)) {
+							currIndex = 2;
+						}else if(clientX > parseInt(pageW * 0.75) && clientX <= parseInt(pageW *1)){
+							currIndex = 3;
+
+						}
+						// 匹配对应tab窗口	
+						if(currIndex > 0) {
+							targetPage = plus.webview.getWebviewById(subpages[currIndex - 1]);
+						} else {
+							targetPage = plus.webview.currentWebview(); //首页
+							//mui.fire(targetPage,'show');
+						}
+
+						if(targetPage == activePage) { 
+							return;
+						}
+						
+							//底部选项卡切换
+							util.toggleNview(currIndex);
+							// 子页面切换
+							util.changeSubpage(targetPage, activePage, aniShow);
+							//更新当前活跃的页面
+							activePage = targetPage;
+							
+							// 更新标题栏
+							util.updateTitleNView(currIndex);
+							
+					});
+					
+					var targetNav;
+					// 药品两票菜单点击
+					mui('#drug').on('tap','a',function(e){
+						 targetNav = this.dataset.href;
+						
+						// 判断网络情况
+						var type = plus.networkinfo.getCurrentType();
+						if( [0,1].indexOf(type) != -1 ){
+							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
+							   e.index
+							},'div');
+							
+							return;
+						}
+						 
+						 mui.openWindow({
+							 url:targetNav,
+							 id:targetNav,
+							 show:{
+								 autoShow:false,
+							 }
+						 });
+						
+					})
+					
+					
+					
+				});
+			})();
+		</script>
+	</body>
+
+</html>

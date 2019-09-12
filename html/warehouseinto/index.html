@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<meta charset="utf-8">
+		<title>票据入库</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/warehouse/index-into.css'],true); 
+		</script>  
+	</head>
+
+	<body>  
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">票据入库</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			
+			<!-- 选择入库类型 -->
+		<div class="intoType-box">
+			<div class='into-title'>
+				<div>入库添加</div>
+			   <div class='choose-title'> ( 选择入库药品来源 )</div>
+			</div>
+			<div class='into-options'>
+				<button type="button" class="mui-btn mui-btn-primary" id="fromPro" >从生产企业购进</button>
+			</div>
+
+			<div class='into-options'>
+				<button type="button" class="mui-btn mui-btn-primary" id="fromAsPro" >从可视为生产企业的公司购进</button>
+				
+			</div>
+
+			<div class='into-options into-edit'>
+				<button type="button" class="mui-btn mui-btn-primary" id="fromGroup" >从集团公司购进</button>
+			</div>
+			<div class='into-title'>
+				入库编辑
+			</div>
+			<div class='into-options'>
+					<button type="button" class="mui-btn mui-btn-success" id="druginto-edit">入库信息查看/编辑</button>
+			</div>
+			
+			 <div class='binding-explain'>
+			  说明: "入库添加"，当药品经营企业需要添加药品入库时，可根据入库药品的来源，点击相应的入库类型按钮即可。"入库编辑"，对已入库的药品可提供查看或编辑入库信息的功能。
+			  </div>
+			  
+		</div>
+
+			
+			 
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+
+		<script>
+			mui.init();
+			window.onload = function(){
+				   
+				mui.plusReady(function (){
+				
+					plus.nativeUI.closeWaiting();
+					mui.currentWebview.show();
+					
+					//从生产企业购进
+					document.getElementById('fromPro').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'from-pro.html',
+							id :'from-pro.html'
+						})
+					})
+					
+					// 从可视生产企业购进
+					document.getElementById('fromAsPro').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'from-as-pro.html',
+							id : 'from-as-pro.html'
+						})
+					})
+					
+					// 从集团公司购进
+					document.getElementById('fromGroup').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'from-group.html',
+							id : 'from-group.html'
+						})
+					})
+					
+					//入库编辑
+					document.getElementById('druginto-edit').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'into-info.html',
+							id : 'into-info.html',
+							show:{
+								autoShow:false,
+							}
+						})
+					});
+					
+					
+				})
+			}
+		</script>
+	</body>
+</html>

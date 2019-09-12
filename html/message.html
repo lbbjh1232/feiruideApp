@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>消息列表</title>
+		<script type="text/javascript">
+			document.write('<script src="../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		
+		<script type="text/javascript">
+			link(['../css/mui.min.css','../css/iconfont.css','../css/common.css','../css/animate.css','../css/my/message.css'],true);
+		</script>
+		   
+	</head>  
+	<body>   
+		  
+		<div class="mui-content">   
+		<div id="app">
+			 
+			<template v-for="(item,index) in result">  
+			<div class="msg-item" v-bind:data-id="item.id" v-bind:data-name="item.name" v-bind:data-avatar="item.avatar">   
+				<div class="avatar-box">   
+					<img v-bind:src="item.avatar?item.avatar:'logo.png'" onerror="this.src='../images/logo.png'" />
+					<div v-if="item.count > 0" class="count-notice">{{item.count > 9 ? '9+':item.count}}</div>
+				</div>
+				
+				<div class="msg-content"> 
+					<div class="msg-name">
+						<div class="name-left">{{item.name}}</div>
+						<div class="name-right">{{item.info.time}}</div>
+					</div> 
+					<div class="msg-record">{{item.info.content}}</div>  
+				</div> 
+				
+				<div v-bind:data-toid="item.id" class="delete">
+					删除
+				</div>
+				
+			</div>
+			</template>
+			
+			
+		</div>
+		</div>
+		<script type="text/javascript">
+			script(['../js/mui.min.js','../js/vue.js','../js/api.js','../js/app.js']);
+		</script>
+
+		<script>
+			mui.init();
+			// vm初始化
+			var vm = new Vue({
+				el:'#app',
+				data : { 
+					result : [], //消息列表
+				}  
+			})  
+			      
+			mui.plusReady(function () {
+				
+				var myid = mui.getMyId(),ws;
+				
+				// 账号踢出函数
+				var kickOut = function(msg){
+					var index = plus.webview.getLaunchWebview(),message = plus.webview.currentWebview(),friend = plus.webview.getWebviewById('html/friend.html'),my = plus.webview.getWebviewById('html/my.html');
+					var navView = [index,message,friend,my],allWebview = plus.webview.all();
+					
+					//删除当前登录状态,并关闭子窗口页面(除菜单页面)
+					plus.storage.removeItem('accountInfo');
+					
+					mui.alert(msg,'提示','确认',function (e) {
+						plus.nativeUI.showWaiting();
+						
+						for(var i=0,len = allWebview.length;i<len;i++){
+							var current = allWebview[i];
+							if( navView.indexOf(current) == -1 ){
+								plus.webview.close(current);		//关闭当前页
+							}
+						}
+						
+						// 重载四个页面
+						mui.fire(index,'loginLoad');
+						mui.fire(message,'loginLoad');
+						mui.fire(friend,'loginLoad');
+						mui.fire(my,'loginLoad');
+						plus.nativeUI.closeWaiting();
+					});
+				}
+				 
+				//初始化消息列表       
+				mui.updateMessCount(false,true);
+ 
+				var websocket = function(){
+					console.log('初始化')
+					// 建立通讯 
+					ws = new WebSocket('ws://120.79.234.154:8282');
+					
+					ws.onclose = function () {
+						websocket();
+					};
+					
+					ws.onerror = function (err) {
+						websocket();
+					};  
+					 
+					ws.onopen = function(){
+						//心跳检测
+						mui.heartCheck(ws).reset().start();
+
+					} 
+					
+					//接收推送消息
+					ws.onmessage = function(e){
+						//心跳检测
+						mui.heartCheck(ws).reset().start();
+						
+						// 业务逻辑 
+						var back_data = JSON.parse(e.data); 
+						console.log(e.data)
+						switch(back_data.type){ 
+							// 用户绑定
+							case 'init': 
+								var data = JSON.stringify({
+									type:'bind',
+									myid:myid,
+								})
+								ws.send(data);
+								break;
+								
+							//接收文本消息
+							case 'text':
+								mui.updateMessCount(true,true);
+								plus.device.vibrate(500);
+								break;
+								
+							//接收图片信息
+							case 'img':
+								mui.updateMessCount(true,true);
+								plus.device.vibrate(500);
+								break;
+							case 'sound':
+								mui.updateMessCount(true,true);
+								plus.device.vibrate(500);
+								break;
+								
+							// 账号踢出提示
+							case 'kickout':
+								if(back_data['deviceid'] != mui.getUuid()){
+									kickOut('当前账号已在其他设备登录,请重新登录');
+								};
+								break;
+								
+							
+						}
+						
+					}
+						
+				}
+				
+				//通讯初始化
+				websocket();
+				
+				// 点击进入聊天页面
+				mui('#app').on('tap','.msg-item',function(){
+					var info = {
+						id:this.dataset.id,
+						name : this.dataset.name,
+						avatar : this.dataset.avatar
+					};
+					mui.openWindow({
+						url:"my/customer-chat.html",
+						id:"my/customer-chat.html",
+						extras:{ 
+							toInfo:info 
+						}
+					})
+				});
+				
+				// 删除聊天记录
+				mui('#app').on('tap','.delete',function(e){
+					var toid = this.dataset.toid;
+					mui.confirm('确认删除?','提示',['取消','确认'],function (e) {
+						if(e.index == 1){
+							plus.nativeUI.showWaiting();
+							var res = mui.http_post(API.DELETE_RECORED,{fromid:myid,toid:toid});
+							plus.nativeUI.closeWaiting();
+							
+							// 更新页面
+							mui.updateMessCount(true,true);
+						}
+					})
+					e.stopPropagation();
+					return false;
+					
+				})
+				
+				// 访问api鉴权账号提示
+				window.addEventListener('kickOut',function(e){
+					var msg = e.detail.msg;
+					kickOut(msg);
+				})
+				
+				// 登录后重载页面
+				window.addEventListener('loginLoad',function(){
+					location.reload();
+				});
+				
+				window.addEventListener('refresh',function(){
+					mui.updateMessCount(true,true);
+				})
+				
+				var self = plus.webview.currentWebview();
+				// 列表页面加载监听
+				self.addEventListener('show',function(){
+					mui.updateMessCount(true,true); 
+				})
+				
+				// 监听删除左滑动,右滑动
+				mui('#app').on('swipeleft','.msg-item',function(e){
+					var that = this;
+					this.style.transform = "translateX(-6.5rem)";
+					
+					mui('.msg-item').each(function(){
+						if(that != this){
+							this.style.transform = "translateX(0rem)";
+						}
+						
+					});
+				})
+				
+				mui('#app').on('swiperight','.msg-item',function(e){
+					this.style.transform = "translateX(0rem)";
+				})
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			})
+		</script>
+	</body>
+</html>

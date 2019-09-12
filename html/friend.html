@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<meta charset="utf-8">
+		<title>通讯录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		  
+		<script type="text/javascript">
+			link(['../css/mui.min.css','../css/common.css','../css/mui.indexedlist.css','../css/animate.css','../css/my/friend.css'],true); 
+		</script> 
+	</head>
+
+	<body>  
+		<div class="mui-content" id="app">
+			<div id='list' class="mui-indexed-list">
+					<div class="mui-indexed-list-search mui-input-row mui-search">
+						<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索"> 
+					</div> 
+					<div class="mui-indexed-list-bar">
+						<a>#</a>
+						<a>A</a>
+						<a>B</a>
+						<a>C</a>
+						<a>D</a>
+						<a>E</a>
+						<a>F</a>
+						<a>G</a>
+						<a>H</a>
+						<a>I</a>
+						<a>J</a>
+						<a>K</a>
+						<a>L</a>
+						<a>M</a>
+						<a>N</a>
+						<a>O</a> 
+						<a>P</a>
+						<a>Q</a>
+						<a>R</a>
+						<a>S</a>
+						<a>T</a>
+						<a>U</a>
+						<a>V</a>
+						<a>W</a>
+						<a>X</a> 
+						<a>Y</a>
+						<a>Z</a>
+					</div>
+					<div class="mui-indexed-list-alert"></div>
+					<div class="mui-indexed-list-inner">
+						<div class="mui-indexed-list-empty-alert">没有数据</div> 
+			 			<ul class="mui-table-view" v-cloak> 
+							
+							<li id="new-friend" class="mui-table-view-cell mui-indexed-list-item">
+								<div class="img-box">
+									<img src="../images/111.png" >
+									<div v-if="count" class="count-notice">{{count > 9 ?'9+':count}}</div>
+								</div>
+								<div class="nickname">
+									 新的朋友 
+								</div>
+							</li>
+							
+							   
+							
+							<template v-for="(value,key) in result">
+								<li v-bind:data-group="key" class="mui-table-view-divider mui-indexed-list-group">{{key}}</li>
+								
+								<template v-for="(item,index) in value">
+									<li v-bind:data-tags="item.tag" v-bind:data-key="key" v-bind:data-index="index" class="mui-table-view-cell mui-indexed-list-item check-detail">
+										<div class="img-box">
+											<img v-bind:src="item.avatar" onerror="this.src='../images/logo.png'" >
+										</div> 
+										  
+										<div class="nickname">
+											 {{item.name}}
+										</div>     
+									</li>
+									    
+								</template> 
+							</template>
+							
+ 
+						</ul>
+					</div>   
+				</div>
+			
+			 
+			
+		</div>
+		<script type="text/javascript">
+			script(['../js/mui.min.js','../js/vue.js','../js/api.js','../js/app.js','../js/lib/mui.indexedlist.js']);
+		</script>
+		
+		<script>
+			mui.init();
+			 
+			var vm = new Vue({
+				el : '#app',
+				data : {
+					result :[],
+					count : 0,
+					
+				}   
+			})
+			   
+			mui.plusReady(function () {
+				
+				var getUserList = function(){
+					console.log(6565656)
+					if(plus.storage.getItem('accountInfo') != null){
+						
+						var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+						var res = mui.http_post(API.GET_USER_LIST,{myid:accountInfo.id});
+						
+						if(res.code == 200){
+							
+							vm.result = res.data.list;
+							vm.count = res.data.count;
+							
+						}
+							
+					}else{
+							// 没有登录的话
+							vm.result = [];
+							vm.count = 0;
+					}
+					
+					vm.$nextTick(function(){
+						
+						var list = document.getElementById('list');
+						list.style.height = (document.body.offsetHeight) + 'px';
+						window.indexedList = new mui.IndexedList(list);
+					
+					});
+				}
+				
+				
+				// 初始化列表
+				getUserList(); 
+ 
+				
+				var self = plus.webview.currentWebview();
+				// 列表页面加载监听
+				self.addEventListener('show',function(){
+					getUserList();
+				});
+				
+				//自定义刷新页面
+				window.addEventListener('refresh',function(){
+					getUserList(); 
+				});
+				
+				window.addEventListener('loginLoad',function(){
+					location.reload();
+				});
+				
+					
+				// 打开新的朋友页面
+				mui('.mui-table-view').on('tap','#new-friend',function(){
+					
+					if(plus.storage.getItem('accountInfo') != null){
+						mui.openWindow({
+							url : 'user/new-friend.html',
+							id : 'user/new-friend.html',
+							show:{
+								autoShow:false,
+							}
+						});
+						
+					}else{
+						mui.alert('还未登录!','提示','确认',function(){},'div');
+					}
+				});
+				
+				
+				
+				// 查看好友详情页
+				mui('.mui-table-view').on('tap','.check-detail',function(){
+					var key = this.dataset.key;
+					var index = this.dataset.index;
+					var current = vm.result[key][index];
+					
+					mui.openWindow({
+						url : 'user/user-detail.html',
+						id : 'user/user-detail.html',
+						extras : {
+							info : JSON.stringify(current)
+						}
+					})
+				})
+				 
+				
+				
+				
+			})
+		</script>
+	</body>
+</html>

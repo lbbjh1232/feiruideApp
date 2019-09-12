@@ -1,0 +1,74 @@
+html,body{
+	height: 100%;
+	overflow: hidden;
+	background-color: #FFFFFF;
+}
+.mui-indexed-list ,.mui-content{
+	height: 100%;
+	background-color: #FFFFFF;
+}
+.mui-indexed-list-item{
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	transform : translateX(0rem);
+	position: relative;
+	
+}
+.img-box{
+	width: 5rem;
+	height: 5rem;
+	position: relative;
+
+}
+.img-box img{
+	width: 100%;
+	height: 100%;
+	border-radius: 3px ;
+}
+.mui-table-view-cell{
+	padding: 1rem 1rem;
+	width: 100%;
+	box-sizing:border-box;
+	overflow: hidden;
+}
+.nickname{
+	width: 80%;
+	padding-left: 8px;
+	font-size:1.5rem;
+	line-height: 5rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+/* .remark{
+	position: absolute;
+	height:5rem;
+	width:5rem;
+	top: 0;
+	right:-5rem;
+	line-height: 5rem;
+	font-size: 1.5rem;
+	background-color: red;
+	color: #FFFFFF;
+	text-align: center;
+	z-index: 5;
+
+	
+} */
+.mui-indexed-list-bar{
+	background: transparent;
+}
+.count-notice{
+	position: absolute;
+	width: 1.5rem;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	border-radius: 1.5rem;
+	top: -0.5rem;
+	right: -1rem;
+	background-color: red;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 1.2rem;
+}

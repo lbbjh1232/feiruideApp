@@ -1,0 +1,559 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>入库添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/icon.css','../../css/common.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/LCalendar.css','../../css/warehouse/into.css'],true); 
+		</script>  
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">院内签批出库</h1>
+		</header>
+		
+		<div class="mui-content into-box" id="app">
+			
+			<div class="form-title">基本信息</div>
+			<div class="form-box">
+				<div class="mui-input-row choose">
+					<label>客户医院</label>
+					<input type="text" class="mui-input-clear" id="chooseHos" readonly v-model="hosText" placeholder="选择客户医院">
+					
+				</div>
+				<div class="mui-input-row">
+					<label>发货单号</label>
+					<input type="text" class="mui-input-clear" v-model="sendNumber"  placeholder="输入发货单号 (选填)">
+				</div>
+				<div class="mui-input-row choose">
+					<label>开票日期</label>
+					<input type="text" id="intoTime" class="mui-input-clear" v-model="intoTime" readonly  placeholder="选择开票日期">
+				</div>
+			</div>
+			
+			<template v-if="hosValue">
+			
+			<div class="form-title">药品信息</div>
+			<div class="drug-box">
+				
+				<div class="form-box" v-for="(item,index) in drug">
+					<div :data-index="index" :class="'mui-input-row ' + (item.is_add?' input-disabled':' choose-drug') ">
+						<label>药品名称</label>
+						<input type="text" class="mui-input-clear" :data-index="index" v-model="item.generic_name" readonly placeholder="选择药品">						
+					</div>
+					<div class="mui-input-row input-disabled">
+						<label>规格</label>
+						<input type="text" class="mui-input-clear" v-model="item.specifications" readonly  placeholder="输入规格">
+					</div>
+					<div class="mui-input-row input-disabled">
+						<label>批号</label>
+						<input type="text" class="mui-input-clear"  v-model = "item.into_number" readonly  placeholder="输入批号">
+					</div>
+					
+					<div :class="'mui-input-row' + (item.is_add?' input-disabled':'') ">
+						<label>药品单价</label>
+						<input type="number" class="mui-input-clear" :disabled="item.is_add?true:false" :data-index="index" @input="checkPrice" v-model.lazy="item.out_price"  placeholder="保留4位小数">
+					</div>
+					
+					<div :class="'mui-input-row' + (item.is_add?' input-disabled':'') ">
+						<label>出库数量</label>
+						<input type="number" class="mui-input-clear" :disabled="item.is_add?true:false" :data-index="index" @input="checkIntoCount" v-model.lazy="item.out_count"  placeholder="输入出库数量">
+					</div>
+					
+					<div :class="'mui-input-row' + (item.is_add?' input-disabled':'')">
+						<label>失效日期</label>
+						<input type="text" :id="'valideTime'+index" class="mui-input-clear" :disabled="item.is_add?true:false" :data-index="index" @tap="chooseValideTime" v-model="item.valideTime" readonly  placeholder="药品失效日期">
+					</div>
+					
+					<div class="btn-box">
+						<div class="operation-btn" v-if="!item.is_add">
+							<button type="button" :data-index="index" @tap="addDrug" class="mui-btn mui-btn-success">增加药品</button>
+						</div>
+						
+						
+						<div class="operation-btn" v-if="index==0 && drug.length==1?false:true">
+							<button type="button" :data-index="index" @tap="delDrug" class="mui-btn mui-btn-danger">删除</button>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+				<div class="form-title">上传随货同行单</div>
+				<div class="form-box padding-9 ">
+					<!-- 上传说明 -->
+					<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">15</span>张</div>
+					<upload :file="billImage" :group="1" :formdata="formData1" :max="15" :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
+				</div> 
+				
+				<div class="form-title">上传发票</div>
+				<div class="form-box padding-9 ">
+					<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">15</span>张</div>
+					<upload :file="invoiceImage" :group="2" :formdata="formData2" :max="15"  :url="url" @oncomplete="complete2" @ondelete="delete2" ></upload>
+				</div>
+			
+			</template>
+			
+			
+			<!-- 提交 -->
+			<div class="into_submit">
+				<button type="button" id="submit" class="mui-btn mui-btn-success">提 交</button>
+			</div>
+			
+			 
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/lib/mui.zoom.js','../../js/lib/mui.previewimage.js','../../js/lib/picker/mui.picker.min.js"','../../js/lib/picker/mui.poppicker.js','../../js/lib/LCalendar.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<!-- 上传组件模板 -->
+		<script type="text/x-template" id="upload-template">
+			<div class="upload-box">
+				
+				<template v-for="(item,index) in file">
+					<div class="upload-img-box">
+						<img :src="item.url" data-preview-src="" :data-preview-group="group" />
+						<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+					</div>
+				</template>
+				
+				<div v-if="file.length < max " class="weui-uploader__input-box" @tap="onSelect"></div>
+				<div class="clear"></div>
+				
+			</div>
+		</script>
+			
+
+		<script>
+			//定义上传组件
+			var upload = {
+				template : '#upload-template',
+				data : function(){
+					return {
+						
+					}
+				},
+				// 定义组件属性
+				props : {
+					url : String,
+					formdata : {type : Object,default : function(){ return {}}},
+					file : {type :Array,default: function(){ return []} },
+					max : {type : Number,default:2},
+					group : {type : Number }
+				},
+				methods:{
+					// 上传方法
+					imgUpload : function(path,url){
+						var that = this;
+						plus.nativeUI.showWaiting()
+						var task = plus.uploader.createUpload(url,{method:"POST",blocksize:204800,priority:100},function(t,status){
+							plus.nativeUI.closeWaiting();
+							
+							// 上传完成,成功或失败
+							var datas = JSON.parse(t.responseText); //返回图片存储地址
+							if( status == 200 ){
+								// 上传成功
+								that.$emit("oncomplete",{url:datas});
+								
+							}else{
+								
+								mui.alert(datas.err,'提示','确认',function (e) {
+								},'div');
+								
+							}
+							
+						});
+						task.addFile(path,{key:'upload'});
+						// 添加参数
+						for(var key in that.formdata){
+							task.addData(key,that.formdata[key].toString());
+						}
+						task.start();
+					},
+					// 选择图片
+					onSelect : function(){ 
+						var btnArray = [{
+							title: "拍照"
+						}, {
+							title: "从相册选择"
+						}],that = this;
+						
+						plus.nativeUI.actionSheet({
+							title: "选择照片",
+							cancel: "取消",
+							buttons: btnArray
+						}, function(e) {
+							var index = e.index;
+							switch (index) {
+								case 0:
+									break;
+								case 1:
+								// 拍照
+									var cmr = plus.camera.getCamera();
+									cmr.captureImage(function(path) {
+										var localUrl = "file://" + plus.io.convertLocalFileSystemURL(path);
+										that.imgUpload(localUrl,that.url);
+									});
+									break;
+									
+								case 2:
+								//选择相册
+									plus.gallery.pick(function(path) {
+										that.imgUpload(path,that.url);
+									}, function(err) {}, {maximum:1});
+									break;
+							}
+						});
+						
+					},
+					// 删除
+					onDelete : function(e){
+						this.$emit("ondelete",{index:e})
+					}
+				}
+			}
+			
+			
+			mui.init();
+			window.onload = function(){
+				mui.plusReady(function (){
+					var calendar = new LCalendar();
+					
+					var vm = new Vue({
+						el :'#app',
+						data : {
+							formData1:{text:'随货同行单-至医院'},					//上传附带参数
+							formData2:{text:'发票-至医院'},					//上传附带参数
+							billImage : [],  									//随货同行单 - 第一票
+							invoiceImage : [],  								//发票 - 第一票
+							url : API.HOST + API.UPLOAD_TICKET,
+							sendNumber : '',									//发货单号
+							intoTime : '',										//入库日期
+							drug : [{}],										//药品信息
+							currentIndex : 0,
+							hospital : [],
+							hosText : '',
+							hosValue : '',
+							
+							
+						},
+						components:{
+							upload : upload
+						},
+						methods:{
+							//选择失效日期
+							chooseValideTime(e){
+								var index = e.target.dataset.index;
+								var calendar1 = new LCalendar();
+								var valide = calendar1.init({
+									'trigger': '#valideTime'+index,
+									'type': 'date'
+								});
+								var min = mui.date( parseInt( new Date().getTime() /1000 ) );
+								valide.show({minDate : min , type : 'date' });
+								
+							},
+							
+							// 检测药品单价
+							checkPrice(e){
+								var value = e.target.value;
+								var index = e.target.dataset.index;
+								var current = this.drug[index];
+								if(!current.id){
+									mui.toast('请选择药品');
+									this.$set(this.drug[index],'out_price','');
+									return;
+								}
+								if(!value){
+									mui.toast('未填写药品单价');
+									return;
+								}
+								var reg = /^[0-9]+(\.[0-9]{1,4})?$/;
+								if(!reg.test(value)){
+									mui.toast('格式不正确');
+									this.$set(this.drug[index],'out_price','');
+									return;
+								}
+								
+							},
+							// 检测出库数量
+							checkIntoCount(e){
+								var value = e.target.value;
+								var index = e.target.dataset.index;
+								var current = this.drug[index];
+								if(!current.id){
+									mui.toast('请选择药品');
+									vm.$set(this.drug[index],'out_count','');
+									return;
+								}
+								if(!value){
+									mui.toast('未填写出库数量');
+									return;
+								}
+								
+								// 检查数据是否合法
+								if(value.indexOf('.') != -1 ||  value.indexOf(0) === 0 || isNaN(value) ){
+									mui.toast('出库数量不合法');
+									vm.$set(this.drug[index],'out_count','');
+									return;
+								}
+								// 出库数量不能大于剩余数量
+								if(value > current.surplus_amount){
+									mui.toast('出库数量不能大于 '+current.surplus_amount);
+									vm.$set(this.drug[index],'out_count','');
+									return;
+								}
+								
+							},
+							
+							// 增加药品
+							addDrug(e){
+								var index = e.target.dataset.index;
+								if(!this.drug[index].id){
+									mui.toast('请选择出库药品');
+									return;
+								}
+								vm.$set(this.drug[index],'is_add',true);
+								vm.drug.push({});
+							},
+							
+							// 删除药品
+							delDrug(e){
+								var index = e.target.dataset.index;
+								// 存在多个且不是最后一个
+								if( this.drug.length > parseInt(index)+1 ){
+									this.drug.splice(index,1);
+									return;
+								}
+								
+								// 存在多个且是最后一个
+								if(this.drug.length == parseInt(index)+1 && index != 0 ){
+									this.drug.splice(index,1);
+									vm.$set(this.drug[index-1],'is_add',false);
+									return;
+								}
+								
+							},
+							
+							// 删除票据
+							deleteTicket(indexs,target){
+								var that = this;
+								mui.confirm('确认删除吗?','提示',['取消','确认'],function (e) {
+									if(e.index == 1){
+										plus.nativeUI.showWaiting();
+										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
+										if(res.code == 200){
+											that[target].splice(indexs,1)
+										}else{
+											mui.alert(res.message,'提示','确认',function (e) {},'div')
+										}
+										plus.nativeUI.closeWaiting();
+									}
+									
+								},'div')
+							},
+							
+							// 上传
+							complete1:function(e){
+								this.billImage.push(e.url)
+							},
+							complete2:function(e){
+								this.invoiceImage.push(e.url)
+							},
+							// 删除
+							delete1:function(e){
+								this.deleteTicket(e.index,'billImage')
+							},
+							delete2:function(e){
+								this.deleteTicket(e.index,'invoiceImage')
+							},
+							
+							
+						}
+					});
+					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+					vm.formData1.cid = accountInfo.userid;
+					vm.formData2.cid = accountInfo.userid;
+					
+					// 获取医院
+					plus.nativeUI.showWaiting()
+					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+					var hos = mui.http_post(API.GET_HOSPITAL,{companyID:accountInfo.userid});
+					plus.nativeUI.closeWaiting()
+					vm.hospital = hos.data;
+					
+					// 预览图片
+					mui.previewImage();
+					
+					// 选择票制客户医院
+					var picker = new mui.PopPicker();
+					document.getElementById('chooseHos').addEventListener('tap',function(){
+						var current = vm.hospital;
+						current.shift()
+						picker.setData(current);
+						
+						picker.show(function(item){
+							value = item[0];
+							vm.hosValue = value.value;
+							vm.hosText = value.text;
+							vm.$nextTick(function(){
+								// 选择药品
+								mui('.drug-box').on('tap','.choose-drug',function(){
+								
+									vm.currentIndex = this.dataset.index;
+									mui.openWindow({
+										id : 'choose-out-drug.html',
+										url : 'choose-out-drug.html',
+										show : {
+											autoShow : false
+										},
+										extras : {
+											sign : 'out-add-hos.html'
+										}
+									})
+									
+								});
+							})
+						})
+					})
+					
+					// 选择开票日期
+					
+					var start = calendar.init({
+						'trigger': '#intoTime',
+						'type': 'date',
+						'minDate':'',
+						'maxDate':''
+					});
+					mui('.choose').on('tap','#intoTime',function(){
+						// 获取截止时间
+						var max = mui.date( parseInt( new Date().getTime() /1000 ) );
+						start.show({maxDate : max , type : 'date' });
+					})
+					
+					// 自定义获取药品
+					window.addEventListener('getDrug',function(e){
+						var index = vm.currentIndex;
+						var drug = vm.drug;
+						vm.$set(vm.drug,index,e.detail);
+						
+					})
+					
+					// 入库提交
+					document.getElementById('submit').addEventListener('tap',function(){
+						// 判断是否选择生产企业
+						if(!vm.hosValue){
+							mui.toast('请选择客户医院');
+							return;
+						}
+						
+						// 判断入库日期
+						if(!vm.intoTime){
+							mui.toast('请选择开票日期');
+							return;
+						}
+						
+						//验证药品清单
+						var drugs = vm.drug,arr = [];
+						for(var i=0;i<drugs.length;i++){
+							if(!drugs[i].id){
+								mui.toast('请选择出库药品');
+								return;
+							}
+						}
+						//循环验证是否填写批号和入库数量
+						let item = {};
+						let reg = /^[0-9]+(\.[0-9]{1,4})?$/;
+						for(var i=0,len=drugs.length;i<len;i++){
+							item = drugs[i];
+							if(!item.out_price){
+								mui.toast('"'+item.generic_name+'" 未填写药品单价');
+								return;
+							}
+							if(!reg.test(item.out_price)){
+								mui.toast('"' + item.generic_name + '" 药品单价不合法');
+								return;
+							}
+							
+							if (!item.out_count) {
+								mui.toast('"' + item.generic_name + '" 未填写出库数量');
+								return;
+							}
+							//判断数字是否合法
+							if (item.out_count.indexOf('.') != -1 || item.out_count.indexOf(0) === 0 || isNaN(item.out_count)) {
+								mui.toast('"' + item.generic_name + '" 出库数量不合法');
+								return;
+							}
+							if (item.outCount > item.surplus_amount) {
+								mui.toast('"' + item.generic_name + '" 出库数量不能大于 ' + item.surplus_amount);
+								return;
+							}
+							if(!item.valideTime){
+								mui.toast('"'+item.generic_name+'" 未填写失效日期');
+								return;
+							}
+							
+						}
+						
+						//验证是否有重复的药品及批号
+						for (var i = 0, len = drugs.length; i < len; i++) {
+							for (var j = 0, leng = drugs.length; j < leng; j++) {
+								if (i != j && drugs[i].into_number == drugs[j].into_number && drugs[i].system_number == drugs[j].system_number){
+									mui.toast('"'+drugs[i].generic_name+'" 存在重复批号');
+									return;
+								}
+							}
+						}
+						
+						if(vm.billImage.length == 0){
+							mui.toast('未上传随货同行单');
+							return;
+						}
+						
+						// 组合数据
+						let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+						let params = {
+							currentPro: {hid : vm.hosValue , name : vm.hosText},
+							sendNumber: vm.sendNumber,
+							intoTime: vm.intoTime,
+							drugs: vm.drug,
+							billImage: vm.billImage.length == 0 ?'' : vm.billImage,
+							invoiceImage: vm.invoiceImage.length == 0 ?'' : vm.invoiceImage,
+							accountInfo,
+							outType:2,
+						};
+						
+						plus.nativeUI.showWaiting();
+						var res = mui.http_post(API.WAREHOUSE_OUT,params);
+						plus.nativeUI.closeWaiting()
+						
+						if(res.code == 200){
+							mui.toast('出库成功 ' + res.data.right + ' 条,' + '失败 ' + res.data.fail + ' 条');
+							setTimeout(function(){
+								mui.back();
+							},800)
+						}else{
+							mui.alert(res.message,'提示','确认',function (e) {},'div')
+						}
+						
+						
+					})
+						
+					
+				})
+			}
+		</script>
+	</body>
+</html>

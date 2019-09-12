@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<meta charset="utf-8">
+		<title>票据出库</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/warehouse/index-into.css'],true); 
+		</script>
+	</head>
+
+	<body>  
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">票据出库</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			
+			<!-- 选择入库类型 -->
+		<div class="intoType-box">
+			<div class='into-title'>
+				<div>出库添加</div>
+			   <div class='choose-title'> ( 选择药品出库方式 )</div>
+			</div>
+			<div class='into-options'>
+				<button type="button" class="mui-btn mui-btn-primary" id="out-normal" >常规出库</button>
+			</div>
+
+			<div class='into-options'>
+				<button type="button" class="mui-btn mui-btn-primary" id="out-hos" >院内签批出库</button>
+				
+			</div>
+
+			<div class='into-title'>
+				出库编辑
+			</div>
+			<div class='into-options'>
+					<button type="button" class="mui-btn mui-btn-success" id="out-edit">出库信息查看/编辑</button>
+			</div>
+			<div class='into-options'>
+					<button type="button" class="mui-btn mui-btn-success" id="out-reject">医院驳回票据</button>
+			</div>
+			
+			 <div class='binding-explain'>
+			  说明: "出库添加"，当药品经营企业需要添加药品出库时，点击相应的出库类型按钮即可。"出库信息查看/编辑"，对已出库的药品可提供查看或编辑出库信息的功能。"医院驳回票据"，查看医院驳回的出库票据。
+			  </div>
+			  
+		</div>
+
+			
+			 
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+
+		<script>
+			mui.init();
+			window.onload = function(){
+				   
+				mui.plusReady(function (){
+				
+					plus.nativeUI.closeWaiting();
+					mui.currentWebview.show();
+					
+					//出库信息查看-编辑
+					document.getElementById('out-edit').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'out-edit.html',
+							id :'out-edit.html'
+						})
+					})
+					
+					//出库驳回查看-编辑
+					document.getElementById('out-reject').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'out-reject.html',
+							id : 'out-reject.html'
+						})
+					})
+					
+					//常规出库
+					document.getElementById('out-normal').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'out-add-normal.html',
+							id : 'out-add-normal.html',
+							// show:{
+							// 	autoShow:false,
+							// }
+						})
+					})
+					
+					//院内签批出库
+					document.getElementById('out-hos').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'out-add-hos.html',
+							id : 'out-add-hos.html',
+							// show:{
+							// 	autoShow:false,
+							// }
+						})
+					});
+					
+					
+				})
+			}
+		</script>
+	</body>
+</html>

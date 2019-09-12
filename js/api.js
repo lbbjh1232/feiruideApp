@@ -1,0 +1,275 @@
+// 借口配置文件
+var DEV = "dev";
+var PRO = 'pro';
+// 环境选择
+var ENVIRONMENT = PRO;
+
+// 接口地址
+var API = {
+	HOST : "http://www.yudzni.cn",
+	TICKET_HOST : 'http://ticket.toothwang.com/uploads',
+	SMS_CODE : '/user/smsCode',
+	LOGIN : "/user/login",
+	SAVE_CLIENT_ID : '/user/saveClientId',
+	GET_NET_DRUG : "/drug/getNetDrug",
+	GET_HOS_DRUG : "/drug/getHosDrug",
+	GET_HOS_TICKET : "/drug/getHosTicket",
+	GET_HOS_COMAPNY : '/drug/getHosCompany',
+	GET_DETAIL_TICKET : '/drug/getDetailTicket',
+	CHECK_TICKET : '/drug/checkTicket',
+	GET_COM_DRUG : '/drug/getComDrug',
+	
+	// 入库
+	GET_COM_TICKET : '/drug/getComTicket',
+	GET_INTO_TICKET : '/drug/getIntoTicket',
+	DEL_DRUG_INTO : '/drug/delDrugInto',
+	EDIT_DRUG_INTO : '/drug/editDrugInto',
+	UPLOAD_TICKET : '/drug/uploadTicket',
+	GET_PRODUCER_LIST : '/drug/getProducerList',
+	GET_DRUG_LIST : '/drug/getDrugList',
+	CHECK_DRUG_REPORT : '/drug/checkDrugReport',
+	DELETE_TICKET : '/drug/deleteTicket',
+	WAREHOUSE_INTO_FROM_PRO : '/drug/warehouseIntoFromPro',
+	CHECK_TRADE_EXIST : '/drug/checkTradeExist',
+	CHECK_AGENT_EXIST : '/drug/checkAgentExist',
+	WAREHOUSE_INTO_FROM_AS_PRO : '/drug/warehouseIntoFromAsPro',
+	WAREHOUSE_INTO_FROM_GROUP : '/drug/warehouseIntoFromGroup',
+	GET_GROUP_COMPANY : '/drug/getGroupCompany',
+	ADD_GROUP_COMPANY : '/drug/addGroupCompany',
+	GET_GROUP_DRUG : '/drug/getGroupDrug',
+	WAREHOUSE_INTO_FROM_ALLOT : '/drug/warehouseIntoFromAllot',
+	// 出库
+	GET_COM_OUT : '/drug/getComOut',
+	GET_HOSPITAL : '/drug/getHospital',
+	DEL_DRUG_OUT : '/drug/delDrugOut',
+	EDIT_DRUG_OUT : '/drug/editDrugOut',
+	GET_REJECT_OUT : '/drug/getRejectOut',
+	REJECT_TO_HOS : '/drug/rejectToHos',
+	GET_OUT_DRUG : '/drug/getOutDrug',
+	WAREHOUSE_OUT : '/drug/warehouseOut',
+	
+	// 药检报告
+	REPORT_LIST : '/drug/reportList',
+	GET_REPORT_DRUG : '/drug/getReportDrug',
+	ADD_REPORT : '/drug/addReport',
+	DEL_REPORT : '/drug/delReport',
+	
+	// 短缺药品
+	GET_SHORTAGE : '/drug/getShortage',
+	PRO_NET_DRUG : '/drug/proNetDrug',
+	RE_SUBMIT : '/drug/reSubmit',
+	CHECK_PROVIDE : '/drug/checkProvide',
+	
+
+	//客服
+	CHAT_IMG_UPLOAD : '/chat/chatImgUpload',
+	SAVE_MESSAGE : '/chat/saveMessage',
+	CHANGE_IS_READ : '/chat/changeIsRead',
+	CHECK_NONE_USER : '/chat/checkNoneUser',
+	CHECK_ADMIN_ID : '/chat/checkAdminId',
+	LOAD_MESSAGE_LIST : '/chat/loadMessageList',
+	GET_CHAT_LIST : '/chat/getChatList',
+	DELETE_RECORED : '/chat/deleteRecored',
+	SEARCH_USER : '/chat/searchUser',
+	CHECK_RELATION_TYPE : '/chat/checkRelationType',
+	USER_ADD_REQUEST : '/chat/userAddRequst',
+	GET_USER_LIST : '/chat/getUserList',
+	GET_NEW_FRIEND : '/chat/getNewFriend',
+	CHECK_USER : '/chat/checkUser',
+	NEW_RECORD_DEL : '/chat/newRecordDel',
+	FRIEND_DEL : '/chat/friendDel',
+	
+};
+
+// 全局数据
+var globalData = {
+	//存储条件
+      storageCondition: [{
+          value: 0,
+          text: '-'
+      }, {
+          value: 1,
+          text: '常温'
+      }, {
+          value: 2,
+          text: '冷藏'
+      }, {
+          value: 3,
+          text: '阴凉'
+      }, {
+          value: 4,
+          text: '凉暗'
+      },{
+          value:5,
+          text:'避光'
+      },{
+          value:6,
+          text:'遮光'
+      }],
+      //药品分类
+      drugCategory: [{
+          value: 0,
+          text: '-'
+      }, {
+          value: 1,
+          text: '麻醉'
+      }, {
+          value: 2,
+          text: '精一'
+      }, {
+          value: 3,
+          text: '精二'
+      }, {
+          value: 4,
+          text: '高警示药品'
+      }, {
+          value: 5,
+          text: '毒性药品'
+      }],
+
+      //光敏
+      drugSun: [{
+          value: 0,
+          text: '-'
+      }, {
+          value: 1,
+          text: '避光'
+      }, {
+          value: 2,
+          text: '遮光'
+      }],
+
+      //基药类别 value 表示数据库标记  text 文字说明
+      JyCategory: [{
+          value: 0,
+          text: '全部'
+      }, {
+          value: 1,
+          text: '非基药'
+      }, {
+          value: 2,
+          text: '国家基药'
+      }, {
+          value: 3,
+          text: '省补基药'
+      }],
+      //采购类别 value 表示数据库标记 text 文字说明
+      BuyCategory: [{
+          value: 0,
+          text: '全部'
+      }, {
+          value: 1,
+          text: '常规上网限价药品'
+      }, {
+          value: 2,
+          text: '常用低价药品'
+      }, {
+          value: 3,
+          text: '基础输液'
+      }, {
+          value: 4,
+          text: '定点生产药品'
+      }, {
+          value: 5,
+          text: '国家谈判药品'
+      }, {
+          value: 6,
+          text: '中标药品'
+      }, {
+          value: 7,
+          text: '自行采购药品'
+      }, {
+          value: 8,
+          text: '妇儿专科非专利药品'
+      }, {
+          value: 9,
+          text: '急（抢）救药品'
+      }, {
+          value: 10,
+          text: '麻醉药品'
+      }, {
+          value: 11,
+          text: '一类精神药品'
+      }, {
+          value: 12,
+          text: '挂网限量采购药品'
+      }, {
+          value: 13,
+          text: '其他挂网药品'
+      }, {
+          value: 14,
+          text: '二类疫苗'
+      }, {
+          value: 15,
+          text: '二类精神药品'
+      }, {
+          value: 16,
+          text: '挂网限量采购药品（抗癌药专项集中采购药品）'
+      }, {
+          value: 17,
+          text: '国家谈判药品（抗癌药专项集中采购药品）'
+      }, {
+          value: 18,
+          text: '常规上网限价药品（抗癌药专项集中采购药品）'
+      }, {
+          value: 19,
+          text: '挂网限量采购药品（中标药品）'
+      }, {
+          value: 20,
+          text: '中标药品（抗癌药专项集中采购药品）'
+      }, {
+          value: 21,
+          text: '抗癌药专项集中采购药品'
+      }],
+      //选择是否国产  value 表示数据库标记 text 文字说明
+      IsChinaCategory: [{
+          value: 0,
+          text: '全部'
+      }, {
+          value: 1,
+          text: '国产'
+      }, {
+          value: 2,
+          text: '进口'
+      }],
+      //是否川产
+      IsChuanProduce: [{
+          value: 0,
+          text: '全部'
+      }, {
+          value: 1,
+          text: '川企'
+      }, {
+          value: 2,
+          text: '省外'
+      }, {
+          value: 3,
+          text: '投川省外'
+      }, {
+          value: 4,
+          text: '川省投外'
+      }],
+      
+      //药品是否医保
+      InsuranceCategory: [{
+          value: 0,
+          text: '全部'
+      }, {
+          value: 1,
+          text: '是'
+      }, {
+          value: 2,
+          text: '否'
+      }],
+      //药品是否贵重
+      IsExpensiveCategory: [{
+          value: 0,
+          text: '全部'
+      }, {
+          value: 1,
+          text: '是'
+      }, {
+          value: 2,
+          text: '否'
+      }],
+}

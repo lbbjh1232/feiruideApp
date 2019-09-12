@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>PDF预览</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+		<style type="text/css">
+				
+			.pre{
+				position: fixed;
+				right: 10px;
+				bottom: 330px;
+				background: #999999;
+				width: 2.5rem;
+				height: 2.5rem;
+				border-radius: 2.5rem;
+				color: #FFFFFF;
+				font-size:1.4rem;
+				text-align: center;
+				line-height: 2.5rem;
+				z-index: 100;
+
+			}
+			.next{
+				position: fixed;
+				right: 10px;
+				bottom: 280px;
+				background: #999999;
+				width: 2.5rem;
+				height: 2.5rem;
+				border-radius: 2.4rem;
+				color: #FFFFFF;
+				font-size:1.4rem;
+				text-align: center;
+				line-height: 2.4rem;
+				z-index: 100;
+
+			}
+			.grease{
+				position: fixed;
+				right: 10px;
+				bottom: 200px;
+				background: #999999;
+				width: 2.5rem;
+				height: 2.5rem;
+				border-radius: 2.5rem;
+				color: #FFFFFF;
+				font-size:1.4rem;
+				font-weight: bold;
+				text-align: center;
+				line-height: 2.5rem;
+				z-index: 100;
+
+			}
+			.reduce{
+				position: fixed;
+				right: 10px;
+				bottom: 150px;
+				background: #999999;
+				width: 2.5rem;
+				height: 2.5rem;
+				border-radius: 2.5rem;
+				color: #FFFFFF;
+				font-size:1.4rem;
+				font-weight:bold;
+				text-align: center;
+				line-height: 2.5rem;
+				z-index: 100;
+			}
+			.page{
+				border-radius: 10px;
+				padding: 3px 8px;
+				position: fixed;
+				top: 50px;
+				left: 8px;
+				z-index: 100;
+				background: #EEEEEE;
+			}
+			#the-canvas{
+				position: relative;
+				left: 0px;
+			}
+		</style>
+	</head>
+	
+	<body id="content">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+		</header> 
+	<div class="mui-content">
+		<div class="page"><span id="page_num"></span> <span>/ </span><span id="page_count"></span></div>
+		
+		<div class="pre iconfont" id="prev">▲</div>
+		<div class="next iconfont" id="next">▼</div>
+		<div class="grease iconfont" id="grease">＋</div>
+		<div class="reduce iconfont" id="reduce">－</div>
+		
+		<canvas id="the-canvas"></canvas>
+		
+	</div> 
+<script src="../js/mui.js"></script>
+<script src="../js/lib/pdf.js"></script>
+<script src="../js/lib/pdf.worker.js"></script>
+
+<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			
+			mui.plusReady(function() {
+			
+			var self = plus.webview.currentWebview();
+			console.log(self.name)
+			var url = self.name;
+			var pdfDoc = null,
+				pageNum = 1,
+				pageRendering = false,
+				pageNumPending = null,
+				scale = 0.8,
+				canvas = document.getElementById('the-canvas'),
+				ctx = canvas.getContext('2d');
+
+			/**
+			 * Get page info from document, resize canvas accordingly, and render page.
+			 * @param num Page number.
+			 */
+			function renderPage(num) {
+				pageRendering = true;
+				// Using promise to fetch the page
+				pdfDoc.getPage(num).then(function(page) {
+					var viewport = page.getViewport(scale);
+					//console.log(JSON.stringify(viewport))
+					canvas.height = viewport.height;
+					canvas.width = viewport.width;
+
+					// Render PDF page into canvas context
+					var renderContext = {
+						canvasContext: ctx,
+						viewport: viewport
+					};
+					var renderTask = page.render(renderContext);
+
+					// Wait for rendering to finish
+					renderTask.promise.then(function() {
+						pageRendering = false;
+						if (pageNumPending !== null) {
+							// New page rendering is pending
+							renderPage(pageNumPending);
+							pageNumPending = null;
+						}
+					});
+				});
+
+				// Update page counters
+				document.getElementById('page_num').textContent = num;
+			}
+
+			/**
+			 * If another page rendering in progress, waits until the rendering is
+			 * finised. Otherwise, executes rendering immediately.
+			 */
+			function queueRenderPage(num) {
+				if (pageRendering) {
+					pageNumPending = num;
+				} else {
+					renderPage(num);
+				}
+			}
+
+			/**
+			 * Displays previous page.
+			 */
+			function onPrevPage() {
+				if (pageNum <= 1) {
+					return;
+				}
+				pageNum--;
+				queueRenderPage(pageNum);
+			}
+			document.getElementById('prev').addEventListener('tap', onPrevPage);
+
+			/**
+			 * Displays next page.
+			 */
+			function onNextPage() {
+				if (pageNum >= pdfDoc.numPages) {
+					return;
+				}
+				pageNum++;
+
+				queueRenderPage(pageNum);
+			}
+			document.getElementById('next').addEventListener('tap', onNextPage);
+			
+			// 放大
+			function onEnlarge() {
+				if( scale >= 2){
+					return;
+				}
+				scale+=0.1;
+				 queueRenderPage(pageNum);
+			}
+			document.getElementById('grease').addEventListener('tap', onEnlarge);
+			
+			// 缩小
+			function onReduce() {
+				if( scale <= 0.8){
+					return;
+				}
+				scale-=0.1;
+				 queueRenderPage(pageNum);
+			}
+			document.getElementById('reduce').addEventListener('tap', onReduce);
+			
+			/**
+			 * Asynchronously downloads PDF.
+			 */
+			PDFJS.getDocument(url).then(function(pdfDoc_) {
+				pdfDoc = pdfDoc_;
+				document.getElementById('page_count').textContent = pdfDoc.numPages;
+
+				// Initial/first page rendering
+				renderPage(pageNum);
+			}).catch(function(e){
+				//console.log(e)
+				mui.alert('文件错误或不存在','提示','确认',function (e) {
+					
+				},'div')
+			});
+		
+	    
+	})
+</script>
+
+
+</body>
+</html>

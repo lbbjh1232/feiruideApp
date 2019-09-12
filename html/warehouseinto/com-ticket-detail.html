@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>挂网药品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css',,'../../css/common.css','../../css/iconfont.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/drug/ticket-detail.css'],true);
+		</script>
+
+		
+	</head>
+
+	<body >
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">查看入库票据</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<div id="slider" class="mui-slider" >
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1">
+				药品票据
+			</a>
+					<a class="mui-control-item" href="#item2">
+				入库详情
+			</a>
+			
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+				<div class="mui-slider-group" v-cloak>
+					<div id="item1" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								
+								 <template v-if="info.picture_type != 1">
+									 <div class="ticket-title">随货同行单 (第一票)</div>
+									 <template v-if="urls.tongxing_one !== ''">
+									 	<div class="ticket-img-box">
+									 		
+									 		<template v-for="item in urls.tongxing_one">
+									 			<div class="image-item" v-if="item.key == 1" >
+									 				<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+									 			</div>
+									 			
+									 			<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+									 				<img src="../../images/pdf.png">
+									 			</div>
+									 			
+									 		</template>
+									 		
+									 	</div>
+									 </template>
+									 <!-- 未上传提示 -->
+									 <template v-else>
+									 	<div class="ticket-img-box">
+									 		<div class="image-item">
+									 			<img v-bind:src="imageNotice" data-preview-src="" data-preview-group="1">
+									 		</div>
+									 	</div>
+									 </template>
+									 
+									 <div class="ticket-title">发票 (第一票)</div>
+									 <template v-if="urls.invoice_one !== ''">
+									 	<div class="ticket-img-box">
+									 		
+									 		<template v-for="item in urls.invoice_one">
+									 			<div class="image-item" v-if="item.key == 1" >
+									 				<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+									 			</div>
+									 			
+									 			<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+									 				<img src="../../images/pdf.png">
+									 			</div>
+									 			
+									 		</template>
+									 		
+									 	</div>
+									 </template>
+									 <!-- 未上传提示 -->
+									 <template v-else>
+									 	<div class="ticket-img-box">
+									 		<div class="image-item">
+									 			<img v-bind:src="imageNotice" data-preview-src="" data-preview-group="1">
+									 		</div>
+									 	</div>
+									 </template>
+								 </template>
+								
+								
+								
+								<template v-if="info.picture_type == 3">
+									<div class="ticket-title">随货同行单 (第二票)</div>
+									<template v-if="urls.tongxing_two !== ''">
+										<div class="ticket-img-box">
+											
+											<template v-for="item in urls.tongxing_two">
+												<div class="image-item" v-if="item.key == 1" >
+													<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+												</div>
+												
+												<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+													<img src="../../images/pdf.png">
+												</div>
+												
+											</template>
+											
+										</div>
+									</template>
+									<!-- 未上传提示 -->
+									<template v-else>
+										<div class="ticket-img-box">
+											<div class="image-item">
+												<img v-bind:src="imageNotice" data-preview-src="" data-preview-group="1">
+											</div>
+										</div>
+									</template>
+									
+									<div class="ticket-title">发票 (第二票)</div>
+									<template v-if="urls.invoice_two !== ''">
+										<div class="ticket-img-box">
+											
+											<template v-for="item in urls.invoice_two">
+												<div class="image-item" v-if="item.key == 1" >
+													<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+												</div>
+												
+												<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+													<img src="../../images/pdf.png">
+												</div>
+												
+											</template>
+											
+										</div>
+									</template>
+									<!-- 未上传提示 -->
+									<template v-else>
+										<div class="ticket-img-box">
+											<div class="image-item">
+												<img v-bind:src="imageNotice" data-preview-src="" data-preview-group="1">
+											</div>
+										</div>
+									</template>
+								</template>
+								
+								
+								<div class="ticket-title">药检报告</div>
+								<template v-if="urls.report_photo !== ''">
+									<div class="ticket-img-box">
+										
+										<template v-for="item in urls.report_photo">
+											<div class="image-item" v-if="item.key == 1" >
+												<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+											</div>
+											
+											<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+												<img src="../../images/pdf.png">
+											</div>
+											
+										</template>
+										
+									</div>
+								</template>
+								<!-- 未上传提示 -->
+								<template v-else>
+									<div class="ticket-img-box">
+										<div class="image-item">
+											<img v-bind:src="imageNotice" data-preview-src="" data-preview-group="1">
+										</div>
+									</div>
+								</template>
+								
+								<div class="ticket-title">物价证明</div>
+								<template v-if="urls.price_photo !== ''">
+									<div class="ticket-img-box">
+										
+										<template v-for="item in urls.price_photo">
+											<div class="image-item" v-if="item.key == 1" >
+												<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+											</div>
+											
+											<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+												<img src="../../images/pdf.png">
+											</div>
+											
+										</template>
+										
+									</div>
+								</template>
+								<!-- 未上传提示 -->
+								<template v-else>
+									<div class="ticket-img-box">
+										<div class="image-item">
+											<img v-bind:src="imageNotice" data-preview-src="" data-preview-group="1">
+										</div>
+									</div>
+								</template>
+								
+								
+								<template v-if="urls.neibu_src !== ''">
+									<div class="ticket-title">内部调拨单</div>
+									<div class="ticket-img-box">
+										
+										<template v-for="item in urls.neibu_src">
+											<div class="image-item" v-if="item.key == 1" >
+												<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+											</div> 
+											
+											<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+												<img src="../../images/pdf.png">
+											</div>
+											
+										</template>
+										
+									</div>
+								</template>
+								
+								
+								<template v-if="urls.jituan_src !== ''">
+									<div class="ticket-title">集团关系证明</div>
+									<div class="ticket-img-box">
+										
+										<template v-for="item in urls.jituan_src">
+											<div class="image-item" v-if="item.key == 1" >
+												<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+											</div>
+											
+											<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+												<img src="../../images/pdf.png">
+											</div>
+											
+										</template>
+										
+									</div>
+								</template>
+								
+								
+								<template v-if="urls.import !== ''">
+									<div class="ticket-title">药品总代证明</div>
+									<div class="ticket-img-box">
+										
+										<template v-for="item in urls.import">
+											<div class="image-item" v-if="item.key == 1" >
+												<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+											</div>
+											
+											<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+												<img src="../../images/pdf.png">
+											</div>
+											
+										</template>
+										
+									</div>
+								</template>
+								
+								<template v-if="urls.productionTrade !== ''">
+									<div class="ticket-title">科工贸一体证明</div>
+									<div class="ticket-img-box">
+										
+										<template v-for="item in urls.productionTrade">
+											<div class="image-item" v-if="item.key == 1" >
+												<img v-bind:src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+											</div>
+											
+											<div v-else class="image-item pdf-btn" v-bind:data-url="item.url">
+												<img src="../../images/pdf.png">
+											</div>
+											
+										</template>
+										
+									</div>
+								</template>
+								
+								
+								
+								
+								
+							</div>
+						</div>
+					</div>
+					<div id="item2" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								
+								
+								<div class=''><span class='drug-list-title'>票制类型:</span> <span class='drug-list-name'>{{info.picture_type==2?'两票制':''}} {{info.picture_type==1?'一票制':''}} {{info.picture_type==3?'三票制':''}}</span></div>
+								<div class=''><span class='drug-list-title'>来源类型:</span> <span class='drug-list-name'>{{info.from_type==1?'集团公司':'生产企业'}}</span></div>
+								
+								<div class=''><span class='drug-list-title'>药品通用名:</span> <span class='drug-list-name'>{{info.generic_name}}</span></div>
+								<div class=''><span class='drug-list-title'>规格:</span> <span class='drug-list-name'>{{info.specifications}}</span></div>
+								<div class=''><span class='drug-list-title'>药品生产企业:</span> <span class='drug-list-name'>{{info.production_enterprise}}</span></div>
+								<div class=''><span class='drug-list-title'>药品批号:</span> <span class='drug-list-name'>{{info.into_number}}</span></div>
+								
+								<div class=''><span class='drug-list-title'>发货单号:</span> <span class='drug-list-name'>{{info.send_number}}</span></div>
+								<div class=''><span class='drug-list-title'>入库数量:</span> <span class='drug-list-name'>{{info.into_count}}</span></div>
+								<div class=''v-if="info.from_type==1"><span class='drug-list-title'>调拨数量:</span> <span class='drug-list-name'>{{info.allot_count}}</span></div>
+								<div class=''><span class='drug-list-title'>剩余数量:</span> <span class='drug-list-name'>{{info.surplus_amount}}</span></div>
+								
+								<div class=''><span class='drug-list-title'>入库日期:</span> <span class='drug-list-name'>{{info.into_time}}</span></div>
+								
+							</div>
+						</div> 
+		
+					</div>
+					 
+				</div>
+			</div>
+		
+			
+		</div>
+		
+		
+	</body>
+	
+	<script src="../../js/mui.js"></script>
+	<script src="../../js/lib/mui.zoom.js"></script>
+	<script src="../../js/lib/mui.previewimage.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script> 
+	<script src="../../js/app.js"></script> 
+		
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				intoid:'',	//入库id
+				searchResult:{},	//票据信息
+				info:{},
+				urls:{},
+				imageNotice:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'
+				
+			}
+				
+		}); 
+		
+		mui.init();
+
+		// 加载数据函数
+		function getNetDrug(first){
+			first = first == undefined || first == false ? false : true;
+			var url =API.GET_INTO_TICKET,params = {intoid:vm.intoid};
+			if(!first){
+				plus.nativeUI.showWaiting('加载中',{width:'20%'});
+			}
+			var res = mui.http_post(url,params);
+			plus.nativeUI.closeWaiting(); 
+			    
+			if(first){
+				mui.currentWebview.show();
+			} 
+			
+			if(res.code == 200){
+				vm.urls = res.data.category;
+				vm.info = res.data.info;
+			}
+		}
+			
+		window.onload = function(){
+			mui.plusReady(function () {
+				
+				mui('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});
+				
+				// 网络错误监听
+				mui.networkError();
+				var self = plus.webview.currentWebview();
+				vm.intoid = self.intoid;
+				console.log(self.intoid)
+				// 首次ajax获取数据后关闭等待窗口
+				vm.$nextTick(function(){
+					getNetDrug(true);
+				})
+				
+				
+				// 预览图片
+				mui.previewImage();
+				
+				// 查看pdf文件
+				mui('#scroll1').on('tap','.pdf-btn',function(){
+					var urls = this.dataset.url;
+					console.log(urls)
+					
+					mui.openWindow({
+						url:'../pdf-view.html',
+						id: '../pdf-view.html',
+						extras:{
+							name:urls
+						},
+						show:{
+							autoShow:true,
+						}
+						
+					})
+					
+				})
+						
+				
+
+			})
+		}
+		
+		
+</script>
+	
+	
+	
+	
+	
+	
+</html>

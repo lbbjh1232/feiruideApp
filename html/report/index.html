@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>挂网药品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/imageview.css','../../css/iconfont.css','../../css/icon.css','../../css/animate.css','../../css/drug/net-drug.css','../../css/drug/check-ticket.css'],true);
+		</script>
+		<style type="text/css">
+			#scroll-edit{
+				top: 0.5rem;
+				height: 100%;
+				padding: 0;
+			}
+			#scroll-trade{
+				top: 4rem;
+				height: calc(99% - 3.5rem);
+			}
+			#scroll-trade .mui-scroll{
+				text-align: justify;
+				width: 100%;
+			}
+			.report-btn{
+				margin-top: 1.5rem;
+				width: 20%;
+			}
+			
+		</style>
+	</head>
+
+	<body >
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药检报告</h1>
+		</header>
+		
+		<div id="app">
+		<!-- 顶部操作栏 -->	
+		<div class="search-box">
+			<div class="operation-btn" id="upload" ><button type="button" class="mui-btn mui-btn-success iconfont icon-upload"> 上传</button></div>
+			<div class="operation-btn" id="my-upload"><button type="button" class="mui-btn mui-btn-success">我的上传</button></div>
+			<div class="operation-btn"></div>
+			<div class="operation-btn filter"><button type="button" class="mui-btn mui-btn-primary mui-btn-outlined iconfont icon-shaixuan1">筛选</button></div>
+		</div>
+		
+		<!-- 滚动组件区域 -->
+		<div class="mui-scroll-wrapper" id="scroll-one">
+	
+			<div class="mui-scroll" v-cloak>
+				
+				<template v-for="(item,index) in searchResult">
+					<div class="drug-list-box" v-bind:class="item.sign?'choosed':''" v-bind:data-index="index" v-cloak>
+						<div class='drug-list-left-part' >
+				
+							<div class='text-clip'><span class='drug-list-title'>上传单位:</span> <span class='drug-list-name'>{{item.company_name}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{item.generic_name}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>药品批号:</span> <span class='drug-list-name'>{{item.batch_number}}</span></div>
+						
+							<div class='text-clip'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'> {{item.production_enterprise}}</span></div>
+						
+							<div class='text-clip'><span class='drug-list-title'>创建时间:</span> <span class='drug-list-name'><span>{{item.created}}</span></span></div>
+							
+						</div>
+						<div class='drug-list-right-part'>
+
+							<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined checkTick">查看药检报告</button>
+							
+						</div>
+					</div>
+				</template>
+				
+				<!-- 加载更多按钮 -->
+				<div class="loadMore">
+					<button v-if="loadMore" type="button" class="mui-btn mui-btn-blue">加载更多...</button>
+					<span v-else class="none-text">到底了，没有数据了...</span>
+				</div>
+
+			</div>
+		</div>
+		
+		<!-- 返回顶部 -->
+		<div id="backtop" v-if="scrollY" class="iconfont icon-fanhuidingbu">
+		</div>
+		
+		<!-- 筛选表单栏 -->
+		<template v-if="filterShow">
+			<div class="mask" id="filter-close">
+				
+				<div class="input-box animated slideInRight" id="scroll-box">
+					<div id="close-btn" class="close-box"><span class="iconfont icon-guanbi"></span></div>
+					<div class="scroll-box" >
+						<div class="mui-scroll-wrapper" id="scroll-three">
+							<div class="mui-scroll">
+								
+									<div class="mui-input-row">
+										<label>药品名称</label>
+										<input type="text" class="mui-input-clear" v-model="drugName" placeholder="药品名称/拼音首字母">
+									</div>
+									
+									<div class="mui-input-row">
+										<label>批号</label>
+										<input type="text" class="mui-input-clear" v-model="drugBatchNumber" placeholder="批号">
+									</div>
+									<div class="mui-input-row">
+										<label>规格</label>
+										<input type="text" class="mui-input-clear" v-model="drugSpecifications" placeholder="规格">
+									</div>
+									
+									<div class="mui-input-row">
+										<label>生产企业</label>
+										<input type="text" class="mui-input-clear" v-model="drugProducer" placeholder="生产企业">
+									</div>
+									
+									<div class="mui-input-row">
+										<label>批准文号</label>
+										<input type="text" class="mui-input-clear" v-model="drugApprove" placeholder="批准文号">
+									</div>
+									
+								 
+							</div>
+						</div>
+					</div>
+					<div class="filter-btn-box">
+						<div class="reset">重置</div>
+						<div class="sure">确定</div>
+					</div>
+				</div>
+				
+			</div>
+		</template>
+		
+		<!-- 上传弹窗 -->
+		<template v-if="uploadShow">
+			<div class='mask' id="trade-mask" style="z-index: 12;">
+			<div class='drug-detail-box'>
+				<div class='detail-box-top'>
+					<div class='text-detail'>上传药检报告</div>
+					<div class='iconfont icon-shanchu1 close' id="close-trade"></div>
+				</div>
+				<div class="mui-scroll-wrapper" id="scroll-trade">
+					<div class="mui-scroll">
+						<div class="mui-input-row">
+							<label>药品名称</label>
+							<input type="text" id="chooseDrug" class="mui-input-clear" v-model="drug.generic_name" readonly placeholder="选择药品">
+						</div>
+						<div class="mui-input-row">
+							<label>药品批号</label>
+							<input type="text" class="mui-input-clear" v-model="batchNumber" placeholder="药品批号">
+						</div>
+						
+						
+						<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">15</span>张</div>
+						<upload :file="reportImage" :formdata="formData" :group="1" :max="15" :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
+						
+						<div class="report-btn">
+							<button type="button" id="trade-sure" class="mui-btn mui-btn-success">提 交</button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			</div>
+		</template>
+		
+		
+		</div> 
+	</body>
+	
+	<script src="../../js/mui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/lib/mui.zoom.js"></script>
+	<script src="../../js/lib/mui.previewimage.js"></script>
+	<script src="../../js/api.js"></script> 
+	<script src="../../js/app.js"></script>
+	
+	<!-- 上传组件模板 -->
+	<script type="text/x-template" id="upload-template">
+		<div class="upload-box">
+			<template v-for="(item,index) in file">
+				<div class="upload-img-box">
+					<img :src="item.url" data-preview-src="" :data-preview-group="group" />
+					<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+				</div>
+			</template>
+			
+			<div v-if="file.length < max " class="weui-uploader__input-box" @tap="onSelect"></div>
+			<div class="clear"></div>
+		</div>
+	</script>
+	
+	<script type="text/javascript">
+		//定义上传组件
+		var upload = {
+			template : '#upload-template',
+			data : function(){
+				return {
+					
+				}
+			},
+			// 定义组件属性
+			props : {
+				url : String,
+				formdata : {type : Object,default : function(){ return {}}},
+				file : {type :Array,default: function(){ return []} },
+				max : {type : Number,default:2},
+				group : {type : Number }
+			},
+			methods:{
+				// 上传方法
+				imgUpload : function(path,url){
+					var that = this;
+					plus.nativeUI.showWaiting()
+					var task = plus.uploader.createUpload(url,{method:"POST",blocksize:204800,priority:100},function(t,status){
+						plus.nativeUI.closeWaiting();
+						
+						// 上传完成,成功或失败
+						var datas = JSON.parse(t.responseText); //返回图片存储地址
+						if( status == 200 ){
+							// 上传成功
+							that.$emit("oncomplete",{url:datas});
+							
+						}else{
+							
+							mui.alert(datas.err,'提示','确认',function (e) {
+							},'div');
+							
+						}
+						
+					});
+					task.addFile(path,{key:'upload'});
+					// 添加参数
+					for(var key in that.formdata){
+						task.addData(key,that.formdata[key].toString());
+					}
+					task.start();
+				},
+				// 选择图片
+				onSelect : function(){ 
+					var btnArray = [{
+						title: "拍照"
+					}, {
+						title: "从相册选择"
+					}],that = this;
+					
+					plus.nativeUI.actionSheet({
+						title: "选择照片",
+						cancel: "取消",
+						buttons: btnArray
+					}, function(e) {
+						var index = e.index;
+						switch (index) {
+							case 0:
+								break;
+							case 1:
+							// 拍照
+								var cmr = plus.camera.getCamera();
+								cmr.captureImage(function(path) {
+									var localUrl = "file://" + plus.io.convertLocalFileSystemURL(path);
+									that.imgUpload(localUrl,that.url);
+								});
+								break;
+								
+							case 2:
+							//选择相册
+								plus.gallery.pick(function(path) {
+									that.imgUpload(path,that.url);
+								}, function(err) {}, {maximum:1});
+								break;
+						}
+					});
+					
+				},
+				// 删除
+				onDelete : function(e){
+					this.$emit("ondelete",{index:e})
+				}
+			}
+		}
+		
+		var vm = new Vue({
+			el:'#app',
+			components:{
+				upload : upload
+			},
+			data:{
+				loadMore:false,  //是否显示加载更多按钮
+				searchData:{
+					pageIndex:1,
+				},
+				searchResult:[],	//搜索数据集
+				scrollY:false,
+				searchValue:'',
+				filterShow:false,			//筛选框默认隐藏
+				drugName: '',    			//药品通用名
+				drugSpecifications: '',     //药品规格
+				drugProducer: '',    		//生产企业
+				drugBatchNumber: '', 		//批号
+				drugApprove:'',     		//批准文号
+				url : API.HOST + API.UPLOAD_TICKET,
+				uploadShow : false,
+				reportImage : [],
+				formData:{text : '药检报告'},
+				drug : {},
+				batchNumber : ''
+			},
+			methods:{
+				// 删除票据
+				deleteTicket(indexs,target){
+					var that = this;
+					mui.confirm('确认删除吗?','提示',['取消','确认'],function (e) {
+						if(e.index == 1){
+							plus.nativeUI.showWaiting();
+							var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
+							if(res.code == 200){
+								that[target].splice(indexs,1)
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {},'div')
+							}
+							plus.nativeUI.closeWaiting();
+						}
+						
+					},'div')
+				},
+				
+				complete1:function(e){
+					this.reportImage.push(e.url)
+				},
+				delete1:function(e){
+					this.deleteTicket(e.index,'reportImage')
+				},
+			}
+				
+		}); 
+		
+		mui.init();
+		 
+		// 加载数据函数
+		function getNetDrug(first){
+			// 获取公司id
+			first = first == undefined || first == false ? false : true;
+
+			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			var searchData = vm.searchData;
+			
+			var url =API.REPORT_LIST,params = searchData;
+			if(!first){
+				plus.nativeUI.showWaiting('加载中',{width:'20%'});
+			}
+			var res = mui.http_post(url,params);
+			plus.nativeUI.closeWaiting();
+			
+			if(first){
+				mui.currentWebview.show();
+			} 
+			vm.value = '';
+			
+			if(res.code == 200){
+				vm.searchResult = res.data;
+				if(res.message == 1){
+					vm.loadMore = false
+				}else{
+					vm.loadMore = true;
+				}
+			}
+		}
+			
+		window.onload = function(){
+			mui.plusReady(function () {
+				// 网络错误监听
+				mui.networkError();
+				
+				// 初始化滚动组件
+				var scorll_one = mui('#scroll-one').scroll({deceleration: 0.001});
+				
+				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+				vm.formData.cid = accountInfo.userid;
+				
+				// 首次ajax获取数据后关闭等待窗口
+				getNetDrug(true);
+				
+				// 预览图片
+				mui.previewImage();
+				
+				//加载更多
+				mui('.loadMore').on('tap','button',function(){
+					var params = vm.searchData;
+					params.pageIndex = ++params.pageIndex;
+					vm.searchData = params;
+					getNetDrug(false);
+				});
+				
+				
+				// 滚动监听
+				var scroll = document.getElementById('scroll-one'),y;
+				mui.pullDownRefresh(scroll,scorll_one,function(){
+					vm.searchData = {pageIndex:1},
+					getNetDrug();
+				})
+				
+				scroll.addEventListener('scroll',function(){
+					y=scorll_one.y;
+					if( y < -100 ){
+						vm.scrollY = true;
+						vm.$nextTick(function(){						
+							// 返回顶部
+							var tops = document.getElementById('backtop');
+							tops.addEventListener('tap',function(){
+								scorll_one.scrollTo(0,0,1000);
+							})
+							
+						})
+						
+					}else{
+						vm.scrollY = false;
+					}
+				})
+				
+				// 筛选弹窗按钮
+				mui('.search-box').on('tap','.filter',function(){
+					vm.filterShow = true;
+					
+					vm.$nextTick(function(){
+						var scorll_three = mui('#scroll-three').scroll({deceleration: 0.001});
+						var scroll_box = document.getElementById('scroll-box');
+						var mask = document.getElementsByClassName('mask')[0];
+						var close = document.getElementById('close-btn');
+						
+						// 关闭弹窗
+						mask.addEventListener('tap',function(e){
+							vm.filterShow = false;
+							vm.drugName = '';
+							vm.drugSpecifications = '';
+							vm.drugProducer = '';
+							vm.drugBatchNumber = '';
+							vm.drugApprove = '';
+						})
+						close.addEventListener('tap',function(){
+							vm.filterShow = false;
+							vm.drugName = '';
+							vm.drugSpecifications = '';
+							vm.drugProducer = '';
+							vm.drugBatchNumber = '';
+							vm.drugApprove = '';
+						})
+						
+						//阻止冒泡
+						scroll_box.addEventListener('tap',function(event){
+							event = event || window.event;
+							event.stopPropagation();
+						});
+						
+						
+						
+						// 确认筛选数据操作
+						mui('.filter-btn-box').on('tap','.sure',function(){
+							var searchData = {
+								pageIndex : 1,
+								drugName : vm.drugName,
+								drugSpecifications : vm.drugSpecifications,
+								drugProducer : vm.drugProducer,
+								drugBatchNumber : vm.drugBatchNumber,
+								drugApprove : vm.drugApprove,
+							}
+							vm.searchData = searchData;
+							getNetDrug(false);
+							vm.filterShow = false;
+							scorll_one.scrollTo(0,0,1000);
+							
+						})
+						
+						// 重置筛选数据操作
+						mui('.filter-btn-box').on('tap','.reset',function(){
+							vm.drugName = '';
+							vm.drugSpecifications = '';
+							vm.drugProducer = '';
+							vm.drugBatchNumber = '';
+							vm.drugApprove = '';
+							
+						})
+						
+					})
+				})
+				
+				// 查看药检报告
+				mui('.mui-scroll').on('tap','.checkTick',function(event){
+					var index = this.dataset.index;
+					var value = vm.searchResult[index]
+					
+					mui.openWindow({
+						url:'report-detail.html',
+						id:'report-detail.html',
+						extras:{
+							value : value
+						},
+						show:{
+							autoShow:true,
+						}
+					})
+					event = event||window.event;
+					event.stopPropagation()
+
+				})
+				
+				// 上传药检报告
+				document.getElementById('upload').addEventListener('tap',function(){
+					vm.uploadShow = true;
+					vm.$nextTick(function(){
+						var scorll_three = mui('#scroll-trade').scroll({deceleration: 0.001});
+						
+						// 监听关闭
+						document.getElementById('close-trade').addEventListener('tap',function(e){
+							vm.uploadShow = false;
+							vm.drug = {};
+							vm.batchNumber = '';
+							vm.reportImage = [];
+						});
+						
+						// 选择药品
+						document.getElementById('chooseDrug').addEventListener('tap',function(){
+							mui.openWindow({
+								id : 'choose-drug.html',
+								url : 'choose-drug.html',
+								show : {
+									autoShow : false
+								},
+								extras : {
+									sign : 'html/report/index.html',
+								}
+							})
+						})
+						// 上传提交
+						document.getElementById('trade-sure').addEventListener('tap',function(){
+							var drug = vm.drug;
+							if(!drug.id){
+								mui.toast('请选择药品');
+								return;
+							}
+							
+							if(!vm.batchNumber){
+								mui.toast('请输入批号');
+								return;
+							}
+							
+							if(vm.reportImage.length == 0){
+								mui.toast('请上传药检报告');
+								return;
+							}
+							var params = {
+								drugid:drug.id,
+								roleid:accountInfo.roleid,
+								companyid:accountInfo.userid,
+								userid:accountInfo.id,
+								batch : vm.batchNumber,
+								report : vm.reportImage
+							}
+							var res = mui.http_post(API.ADD_REPORT,params);
+							if(res.code == 200){
+								mui.confirm('上传成功,是否继续上传?','提示',['取消','确认'],function (e) {
+									if(e.index == 1){
+										vm.drug = {};
+										vm.batchNumber = '';
+										vm.reportImage = [];
+										
+									}else{
+										mui.trigger(document.getElementById('close-trade'),'tap')
+									}
+								},'div')
+							}else{
+								mui.alert(res.message);
+							}
+							
+						})
+						
+						
+					})
+				})
+				
+				//我的上传
+				document.getElementById('my-upload').addEventListener('tap',function(){
+					mui.openWindow({
+						url : 'my-report.html',
+						id : 'my-report.html',
+						show : {
+							autoShow : true,
+						}
+					})
+				})
+				
+				// 自定义获取药品
+				window.addEventListener('getDrug',function(e){
+					var drug = e.detail;
+					vm.drug = drug;
+				})
+				
+			})
+		}
+		
+		
+	</script>
+	
+	
+	
+	
+	
+	
+</html>

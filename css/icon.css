@@ -1,0 +1,55 @@
+@font-face {font-family: "iconfont";
+	src:url('../fonts/icon.ttf?t=155857asdfasdfa') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.icon-tianjia1:before {
+  content: "\e620";
+  color: red;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.icon-shanchu1:before{
+  content: "\e653";
+  color: red;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.icon-shanchu2:before{
+  content: "\e653";
+  color: red;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.icon-tianjia-:before {
+  content: "\e652";
+  color: #000000;
+  font-size: 4rem;
+}
+.icon-upload:before {
+  content: "\e600";
+  font-size: 1.4rem;
+}
+.icon-report-edit:before {
+  content: "\e608";
+  font-size: 1.4rem;
+}
+.icon-report-del:before {
+  content: "\e678";
+  font-size: 1.4rem;
+}
+.icon-short-release:before {
+  content: "\e621";
+  font-size: 1.4rem;
+}
+

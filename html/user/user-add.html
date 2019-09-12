@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>添加好友</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/iconfont.css','../../css/common.css','../../css/animate.css','../../css/user/user-add.css'],true);
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加朋友</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			
+			<div class="search-left">
+				<form action="" method="">
+				<input type="search" id="search" v-model="searchValue"  name="name" placeholder="企业名/医疗机构名/手机号" /></form><button class="mui-icon iconfont icon-sousuo" id="searchBtn"></button>
+			</div>
+			
+			<div class="search-notice">
+				可搜索需要进行业务交流或来往的企业或医疗机构，搜索时尽量输入完整名称。
+			</div>
+			
+				
+			<template v-for="(item,index) in result">
+				<div class="msg-item" >
+					<div class="avatar-box">   
+						<img v-bind:src="item.avatar" onerror="this.src='../../images/logo.png'" />
+					</div>
+					
+					<div class="msg-content"> 
+						<div class="msg-name">
+							<div class="name-left">{{item.name}}</div>
+							<div class="name-right">【{{item.role_name}}】</div>
+						</div> 
+						<div class="msg-record">{{item.comp_name}} </div>  
+					</div>
+					<div  class="delete" v-bind:data-index="index">
+						添加
+					</div>
+				</div>
+			</template>
+			
+			<template v-if="checkShow">
+			<div class='mask'>
+			<div class='drug-detail-box animated zoomIn'>
+				<div class='detail-box-top'>
+					<div class='text-detail'>朋友验证</div>
+					<div class='iconfont icon-guanbi close' id="close"></div>
+				</div>
+				
+				<div class="item-input-wrap">
+				  <textarea v-model="message" rows="4" placeholder="你需发送验证申请,等对方通过"></textarea>
+				</div>
+				
+				<div class="reason-btn">
+					<button type="button" id="submit" class="mui-btn mui-btn-success">发送</button>
+				</div>
+				
+			</div>
+			</div>
+			</template>
+				
+			
+			<!-- 返回顶部 -->
+			<div id="backtop" v-if="scrollY" class="iconfont icon-fanhuidingbu">
+			</div>
+			
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<script>
+			mui.init();
+			
+			var searchUser = function(){
+				if(!vm.searchValue){
+					mui.toast('输入字段不能为空');
+					return;
+				}
+				
+				plus.nativeUI.showWaiting();
+				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				var res = mui.http_post(API.SEARCH_USER,{accountInfo:accountInfo,value:vm.searchValue});
+				plus.nativeUI.closeWaiting();
+				if(res.code == 200){
+					vm.result = res.data;
+					
+				}else{
+					mui.alert(res.message,'提示','确认',function (e) {},'div');
+					
+				}
+				
+			} 
+			
+			var vm = new Vue({
+				el : '#app',
+				data : {
+					scrollY:false,
+					searchValue : '',
+					result :[],
+					checkShow : false,
+					message : '',
+					current : '',
+					
+				}
+			})
+			
+			mui.plusReady(function () {
+				//点击搜索好友
+				document.getElementById('searchBtn').addEventListener('tap',function(){
+					
+					searchUser();
+				})
+				
+				// 通用名或生产企业首字母搜索,通过键盘确认键来搜索
+				var input = document.getElementsByTagName('input')[0];
+				input.addEventListener('keypress',function(e){
+					if(e.keyCode == "13"){
+						console.log(e.keyCode);
+						this.blur();
+						searchUser()
+						e.preventDefault(); //阻止表单默认提交
+					}
+				});
+				
+				// 滚动监听
+				document.addEventListener('scroll',function(){
+					if(mui.getScrollTop() > 80){
+						vm.scrollY = true;
+						vm.$nextTick(function(){
+							// 返回置顶
+							document.getElementById('backtop').addEventListener('tap',function(){
+								window.scrollTo(0,0);
+							})
+						})
+						
+					}else{
+						vm.scrollY = false;
+						
+					}
+				});
+				
+				// 点击添加好友
+				mui('#app').on('tap','.delete',function(e){
+					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+					var index = this.dataset.index;
+					var current = vm.result[index];
+					
+					// 判断是否添加或已申请过
+					plus.nativeUI.showWaiting();
+					var res = mui.http_post(API.CHECK_RELATION_TYPE,{myuid:accountInfo.id,touid:current.id});
+					plus.nativeUI.closeWaiting();
+					
+					if(res.code == 201){
+						mui.alert(res.message,'提示','确认',function(){},'div');
+						return; 
+					}
+					
+					vm.checkShow = true;
+					vm.message = '我是 '+accountInfo.username;
+					vm.$nextTick(function(){
+						
+						// 监听关闭
+						document.getElementById('close').addEventListener('tap',function(){
+							vm.checkShow = false;
+						});
+						
+						// 监听发送
+						document.getElementById('submit').addEventListener('tap',function(){
+							if(!vm.message){
+								mui.alert('验证消息不能为空','提示','确认',function(e){},'div');
+								return;
+							}
+							
+							// 发送添加好友
+							var data = mui.http_post(API.USER_ADD_REQUEST,{msg:vm.message,myuid:accountInfo.id,touid:current.id});
+							
+							if(data.code == 200){
+								mui.toast(data.message);
+								setTimeout(function(){
+									vm.checkShow = false;
+									vm.message = '';
+								},500)
+							}else{
+								mui.alert(data.message,'提示','确认',function(){
+									vm.checkShow = false;
+								},'div');
+								
+							}
+						})
+						
+						
+						
+					})
+				})
+				
+				
+				// 监听删除左滑动,右滑动
+				mui('#app').on('swipeleft','.msg-item',function(e){
+					var that = this;
+					this.style.transform = "translateX(-6.5rem)";
+					
+					mui('.msg-item').each(function(){
+						if(that != this){
+							this.style.transform = "translateX(0rem)";
+						}
+						
+					});
+				})
+				
+				mui('#app').on('swiperight','.msg-item',function(e){
+					this.style.transform = "translateX(0rem)";
+				})
+				
+			})
+			
+			
+			
+			
+		</script>
+	</body>
+</html>

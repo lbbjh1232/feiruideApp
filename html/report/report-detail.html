@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>挂网药品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css',,'../../css/common.css','../../css/iconfont.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/drug/ticket-detail.css'],true);
+		</script>
+
+		
+	</head>
+
+	<body >
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">查看药检报告</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1">
+				药检报告
+			</a>
+					<a class="mui-control-item" href="#item2">
+				药品详情
+			</a>
+			
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+				<div class="mui-slider-group">
+					<div id="item1" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll" v-cloak>
+								
+								<!-- <div class="ticket-title">药检报告</div> -->
+								<div class="ticket-img-box">
+									
+									<template v-for="item in current.picture_paths">
+										<div class="image-item" v-if="item.key == 1" >
+											<img :src="item.url" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" data-preview-src="" data-preview-group="1">
+										</div>
+										
+										<div v-else class="image-item pdf-btn" :data-url="item.url">
+											<img src="../../images/pdf.png">
+										</div>
+										
+									</template>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="item2" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll" v-cloak>
+								<div class=''><span class='drug-list-title'>药品通用名:</span> <span class='drug-list-name'>{{current.generic_name}}</span></div>
+								<div class=''><span class='drug-list-title'>规格:</span> <span class='drug-list-name'>{{current.specifications}}</span></div>
+								<div class=''><span class='drug-list-title'>药品生产企业:</span> <span class='drug-list-name'>{{current.production_enterprise}}</span></div>
+								<div class=''><span class='drug-list-title'>药品批号:</span> <span class='drug-list-name'>{{current.batch_number}}</span></div>
+								<div class=''><span class='drug-list-title'>批准文号:</span> <span class='drug-list-name'>{{current.approved_by}}</span></div>
+								<div class=''><span class='drug-list-title'>创建日期:</span> <span class='drug-list-name'>{{current.created}}</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			
+		</div>
+		
+		
+	</body>
+	
+	<script src="../../js/mui.js"></script>
+	<script src="../../js/lib/mui.zoom.js"></script>
+	<script src="../../js/lib/mui.previewimage.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script> 
+	<script src="../../js/app.js"></script> 
+		
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				current:{},
+				sign : false,
+				imageNotice:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'
+				
+			}
+				
+		}); 
+		
+		mui.init();
+
+		window.onload = function(){
+			mui.plusReady(function () {
+				
+				mui('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});
+				
+				// 网络错误监听
+				mui.networkError();
+				var self = plus.webview.currentWebview();
+				vm.current = self.value;
+				
+				
+				// 预览图片
+				mui.previewImage();
+				
+				// 查看pdf文件
+				mui('#scroll1').on('tap','.pdf-btn',function(){
+					var urls = this.dataset.url;
+					mui.openWindow({
+						url:'../pdf-view.html',
+						id: '../pdf-view.html',
+						extras:{
+							name:urls
+						},
+						show:{
+							autoShow:true,
+						}
+						
+					})
+					
+				})
+						
+				
+
+			})
+		}
+		
+		
+</script>
+	
+	
+	
+	
+	
+	
+</html>

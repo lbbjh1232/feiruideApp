@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../css/mui.min.css',,'../css/common.css','../css/iconfont.css','../css/my.css'],true);
+		</script>
+
+	</head>
+ 
+	<body> 
+		<div class="mui-content" id="app">
+			<!-- 个人信息展示 --> 
+			
+			<div class="userinfo-box" v-cloak>
+				<div class="userinfo-left">
+					<img id="avatar" v-bind:src="accountInfo ? accountInfo.avatar : '../images/60x60.gif'" onerror="this.src='../images/logo.png'">
+				</div>
+				<div class="userinfo-right">
+					<div class="username">
+						{{accountInfo.username}}
+					</div>
+					<div class="companyname">
+						{{accountInfo ? accountInfo.comp_name+' 【'+accountInfo.rolename+'】':"未登录"}}
+					</div>
+				</div>
+			</div> 
+			
+			<!-- 操作菜单 -->
+			<ul class="mui-table-view">
+				<template v-if="!accountInfo">
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="toLogin" class="mui-navigate-right">
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont icon-dengluyonghu icon-left"></div>
+								<div class="operate-text"> 登录</div>
+							</div>
+						</a>
+					</li>
+					
+					<!-- <li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="toReg"  class="mui-navigate-right">
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont icon-zhuce icon-left"></div>
+								<div class="operate-text"> 注册</div>
+							</div>
+						</a>
+					</li> -->
+				</template>
+				
+				<template v-else>
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)"  id="quit" class="mui-navigate-right">
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont icon-tuichu icon-left"></div>
+								<div class="operate-text"> 退出</div>
+							</div>
+						</a>
+					</li>
+				</template>
+				
+				<template v-if=" accountInfo.roleid != 1 ">
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="custmer" class="mui-navigate-right" >
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont icon-kefu-tianchong icon-left"></div>
+								<div class="operate-text"> 联系客服</div>
+							</div>
+						</a>
+					</li>
+				</template>
+				
+			</ul>
+			
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/vue.js"></script>
+	<script src="../js/api.js"></script>
+	<script src="../js/app.js"></script>
+	<script src="../js/my/my.js"></script>
+	
+</html>

@@ -1,0 +1,40 @@
+/* pages/druginto/druginto.wxss */
+.intoType-box{
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-content: center;
+    height: calc(100vh - 44px);
+}
+.into-title{
+    text-align: center;
+    font-size: 1.5rem;
+    color: rgba(0,0,0,.5);
+}
+.choose-title{
+    font-size: 1.2rem;
+}
+.into-options{
+    width: 80%;
+    margin: 1rem auto;
+}
+.into-options button{
+	width: 100%;
+	font-size:1.8rem;
+}
+.binding-explain{
+  margin-top:15px;
+  font-size: 1.2rem;
+  text-align: justify;
+  color:rgb(105, 105, 105);
+  padding:1rem 20px;
+  border-top:1px solid rgba(105,105,105,.2);
+}
+.into-edit{
+    margin-bottom:1rem;
+}
+.mui-btn-primary{
+	border: 1px solid #11c1f3;
+    background-color: #11c1f3;
+}

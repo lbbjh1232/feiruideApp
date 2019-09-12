@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<meta charset="utf-8">
+		<title>新的朋友</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/user/new-friend.css'],true); 
+		</script>  
+	</head>
+
+	<body>  
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新的朋友</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<!-- 只展示申请中、已过期的 --> 
+			<template v-for="(item,index) in result">
+				<div class="list-item"> 
+					<div class="img-box">
+						<img v-bind:src="item.avatar" onerror="this.src='../../images/logo.png'" >
+					</div>
+					<div class="content">
+						<div class="nickname">{{item.name}}</div>
+						<div class="msg">{{item.message}}</div>
+					</div>
+					   
+					<div v-if="item.type==0" v-bind:data-index="index" class="status blue">验证</div>
+					<div v-else-if="item.type==1" class="status">已添加</div>
+					<div v-else class="status">已过期</div>
+					
+					<div class="delete" v-bind:data-id="item.rid">删除</div>
+				</div> 
+			</template>
+			
+			 
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<script>
+			mui.init();
+			 
+			var vm = new Vue({
+				el : '#app',
+				data : {
+					result : [],
+					
+				}
+			})
+			
+			var getList = function(){
+				var res = mui.http_post(API.GET_NEW_FRIEND,{myid:myid});
+				if(res.code == 200){
+					vm.result = res.data;
+				}
+			}
+			    
+			 window.onload = function(){ 
+				   
+				mui.plusReady(function () {
+					
+					// 重定义mui.back
+					mui.back = function(){
+						var self = plus.webview.currentWebview();
+						mui.fire(self.opener(),'refresh');
+						self.close();
+					}
+					 
+					var myid = mui.getMyId();
+					getList();
+					
+					plus.nativeUI.closeWaiting();
+					mui.currentWebview.show();
+			
+					// 返回当前页自定事件刷新
+					window.addEventListener('refresh',function(){
+						getList();
+					});
+					
+					// 删除当前记录
+					mui('#app').on('tap','.delete',function(){
+						var rid = this.dataset.id;
+						var del = mui.http_post(API.NEW_RECORD_DEL,{rid:rid});
+						
+						if(del.code == 200){
+							//直接删除节点
+							document.getElementById('app').removeChild(this.parentNode);
+							
+						}else{
+							
+							mui.alert(del.message,'提示','确认',function (e) {},'div');  
+						} 
+					}); 
+					
+					// 跳转验证
+					mui('#app').on('tap','.blue',function(){
+						var index = this.dataset.index;
+						var current = vm.result[index];
+						mui.openWindow({
+							url:'user-info.html',
+							id :'user-info.html',
+							extras:{
+								info : JSON.stringify(current)
+							},
+						})
+						
+					})
+					 
+					// 左右滑动
+					mui('#app').on('swipeleft','.list-item',function(){
+						let that = this;
+						this.style.transform = 'translateX(-6.6rem)';
+						
+						mui('.list-item').each(function(){
+							if(this != that){
+								this.style.transform = 'translateX(0rem)';
+							}
+						});
+						
+					})
+					
+					mui('#app').on('swiperight','.list-item',function(){
+						this.style.transform = 'translateX(0rem)';
+					})
+					
+					
+					
+					
+				})
+			}
+		</script>
+	</body>
+</html>

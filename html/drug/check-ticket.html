@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>挂网药品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/animate.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/LCalendar.css','../../css/drug/net-drug.css','../../css/drug/check-ticket.css'],true);
+		</script>
+	</head>
+
+	<body >
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">票据查验</h1>
+		</header>
+		
+		<div id="app">
+		<!-- 顶部操作栏 -->	
+		<div class="search-box">
+			<div class="operation-btn reject"><button type="button" class="mui-btn mui-btn-danger">查验驳回</button></div>
+			<div class="operation-btn pass"><button type="button" class="mui-btn mui-btn-success">查验通过</button></div>
+			<div class="operation-btn cancle"><button type="button" class="mui-btn mui-btn-warning">查验取消</button></div>
+			<div class="operation-btn filter"><button type="button" class="mui-btn mui-btn-primary mui-btn-outlined iconfont icon-shaixuan1">筛选</button></div>
+		</div>
+		
+		<!-- 滚动组件区域 -->
+		<div class="mui-scroll-wrapper" id="scroll-one">
+	
+			<div class="mui-scroll" v-cloak>
+				
+				<template v-for="(item,index) in searchResult">
+					<div class="drug-list-box" v-bind:class="item.sign?'choosed':''" v-bind:data-index="index" v-cloak>
+						<div class='drug-list-left-part' >
+							<div class='text-clip'><span class='drug-list-title'>经营企业:</span> <span class='drug-list-name font-drug-color'>{{item.company_name}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{item.generic_name}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.production_enterprise}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>来源类型:</span> <span class='drug-list-name'><span class=''>{{item.from_type==1?'集团公司':'生产企业'}}</span></span></div>
+						
+							<div class='text-clip'><span class='drug-list-title'>查验状态:</span> <span class='drug-list-name'>{{item.state==1?'已查验':''}}<span class='red'>{{item.state==3?'查验驳回':''}} {{item.state==0?'未查验':''}}</span></span></div>
+							<div class='text-clip'><span class='drug-list-title'>开票日期:</span> <span class='drug-list-name'><span>{{item.invoice_date}}</span></span></div>
+						</div>
+						<div class='drug-list-right-part'>
+								
+							<button type="button" class="mui-btn mui-btn-success mui-btn-outlined">{{item.sign?"取消":"选中"}}</button>
+
+							<button type="button" v-bind:data-id="item.id"  class="mui-btn mui-btn-primary mui-btn-outlined checkTick">查验票据</button>
+							
+							<template v-if="item.state==3">
+								<button type="button" v-bind:data-index="index" class="mui-btn mui-btn-danger mui-btn-outlined checkRej">驳回理由</button>
+							</template>
+							
+						</div>
+					</div>
+				</template>
+				
+				<!-- 加载更多按钮 -->
+				<div class="loadMore">
+					<button v-if="loadMore" type="button" class="mui-btn mui-btn-blue">加载更多...</button>
+					<span v-else class="none-text">到底了，没有数据了...</span>
+				</div>
+
+			</div>
+		</div>
+		
+		<!-- 返回顶部 -->
+		<div id="backtop" v-if="scrollY" class="iconfont icon-fanhuidingbu">
+		</div>
+		
+		
+		<!-- 筛选表单栏 -->
+		<template v-if="filterShow">
+			<div class="mask" id="filter-close">
+				
+				<div class="input-box animated slideInRight" id="scroll-box-two">
+					<div id="close-btn" class="close-box"><span class="iconfont icon-guanbi"></span></div>
+					<div class="scroll-box" >
+						<div class="mui-scroll-wrapper" id="scroll-three">
+							<div class="mui-scroll">
+								
+									<div class="mui-input-row choose">
+										<label>经营企业</label>
+										<input type="text" class="mui-input-clear" v-model="jyCompanyCurrentTitle" placeholder="选择经营企业">			   <div class="mask-tap"  data-index="1"></div>
+									</div>
+									
+									<div class="mui-input-row">
+										<label>药品通用名</label>
+										<input type="text" class="mui-input-clear" v-model="drugCommonName" placeholder="请输入药品通用名">
+									</div>
+									<div class="mui-input-row">
+										<label>批号</label>
+										<input type="text" class="mui-input-clear" v-model="drugBatchNumber" placeholder="请输入批号">
+									</div>
+									<div class="mui-input-row choose">
+										<label>开票日期起</label>
+										<input type="text" id="startTime" class="mui-input-clear" v-model="startTime" readonly   placeholder="选择起始时间">
+										<!-- <div class="mask-tap"  data-index="2"></div> -->
+									</div>
+									
+									<div class="mui-input-row choose">
+										<label>开票日期止</label>
+										<input type="text" id="endTime" class="mui-input-clear" v-model="endTime" readonly   placeholder="选择截止时间">
+										<!-- <div class="mask-tap"  data-index="3"></div> -->
+									</div>
+									
+									
+									<div class="mui-input-row choose">
+										<label>来源类型</label>
+										<input type="text"  disabled class="mui-input-clear" v-model="fromTypeTitle" placeholder="选择来源类型">
+										<div class="mask-tap"  data-index="4"></div>
+									</div>
+									
+									<div class="mui-input-row choose">
+										<label>一票状态</label>
+										<input type="text"   disabled class="mui-input-clear" v-model="firstTicketCurrentTitle" placeholder="选择一票状态">
+										<div class="mask-tap"  data-index="5"></div>
+									</div>
+									
+									<div class="mui-input-row choose">
+										<label>查验状态</label>
+										<input type="text"  disabled class="mui-input-clear" v-model="outStatusCurrentTitle" placeholder="选择查验状态">
+										<div class="mask-tap"  data-index="6"></div>
+									</div>
+									
+									<div class="mui-input-row choose">
+										<label>出库类型</label>
+										<input type="text"  disabled class="mui-input-clear" v-model="outTypeCurrentTitle" placeholder="选择出库类型">
+										<div class="mask-tap"  data-index="7"></div>
+									</div>
+									
+									<div class="mui-input-row choose">
+										<label>排序字段</label>
+										<input type="text"   class="mui-input-clear" v-model="orderFieldCurrentTitle" disabled placeholder="选择排序字段">			  
+										<div class="mask-tap"  data-index="8"></div>
+										
+									</div>
+									
+									<div class="mui-input-row choose">
+										<label>排序方法</label>
+										<input type="text"  class="mui-input-clear" v-model="orderValueCurrentTitle" disabled placeholder="选择排序方法">			  
+										<div class="mask-tap"  data-index="9"></div>
+										
+									</div>
+									
+								 
+								 
+							</div>
+						</div>
+					</div>
+					<div class="filter-btn-box">
+						<div class="reset">重置</div>
+						<div class="sure">确定</div>
+					</div>
+				</div>
+				
+			</div>
+		</template>
+		
+		<!-- 驳回理由弹窗 -->
+		<template v-if="rejectShow">
+			<div class='mask'>
+			<div class='drug-detail-box'>
+				<div class='detail-box-top'>
+					<div class='text-detail'>驳回理由</div>
+					<div class='iconfont icon-guanbi close' id="close-btn2"></div>
+				</div>
+				<div class="mui-scroll-wrapper" id="scroll-two">
+					<div class="mui-scroll reason-content">
+						{{current.reason}}
+						
+					</div>
+				</div>
+			</div>
+			</div>
+		</template>
+		
+		<!-- 驳回理由填写 -->
+		<template v-if="reasonShow">
+			<div class='mask'>
+			<div class='drug-detail-box'>
+				<div class='detail-box-top'>
+					<div class='text-detail'>填写驳回原因</div>
+					<div class='iconfont icon-guanbi close' id="close-btn3"></div>
+				</div>
+				<div class="mui-scroll-wrapper" id="scroll-four">
+					<div class="mui-scroll">
+					
+						<div class="item-input-wrap">
+						  <textarea v-model="reason"  rows="4" placeholder="填写驳回原因"></textarea>
+						</div>
+						<div class="fast-radio">快速选择(单选)</div>
+						<ul class="mui-table-view mui-table-view-radio">
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">缺少或上传错误(一票票据)</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">缺少或上传错误(内部调拨票)</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">缺少或上传错误(检验报告)</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">票据不齐全,请及时补齐</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">票据信息与药品信息不符</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">缺少或上传错误(二票票据)</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">缺少或上传错误(物价证明)</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">图片不清晰,请重新上传</a></li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right">第一票非厂家提供,或缺少关系证明</a></li>
+						</ul>
+						<div class="reason-btn">
+							<button type="button" class="mui-btn mui-btn-success">提 交</button>
+							<button type="button" class="mui-btn mui-btn-danger">取 消</button>
+						</div>
+						
+						
+						
+						
+					</div>
+				</div>
+			</div>
+			</div>
+		</template>
+		
+		
+		</div> 
+	</body>
+	
+	<script src="../../js/mui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/lib/picker/mui.picker.min.js"></script>
+	<script src="../../js/lib/picker/mui.poppicker.js"></script>
+	<script src="../../js/lib/LCalendar.js"></script>
+	<script src="../../js/api.js"></script> 
+	<script src="../../js/app.js"></script> 
+		
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				loadMore:false,  //是否显示加载更多按钮
+				searchData:{
+					pageIndex:1
+				},
+				searchResult:[],	//搜索数据集
+				current:{},			//当前详情数据
+				scrollY:false,
+				searchValue:'',
+				filterShow:false,	//筛选框默认隐藏
+				
+				//本院经营企业选择
+				jyCompany:[],
+				jyCompanyCurrentValue:'0',
+				jyCompanyCurrentTitle:'',
+				drugBatchNumber:'', //批号
+				drugCommonName:'',	//药品通用名
+				//排序字段
+				  orderField: [{
+					  value: 0,
+					  text: '按开票时间'
+				  }, {
+					  value: 1,
+					  text: '按创建时间'
+				  }],
+				  orderFieldCurrentValue: '0',
+				  orderFieldCurrentTitle: '按开票时间',
+				  //排序方法
+				  orderValue: [{
+					  value: 0,
+					  text: '降序'
+				  }, {
+					  value: 1,
+					  text: '升序'
+				  }],
+				  orderValueCurrentValue: '0',
+				  orderValueCurrentTitle: '降序',
+
+				//来源类型
+				  fromType: [{
+					  value: 2,
+					  text: '全部'
+				  },{
+					value:0,
+					text:'生产企业'
+				},{
+					value: 1,
+					text: '集团企业'
+				}],
+				fromTypeCurrentValue:'2',
+				fromTypeTitle:'',
+				//一票上传情况
+				firstTicket: [{
+					value: 2,
+					text: '全部'
+				},{
+					value: 1,
+					text: '齐全'
+				},{
+					value: 0,
+					text: '不齐全'
+				}],
+				firstTicketCurrentValue: '2',
+				firstTicketCurrentTitle: '',
+				//选择查验状态
+				outStatus: [{
+					value: 2,
+					text: '全部'
+				},{
+					value: 0,
+					text: '未查验'
+				},{
+					value: 1,
+					text: '已查验'
+				}, {
+					value: 3,
+					text: '查验驳回'
+				}],
+				outStatusCurrentValue:'2',
+				outStatusCurrentTitle:'',
+				//选择出库类型
+				outType: [{
+					value: 0,
+					text: '全部'
+				},{
+					value: 1,
+					text: '普通出库'
+				}, {
+					value: 2,
+					text: '院内签批'
+				}],
+				outTypeCurrentValue: '',
+				outTypeCurrentTitle: '',
+				//起始时间
+				startTime:'',
+				//截止时间
+				endTime:'',
+				value:[],	//选中数据索引值
+				rejectShow:false,	//显示驳回理由弹窗
+				current:{},			//当前操作的对象
+				reasonShow:false,	//显示填写驳回理由弹窗
+				reason:'',
+				fastReason:'',
+				
+			}
+				
+		});
+		
+		mui.init();
+		
+		// 加载数据函数
+		function getNetDrug(first){
+			// 获取公司id
+			first = first == undefined || first == false ? false : true;
+
+			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			var searchData = vm.searchData;
+			searchData.hospitalID = accountInfo.userid;
+			
+			var url =API.GET_HOS_TICKET,params = searchData;
+			if(!first){
+				plus.nativeUI.showWaiting('加载中',{width:'20%'});
+			}
+			var res = mui.http_post(url,params);
+			plus.nativeUI.closeWaiting();
+			
+			if(first){
+				mui.currentWebview.show();
+			} 
+			vm.value = [];
+			
+			if(res.code == 200){
+				vm.searchResult = res.data;
+				if(res.message == 1){
+					vm.loadMore = false
+				}else{
+					vm.loadMore = true;
+				}
+			}
+		}
+			
+		window.onload = function(){
+			mui.plusReady(function () {
+				// 网络错误监听
+				mui.networkError();
+				
+				// 初始化滚动组件
+				var scorll_one = mui('#scroll-one').scroll({deceleration: 0.001});
+				
+				// 首次ajax获取数据后关闭等待窗口
+				getNetDrug(true);
+				
+				// 加载本院经营企业
+				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				var comp = mui.http_post(API.GET_HOS_COMAPNY,{hospitalID:accountInfo.userid});  
+				vm.jyCompany = comp.data;
+				
+				//加载更多
+				mui('.loadMore').on('tap','button',function(){
+					var params = vm.searchData;
+					params.pageIndex = ++params.pageIndex;
+					vm.searchData = params;
+					getNetDrug(false);
+				});
+				
+				
+				// 滚动监听
+				var scroll = document.getElementById('scroll-one'),y;
+				mui.pullDownRefresh(scroll,scorll_one,function(){
+					vm.searchData = {pageIndex:1},
+					getNetDrug();
+				})
+				
+				scroll.addEventListener('scroll',function(){
+					y=scorll_one.y;
+					if( y < -100 ){
+						vm.scrollY = true;
+						vm.$nextTick(function(){						
+							// 返回顶部
+							var tops = document.getElementById('backtop');
+							tops.addEventListener('tap',function(){
+								scorll_one.scrollTo(0,0,1000);
+							})
+							
+						})
+						
+					}else{
+						vm.scrollY = false;
+					}
+				})
+				
+				
+				// 筛选弹窗按钮
+				mui('.search-box').on('tap','.filter',function(){
+					mui.isLogin();
+					vm.filterShow = true;
+					
+					vm.$nextTick(function(){
+						var scorll_three = mui('#scroll-three').scroll({deceleration: 0.001});
+						var scroll_box = document.getElementById('scroll-box');
+						var mask = document.getElementsByClassName('mask')[0];
+						var close = document.getElementById('close-btn');
+						
+						// 关闭弹窗
+						mask.addEventListener('tap',function(e){
+							vm.drugCommonName = '';
+							vm.drugSpecifications = '';
+							vm.drugManufacturer = '';
+							vm.drugApprovalNumner = '';
+							vm.placeNumner = '';
+							
+							vm.filterShow = false;
+							vm.JyCurrentTitle = '';
+							vm.JyCurrentValue = 0;
+							vm.BuyCurrentTitle = '';
+							vm.BuyCurrentValue = 0;
+							vm.ChinaCurrentTitle = '';
+							vm.ChinaCurrentValue = 0;
+							vm.InsuranceCurrentTitle = '';
+							vm.InsuranceCurrentValue = 0;
+							vm.IsExpensiveCurrentTitle = '';
+							vm.IsExpensiveCurrentValue = 0;
+						})
+						close.addEventListener('tap',function(){
+							vm.drugNumber = '';
+							vm.drugCommonName = '';
+							vm.drugSpecifications = '';
+							vm.drugManufacturer = '';
+							vm.drugApprovalNumner = '';
+							vm.placeNumner = '';
+
+							vm.filterShow = false;
+							vm.JyCurrentTitle = '';
+							vm.JyCurrentValue = 0;
+							vm.BuyCurrentTitle = '';
+							vm.BuyCurrentValue = 0;
+							vm.ChinaCurrentTitle = '';
+							vm.ChinaCurrentValue = 0;
+							vm.InsuranceCurrentTitle = '';
+							vm.InsuranceCurrentValue = 0;
+							vm.IsExpensiveCurrentTitle = '';
+							vm.IsExpensiveCurrentValue = 0;
+						})
+						
+						//阻止冒泡
+						scroll_box.addEventListener('tap',function(event){
+							event = event || window.event;
+							event.stopPropagation();
+						});
+						
+						//开始时间初始化
+						var calendar = new LCalendar();
+						var start = calendar.init({
+							'trigger': '#startTime',//标签id
+							'type': 'date',//date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择
+							'minDate':'',//最小日期 注意：该值会覆盖标签内定义的日期范围
+							'maxDate':''//最大日期 注意：该值会覆盖标签内定义的日期范围
+						});
+						mui('.choose').on('tap','#startTime',function(){
+							// 获取截止时间
+							var max = vm.endTime;
+							start.show({maxDate : max , type : 'date' });
+						})
+						
+						//截止时间初始化
+						var calendarEnd = new LCalendar();
+						var end = calendarEnd.init({
+							'trigger': '#endTime',//标签id
+							'type': 'date',//date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择
+							'minDate':'',//最小日期 注意：该值会覆盖标签内定义的日期范围
+							'maxDate':''//最大日期 注意：该值会覆盖标签内定义的日期范围
+						})
+						
+						mui('.choose').on('tap','#endTime',function(){
+							// 获取截止时间
+							var min = vm.startTime;
+							end.show({minDate : min , type : 'date' });
+						})
+						
+						// 选择筛选条件
+						var picker = new mui.PopPicker(),setData,index; 
+						mui('.choose').on('tap','.mask-tap',function(){
+							index = this.dataset.index;
+							switch ( parseInt(index)){
+								case 1:
+									setData = vm.jyCompany;
+									break;
+								case 2:
+									
+									break;
+								case 3:
+									
+									
+									break;
+								case 4:
+									setData = vm.fromType;
+									break;
+								case 5:
+									setData = vm.firstTicket;
+									break;
+								case 6:
+									setData = vm.outStatus;
+									break;
+								case 7:
+									setData = vm.outType;
+									break;
+								case 8:
+									setData = vm.orderField;
+									break;
+								case 9:
+									setData = vm.orderValue;
+									break;
+								
+							}
+							picker.setData(setData);
+							picker.pickers[0].setSelectedIndex(0)
+							picker.show(function(item){
+								console.log(JSON.stringify(item))
+								value = item[0];
+								switch ( parseInt(index)){
+									case 1:
+										vm.jyCompanyCurrentTitle = value.text;
+										vm.jyCompanyCurrentValue = value.value;
+										break;
+									case 2:
+										
+										break;
+									case 3:
+										
+										break;
+									case 4:
+										vm.fromTypeTitle = value.text;
+										vm.fromTypeCurrentValue = value.value;
+										break;
+									case 5:
+										vm.firstTicketCurrentTitle = value.text;
+										vm.firstTicketCurrentValue = value.value;
+										break;
+									case 6:
+										vm.outStatusCurrentTitle = value.text;
+										vm.outStatusCurrentValue = value.value;
+										break;
+									case 7:
+										vm.outTypeCurrentTitle = value.text;
+										vm.outTypeCurrentValue = value.value;
+										break;
+									case 8:
+										vm.orderFieldCurrentTitle = value.text;
+										vm.orderFieldCurrentValue = value.value;
+										break;
+									case 9:
+										vm.orderValueCurrentTitle = value.text;
+										vm.orderValueCurrentValue = value.value;
+										break;
+									
+								}
+								
+							})
+						})
+						
+						// 确认筛选数据操作
+						mui('.filter-btn-box').on('tap','.sure',function(){
+							var searchData = {
+								pageIndex : 1,
+								drugName : vm.drugCommonName,
+								drugBatchNumber : vm.drugBatchNumber,
+								timeStart : vm.startTime,
+								timeEnd : vm.endTime,
+								fromTypeCurrentValue : vm.fromTypeCurrentValue,
+								firstTicketCurrentValue : vm.firstTicketCurrentValue,
+								outStatusCurrentValue : vm.outStatusCurrentValue,
+								outTypeCurrentValue : vm.outTypeCurrentValue,
+								jyCompanyCurrentValue : vm.jyCompanyCurrentValue,
+								orderValueCurrentValue : vm.orderValueCurrentValue,
+								orderFieldCurrentValue : vm.orderFieldCurrentValue,
+								key:1
+							}
+							vm.searchData = searchData;
+							getNetDrug(false);
+							vm.filterShow = false;
+							scorll_one.scrollTo(0,0,1000);
+							
+						})
+						
+						// 重置筛选数据操作
+						mui('.filter-btn-box').on('tap','.reset',function(){
+							vm.drugCommonName = '';
+							vm.drugBatchNumber= '', //批号
+							vm.startTime= '',   //开票起始时间
+							vm.endTime= '',      //开票终止时间
+							vm.fromTypeCurrentValue = 2,
+							vm.fromTypeTitle = '',
+							vm.firstTicketCurrentValue = 2,
+							vm.firstTicketCurrentTitle = '',
+							vm.outStatusCurrentValue = 2,
+							vm.outStatusCurrentTitle = '',
+							vm.outTypeCurrentValue = 0,
+							vm.outTypeCurrentTitle = '',
+							vm.jyCompanyCurrentValue = '0',
+							vm.jyCompanyCurrentTitle = '',
+							vm.orderFieldCurrentTitle ='按开票时间',
+							vm.orderFieldCurrentValue ='0',
+							vm.orderValueCurrentTitle ='降序',
+							vm.orderValueCurrentValue ='0'
+							
+						})
+						
+					})
+				})
+				
+				// 选中操作对象
+				mui('.mui-scroll').on('tap','.drug-list-box',function(e){
+					// 判断是否是子元素触发,是则,停止下面的流程
+					//console.log(e.target);
+					var id = this.dataset.index;
+					var results = vm.searchResult;
+					var val = vm.value;
+					var index = val.indexOf( id );
+					
+					if (index == -1){
+						val.push(id);
+						results[id].sign=true;
+						vm.searchResult = results;
+					}else{
+						val.splice(index,1)
+						results[id].sign=false;
+						vm.searchResult = results;
+					}
+					console.log(val);
+					vm.value = val;
+				
+				})
+				
+				// 查验票据
+				mui('.mui-scroll').on('tap','.checkTick',function(event){
+					var id = this.dataset.id;
+					console.log(id)
+					mui.openWindow({
+						url:'ticket-detail.html',
+						id:'ticket-detail.html',
+						extras:{
+							hid:id
+						},
+						show:{
+							autoShow:true,
+						}
+					})
+					event = event||window.event;
+					event.stopPropagation()
+					//return false;
+
+				})
+				
+				// 查看驳回理由
+				mui('.mui-scroll').on('tap','.checkRej',function(event){
+					var index = this.dataset.index;
+					var res = vm.searchResult;
+					vm.rejectShow = true;
+					vm.$nextTick(function(){
+						var scorll_two = mui('#scroll-two').scroll({deceleration: 0.001});
+						vm.current = res[index];
+						var scroll_two = document.getElementById('scroll-two');
+						var mask = document.getElementsByClassName('mask')[0];
+						var close = document.getElementById('close-btn2');
+						
+						// 关闭弹窗
+						mask.addEventListener('tap',function(e){
+							vm.rejectShow = false;
+						})
+						
+						close.addEventListener('tap',function(){
+							vm.rejectShow = false;
+
+						})
+						//阻止冒泡
+						scroll_two.addEventListener('tap',function(event){
+							event = event || window.event;
+							event.stopPropagation();
+						});
+						
+					})
+			
+					event = event||window.event;
+					event.stopPropagation()
+					return false;
+				})
+				
+				//查验驳回操作
+				mui('.search-box').on('tap','.reject',function(){
+					var index = vm.value,key,current,state;
+					//console.log(index)
+					if(index.length == 0){
+						mui.toast('至少选择一条记录!');
+						return;
+					}
+					if ( index.length >=2 ){
+						mui.toast('避免失误，请选择一条！');
+						return;
+					}
+					key = index[0];
+					current = vm.searchResult[key];
+					state = current.state;
+					if( state == 1 ){
+						mui.toast('已查验通过，无法驳回');
+						return ;
+					}
+					if (state == 3) {
+						mui.toast('已经驳回，不用重复驳回');
+						return;
+					}
+					vm.reasonShow = true;
+					vm.$nextTick(function(){
+						var scorll_four = mui('#scroll-four').scroll({deceleration: 0.001});
+						var list = document.querySelector('.mui-table-view.mui-table-view-radio');
+						list.addEventListener('selected',function(e){
+							//console.log("当前选中的为："+e.detail.el.innerText);
+							vm.fastReason = e.detail.el.innerText;
+						});
+						
+						// 监听关闭
+						document.getElementById('close-btn3').addEventListener('tap',function(){
+							vm.reasonShow = false;
+							vm.reason = '';
+							vm.fastReason = '';
+						})
+						mui('.reason-btn').on('tap','.mui-btn-danger',function(){
+							vm.reasonShow = false;
+							vm.reason = '';
+							vm.fastReason = '';
+						})
+						
+						// 监听驳回原因提交
+						mui('.reason-btn').on('tap','.mui-btn-success',function(){
+							var reason = vm.reason + ' ' + vm.fastReason;
+							if(reason == ''){
+								mui.toast('请填写或选择驳回原因!');
+								return;
+							}
+							var outID = [current.id];
+							var params = {
+								outID:outID,
+								reason:reason,
+								state:3
+							};
+							var res = mui.http_post(API.CHECK_TICKET,params);
+							if(res.code == 200){
+								mui.toast('驳回成功');
+								
+								setTimeout(function(){
+									mui.trigger(document.getElementById('close-btn3'),'tap')
+									//重载数据
+									getNetDrug(false);
+									
+								},500);
+								
+							}
+						})
+						
+					})
+					
+					
+					
+				})
+				
+				// 查验通过操作
+				mui('.search-box').on('tap','.pass',function(){
+					var index = vm.value,result = vm.searchResult,outID =new Array(),j,val;
+					if(index.length == 0){
+						mui.toast('至少选择一条记录!');
+						return;
+					}
+					for(var i = 0;i<index.length;i++){
+						j = index[i];
+						val = result[j];
+						outID.push(val.id)
+					}
+					
+					var params = {
+						outID:outID,
+						state:1
+					}
+					mui.confirm('确认查验通过吗?','提示',['取消','确认'],function(e){
+						
+						if(e.index == 1){
+							mui.showLoading('提交')
+							var res = mui.http_post(API.CHECK_TICKET,params);
+							mui.hideLoading();
+							
+							if(res.code == 200){
+								mui.toast('查验通过 '+ res.data.info + ' 条记录');
+								setTimeout(function(){
+									getNetDrug(false);
+								},500)
+							}
+						}
+						
+					},'div')
+				})
+				
+				// 查验取消操作
+				mui('.search-box').on('tap','.cancle',function(){
+					var index = vm.value,result = vm.searchResult,outID =new Array(),j,val,params;
+					if(index.length == 0){
+						mui.toast('至少选择一条记录!');
+						return;
+					}
+					
+					for(var i=0;i<index.length;i++){
+						j = index[i];
+						val = result[j];
+						if(val.state == 0){
+							mui.toast('" ' + val.generic_name + ' "还未查验');
+							return;
+						}
+						if(val.state == 3){
+							mui.toast('" ' + val.generic_name + ' "已被驳回');
+							return;
+						}
+						outID.push(val.id);
+					}
+					
+					params = {
+						outID:outID,
+						state:0
+					}
+					mui.confirm('确认取消查验吗?','提示',['取消','确认'],function(e){
+						
+						if(e.index == 1){
+							mui.showLoading('提交')
+							var res = mui.http_post(API.CHECK_TICKET,params);
+							mui.hideLoading();
+							
+							if(res.code == 200){
+								mui.toast('取消通过 '+ res.data.info + ' 条记录');
+								setTimeout(function(){
+									getNetDrug(false);
+								},500)
+							}
+						}
+						
+					},'div')
+					
+				})
+				
+				
+				
+			})
+		}
+		
+		
+	</script>
+	
+	
+	
+	
+	
+	
+</html>

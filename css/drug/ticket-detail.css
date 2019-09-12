@@ -1,0 +1,23 @@
+.mui-bar-nav~.mui-content{
+	padding-top: 44px;
+}
+.mui-scroll-wrapper{
+	top: 0;
+	height: 100%;
+}
+.mui-control-content {
+	background-color: white;
+	min-height: calc(100vh - 90px);
+}
+.mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar{
+	background-color: #33cd5f;
+}
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active{
+	color:#33cd5f ;
+}
+.mui-segmented-control{
+	font-size: 1.5rem;
+}
+.mui-segmented-control .mui-control-item{
+	line-height: 3.5rem;
+}

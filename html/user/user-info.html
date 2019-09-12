@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<meta charset="utf-8">
+		<title>新的朋友</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/user/user-info.css'],true); 
+		</script>   
+	</head>
+
+	<body>   
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+		</header>
+		
+		<div class="mui-content" id="app" v-cloak>
+			<div class="info-up-box">
+				<div class="detail-box">
+					<div class="img-box"><img v-bind:src="info.avatar" onerror="this.src='../../images/logo.png'" ></div>
+					<div class="detail-info">
+						<div class="name">{{info.name}}</div>
+						<div class="company">系统账号 : {{info.account}}</div>
+						<div class="company">单位 : {{info.roleid == 1 ? '系统平台':info.comp_name}}</div>
+						<div class="company">角色 : 【{{info.roleid == 1 ? '系统客服':info.role_name}}】</div>
+					</div>
+				</div>
+				<div class="message-box">
+					【验证消息】: &nbsp; {{info.message}} 
+				</div>
+			</div>
+			<div class="divided"></div>
+
+			<div v-bind:data-id="info.rid" class="check-user" id="check-user">
+				通过验证
+			</div>
+			
+			 
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<script>
+			mui.init();
+			 
+			var vm = new Vue({
+				el : '#app',
+				data : {
+					info :{}
+					
+				}
+			})
+			   
+			 window.onload = function(){
+				
+				mui.plusReady(function () {
+					mui.back = function(){
+						var self = plus.webview.currentWebview();
+						mui.fire(self.opener(),'refresh');
+						self.close();
+					}
+					
+					var info = JSON.parse(mui.currentWebview.info);
+					vm.info = info;
+					
+					// 验证通过
+					document.getElementById('check-user').addEventListener('tap',function(){
+						var rid = this.dataset.id;
+						mui.confirm('确认通过验证?','提示',['确认','取消'],function(e){
+							if(e.index == 0){
+								plus.nativeUI.showWaiting();
+								var res = mui.http_post(API.CHECK_USER,{rid:rid});
+								plus.nativeUI.closeWaiting(); 
+
+								if(res.code == 200){ 
+									mui.back();
+								}else{
+									mui.alert(res.message,'提示','确认',function (e) {
+									   e.index
+									},'div');  
+								}
+							}
+						})
+						
+					});
+					
+				})
+			}
+		</script>
+	</body>
+</html>

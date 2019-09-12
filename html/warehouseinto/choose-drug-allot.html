@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>选择生产企业</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/iconfont.css','../../css/common.css','../../css/drug/net-drug.css','../../css/warehouse/choose-producer.css'],true);
+		</script>  
+	</head>
+
+	<body> 
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">选择调拨药品</h1>
+		</header>
+		
+		<div id="app">
+			<!-- 顶部搜索栏 -->
+			<div class="search-box">
+				<div class="search-left">
+					<form action="" method="">
+					<input type="search" id="search" v-model="searchValue" name="name" placeholder="搜索药品名或首字母" /></form><button class="mui-icon iconfont icon-sousuo" id="searchBtn"></button>
+				</div>
+				<div class="search-right" >
+					<span class="filter">刷新</span><!-- <span class="mui-icon iconfont icon-shaixuan"></span> -->
+				</div>
+			</div>
+			
+			<div class="mui-scroll-wrapper" id="scroll-one" style="background:#efeff4 ;">
+				<div class="mui-scroll" v-cloak>
+					
+					<!-- 数据列表 -->
+					<template v-for="(item,index) in searchResult">
+						<div class="drug-list-box" :data-index="index">
+							<div class='drug-list-left-part' style="width: 80%;" >
+				
+								<div class='text-clip'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{item.generic_name}}</span></div>
+								<div class='text-clip'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>&nbsp;{{item.specifications}} * {{item.conversion_ratio}}</span></div>
+								<div class='text-clip'><span class='drug-list-title standard'>批号:</span> <span class='drug-list-name'>&nbsp;{{item.into_number}}</span></div>
+								<div class='text-clip'><span class='drug-list-title'>入库数量:</span> <span class='drug-list-name'>{{item.into_count}}</span></div>
+								<div class='text-clip'><span class='drug-list-title'>入库日期:</span> <span class='drug-list-name'>{{item.into_time}}</span></div>
+								
+							</div>
+							
+							<div class='drug-list-right-part' style="width: 20%;">
+									
+								<button type="button" class="mui-btn mui-btn-success mui-btn-outlined">选中</button>
+					
+							</div>
+							
+						</div>
+					</template>
+					
+					
+					<!-- 数据提示 -->
+					<div class="loadMore" v-if="searchResult.length == 0 ">
+						<span  class="none-text">暂无匹配的药品记录</span>
+					</div>
+					
+					<!-- 上一页、下一页 -->
+					<div class="mui-row pre-next-box">
+						<div class="mui-col-sm-6"><button type="button" id="pre" :disabled="searchData.pageIndex == 1 ?true:false" class="mui-btn mui-btn-primary blue-btn">上一页</button></div>
+						<div class="mui-col-sm-6"><button type="button" id="next" :disabled="searchResult.length < 30 ? true:false" class="mui-btn mui-btn-primary blue-btn">下一页</button></div>
+					</div>
+					
+				</div>
+			</div>
+			
+		
+		</div>
+		
+		
+		
+		
+		
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el : '#app',
+				data : {
+					searchValue : '',
+					searchData :{
+						pageIndex : 1,
+						companyId: '',	//公司id
+					},
+					searchResult : [],
+					target : 'group-allot.html'
+					
+				}
+			});
+			
+			mui.init();
+			
+			function downLoad(first){
+				first = first == undefined || first == false ? false : true;
+				
+				var url =API.GET_GROUP_DRUG,params = vm.searchData;
+				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				params.companyId = accountInfo.userid;
+				
+				if(!first){
+					plus.nativeUI.showWaiting('加载中',{width:'20%'});
+				}
+				var res = mui.http_post(url,params);
+				plus.nativeUI.closeWaiting();
+				
+				if(first){
+					mui.currentWebview.show();
+				}  
+				
+				if(res.code == 200){ 
+					vm.searchResult = res.data;
+				}
+			}
+			
+			window.onload = function(){
+				mui.plusReady(function(){
+					
+					var back = function(params){
+						params = params || {};
+						var old_back = mui.back;
+						var target = plus.webview.getWebviewById(vm.target)
+						mui.fire(target,'getDrug',params)
+						old_back();
+						return false;
+					}
+					// 初始化数据
+					downLoad(true)
+					
+					// 失去焦点监听
+					var input = document.getElementsByTagName('input')[0];
+					mui.inputBlur(input);
+					
+					var scorll_one = mui('#scroll-one').scroll({deceleration: 0.001});
+					
+					// 上一页
+					document.getElementById('pre').addEventListener('tap',function(){
+						vm.searchData.pageIndex  -= 1;
+						downLoad(false)
+						scorll_one.scrollTo(0,0,1000);
+						mui.toast('第 '+vm.searchData.pageIndex+' 页')
+					})
+					
+					// 下一页
+					document.getElementById('next').addEventListener('tap',function(){
+						vm.searchData.pageIndex  += 1;
+						downLoad(false)
+						scorll_one.scrollTo(0,0,1000);
+						mui.toast('第 '+vm.searchData.pageIndex+' 页')
+					})
+					
+					// 通用名或生产企业首字母搜索,通过键盘确认键来搜索
+					input.addEventListener('keypress',function(e){
+						if(e.keyCode == "13"){
+							this.blur();
+							vm.searchData = {pageIndex:1,value : vm.searchValue,agentType:2},
+							downLoad(false)
+							scorll_one.scrollTo(0,0,1000);
+							e.preventDefault(); //阻止表单默认提交
+						}
+					});
+					
+					// 确认按钮搜索
+					document.getElementById('searchBtn').addEventListener('tap',function(){
+						vm.searchData = {pageIndex:1,value : vm.searchValue,agentType:2},
+						downLoad(false)
+						scorll_one.scrollTo(0,0,1000);
+					});
+					
+					//刷新
+					mui('.search-right').on('tap','.filter',function(){
+						vm.searchData = {pageIndex:1},
+						downLoad(false)
+						scorll_one.scrollTo(0,0,1000);
+						vm.searchValue = '';
+					})
+					
+					
+					// 选中药品
+					mui('#scroll-one').on('tap','.drug-list-box',function(){
+						var index = this.dataset.index;
+						var val = vm.searchResult[index];
+						back(val)
+						
+					})
+					
+					
+					
+				})
+			}
+			
+			
+			
+		</script>
+		
+		
+		
+	</body>
+</html>

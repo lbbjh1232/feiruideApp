@@ -345,12 +345,13 @@
 					var val = vm.searchResult[index];
 					var closetime = val.close_time;
 					if(new Date(closetime).getTime() < new Date().getTime()){
-						mui.alert('该短缺药品已过期','提示',function(e){});
+						mui.alert('该短缺药品已过期','提示',function(e){},'div');
 						return;
 					}
 					
 					// 查询是否已提供
 					var res = mui.http_get(API.IS_PRPVIDE,{roleId : accountInfo.roleid,companyId : accountInfo.userid, sid : val.id});
+					
 					if(res.code == 200){
 						mui.openWindow({
 							id : 'provide.html',
@@ -360,7 +361,7 @@
 							}
 						})
 					}else{
-						mui.alert(res.message,'提示',function(){});
+						mui.alert(res.message,'提示',function(){},'div');
 					}
 					var event = event||window.event;
 					event.stopPropagation()
@@ -376,7 +377,8 @@
 						url:'feed-back.html',
 						id:'feed-back.html',
 						extras:{
-							value : value
+							value : value,
+							sign : 1,
 						},
 						show:{
 							autoShow:true,

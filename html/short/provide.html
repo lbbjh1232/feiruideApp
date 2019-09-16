@@ -28,6 +28,10 @@
 			.item-input-wrap textarea{
 				font-size: 1.2rem;
 			}
+			.divided-line{
+				width: 100%;
+				border:1px solid rgba(0,0,0,.1);
+			}
 		</style>
 	</head>
 
@@ -65,7 +69,7 @@
 				
 				<div class="mui-input-row input-disabled">
 					<label>挂网限价</label>
-					<input type="text"  class="mui-input-clear" v-model="netPrice" disabled placeholder="挂网限价">
+					<input type="text"  class="mui-input-clear" v-model="netPrice" disabled :placeholder="!netPrice ? '未限价' : '挂网限价'">
 				</div>
 				
 				<div class="mui-input-row input-disabled">
@@ -73,9 +77,26 @@
 					<input type="number" v-model="count"  class="mui-input-clear" disabled  placeholder="需求数量">
 				</div>
 				
+				<!-- 提供信息 -->
+				<div class="divided-line"></div>
+				
+				<div class="mui-input-row ">
+					<label>药品售价</label>
+					<input type="number"  class="mui-input-clear" v-model="proPrice" placeholder="药品售价">
+				</div>
+				
+				<div class="mui-input-row ">
+					<label>可供数量</label>
+					<input type="number" v-model="proCount"  class="mui-input-clear" placeholder="可供数量">
+				</div>
+				
+				<div class="mui-input-row ">
+					<label>联系电话</label>
+					<input type="number" v-model="proPhone"  class="mui-input-clear" placeholder="限手机号码">
+				</div>
 				
 				<div class="item-input-wrap">
-					<textarea v-model="mark" rows="4" placeholder="备注:"></textarea>
+					<textarea v-model="mark" rows="4" placeholder="备注 (选填)"></textarea>
 				</div>
 			</div>
 			
@@ -110,14 +131,21 @@
 							count : '',
 							phone : '',
 							mark : '',
-							shortId : ''
+							shortId : '',
+							shortName : '',
+							proPrice : '',
+							proCount : '',
+							proPhone : '',
+							toPhone : ''
 							
 						}
 						
 					});
 					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
 					var val = mui.currentWebview.val;
+					console.log(JSON.stringify(val))
 					vm.drugName = val.drug_name;
+					vm.shortName = val.drug_name;
 					vm.drugSpec = val.drug_spec;
 					vm.drugPackage = val.drug_pack;
 					vm.produce = val.supplier_name;
@@ -125,21 +153,27 @@
 					vm.appointDrugValue = val.is_appoint_drug;
 					vm.appointProValue = val.is_appoint_supplier;
 					vm.shortId = val.id;
-					vm.netPrice =val.net_price
+					vm.netPrice =val.net_price;
+					vm.toPhone = val.phone;
 					
-					// 选择药品
-					document.getElementById('chooseDrug').addEventListener('tap',function(){
-						mui.openWindow({
-							url : 'choose-short-drug.html',
-							id : 'choose-short-drug.html',
-							show : {
-								autoShow : false,
-							},
-							extras : {
-								sign : 'release.html'
-							}
+					vm.$nextTick(function(){
+						
+						// 选择药品
+						document.getElementById('chooseDrug').addEventListener('tap',function(){
+							mui.openWindow({
+								url : 'choose-short-drug.html',
+								id : 'choose-short-drug.html',
+								show : {
+									autoShow : false,
+								},
+								extras : {
+									sign : 'provide.html'
+								}
+							})
 						})
+						
 					})
+					
 				 
 					// 自定义获取药品 
 					window.addEventListener('getDrug',function(e){
@@ -160,29 +194,29 @@
 							mui.toast('规格不能为空');
 							return;
 						}
-						if(vm.appointDrugValue === ''){
-							mui.toast('未选择限定药品');
-							return;
-						}
 						
-						if(vm.appointProValue === ''){
-							mui.toast('未选择限定厂家');
+						if(!vm.produce){
+							mui.toast('生产厂家不能为空');
 							return;
 						}
 						if(!vm.count){
 							mui.toast('需求数量不能为空');
 							return;
 						}
-						if(!vm.endTime){
-							mui.toast('截止时间不能为空');
+						 if (!vm.proPrice) {
+							mui.toast('药品售价不能为空');
 							return;
 						}
-						if (!vm.phone) {
+						if (!vm.proCount) {
+							mui.toast('可供数量不能为空');
+							return;
+						}   
+						if (!vm.proPhone) {
 							mui.toast('联系电话不能为空');
 							return;
 						}
 						var reg = new RegExp(/^1\d{10}$/);
-						if (!reg.test(vm.phone)) {
+						if (!reg.test(vm.proPhone)) {
 							mui.toast("手机号格式错误");
 							return;
 						}
@@ -192,19 +226,22 @@
 							drugSpec: vm.drugSpec,
 							drugPack: vm.drugPackage,
 							drugSupplier: vm.produce,
-							drugNetPrice: vm.netPrice,
-							drugCount: vm.count,
-							drugPhone: vm.phone,
+							drugPrice: vm.proPrice,
+							drugCount: vm.proCount,
+							drugPhone: vm.proPhone,
 							drugMark: vm.mark,
-							closeTime : vm.endTime,
-							isLimitDrug : vm.appointDrugValue,
-							isLimitSup : vm.appointProValue,
-							userId: accountInfo.id,
-							companyId: accountInfo.userid,
+							userId : accountInfo.id,
+							companyId :accountInfo.userid,
+							roleId :accountInfo.roleid,
+							shortId : vm.shortId,
+							shortName : vm.shortName,
+							mobile : '13408033167'
+							
 						}
 						plus.nativeUI.showWaiting();
-						var res = mui.http_post(API.RE_SUBMIT,params);
+						var res = mui.http_post(API.PRO_SUBMIT,params);
 						plus.nativeUI.closeWaiting();
+						
 						if (res.code == 200) {
 							mui.toast(res.message);
 							var old_back = mui.back;

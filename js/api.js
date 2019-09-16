@@ -60,6 +60,7 @@ var API = {
 	RE_SUBMIT : '/drug/reSubmit',
 	CHECK_PROVIDE : '/drug/checkProvide',
 	IS_PRPVIDE : "/drug/isProvide",
+	PRO_SUBMIT : '/drug/proSubmit',
 	
 
 	//客服

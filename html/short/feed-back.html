@@ -37,6 +37,7 @@
 				flex-direction: row;
 				justify-content: center;
 				flex-wrap:wrap;
+				margin-top: 5px;
 			}
 			.feed-box .feed-title{
 				width: 50%;
@@ -97,10 +98,10 @@
 						
 						<div class='drug-list-right-part'>
 
-							<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined checkBack">确认采购</button>
+							<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined checkBack">确认采购</button>
 							
 							<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined">拨打电话</button>
-							<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined">配送信息</button>
+							<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined">配送信息</button>
 							
 							<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined">{{item.sign?'收起详情':'展开详情'}}</button>
 							
@@ -142,6 +143,7 @@
 				searchResult:[],	//搜索数据集
 				scrollY:false,
 				value : {},
+				sign : '',
 			},
 			methods:{
 				
@@ -193,7 +195,7 @@
 				
 				// var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 				vm.value = mui.currentWebview.value;
-				
+				vm.sign = mui.currentWebview.sign;
 				// 首次ajax获取数据后关闭等待窗口
 				getNetDrug(true);
 				

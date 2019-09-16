@@ -59,6 +59,7 @@ var API = {
 	PRO_NET_DRUG : '/drug/proNetDrug',
 	RE_SUBMIT : '/drug/reSubmit',
 	CHECK_PROVIDE : '/drug/checkProvide',
+	IS_PRPVIDE : "/drug/isProvide",
 	
 
 	//客服

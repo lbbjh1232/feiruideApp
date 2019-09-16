@@ -87,7 +87,7 @@
 							<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined checkBack">查看反馈</button>
 							
 							<template v-if="item.hospital_id == company_id && isHos ? false : true">
-								<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined">提供药品</button>
+								<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined provide">提供药品</button>
 								<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined dial">拨打电话</button>
 							</template>
 							
@@ -337,6 +337,34 @@
 					plus.device.dial(phone)
 					var event = event||window.event;
 					event.stopPropagation()
+				});
+				
+				// 提供药品
+				mui('.mui-scroll').on('tap','.provide',function(event){
+					var index = this.dataset.index;
+					var val = vm.searchResult[index];
+					var closetime = val.close_time;
+					if(new Date(closetime).getTime() < new Date().getTime()){
+						mui.alert('该短缺药品已过期','提示',function(e){});
+						return;
+					}
+					
+					// 查询是否已提供
+					var res = mui.http_get(API.IS_PRPVIDE,{roleId : accountInfo.roleid,companyId : accountInfo.userid, sid : val.id});
+					if(res.code == 200){
+						mui.openWindow({
+							id : 'provide.html',
+							url : 'provide.html',
+							extras : {
+								val : val
+							}
+						})
+					}else{
+						mui.alert(res.message,'提示',function(){});
+					}
+					var event = event||window.event;
+					event.stopPropagation()
+					
 				})
 				
 				// 查看反馈

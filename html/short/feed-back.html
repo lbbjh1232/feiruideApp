@@ -56,73 +56,91 @@
 		</header>
 		
 		<div id="app">
-			
-		<!-- 顶部操作栏 -->	
-		<div class="search-box">
-			<div class="feed-box" v-cloak>
-				<div class="feed-title text-clip"><span class="gray">发布医院:</span> {{value.name}}</div>
-				<div class="feed-title text-clip"><span class="gray">规格:</span> {{value.drug_spec}}</div>
-				<div class="feed-title text-clip"><span class="gray">药品名称:</span> {{value.drug_name}}</div>
-				<div class="feed-title text-clip"><span class="gray">生产企业:</span> {{value.supplier_name}}</div>
+			<!-- 顶部操作栏 -->	
+			<div class="search-box">
+				<div class="feed-box" v-cloak>
+					<div class="feed-title text-clip"><span class="gray">发布医院:</span> {{value.name}}</div>
+					<div class="feed-title text-clip"><span class="gray">规格:</span> {{value.drug_spec}}</div>
+					<div class="feed-title text-clip"><span class="gray">药品名称:</span> {{value.drug_name}}</div>
+					<div class="feed-title text-clip"><span class="gray">生产企业:</span> {{value.supplier_name}}</div>
+				</div>
 			</div>
-		</div>
 
-		<!-- 滚动组件区域 -->
-		<div class="mui-scroll-wrapper" id="scroll-one">
-	
-			<div class="mui-scroll" v-cloak>
-				
-				<template v-for="(item,index) in searchResult">
-					<div class="drug-list-box item" :data-index="index" v-cloak>
-						<div class='drug-list-left-part' >
-				
-							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>提供单位:</span> <span class='drug-list-name'>{{item.name}}</span></div>
-							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{item.drug_name}}</span></div>
-							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>&nbsp;{{item.drug_spec}}</span></div>
+			<!-- 滚动组件区域 -->
+			<div class="mui-scroll-wrapper" id="scroll-one">
+		
+				<div class="mui-scroll" v-cloak>
+					
+					<template v-for="(item,index) in searchResult">
+						<div class="drug-list-box item" :data-index="index" v-cloak>
+							<div class='drug-list-left-part' >
+					
+								<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>提供单位:</span> <span class='drug-list-name'>{{item.name}}</span></div>
+								<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{item.drug_name}}</span></div>
+								<div :class='!item.sign?"text-clip":""'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>&nbsp;{{item.drug_spec}}</span></div>
+								
+								<div v-if="item.sign" class=''><span class='drug-list-title standard'>包装:</span> <span class='drug-list-name'>{{item.drug_pack==null?'-':item.drug_pack}}</span></div>
+								
+								<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.supplier_name}}</span></div>
+								
+								
+								<div v-if="item.sign" class=''><span class='drug-list-title'>药品价格:</span> <span class='drug-list-name red'>{{item.price}}</span></div>
+								
+								<div v-if="item.sign"  class=''><span class='drug-list-title'>提供数量:</span> <span class='drug-list-name red'>{{item.count}}</span></div>
+								<div v-if="item.sign"  class=''><span class='drug-list-title'>提供时间:</span> <span class='drug-list-name'>{{item.create_time}}</span></div>
+								
+								<div  :class='!item.sign?"text-clip":""'><span class='drug-list-title'>采购状态:</span> <span class='drug-list-name' :class='item.state==0?" red":(item.state==2?" blue":" green")'>{{item.state==0?'未采购':(item.state==1?'已采购':'已配送')}}</span></div>
+								
+								<div v-if="item.sign" class=''><span class='drug-list-title standard'>备注:</span> <span class='drug-list-name'>&nbsp;{{item.content==''?'-':item.content}}</span></div>
+								
+							</div>
 							
-							<div v-if="item.sign" class=''><span class='drug-list-title standard'>包装:</span> <span class='drug-list-name'>{{item.drug_pack==null?'-':item.drug_pack}}</span></div>
-							
-							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.supplier_name}}</span></div>
-							
-							
-							<div v-if="item.sign" class=''><span class='drug-list-title'>药品价格:</span> <span class='drug-list-name red'>{{item.price}}</span></div>
-							
-							<div v-if="item.sign"  class=''><span class='drug-list-title'>提供数量:</span> <span class='drug-list-name red'>{{item.count}}</span></div>
-							<div v-if="item.sign"  class=''><span class='drug-list-title'>提供时间:</span> <span class='drug-list-name red'>{{item.create_time}}</span></div>
-							
-							<div  :class='!item.sign?"text-clip":""'><span class='drug-list-title'>采购状态:</span> <span class='drug-list-name' :class='item.state==0?" red":(item.state==2?" blue":" green")'>{{item.state==0?'未采购':(item.state==1?'已采购':'已配送')}}</span></div>
-							
-							<div v-if="item.sign" class=''><span class='drug-list-title standard'>备注:</span> <span class='drug-list-name'>&nbsp;{{item.content==''?'-':item.content}}</span></div>
-							
+							<div class='drug-list-right-part'>
+
+								<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined sureBy">确认采购</button>
+								
+								<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined dial">拨打电话</button>
+								<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined deliveryInfo">配送信息</button>
+								
+								<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined">{{item.sign?'收起详情':'展开详情'}}</button>
+								
+							</div>
 						</div>
-						
-						<div class='drug-list-right-part'>
+					</template>
+					
+					<!-- 加载更多按钮 -->
+					<div class="loadMore">
+						<button v-if="loadMore" type="button" class="mui-btn mui-btn-blue">加载更多...</button>
+						<span v-else class="none-text">到底了，没有数据了...</span>
+					</div>
 
-							<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined checkBack">确认采购</button>
-							
-							<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined">拨打电话</button>
-							<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined">配送信息</button>
-							
-							<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined">{{item.sign?'收起详情':'展开详情'}}</button>
-							
+				</div>
+			</div>
+			 
+			<!-- 返回顶部 -->
+			<div id="backtop" v-if="scrollY" class="iconfont icon-fanhuidingbu">
+			</div>
+			
+			<!-- 显示配送信息 -->
+			<template  v-if="detailShow">
+				<div class='mask'>
+					<div class='drug-detail-box'>
+						<div class='detail-box-top'>
+							<div class='text-detail'>配送信息</div>
+							<div class='iconfont icon-guanbi close'></div>
+						</div>
+						<div class="mui-scroll-wrapper" id="scroll-two">
+							<div class="mui-scroll" v-cloak>
+								{{current.delivery_info==null?'':current.delivery_info}}
+							</div>
 						</div>
 					</div>
-				</template>
-				
-				<!-- 加载更多按钮 -->
-				<div class="loadMore">
-					<button v-if="loadMore" type="button" class="mui-btn mui-btn-blue">加载更多...</button>
-					<span v-else class="none-text">到底了，没有数据了...</span>
 				</div>
-
-			</div>
+			</template>
+			
+			
 		</div>
-		 
-		<!-- 返回顶部 -->
-		<div id="backtop" v-if="scrollY" class="iconfont icon-fanhuidingbu">
-		</div>
-	
-		</div> 
+		
 	</body>
 	
 	<script src="../../js/mui.js"></script>
@@ -144,6 +162,9 @@
 				scrollY:false,
 				value : {},
 				sign : '',
+				detailShow : false,
+				current : {},
+				
 			},
 			methods:{
 				
@@ -184,7 +205,7 @@
 				}
 			}
 		}
-			
+
 		window.onload = function(){
 			mui.plusReady(function () {
 				// 网络错误监听
@@ -241,23 +262,65 @@
 					var value = vm.searchResult[index];
 					value.sign = !value.sign;
 					//vm.searchResult[index] = value;
+				});
+				
+				// 查看配送信息
+				mui('.mui-scroll').on('tap','.deliveryInfo',function(event){
+					vm.detailShow = true;
+					var index = this.dataset.index;
+					vm.current = JSON.parse(JSON.stringify(vm.searchResult[index])) ;
+					
+					vm.$nextTick(function(){
+						mui('#scroll-two').scroll({deceleration: 0.001});
+						
+						// 监听关闭
+						mui('.mask').on('tap','.close',function(){
+							vm.detailShow = false;
+							vm.current = {}
+						})
+					});
+					event = event||window.event;
+					event.stopPropagation();
 				})
 				
-				// 查看反馈
-				mui('.mui-scroll').on('tap','.checkBack',function(event){
+				// 拨打电话
+				mui('.mui-scroll').on('tap','.dial',function(event){
+					var index = this.dataset.index;
+					var phone = vm.searchResult[index].phone;
+					if(!phone){
+						mui.alert('电话号码为空');
+						return;
+					}
+					
+					plus.device.dial(phone);
+					event = event||window.event;
+					event.stopPropagation();
+				})
+				
+				// 确认采购
+				mui('.mui-scroll').on('tap','.sureBy',function(event){
 					var index = this.dataset.index;
 					var value = vm.searchResult[index]
-					
-					mui.openWindow({
-						url:'feed-back.html',
-						id:'feed-back.html',
-						extras:{
-							value : value
-						},
-						show:{
-							autoShow:true,
+					var params = {
+						pid : value.id,
+						phone : value.phone,
+						hos_name : vm.value.name,
+						drugname : vm.value.drug_name
+					}
+					mui.confirm('确认采购该短缺药品吗?','提示',['取消','确认'],function (e) {
+						if(e.index == 1 ){
+							var res = mui.http_post(API.SURE_BUY,params);
+							if(res.code == 200){
+								mui.toast(res.message);
+								getNetDrug(false);
+								
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {},'div')();
+							}
 						}
-					})
+					},'div')
+					
+					
 					event = event||window.event;
 					event.stopPropagation()
 

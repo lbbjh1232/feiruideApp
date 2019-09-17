@@ -9,7 +9,7 @@
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
 		<script type="text/javascript">
-			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/animate.css','../../css/drug/net-drug.css','../../css/drug/check-ticket.css'],true);
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/animate.css','../../css/drug/net-drug.css','../../css/drug/check-ticket.css'],true);
 		</script>
 		<style type="text/css">
 			#scroll-edit{
@@ -36,7 +36,7 @@
 	<body >
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">短缺药品</h1>
+			<h1 class="mui-title">我的发布</h1>
 		</header>
 		
 		<div id="app">
@@ -44,9 +44,9 @@
 		<!-- 顶部操作栏 -->	
 		<div class="search-box">
 			<template v-if="isHos">
-				<div class="operation-btn" id="release" ><button type="button" class="mui-btn mui-btn-success iconfont icon-short-release"> 发布</button></div>
-				<div class="operation-btn" id="my-release"><button type="button" class="mui-btn mui-btn-success">我的发布</button></div>
-				<div class="operation-btn" id="my-provide"><button type="button" class="mui-btn mui-btn-success">我的提供</button></div>
+				<div class="operation-btn" id="delete" ><button type="button" class="mui-btn mui-btn-danger iconfont icon-report-del"> 删除</button></div>
+				<div class="operation-btn" id="edit"><button type="button" class="mui-btn mui-btn-success iconfont icon-report-edit"> 修改</button></div>
+				<div class="operation-btn" id="release"><button type="button" class="mui-btn mui-btn-success iconfont icon-short-release"> 发布</button></div>
 			</template>
 			
 			<template v-else>
@@ -64,10 +64,9 @@
 			<div class="mui-scroll" v-cloak>
 				
 				<template v-for="(item,index) in searchResult">
-					<div class="drug-list-box item" :data-index="index" v-cloak>
+					<div class="drug-list-box item" :class="item.choose?' choosed':''" :data-index="index" v-cloak>
 						<div class='drug-list-left-part' >
 				
-							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>发布医院:</span> <span class='drug-list-name'>{{item.name}}</span></div>
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{item.drug_name}}</span></div>
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>&nbsp;{{item.drug_spec}}</span></div>
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.supplier_name}}</span></div>
@@ -75,6 +74,7 @@
 							<div v-if="item.sign" class=''><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'>{{item.net_price==null?'-':item.net_price}}</span></div>
 							<div v-if="item.sign" class=''><span class='drug-list-title'>限定药品:</span> <span class='drug-list-name'>{{item.is_appoint_drug==1?'是':'否'}}</span></div>
 							<div v-if="item.sign" class=''><span class='drug-list-title'>限定厂家:</span> <span class='drug-list-name'>{{item.is_appoint_supplier==1?'是':'否'}}</span></div>
+							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title standard'>状态:</span>  <span class="drug-list-name" :class='item.state==0?"red":(item.state==1?" blue":(item.state==3?" green":""))'>{{item.state==0?"已发布":(item.state==1?"已关闭":(item.state==3?"已反馈":"已过期"))}}</span></div>
 							
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>需求数量:</span> <span class='drug-list-name'>{{item.drug_count}}</span></div>
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>截止时间:</span> <span class='drug-list-name'><span>{{item.close_time}}</span></span></div>
@@ -84,11 +84,11 @@
 						
 						<div class='drug-list-right-part'>
 
+							<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined choose">{{item.choose?"取消":"选中"}}</button>
 							<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined checkBack">查看反馈</button>
 							
-							<template v-if="item.hospital_id == company_id && isHos ? false : true">
-								<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined provide">提供药品</button>
-								<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined dial">拨打电话</button>
+							<template v-if="item.state == 0 || item.state == 3">
+								<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined closeNeed">关闭需求</button>
 							</template>
 							
 							<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined">{{item.sign?'收起详情':'展开详情'}}</button>
@@ -119,15 +119,14 @@
 					<div class="scroll-box" >
 						<div class="mui-scroll-wrapper" id="scroll-three">
 							<div class="mui-scroll">
-								
 									<div class="mui-input-row">
-										<label>发布医院</label>
-										<input type="text" class="mui-input-clear" v-model="drugName" placeholder="发布医院">
+										<label>药品名称</label>
+										<input type="text" class="mui-input-clear" v-model="drugName" placeholder="药品名称">
 									</div>
 									
 									<div class="mui-input-row">
-										<label>药品名称</label>
-										<input type="text" class="mui-input-clear" v-model="drugBatchNumber" placeholder="药品名称">
+										<label>有效状态</label>
+										<input type="text" id="chooseState" class="mui-input-clear" v-model="myStateTitle" readonly placeholder="选择有效状态">
 									</div>
 								 
 							</div>
@@ -148,15 +147,17 @@
 	
 	<script src="../../js/mui.js"></script>
 	<script src="../../js/vue.js"></script>
+	<script src="../../js/lib/picker/mui.picker.min.js"></script>
+	<script src="../../js/lib/picker/mui.poppicker.js"></script>
 	<script src="../../js/api.js"></script> 
 	<script src="../../js/app.js"></script>
-	
 	
 	<script type="text/javascript">
 		
 		var vm = new Vue({
 			el:'#app',
 			data:{
+				value : '',
 				loadMore:false,  //是否显示加载更多按钮
 				searchData:{
 					pageIndex:1,
@@ -165,11 +166,27 @@
 				scrollY:false,
 				searchValue:'',
 				filterShow:false,			//筛选框默认隐藏
-				drugName: '',    			//发布医院
-				drugBatchNumber: '', 		//药品名称
+				drugName: '', 		//药品名称
 				isHos : true,
 				company_id : '',			//医院或企业id
-				
+				myState: [{
+						value: 5,
+						text: '全部'
+					}, {
+						value: 0,
+						text: '已发布'
+					}, {
+						value: 1,
+						text: '已解决'
+					}, {
+						value: 2,
+						text: '已过期'
+					}, {
+						value: 3,
+						text: '已反馈'
+					}],
+				myStateTitle: '',
+				myStateValue: 5,
 			},
 			methods:{
 				
@@ -186,8 +203,8 @@
 
 			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 			var searchData = vm.searchData;
-			
-			var url =API.GET_SHORTAGE,params = searchData;
+			searchData.hospitalId = accountInfo.userid;
+			var url =API.GET_MY_SHORTAGE,params = searchData;
 			if(!first){
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}
@@ -272,12 +289,14 @@
 						mask.addEventListener('tap',function(e){
 							vm.filterShow = false;
 							vm.drugName = '';
-							vm.drugBatchNumber = '';
+							vm.myStateValue = 5;
+							vm.myStateTitle = '';
 						})
 						close.addEventListener('tap',function(){
 							vm.filterShow = false;
 							vm.drugName = '';
-							vm.drugBatchNumber = '';
+							vm.myStateValue = 5;
+							vm.myStateTitle = '';
 						})
 						
 						//阻止冒泡
@@ -286,14 +305,27 @@
 							event.stopPropagation();
 						});
 						
+						var picker = new mui.PopPicker();
+						// 选择状态
+						document.getElementById('chooseState').addEventListener('tap',function(){
+							picker.setData(vm.myState);
+							// picker.pickers[0].setSelectedIndex(vm.tickeTypeValue-1)
+							
+							picker.show(function(item){
+								value = item[0];
+								vm.myStateValue = value.value;
+								vm.myStateTitle = value.text;
+								
+							})
+						})
 						
 						
 						// 确认筛选数据操作
 						mui('.filter-btn-box').on('tap','.sure',function(){
 							var searchData = {
 								pageIndex : 1,
-								drugName : vm.drugBatchNumber,
-								hosName : vm.drugName,
+								drugName : vm.drugName,
+								state : vm.myStateValue,
 								key : 1
 							}
 							vm.searchData = searchData;
@@ -305,20 +337,10 @@
 						// 重置筛选数据操作
 						mui('.filter-btn-box').on('tap','.reset',function(){
 							vm.drugName = '';
-							vm.drugBatchNumber = '';
+							vm.myStateValue = 5;
+							vm.myStateTitle = '';
 						})
 						
-					})
-				})
-				
-				// 我的发布
-				document.getElementById('my-release').addEventListener('tap',function(){
-					mui.openWindow({
-						url : 'my-release.html',
-						id : 'my-release.html',
-						show : {
-							autoShow : false,
-						}
 					})
 				})
 				
@@ -328,10 +350,11 @@
 						url : 'release.html',
 						id : 'release.html',
 						extras : {
-							target : 'html/short/index.html'
+							target : 'my-release.html'
 						}
 					})
 				})
+			
 				
 				// 查看详情
 				mui('.mui-scroll').on('tap','.item',function(){
@@ -340,47 +363,58 @@
 					value.sign = !value.sign;
 				})
 				
-				// 拨打电话
-				mui('.mui-scroll').on('tap','.dial',function(event){
+				// 关闭需求
+				mui('.mui-scroll').on('tap','.closeNeed',function(){
 					var index = this.dataset.index;
-					var phone = vm.searchResult[index].phone;
-					if(!phone){
-						mui.alert('电话号码为空');
-						return;
+					var value = vm.searchResult[index];
+					var params = {
+						sid : value.id,
+						sign : 1
 					}
-					plus.device.dial(phone)
-					var event = event||window.event;
-					event.stopPropagation()
-				});
-				
-				// 提供药品
-				mui('.mui-scroll').on('tap','.provide',function(event){
-					var index = this.dataset.index;
-					var val = vm.searchResult[index];
-					var closetime = val.close_time;
-					if(new Date(closetime).getTime() < new Date().getTime()){
-						mui.alert('该短缺药品已过期','提示',function(e){},'div');
-						return;
-					}
-					
-					// 查询是否已提供
-					var res = mui.http_get(API.IS_PRPVIDE,{roleId : accountInfo.roleid,companyId : accountInfo.userid, sid : val.id});
-					
-					if(res.code == 200){
-						mui.openWindow({
-							id : 'provide.html',
-							url : 'provide.html',
-							extras : {
-								val : val
+					mui.confirm('确认关闭短缺需求 <i class="red">'+value.drug_name +'</i> ?','提示',['取消','确认'],function (e) {
+						if(e.index == 1){
+							var res = mui.http_post(API.CLOSE_SHORTAGE,params);
+							if(res.code == 200){
+								mui.toast(res.message);
+								getNetDrug(false);
+								
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {
+								   e.index
+								},'div')
 							}
-						})
-					}else{
-						mui.alert(res.message,'提示',function(){},'div');
+						}
+					},'div')
+				})
+				
+				
+				// 选中操作对象
+				mui('.mui-scroll').on('tap','.choose',function(event){
+					var id = this.dataset.index;
+					var results = vm.searchResult;
+					var val = vm.value;
+					var current = '';
+					
+					if( val && val !=id ){
+						current = id;
+						results[id].choose = true;
+						results[val].choose = false;
 					}
+				
+					if( val == id ){
+						current = '';
+						results[id].choose = false;
+					}
+					if( !val ){
+						current=id;
+						results[id].choose = true;
+					}
+					vm.value = current;
+					vm.searchResult = results;
 					var event = event||window.event;
 					event.stopPropagation()
-					
 				})
+			
 				
 				// 查看反馈
 				mui('.mui-scroll').on('tap','.checkBack',function(event){
@@ -392,7 +426,7 @@
 						id:'feed-back.html',
 						extras:{
 							value : value,
-							sign : 1,
+							sign : 2,
 						},
 						show:{
 							autoShow:true,

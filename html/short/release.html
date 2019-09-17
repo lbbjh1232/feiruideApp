@@ -147,11 +147,13 @@
 							endTime : '',
 							phone : '',
 							mark : '',
+							target : ''
 							
 						}
 						
 					});
 					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+					vm.target = mui.currentWebview.target;
 					
 					// 选择
 					var picker = new mui.PopPicker();
@@ -274,7 +276,7 @@
 						if (res.code == 200) {
 							mui.toast(res.message);
 							var old_back = mui.back;
-							var target = plus.webview.getWebviewById('html/short/index.html')
+							var target = plus.webview.getWebviewById(vm.target)
 							mui.fire(target,'refreshs')
 							old_back();
 							return false;

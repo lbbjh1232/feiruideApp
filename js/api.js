@@ -61,6 +61,9 @@ var API = {
 	CHECK_PROVIDE : '/drug/checkProvide',
 	IS_PRPVIDE : "/drug/isProvide",
 	PRO_SUBMIT : '/drug/proSubmit',
+	SURE_BUY : '/drug/sureBuy',
+	GET_MY_SHORTAGE : '/drug/getMyShortage',
+	CLOSE_SHORTAGE : '/drug/closeShortage',
 	
 
 	//客服

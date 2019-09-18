@@ -64,6 +64,10 @@ var API = {
 	SURE_BUY : '/drug/sureBuy',
 	GET_MY_SHORTAGE : '/drug/getMyShortage',
 	CLOSE_SHORTAGE : '/drug/closeShortage',
+	RE_EDIT_SUBMIT : '/drug/reEditSubmit',
+	GET_MY_PROVIDE : '/drug/getMyProvide',
+	CHECK_RE_FROM_PRO : '/drug/checkReFromPro',
+	MODIFY_PROVIDE : '/drug/modifyProvide',
 	
 
 	//客服

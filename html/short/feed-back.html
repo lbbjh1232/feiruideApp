@@ -97,10 +97,10 @@
 							
 							<div class='drug-list-right-part'>
 
-								<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined sureBy">确认采购</button>
+								<button type="button" v-if="item.state==0 && sign==2 && (value.state == 0 || value.state == 3 )" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined sureBy">确认采购</button>
 								
 								<button type="button" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined dial">拨打电话</button>
-								<button type="button" v-if="item.state==0 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined deliveryInfo">配送信息</button>
+								<button type="button" v-if="item.state==2 && sign==2" :data-index="index" class="mui-btn mui-btn-success mui-btn-outlined deliveryInfo">配送信息</button>
 								
 								<button type="button" :data-index="index" class="mui-btn mui-btn-primary mui-btn-outlined">{{item.sign?'收起详情':'展开详情'}}</button>
 								
@@ -217,6 +217,7 @@
 				// var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 				vm.value = mui.currentWebview.value;
 				vm.sign = mui.currentWebview.sign;
+				
 				// 首次ajax获取数据后关闭等待窗口
 				getNetDrug(true);
 				

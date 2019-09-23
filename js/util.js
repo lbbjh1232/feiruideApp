@@ -133,18 +133,15 @@ var util = {
 		
 		switch(currIndex){
 			case 0:
-				text = '药械电子管理平台';
-				
+				text = '药械通';
 				break;
-		
+				
 			case 1: 
 				text = '消息';
-				
-				
 				break;
 				
 			case 2: 
-				text = '通讯录'
+				text = '通讯录';
 				if(accountInfo != null && JSON.parse(accountInfo).roleid != 12 ){
 					buttons.push({
 						text:'\ue75c',
@@ -157,7 +154,19 @@ var util = {
 				break;
 				
 			case 3:
-				text = '我的'
+				text = '我的';
+				buttons.push({
+					text : '\ue750',
+					fontSrc : 'fonts/icon.ttf',
+					fontSize : '25px',
+					float : 'right',
+					onclick : function(){
+						mui.openWindow({
+							url : 'html/my/about.html',
+							id : 'html/my/about.html',
+						})
+					},
+				})
 				break;
 		}
 		

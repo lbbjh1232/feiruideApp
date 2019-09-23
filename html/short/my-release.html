@@ -72,7 +72,7 @@
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.supplier_name}}</span></div>
 							
 							<div v-if="item.sign" class=''><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'>{{item.net_price==null?'-':item.net_price}}</span></div>
-							<div v-if="item.sign" class=''><span class='drug-list-title'>限定药品:</span> <span class='drug-list-name'>{{item.is_appoint_drug==1?'是':'否'}}</span></div>
+							
 							<div v-if="item.sign" class=''><span class='drug-list-title'>限定厂家:</span> <span class='drug-list-name'>{{item.is_appoint_supplier==1?'是':'否'}}</span></div>
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title standard'>状态:</span>  <span class="drug-list-name" :class='item.state==0?"red":(item.state==1?" blue":(item.state==3?" green":""))'>{{item.state==0?"已发布":(item.state==1?"已关闭":(item.state==3?"已反馈":"已过期"))}}</span></div>
 							

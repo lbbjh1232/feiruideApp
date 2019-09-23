@@ -48,9 +48,8 @@
 				<div class="operation-btn" id="my-release"><button type="button" class="mui-btn mui-btn-success">我的发布</button></div>
 				<div class="operation-btn" id="my-provide"><button type="button" class="mui-btn mui-btn-success">我的提供</button></div>
 			</template>
-			
 			<template v-else>
-				<div class="operation-btn"><button type="button" class="mui-btn mui-btn-success">我的提供</button></div>
+				<div class="operation-btn" id="my-provide"><button type="button" class="mui-btn mui-btn-success">我的提供</button></div>
 				<div class="operation-btn" ></div>
 				<div class="operation-btn"></div>
 			</template>
@@ -73,7 +72,7 @@
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.supplier_name}}</span></div>
 							
 							<div v-if="item.sign" class=''><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'>{{item.net_price==null?'-':item.net_price}}</span></div>
-							<div v-if="item.sign" class=''><span class='drug-list-title'>限定药品:</span> <span class='drug-list-name'>{{item.is_appoint_drug==1?'是':'否'}}</span></div>
+							
 							<div v-if="item.sign" class=''><span class='drug-list-title'>限定厂家:</span> <span class='drug-list-name'>{{item.is_appoint_supplier==1?'是':'否'}}</span></div>
 							
 							<div :class='!item.sign?"text-clip":""'><span class='drug-list-title'>需求数量:</span> <span class='drug-list-name'>{{item.drug_count}}</span></div>
@@ -323,7 +322,7 @@
 				})
 				
 				// 我的提供
-				document.getElementById('my-provide').addEventListener('tap',function(){
+				mui('.search-box').on('tap','#my-provide',function(){
 					mui.openWindow({
 						url : 'my-provide.html',
 						id : 'my-provide.html',

@@ -38,16 +38,16 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">提供短缺药品</h1>
+			<h1 class="mui-title">修改提供</h1>
 		</header>
 		
 		<div class="mui-content into-box" id="app">
 			
 			<div class="form-box" style="border: none;" v-cloak>
-				<div  class='mui-input-row input-disabled'>
+				<div class='mui-input-row input-disabled'>
 					<label>药品名称</label>
 					<input type="text" class="mui-input-clear" disabled v-model="drugName" placeholder="输入或选择药品名称">
-					<!-- <div class="iconfont icon-tianjia1 add-group1" v-if="appointDrugValue != 1" id="chooseDrug"></div> -->
+					<div class="iconfont icon-tianjia1 add-group1" v-if="appointDrugValue != 1" id="chooseDrug"></div>
 				</div>
 	
 				<div class="mui-input-row input-disabled" >
@@ -55,7 +55,7 @@
 					<input type="text" v-model="drugSpec" disabled class="mui-input-clear"  placeholder="规格">
 				</div>
 				
-				<div class="mui-input-row input-disabled">
+				<div class="mui-input-row input-disabled" >
 					<label>包装</label>
 					<input type="text" v-model="drugPackage" disabled class="mui-input-clear"  placeholder="包装">
 				</div>
@@ -67,15 +67,15 @@
 				</div>
 		
 				
-				<div class="mui-input-row input-disabled">
+				<!-- <div class="mui-input-row input-disabled">
 					<label>挂网限价</label>
 					<input type="text"  class="mui-input-clear" v-model="netPrice" disabled :placeholder="!netPrice ? '未限价' : '挂网限价'">
-				</div>
+				</div> -->
 				
-				<div class="mui-input-row input-disabled">
+				<!-- <div class="mui-input-row input-disabled">
 					<label>需求数量</label>
 					<input type="number" v-model="count"  class="mui-input-clear" disabled  placeholder="需求数量">
-				</div>
+				</div> -->
 				
 				<!-- 提供信息 -->
 				<div class="divided-line"></div>
@@ -103,7 +103,7 @@
 		
 			<!-- 提交 -->
 			<div class="into_submit">
-				<button type="button" id="submit" class="mui-btn mui-btn-success">发 布</button>
+				<button type="button" id="submit" class="mui-btn mui-btn-success">提 交</button>
 			</div>
 			
 			 
@@ -127,8 +127,6 @@
 							appointDrugValue:'',
 							appointProValue: '',
 							produce : '',
-							netPrice : '',
-							count : '',
 							phone : '',
 							mark : '',
 							shortId : '',
@@ -136,7 +134,6 @@
 							proPrice : '',
 							proCount : '',
 							proPhone : '',
-							toPhone : ''
 							
 						}
 						
@@ -145,32 +142,32 @@
 					var val = mui.currentWebview.val;
 					console.log(JSON.stringify(val))
 					vm.drugName = val.drug_name;
-					vm.shortName = val.drug_name;
 					vm.drugSpec = val.drug_spec;
 					vm.drugPackage = val.drug_pack;
 					vm.produce = val.supplier_name;
-					vm.count = val.drug_count;
+					vm.proCount = val.count;
 					// vm.appointDrugValue = val.is_appoint_drug;
 					vm.appointProValue = val.is_appoint_supplier;
-					vm.shortId = val.id;
-					vm.netPrice =val.net_price;
-					vm.toPhone = val.phone;
+					vm.pid = val.id;
+					vm.proPrice =val.price;
+					vm.proPhone = val.phone;
+					vm.mark = val.content;
 					
 					vm.$nextTick(function(){
 						
 						// 选择药品
-						// document.getElementById('chooseDrug').addEventListener('tap',function(){
-						// 	mui.openWindow({
-						// 		url : 'choose-short-drug.html',
-						// 		id : 'choose-short-drug.html',
-						// 		show : {
-						// 			autoShow : false,
-						// 		},
-						// 		extras : {
-						// 			sign : 'provide.html'
-						// 		}
-						// 	})
-						// })
+						document.getElementById('chooseDrug').addEventListener('tap',function(){
+							mui.openWindow({
+								url : 'choose-short-drug.html',
+								id : 'choose-short-drug.html',
+								show : {
+									autoShow : false,
+								},
+								extras : {
+									sign : 'edit-provide.html'
+								}
+							})
+						})
 						
 					})
 					
@@ -181,7 +178,6 @@
 						vm.drugSpec = e.detail.specifications;
 						vm.drugPackage = e.detail.packaging;
 						vm.produce = e.detail.production_enterprise;
-						vm.netPrice = e.detail.the_net_price;
 					})
 					
 					// 提交
@@ -199,10 +195,7 @@
 							mui.toast('生产厂家不能为空');
 							return;
 						}
-						if(!vm.count){
-							mui.toast('需求数量不能为空');
-							return;
-						}
+						
 						 if (!vm.proPrice) {
 							mui.toast('药品售价不能为空');
 							return;
@@ -230,22 +223,18 @@
 							drugCount: vm.proCount,
 							drugPhone: vm.proPhone,
 							drugMark: vm.mark,
-							userId : accountInfo.id,
-							companyId :accountInfo.userid,
-							roleId :accountInfo.roleid,
-							shortId : vm.shortId,
-							shortName : vm.shortName,
-							mobile : vm.toPhone
+							editId : vm.pid,
+							
 							
 						}
 						plus.nativeUI.showWaiting();
-						var res = mui.http_post(API.PRO_SUBMIT,params);
+						var res = mui.http_post(API.PRO_EDIT_SUBMIT,params);
 						plus.nativeUI.closeWaiting();
 						
 						if (res.code == 200) {
 							mui.toast(res.message);
 							var old_back = mui.back;
-							var target = plus.webview.getWebviewById('html/short/index.html')
+							var target = plus.webview.getWebviewById('my-provide.html')
 							mui.fire(target,'refreshs')
 							old_back();
 							return false;

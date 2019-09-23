@@ -25,9 +25,16 @@
 				text-align: justify;
 				width: 100%;
 			}
+			
+			.item-input-wrap textarea{
+				font-size: 1.2rem;
+			}
 			.report-btn{
 				margin-top: 1.5rem;
 				width: 20%;
+			}
+			.reason-btn button{
+				font-size: 1.2rem;
 			}
 			
 		</style>
@@ -43,18 +50,10 @@
 			
 		<!-- 顶部操作栏 -->	
 		<div class="search-box">
-			<template v-if="isHos">
 				<div class="operation-btn" id="delete" ><button type="button" class="mui-btn mui-btn-danger iconfont icon-report-del"> 删除</button></div>
 				<div class="operation-btn" id="edit"><button type="button" class="mui-btn mui-btn-success iconfont icon-report-edit"> 修改</button></div>
-				<div class="operation-btn" id="release"><button type="button" class="mui-btn mui-btn-success">确认配送</button></div>
-			</template>
-			
-			<template v-else>
-				<div class="operation-btn"><button type="button" class="mui-btn mui-btn-success">我的提供</button></div>
-				<div class="operation-btn" ></div>
-				<div class="operation-btn"></div>
-			</template>
-			
+				<div class="operation-btn" id="sureSong"><button type="button" class="mui-btn mui-btn-success">确认配送</button></div>
+
 			<div class="operation-btn filter"><button type="button" class="mui-btn mui-btn-primary mui-btn-outlined iconfont icon-shaixuan1">筛选</button></div>
 		</div>
 
@@ -159,7 +158,6 @@
 					<div class=''><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{current.supplier_name}}</span></div>
 					<div class=''><span class='drug-list-title standard'>包装:</span> <span class='drug-list-name'>&nbsp;{{current.drug_pack}}</span></div>
 					<div class=''><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'>{{current.net_price==null?'-':current.net_price}}</span></div>
-					<div class=''><span class='drug-list-title'>限定药品:</span> <span class='drug-list-name'>{{current.is_appoint_drug==1?'是':'否'}}</span></div>
 					<div class=''><span class='drug-list-title'>限定厂家:</span> <span class='drug-list-name'>{{current.is_appoint_supplier==1?'是':'否'}}</span></div>
 					
 					<div ><span class='drug-list-title'>需求数量:</span> <span class='drug-list-name'>{{current.drug_count}}</span></div>
@@ -168,6 +166,30 @@
 					<div class=''><span class='drug-list-title standard'>备注:</span> <span class='drug-list-name'>&nbsp;{{current.content==''?'-':current.content}}</span></div>
 					
 					
+				</div>
+			</div>
+		</div>
+		</div>
+		</template>
+		
+		<!-- 确认配送弹窗 -->
+		<template  v-if="songShow">
+		<div class='mask'>
+		<div class='drug-detail-box'>
+			<div class='detail-box-top'>
+				<div class='text-detail'>配送信息</div>
+				<div class='iconfont icon-guanbi close'></div>
+			</div>
+			<div class="mui-scroll-wrapper" id="scroll-two">
+				<div class="mui-scroll">
+					
+					<div class="item-input-wrap">
+						<textarea v-model="deliveryInfo" rows="6" placeholder="可填写以下信息：配送联系方式/配送单号/发货时间/预计到达时间,便于医院了解配送进度"></textarea>
+					</div>
+					
+				</div>
+				<div class="reason-btn">
+					<button type="button" class="mui-btn mui-btn-success">提 交</button>
 				</div>
 			</div>
 		</div>
@@ -217,6 +239,8 @@
 				myStateValue: 2,
 				current : {},
 				detailShow : false,
+				songShow : false,
+				deliveryInfo : ''
 			},
 			methods:{
 				
@@ -413,12 +437,63 @@
 						return;
 					}
 					var value = vm.searchResult[vm.value];
+					if (value.state != 0) {
+						mui.toast('该短缺药品已被采购，不能修改!');
+						return;
+					}
 					mui.openWindow({
-						url : 'edit-release.html',
-						id : 'edit-release.html',
+						url : 'edit-provide.html',
+						id : 'edit-provide.html',
 						extras : {
-							value : value
+							val : value
 						}
+					})
+				})
+				
+				// 确认配送
+				document.getElementById('sureSong').addEventListener('tap',function(){
+					if (!vm.value) {
+						mui.toast('请选择一条记录');
+						return;
+					}
+					var value = vm.searchResult[vm.value];
+					//判断状态
+					if (value.state == 0) {
+						mui.toast('该短缺药品还未被采购!');
+						return;
+					}
+					if (value.state == 2) {
+						mui.toast('该短缺药品已配送!');
+						return;
+					}
+					vm.songShow = true;
+					vm.$nextTick(function(){
+						mui('#scroll-two').scroll({deceleration: 0.001});
+						
+						// 监听关闭
+						mui('.mask').on('tap','.close',function(){
+							vm.songShow = false;
+							vm.deliveryInfo = '';
+						});
+						
+						// 提交配送
+						mui('.reason-btn').on('tap','.mui-btn-success',function(){
+							if(!vm.deliveryInfo){
+								mui.toast('配送信息不能为空');
+								return;
+							}
+							var res = mui.http_post(API.MODIFY_PROVIDE,{deliveryInfo : vm.deliveryInfo , pid : value.id,sing : 2});
+							if(res.code == 200){
+								mui.toast(res.message);
+								getNetDrug(false);
+								vm.songShow = false;
+								vm.deliveryInfo = '';
+								
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {},'div')
+							}
+						});
+						
 					})
 				})
 				
@@ -473,7 +548,8 @@
 						mui('.mask').on('tap','.close',function(){
 							vm.detailShow = false;
 							vm.current = {}
-						})
+						});
+						
 					})
 					
 					var event = event||window.event;

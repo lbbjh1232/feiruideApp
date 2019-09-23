@@ -14,7 +14,7 @@
 		</script>
 		
 	</head>
-
+ 
 	<body>
 		
 		<div class="mui-content" id="app">
@@ -59,7 +59,14 @@
 				<div class="notice-more">更多</div>
 			</div>
 			
-			
+			<!-- 实用查询 -->
+			<div class="related-query">
+				<div class="query-title">【实用查询】</div>
+				<div class="query-menu" data-href="https://db.yaozh.com/instruct" data-title="药品说明书">药品说明书</div>
+				<div class="query-menu" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录">基本药物目录</div>
+				<div class="query-menu" data-href="https://db.yaozh.com/yibao" data-title="医保目录">医保目录</div>
+				<div class="query-menu" data-href="http://drugs.dxy.cn/index.htm" data-title="用药指南">用药指南</div>
+			</div>
 				
 			<div class="nav-title">药品两票</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
@@ -90,12 +97,7 @@
 							<div class="mui-media-body">票据出库</div>
 						</a>
 					</li>
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/short/index.html">
-							<span class="mui-icon iconfont icon-xuqiu"></span>
-							<div class="mui-media-body">短缺药品</div>
-						</a>
-					</li>
+					
 				</template>
 				 
 				<!-- 临床科室 -->
@@ -122,25 +124,33 @@
 							<div class="mui-media-body">票据查验</div>
 						</a>
 					</li>
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/short/index.html">
-							<span class="mui-icon iconfont icon-xuqiu"></span>
-							<div class="mui-media-body">短缺药品</div>
-						</a>
-					</li>
+
 				</template>
 				
-				<template v-if="'6,7,9'.indexOf(accountInfo.roleid) != -1 ? true : false">
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/report/index.html">
-							<span class="mui-icon iconfont icon--biaodanguanli"></span>
-							<div class="mui-media-body">药检报告</div>
-						</a> 
-					</li>
-				</template>
 			 
 			</ul>
 			
+			<div class="nav-title">药检报告</div>
+			<ul class="mui-table-view mui-grid-view mui-grid-9" >
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+					<a href="javascript:void(0)" data-href="html/report/index.html" id="report">
+						<span class="mui-icon iconfont icon--biaodanguanli"></span>
+						<div class="mui-media-body">药检报告</div>
+					</a>
+				</li>
+			</ul>
+			
+			<div class="nav-title">药品采购</div>
+			<ul class="mui-table-view mui-grid-view mui-grid-9" >
+				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+					<a href="javascript:void(0)" data-href="html/short/index.html" id="short">
+						<span class="mui-icon iconfont icon-xuqiu"></span>
+						<div class="mui-media-body">短缺药品</div>
+					</a>
+				</li>
+			</ul>
+			
+			<!-- 
 			<div class="nav-title">新药申报</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9">
 				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" id="push-test">
@@ -196,13 +206,12 @@
 					</a>
 				</li>
 			</ul>
-			
+			 -->
 			
 		</div>
 
 		<script type="text/javascript">
 			script(['js/mui.min.js','js/vue.js','js/util.js','js/api.js','js/app.js','js/lib/permission.js']);
-			
 		</script>
 		
 		<script type="text/javascript">
@@ -226,7 +235,7 @@
 						vm.accountInfo = JSON.parse( accountInfo );
 					}else{
 						vm.accountInfo = '';
-					} 
+					}
 				}
 				
 				mui.plusReady(function() {
@@ -236,12 +245,11 @@
 					
 					//监听系统通知栏消息点击事件  
 					plus.push.addEventListener('click', function(msg){
-						//alert('点击 '+ JSON.stringify(msg));
+						
 					}, false);
 					
 					//接收透传消息
 					plus.push.addEventListener('receive',function(msg){
-						//alert('接收 '+ JSON.stringify(msg))
 						var payload = msg.payload;
 						var content = msg.content;
 						
@@ -257,8 +265,6 @@
 								
 							}
 						}
-						
-						
 						
 					},false)
 					
@@ -280,7 +286,7 @@
 					
 						
 					// 通知文字轮播
-					var noticeArr = ['你爱上对方阿斯蒂芬as的阿萨德否','阿斯蒂芬阿斯','客户看见你空间就'];
+					var noticeArr = ['药械通APP上线啦','告别纸质版药品票据的时代已来临'];
 					var title = document.getElementById('notice'),index = 0;
 					var myset = setInterval(function(){
 						var count = noticeArr.length;
@@ -321,7 +327,6 @@
 					
 					// 消息总数提示 
 					mui.updateMessCount(true,false);
-					
 					var nview = plus.nativeObj.View.getViewById('tabBar'),
 						activePage = plus.webview.currentWebview(),
 						targetPage,
@@ -379,7 +384,7 @@
 							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
 							   e.index
 							},'div');
-							
+						
 							return;
 						}
 						 
@@ -391,8 +396,62 @@
 							 }
 						 });
 						
+					});
+					
+					// 短缺药品采购
+					document.getElementById('short').addEventListener('tap',function(e){
+						var href = this.dataset.href;
+						var accountInfo = plus.storage.getItem('accountInfo');
+						if(accountInfo == null){
+							mui.alert('请先登录','提示','确认',function (e) {},'div');
+							return;
+						}
+						if( '6,7'.indexOf(JSON.parse(accountInfo).roleid) == -1 ){
+							mui.alert('该角色无权限','提示','确认',function (e) {},'div');
+							return;
+						}else{
+							mui.openWindow({
+								 url:href,
+								 id:href,
+								 show:{
+									 autoShow:false,
+								 }
+							});
+						}
 					})
 					
+					
+					// 打开药检报告
+					document.getElementById('report').addEventListener('tap',function(e){
+						var href = this.dataset.href;
+						var accountInfo = plus.storage.getItem('accountInfo');
+						if(accountInfo == null){
+							mui.alert('请先登录','提示','确认',function (e) {},'div');
+							return;
+						}
+						if( '6,7,9'.indexOf(JSON.parse(accountInfo).roleid) == -1 ){
+							mui.alert('该角色无权限','提示','确认',function (e) {},'div');
+							return;
+						}else{
+							mui.openWindow({
+								 url:href,
+								 id:href,
+								 show:{
+									 autoShow:false,
+								 }
+							});
+						}
+					})
+					
+					// 使用查询
+					mui('.related-query').on('tap','.query-menu',function(){
+						var href = this.dataset.href;
+						var title = this.dataset.title;
+						var win = 'html/search-tool/embed.html';
+						// 创建窗口
+						var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+						ws.show('pop-in');
+					})
 					
 					
 				});

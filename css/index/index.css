@@ -92,3 +92,32 @@ body {
 	background: rgba(0,0,0,.3);
 	border-radius: 5px;
 }
+.related-query{
+	padding:1rem 1rem 1rem;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	border-bottom: 0.1rem solid rgba(105,105, 105,.1);
+	
+}
+.query-title{
+	font-size: 1.2rem;
+	color: gray;
+	font-weight: bold;
+}
+.query-menu{
+	font-size: 1.2rem;
+	color:#1E90FF;
+	margin-left: 10px;
+	/* text-decoration: underline; */
+}
+
+
+
+
+
+
+
+
+

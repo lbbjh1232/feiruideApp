@@ -94,7 +94,7 @@
 				var websocket = function(){
 					console.log('初始化')
 					// 建立通讯 
-					ws = new WebSocket('ws://120.79.234.154:8282');
+					ws = new WebSocket(CONFIG.WS_HOST);
 					
 					ws.onclose = function () {
 						websocket();
@@ -159,7 +159,7 @@
 				}
 				
 				//通讯初始化
-				websocket();
+				//websocket();
 				
 				// 点击进入聊天页面
 				mui('#app').on('tap','.msg-item',function(){

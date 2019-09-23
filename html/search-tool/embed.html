@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/iconfont.css','../../css/common.css','../../css/animate.css','../../css/index/index.css'],true);
+		</script>
+		
+	</head>
+
+	<body >
+		<div id="app">
+			<header class="mui-bar mui-bar-nav" v-cloak>
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title" >{{title}}</h1>
+			</header>
+			
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+			
+		</script>
+		
+		<script type="text/javascript">
+			// vue实例挂载
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					title :''
+				}
+			});
+			var embed,ws;
+			
+			function createEmbed(href){
+				var topoffset='44px';
+				plus.nativeUI.showWaiting('',{style:'black',modal:false,background:'rgba(0,0,0,0)'});
+				embed=plus.webview.create(href,'embed',{top:topoffset,bottom:'0px',position:'dock',dock:'bottom',bounce:'vertical'});
+				ws.append(embed);
+				embed.addEventListener('loaded',function(){
+					plus.nativeUI.closeWaiting();
+				},false);
+				embed.addEventListener('loading',function(){
+					plus.nativeUI.showWaiting('',{style:'black',modal:false,background:'rgba(0,0,0,0)'});
+				},false);
+			}
+			
+			(function() {
+				
+				mui.init({
+					swipeBack: true //启用右滑关闭功能
+				});
+				mui.plusReady(function () {
+					
+					var href = mui.currentWebview.href;
+					var title = mui.currentWebview.title;
+					ws = plus.webview.currentWebview();
+					vm.title = title;
+					createEmbed(href);
+					
+				})
+				
+				
+			})();
+		</script>
+	</body>
+
+</html>

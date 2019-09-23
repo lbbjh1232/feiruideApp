@@ -516,12 +516,11 @@
 		setTimeout(function() {
 			cid = pinf.clientid;
 			token = pinf.token;
-			//mui.alert(JSON.stringify(pinf),'提示','确认',function (e) {},'div')
 			
 			//存储到服务器
 			if(cid != 'null' || token != 'null'  ){
 				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor});
-				plus.storage.setItem('clientid',res.data.info);
+				plus.storage.setItem('clientid',res.data.info.toString());
 			}
 			
 			if(cid == 'null'){

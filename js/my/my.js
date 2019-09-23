@@ -40,7 +40,7 @@ mui.plusReady(function () {
 		if(sign == 1){
 			loadView();
 			//建立websocket连接
-			ws = new WebSocket('ws://120.79.234.154:8282');
+			ws = new WebSocket(CONFIG.WS_HOST);
 			var data = JSON.stringify({
 				type:'kick',
 				fromid : JSON.parse(plus.storage.getItem('accountInfo')).id,

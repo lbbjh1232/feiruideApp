@@ -7,7 +7,7 @@ var ENVIRONMENT = PRO;
 // 接口地址
 var API = {
 	HOST : "http://www.yudzni.cn",
-	TICKET_HOST : 'http://ticket.toothwang.com/uploads',
+	TICKET_HOST : 'http://ticket.yudzni.cn/uploads',
 	SMS_CODE : '/user/smsCode',
 	LOGIN : "/user/login",
 	SAVE_CLIENT_ID : '/user/saveClientId',
@@ -68,6 +68,10 @@ var API = {
 	GET_MY_PROVIDE : '/drug/getMyProvide',
 	CHECK_RE_FROM_PRO : '/drug/checkReFromPro',
 	MODIFY_PROVIDE : '/drug/modifyProvide',
+	PRO_EDIT_SUBMIT : '/drug/proEditSubmit',
+	
+	
+	
 	
 
 	//客服
@@ -89,6 +93,10 @@ var API = {
 	FRIEND_DEL : '/chat/friendDel',
 	
 };
+
+var CONFIG = {
+	WS_HOST : 'ws://119.27.185.187:8282',
+}
 
 // 全局数据
 var globalData = {

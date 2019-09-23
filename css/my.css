@@ -48,3 +48,8 @@
 .operate-text{
 	padding-left: 10px;
 }
+.divided-line{
+	height: 0.7rem;
+	width: 100%;
+	background: rgba(105,105,105,.1);
+}

@@ -8,6 +8,8 @@ var ENVIRONMENT = PRO;
 var API = {
 	HOST : "http://www.yudzni.cn",
 	TICKET_HOST : 'http://ticket.yudzni.cn/uploads',
+	CHECK_VERSION : '/user/checkVersion',
+	DOWNLOAD_APP : '/user/downloadApp',
 	SMS_CODE : '/user/smsCode',
 	LOGIN : "/user/login",
 	SAVE_CLIENT_ID : '/user/saveClientId',

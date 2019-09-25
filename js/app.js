@@ -5,7 +5,7 @@
     $.showLoading = function(message,type) {  
         if ($.os.plus && type !== 'div') {  
             $.plusReady(function() {  
-                plus.nativeUI.showWaiting(message);  
+                plus.nativeUI.showWaiting(message);
             });  
         } else {  
             var html = '';  
@@ -433,8 +433,6 @@
 			var res  = $.http_post(API.GET_CHAT_LIST,{fromid:myid});
 			if(res.code == 200){
 				count = res.data.totlecount;
-				console.log(count);
-				console.log(nviewEvent);
 				//总数，列表都加载
 				if(isCount && isList){
 					if(nviewEvent != null){
@@ -561,6 +559,61 @@
 		}
 		return true
 	}
+	
+	// 下载app
+	$.downloadApp = function(){
+		// 创建下载任务
+		var i;
+		var task = plus.downloader.createDownload(API.HOST + API.DOWNLOAD_APP,{method : 'POST'},function(t,status){
+			if(status == 200){
+				vm.isUpdate = false;
+				clearInterval(i);
+				plus.runtime.install(t.filename);
+				console.log(t.filename)
+			}
+		});
+		
+		// 开始下载
+		task.start();
+		vm.isUpdate = true;
+		vm.$nextTick(function(){
+			// 创建进度条
+			i = setInterval(function(){
+				var totleSize = task.totalSize;
+				var downloadSize = task.downloadedSize;
+				var percent = downloadSize / totleSize;
+				var number = (Math.round(percent * 100) / 100) * 100;
+				mui('#update').progressbar().setProgress(number);
+				
+			},1000)
+		})
+		
+	}
+	
+	
+	// 更新app并安装
+	$.appUpdate = function(){
+		var wgtVer = null;
+		plus.runtime.getProperty(plus.runtime.appid,function(info){
+			// 当前版本
+			wgtVer = parseFloat(info.version);
+			
+			// 查询更新版本
+			var res = $.http_post(API.CHECK_VERSION,{});
+			var newVer = parseFloat(res.data.app_version);
+			if( wgtVer <= newVer){
+				mui.confirm('发现了新的版本，为保障你的功能使用，请立即更新!','更新提示',['更新','取消'],function (e) {
+				   if(e.index == 0){
+						// 开始下载
+						$.downloadApp();
+				   }
+				})
+			}
+			
+			
+		});
+	}
+	
 	
 	
 	

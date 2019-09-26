@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/my.css'],true);
+		</script>
+		<style type="text/css">
+			.logo{
+				padding: 1rem 0;
+				text-align: center;
+			}
+			.logo img{
+				width: 5rem;
+				height: 5rem;
+			}
+			.version{
+				font-size: 1.5rem;
+				font-weight: bold;
+			}
+			.info-item{
+				font-size: 1.2rem;
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				padding-bottom: 0.5rem;
+			}
+			.info-item .info-title{
+				width: 45%;
+				color: gray;
+				text-align: right;
+				padding-right: 1rem;
+			}
+			.info-item .info-content{
+				width: 55%;
+				padding-right: 1rem;
+			}
+			.platform,.copyright{
+				padding:1rem;
+				font-size:1.2rem;
+			}
+			.copyright{
+				text-align: center;
+				color: gray;
+			}
+		</style>
+
+	</head>
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">关于药械通</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<div class="logo">
+				<img src="../../images/logo.png" >
+				<div class="version">药械通 v{{version}}</div>
+			</div>
+			
+			<div class="platform">
+				<span class="blue">平台简介:</span> 以药械电子化管理系统为背景的移动端功能平台，实现多端同步操作。
+			</div>
+			
+			<div class="introduce">
+				<div class="info-item">
+					<div class="info-title">开发公司</div>
+					<div class="info-content blue">四川飞瑞德医疗科技有限公司</div>
+				</div>
+				<div class="info-item">
+					<div class="info-title">邮箱</div>
+					<div class="info-content">yplpzgl@163.com</div>
+				</div>
+				<div class="info-item">
+					<div class="info-title">联系地址</div>
+					<div class="info-content">四川省南充市顺庆区恒河外滩一号七栋二单元</div>
+				</div>
+				<div class="info-item">
+					<div class="info-title">联系人</div>
+					<div class="info-content">王先生</div>
+				</div>
+				<div class="info-item">
+					<div class="info-title">联系电话</div>
+					<div class="info-content blue" id="dial">18980301589</div>
+				</div>
+			</div>
+			
+			<div class="copyright">
+				<div>Copyright&copy;2018 - 2019</div>
+				<div>四川飞瑞德医疗科技有限公司</div>
+				<div>All rights reserved</div>
+			</div>
+			
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	<script type="text/javascript">
+		var vm =new Vue({
+			el : '#app',
+			data : {
+				version : '',
+				
+			}
+		});
+		
+		mui.plusReady(function () {
+			plus.runtime.getProperty(plus.runtime.appid,function(info){
+				vm.version = info.version;
+			});
+			
+			document.getElementById('dial',function(){
+				plus.device.dial('18980301589',false);
+			})
+			
+		})
+		
+	</script>
+	
+</html>

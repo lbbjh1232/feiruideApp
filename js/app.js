@@ -13,7 +13,7 @@
             html += '<p class="text">' + (message || "数据加载中") + '</p>';  
 
             //遮罩层  
-            var mask=document.getElementsByClassName("mui-show-loading-mask");  
+            var mask=document.getElementsByClassName("mui-show-loading-mask");
             if(mask.length==0){  
                 mask = document.createElement('div');  
                 mask.classList.add("mui-show-loading-mask");  
@@ -39,7 +39,7 @@
     };  
 
     //隐藏加载框  
-      $.hideLoading = function(callback) {  
+    $.hideLoading = function(callback) {  
         if ($.os.plus) {  
             $.plusReady(function() {  
                 plus.nativeUI.closeWaiting();  
@@ -469,7 +469,6 @@
 		
 	// websocket心跳检测
 	$.heartCheck =function(ws){
-		console.log('chekc');
 		var check = {
 			timeout: 55*1000,  //  心跳检测时长
 			timeoutObj: null, // 定时变量
@@ -565,11 +564,13 @@
 		// 创建下载任务
 		var i;
 		var task = plus.downloader.createDownload(API.HOST + API.DOWNLOAD_APP,{method : 'POST'},function(t,status){
+			vm.isUpdate = false;
+			clearInterval(i);
 			if(status == 200){
-				vm.isUpdate = false;
-				clearInterval(i);
 				plus.runtime.install(t.filename);
-				console.log(t.filename)
+				
+			}else{
+				mui.alert('下载失败','提示','确认',function (e) {},'div');
 			}
 		});
 		
@@ -592,7 +593,7 @@
 	
 	
 	// 更新app并安装
-	$.appUpdate = function(){
+	$.appUpdate = function(msg,isCheck = false){
 		var wgtVer = null;
 		plus.runtime.getProperty(plus.runtime.appid,function(info){
 			// 当前版本
@@ -601,13 +602,18 @@
 			// 查询更新版本
 			var res = $.http_post(API.CHECK_VERSION,{});
 			var newVer = parseFloat(res.data.app_version);
-			if( wgtVer <= newVer){
-				mui.confirm('发现了新的版本，为保障你的功能使用，请立即更新!','更新提示',['更新','取消'],function (e) {
+			var message = msg == undefined ? '发现了新的版本，为保障你的功能使用，请立即更新!' : msg + newVer;
+			if( wgtVer < newVer){
+				mui.confirm(message,'更新提示',['更新','取消'],function (e) {
 				   if(e.index == 0){
 						// 开始下载
 						$.downloadApp();
 				   }
 				})
+			}else{
+				if(isCheck){
+					mui.toast('已是最新版本');
+				}
 			}
 			
 			

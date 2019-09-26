@@ -162,8 +162,8 @@ var util = {
 					float : 'right',
 					onclick : function(){
 						mui.openWindow({
-							url : 'html/my/about.html',
-							id : 'html/my/about.html',
+							url : 'html/my/setting.html',
+							id : 'html/my/setting.html',
 						})
 					},
 				})

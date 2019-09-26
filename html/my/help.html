@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css',],true);
+		</script>
+		<style type="text/css">
+			.mui-content>.mui-table-view:first-child{
+				margin-top: 0;
+			}
+			.mui-table-view-cell>a:not(.mui-btn){
+				white-space: pre-wrap;
+			}
+			.mui-navigate-right{
+				font-size: 1.3rem;
+			}
+			.mui-collapse-content{
+				text-indent:1rem;
+				font-size: 1.2rem;
+				text-align: justify;
+			}
+		</style>
+
+	</head>
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">帮助中心</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right iconfont icon-question" href="javascript:void(0)">&nbsp;APP里面没有注册账号功能，如何登录呢?</a>
+					<div class="mui-collapse-content">
+						<span class="answer blue">答: </span>
+						<span>APP在现开发阶段，暂时还未增添注册功能，由于药械通的开发都是在药械电子化管理系统的数据平台下，对于在该系统已注册的用户，按照已有的账号及密码即可登录；新用户需到系统 ( <span class="blue">https://yp.feiruide.cn</span> )下完成注册流程并审核通过后即可在APP进行登录。感谢支持!</span>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right iconfont icon-question" href="javascript:void(0)">&nbsp;手机验证码收不到，怎么办?</a>
+						<div class="mui-collapse-content">
+							<span class="blue">答: </span>
+							<span>
+								首先请确认，当前的手机号码与输入的手机号码是否一致，如果不一致，更换当前正在使用的手机号码，重新获取验证码即可；如果不一致，可能是短信通道延迟的问题，稍等即可，且不要在一个时间段多次重复获取，频繁发送会被拉黑。 感谢支持!
+							</span>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right iconfont icon-question" href="javascript:void(0)">&nbsp;我的药械通APP页面打不开，怎么办?</a>
+					<div class="mui-collapse-content">
+						<span class="blue">答: </span>
+						<span>
+							原因一：请检查您的网络情况，如果无网络连接或弱网的情况下，页面无法加载或加载过慢，导致页面一直处于等待状态。您可以切换网络；原因二：其他情况，请联系药械通客服。 感谢支持!
+						</span>
+					</div>
+				</li>
+				
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right iconfont icon-question" href="javascript:void(0)">&nbsp;安装速度慢，一直在等待中，或者没有下载进度?</a>
+					<div class="mui-collapse-content">
+						<span class="blue">答: </span>
+						<span>
+							这种情况和app安装包没有关系，请检查网络，或者退出应用市场重新搜索就可以；对于安卓用户在线更新时，检查网络情况。 感谢支持!
+						</span>
+					</div>
+				</li>
+			</ul>
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	
+	<script type="text/javascript">
+		mui.plusReady(function () {
+			
+		})
+		
+	</script>
+	
+</html>

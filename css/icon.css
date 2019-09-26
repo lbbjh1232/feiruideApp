@@ -10,6 +10,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-question:before{
+	content: "\e605";
+	color: red;
+	font-size: 1.8rem;
+}
 
 .icon-tianjia1:before {
   content: "\e620";

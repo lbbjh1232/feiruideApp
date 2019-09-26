@@ -104,7 +104,8 @@
         "Push" : {},
         "OAuth" : {},
         "iBeacon" : {},
-        "Payment" : {}
+        "Payment" : {},
+        "Share" : {}
     },
     "plus" : {
         "launchwebview" : {

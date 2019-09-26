@@ -350,7 +350,15 @@ body {
 .clear{
 	clear: both;
 }
-
+.progress{
+	width: 80%;
+}
+.pro-title{
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 1.5rem;
+	padding-bottom: 5px;
+}
 
 
 

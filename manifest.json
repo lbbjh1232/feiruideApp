@@ -6,7 +6,7 @@
         "name" : "1.0", /*应用版本名称*/
         "code" : ""
     },
-    "description" : "药品两票电子化管理工具", /*应用描述信息*/
+    "description" : "药械电子化管理工具", /*应用描述信息*/
     "icons" : {
         "72" : "icon.png"
     },
@@ -257,7 +257,7 @@
         },
         "splashscreen" : {
             "autoclose" : true, /*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
-            "waiting" : true
+            "waiting" : false
         },
         "popGesture" : "close", /*设置应用默认侧滑返回关闭Webview窗口，"none"为无侧滑返回功能，"hide"为侧滑隐藏Webview窗口。参考http://ask.dcloud.net.cn/article/102*/
         "runmode" : "normal", /*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
@@ -407,7 +407,12 @@
                     "unipush" : {}
                 },
                 "oauth" : {},
-                "payment" : {}
+                "payment" : {},
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx6cae89f9425f6153"
+                    }
+                }
             }
         }
     },

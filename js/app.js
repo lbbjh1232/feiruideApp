@@ -619,8 +619,53 @@
 			
 		});
 	}
+
+	/**
+	 * 更新分享服务
+	 */
 	
+	 $.updateSerivces = function(){
+		plus.share.getServices(function(s){
+			shares={};
+			for(var i in s){
+				var t=s[i];
+				shares[t.id]=t;
+			}
+	    sweixin=shares['weixin'];
+		}, function(e){
+			console.log('获取分享服务列表失败：'+e.message);
+		});
+	};
 	
+	// 分享
+	 $.share = function(srv, msg, button){
+	  if(!srv){
+	    // outLine('无效的分享服务！');
+	    return;
+	  }
+	  button&&(msg.extra=button.extra);
+		// 发送分享
+		if(srv.authenticated){
+			// outLine('---已授权---');
+			$.doShare(srv, msg);
+		}else{
+			// outLine('---未授权---');
+			srv.authorize(function(){
+				$.doShare(srv, msg);
+			}, function(e){
+				// outLine('认证授权失败：'+JSON.stringify(e));
+			});
+		}  
+	}
+	// 发送分享
+	 $.doShare = function(srv, msg){
+		// outLine(JSON.stringify(msg));
+		srv.send(msg, function(){
+			console.log('分享到"'+srv.description+'"成功！');
+		}, function(e){
+			console.log('分享到"'+srv.description+'"失败: '+JSON.stringify(e));
+		});
+	}
 	
 	
 })(mui)

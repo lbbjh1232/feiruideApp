@@ -121,7 +121,7 @@
 				vm.version = info.version;
 			});
 			
-			document.getElementById('dial',function(){
+			document.getElementById('dial').addEventListener('tap',function(){
 				plus.device.dial('18980301589',false);
 			})
 			

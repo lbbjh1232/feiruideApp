@@ -109,11 +109,30 @@
 				isUpdate : false,
 			}
 		});
+		var shares=null;
+		var sweixin=null;
+		var buttons=[
+		  {title:'微信好友',extra:{scene:'WXSceneSession'}},
+		  {title:'微信朋友圈',extra:{scene:'WXSceneTimeline'}},
+		  // {title:'我的收藏',extra:{scene:'WXSceneFavorite'}}
+		];
 		
 		mui.plusReady(function () {
 			plus.runtime.getProperty(plus.runtime.appid,function(info){
 				vm.version = info.version;
 			});
+			
+			//获取分享服务列表
+			mui.updateSerivces();
+			
+			// 分享app
+			document.getElementById('share').addEventListener('tap',function(){
+				var msg={type:'web',thumbs:['_www/images/logo1.png'],href:'https://yp.feiruide.cn',title : '药械通-药品',content : '我正在使用药械通APP进行药品票据管理，你也试试吧!'};
+				
+				sweixin?plus.nativeUI.actionSheet({title:'选择分享平台',cancel:'取消',buttons:buttons}, function(e){
+					(e.index>0)&&mui.share(sweixin, msg, buttons[e.index-1]);
+				}):plus.nativeUI.alert('当前环境不支持微信分享操作!');
+			})
 			
 			// 帮助中心
 			document.getElementById('help').addEventListener('tap',function(){

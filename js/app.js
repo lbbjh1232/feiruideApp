@@ -332,9 +332,7 @@
 		})
 		
 	}
-	
-	
-	
+		
 	// 获取用户通讯id
 	$.getMyId= function(){
 		//查询游客还是系统用户
@@ -559,12 +557,23 @@
 		return true
 	}
 	
+	function createLoadView(){
+		// 创建遮罩层
+		var html = '<div class="progress"><div class="pro-title">下载进度</div><div id="update" class="mui-progressbar"><span></span></div></div>';
+		var mask = document.createElement('div');
+		mask.classList.add('mask');
+		mask.setAttribute('id','mask');
+		mask.innerHTML = html;
+		document.body.appendChild(mask);
+	}
+	
 	// 下载app
 	$.downloadApp = function(){
 		// 创建下载任务
 		var i;
 		var task = plus.downloader.createDownload(API.HOST + API.DOWNLOAD_APP,{method : 'POST'},function(t,status){
-			vm.isUpdate = false;
+			// 删除下载进度节点
+			document.body.removeChild(document.getElementById('mask'));
 			clearInterval(i);
 			if(status == 200){
 				plus.runtime.install(t.filename);
@@ -576,35 +585,52 @@
 		
 		// 开始下载
 		task.start();
-		vm.isUpdate = true;
-		vm.$nextTick(function(){
-			// 创建进度条
-			i = setInterval(function(){
-				var totleSize = task.totalSize;
-				var downloadSize = task.downloadedSize;
-				var percent = downloadSize / totleSize;
-				var number = (Math.round(percent * 100) / 100) * 100;
-				mui('#update').progressbar().setProgress(number);
-				
-			},1000)
-		})
+		createLoadView();
+		// 创建进度条
+		i = setInterval(function(){
+			var totleSize = task.totalSize;
+			var downloadSize = task.downloadedSize;
+			var percent = downloadSize / totleSize;
+			var number = (Math.round(percent * 100) / 100) * 100;
+			mui('#update').progressbar().setProgress(number);
+			
+		},1000)
 		
 	}
 	
+	// app版本比较
+	function compareVersion(currentVer,newVer){
+		var current = currentVer.toString().split('.');
+		var newver = newVer.toString().split('.');
+		// 版本比较
+		if( parseInt(current[0]) < parseInt(newver[0]) ){
+			return true;
+		}
+		
+		if( parseInt(current[1]) < parseInt(newver[1]) ){
+			return true;
+		}
+		
+		if( parseInt(current[2]) < parseInt(newver[2]) ){
+			return true;
+		}
+		return false;
+	}
 	
 	// 更新app并安装
 	$.appUpdate = function(msg,isCheck = false){
 		var wgtVer = null;
 		plus.runtime.getProperty(plus.runtime.appid,function(info){
 			// 当前版本
-			wgtVer = parseFloat(info.version);
+			wgtVer = info.version;
 			
 			// 查询更新版本
 			var res = $.http_post(API.CHECK_VERSION,{});
-			var newVer = parseFloat(res.data.app_version);
+			var newVer = res.data.app_version;
+			
 			var message = msg == undefined ? '发现了新的版本，为保障你的功能使用，请立即更新!' : msg + newVer;
-			if( wgtVer < newVer){
-				mui.confirm(message,'更新提示',['更新','取消'],function (e) {
+			if( compareVersion(wgtVer,newVer) ){
+				mui.confirm(message,'更新提示',['更新','取消'],function (e){
 				   if(e.index == 0){
 						// 开始下载
 						$.downloadApp();
@@ -659,7 +685,6 @@
 	}
 	// 发送分享
 	 $.doShare = function(srv, msg){
-		// outLine(JSON.stringify(msg));
 		srv.send(msg, function(){
 			console.log('分享到"'+srv.description+'"成功！');
 		}, function(e){

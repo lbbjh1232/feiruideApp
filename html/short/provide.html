@@ -141,9 +141,8 @@
 						}
 						
 					});
-					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 					var val = mui.currentWebview.val;
-					console.log(JSON.stringify(val))
 					vm.drugName = val.drug_name;
 					vm.shortName = val.drug_name;
 					vm.drugSpec = val.drug_spec;

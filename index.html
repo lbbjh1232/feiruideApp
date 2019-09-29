@@ -208,17 +208,7 @@
 			</ul>
 			 -->
 			
-			
-			<!-- 进度条 -->
-			<div class="mask" v-if="isUpdate">
-				<div class="progress">
-					<div class="pro-title">下载进度</div>
-					<div id="update" class="mui-progressbar">
-						<span></span>
-					</div>
-				</div>
-			</div>
-			
+
 			
 		</div>
 
@@ -232,7 +222,6 @@
 				el:'#app',
 				data:{
 					accountInfo:'',
-					isUpdate : false,
 				}
 			});
 			
@@ -301,7 +290,7 @@
 					
 						
 					// 通知文字轮播
-					var noticeArr = ['药械通APP上线啦','告别纸质版药品票据的时代已来临'];
+					var noticeArr = ['药械通APP上线啦','药品票据电子化的时代已来临'];
 					var title = document.getElementById('notice'),index = 0;
 					var myset = setInterval(function(){
 						var count = noticeArr.length;

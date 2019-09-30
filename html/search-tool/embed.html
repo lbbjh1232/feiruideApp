@@ -57,12 +57,19 @@
 					swipeBack: true //启用右滑关闭功能
 				});
 				mui.plusReady(function () {
-					
 					var href = mui.currentWebview.href;
 					var title = mui.currentWebview.title;
 					ws = plus.webview.currentWebview();
 					vm.title = title;
 					createEmbed(href);
+					
+					// 重写mui.back
+					
+					var old_back = mui.back;
+					mui.back = function(){
+						plus.nativeUI.closeWaiting();
+						old_back()
+					}
 					
 				})
 				

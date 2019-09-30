@@ -308,9 +308,12 @@
 						hos_name : vm.value.name,
 						drugname : vm.value.drug_name
 					}
+					
 					mui.confirm('确认采购该短缺药品吗?','提示',['取消','确认'],function (e) {
-						if(e.index == 1 ){
+						if(e.index == 1){
+							plus.nativeUI.showWaiting()
 							var res = mui.http_post(API.SURE_BUY,params);
+							plus.nativeUI.closeWaiting()
 							if(res.code == 200){
 								mui.toast(res.message);
 								getNetDrug(false);
@@ -319,7 +322,7 @@
 								mui.alert(res.message,'提示','确认',function (e) {},'div')();
 							}
 						}
-					})
+					},'div');
 					
 					
 					event = event||window.event;

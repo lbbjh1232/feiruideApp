@@ -508,6 +508,8 @@
 		var version = mui.os.android ? 1 : 2;
 		var token = pinf.token;
 		
+		alert(JSON.stringify(pinf))
+		
 		setTimeout(function() {
 			cid = pinf.clientid;
 			token = pinf.token;

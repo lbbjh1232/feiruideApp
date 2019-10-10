@@ -24,7 +24,7 @@
 					  <div class="mui-slider-group mui-slider-loop">
 						  <!-- 最后一张 -->
 							<div class="mui-slider-item mui-slider-item-duplicate">
-								<img class="slide-img" src="images/banner2.png" >
+								<img class="slide-img" src="images/banner3.png" >
 							</div>
 						
 							<div class="mui-slider-item">
@@ -36,6 +36,9 @@
 							<div class="mui-slider-item">
 								<img class="slide-img" src="images/banner2.png" >
 							</div>
+							<div class="mui-slider-item">
+								<img class="slide-img" src="images/banner3.png" >
+							</div>
 							<!-- 第一张 -->
 							<div class="mui-slider-item mui-slider-item-duplicate">
 								<img class="slide-img" src="images/banner.png" >
@@ -45,6 +48,7 @@
 				  
 					  <div class="mui-slider-indicator">
 						  <div class="mui-indicator mui-active"></div>
+						  <div class="mui-indicator"></div>
 						  <div class="mui-indicator"></div>
 						  <div class="mui-indicator"></div>
 					  </div>
@@ -274,7 +278,7 @@
 					
 					// 直接将app后台运行
 					mui.back = function(){
-						var main = plus.android.runtimeMainActivity();   
+						var main = plus.android.runtimeMainActivity();
 						main.moveTaskToBack(false); 
 					}
 				
@@ -290,7 +294,7 @@
 					
 						
 					// 通知文字轮播
-					var noticeArr = ['药械通APP上线啦','药品票据电子化的时代已来临'];
+					var noticeArr = ['药械e家APP上线啦','药品票据电子化的时代已来临'];
 					var title = document.getElementById('notice'),index = 0;
 					var myset = setInterval(function(){
 						var count = noticeArr.length;

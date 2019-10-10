@@ -133,7 +133,7 @@ var util = {
 		
 		switch(currIndex){
 			case 0:
-				text = '药械通';
+				text = '药械e家';
 				break;
 				
 			case 1: 

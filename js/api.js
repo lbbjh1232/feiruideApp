@@ -6,8 +6,8 @@ var ENVIRONMENT = PRO;
 
 // 接口地址
 var API = {
-	HOST : "http://www.yudzni.cn",
-	TICKET_HOST : 'http://ticket.yudzni.cn/uploads',
+	HOST : "https://test.yxt.feiruide.cn/index.php",
+	TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
 	CHECK_VERSION : '/user/checkVersion',
 	DOWNLOAD_APP : '/user/downloadApp',
 	SMS_CODE : '/user/smsCode',
@@ -97,7 +97,7 @@ var API = {
 };
 
 var CONFIG = {
-	WS_HOST : 'ws://119.27.185.187:8282',
+	WS_HOST : 'ws://47.98.253.189:8282',
 }
 
 // 全局数据

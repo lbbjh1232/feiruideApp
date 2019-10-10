@@ -55,7 +55,7 @@
 				data : { 
 					result : [], //消息列表
 				}  
-			})  
+			}) 
 			      
 			mui.plusReady(function () {
 				
@@ -92,7 +92,6 @@
 				mui.updateMessCount(false,true);
  
 				var websocket = function(){
-					console.log('初始化')
 					// 建立通讯 
 					ws = new WebSocket(CONFIG.WS_HOST);
 					
@@ -159,7 +158,7 @@
 				}
 				
 				//通讯初始化
-				//websocket();
+				websocket();
 				
 				// 点击进入聊天页面
 				mui('#app').on('tap','.msg-item',function(){

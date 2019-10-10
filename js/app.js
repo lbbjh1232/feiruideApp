@@ -92,7 +92,7 @@
 			headers : {auth :'Bearer ' + accountInfo.token},
 			success:function(data){
 				result = data;
-				console.log(JSON.stringify(result))
+				// console.log(JSON.stringify(result))
 			},
 			error:function(xhr,type,errorThrown){
 				result = 'fail';
@@ -507,8 +507,6 @@
 		var cid = pinf.clientid;				//客户端标识  
 		var version = mui.os.android ? 1 : 2;
 		var token = pinf.token;
-		
-		alert(JSON.stringify(pinf))
 		
 		setTimeout(function() {
 			cid = pinf.clientid;

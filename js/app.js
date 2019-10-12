@@ -559,7 +559,7 @@
 	
 	function createLoadView(){
 		// 创建遮罩层
-		var html = '<div class="progress"><div class="pro-title">下载进度</div><div id="update" class="mui-progressbar"><span></span></div></div>';
+		var html = '<div class="progress"><div class="pro-title">下载进度</div><div id="update" style="height: 8px;" class="mui-progressbar"><span></span></div></div>';
 		var mask = document.createElement('div');
 		mask.classList.add('mask');
 		mask.setAttribute('id','mask');
@@ -628,7 +628,7 @@
 			var res = $.http_post(API.CHECK_VERSION,{});
 			var newVer = res.data.app_version;
 			
-			var message = msg == undefined ? '发现了新的版本，为保障你的功能使用，请立即更新!' : msg + newVer;
+			var message = msg == undefined ? '发现了新的版本，为保障你的功能正常使用，请立即更新!' : msg + newVer;
 			if( compareVersion(wgtVer,newVer) ){
 				mui.confirm(message,'更新提示',['更新','取消'],function (e){
 				   if(e.index == 0){

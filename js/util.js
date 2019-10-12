@@ -125,6 +125,12 @@ var util = {
 		
 		// 添加好友
 		var addFriend = function(){
+			if(accountInfo==null){
+				mui.alert('请先登录','提示','确认',function (e) {
+				   e.index
+				},'div');
+				return;
+			}
 			mui.openWindow({
 				url :'html/user/user-add.html',
 				id : 'html/user/user-add.html'

@@ -49,7 +49,7 @@
 				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
 				
 				<div id="notice">
-					说明: 登录账号、密码与药品两票制电子化系统账号同步，手机号仅用于接收短信验证码。
+					说明: 登录账号、密码与药品电子化管理系统账号同步，手机号仅用于接收短信验证码。
 				</div>
 			</div>
 			
@@ -199,17 +199,17 @@
 						mui.toast('请输入短信验证码');
 						return;
 					}
-					// if( !vm.confirmPhone){
-					// 	mui.toast('还未获取短信验证码');
-					// 	return;
-					// }
+					if( !vm.confirmPhone){
+						mui.toast('还未获取短信验证码');
+						return;
+					}
 					
-					// if(vm.phone != vm.confirmPhone){
-					// 	mui.alert('输入手机号与接收短信验证码手机号不一致，请用当前手机号重新获取短信验证码','提示','确认',function (e) {
-					// 	   e.index
-					// 	},'div');
-					// 	return;
-					// }
+					if(vm.phone != vm.confirmPhone){
+						mui.alert('输入手机号与接收短信验证码手机号不一致，请用当前手机号重新获取短信验证码','提示','确认',function (e) {
+						   e.index
+						},'div');
+						return;
+					}
 					
 					var params = {
 						account:vm.account,

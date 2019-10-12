@@ -74,7 +74,7 @@
 		
 		<!-- 筛选表单栏 -->
 		<template v-if="filterShow">
-			<div class="mask" id="filter-close">
+			<div class="mask" id="filter-close"> 
 				
 				<div class="input-box animated slideInRight" id="scroll-box-two">
 					<div id="close-btn" class="close-box"><span class="iconfont icon-guanbi"></span></div>
@@ -432,7 +432,7 @@
 					
 					vm.$nextTick(function(){
 						var scorll_three = mui('#scroll-three').scroll({deceleration: 0.001});
-						var scroll_box = document.getElementById('scroll-box');
+						var scroll_box = document.getElementById('scroll-box-two');
 						var mask = document.getElementsByClassName('mask')[0];
 						var close = document.getElementById('close-btn');
 						
@@ -469,7 +469,7 @@
 							vm.JyCurrentValue = 0;
 							vm.BuyCurrentTitle = '';
 							vm.BuyCurrentValue = 0;
-							vm.ChinaCurrentTitle = '';
+							vm.ChinaCurrentTitle = ''; 
 							vm.ChinaCurrentValue = 0;
 							vm.InsuranceCurrentTitle = '';
 							vm.InsuranceCurrentValue = 0;

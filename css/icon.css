@@ -19,14 +19,14 @@
 .icon-tianjia1:before {
   content: "\e620";
   color: red;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
 }
 
 .icon-shanchu1:before{
   content: "\e653";
   color: red;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 .icon-shanchu2:before{

@@ -44,7 +44,7 @@
 		</div>
 		</div>
 		<script type="text/javascript">
-			script(['../js/mui.min.js','../js/vue.js','../js/api.js','../js/app.js']);
+			script(['../js/mui.min.js','../js/vue.js','../js/api.js','js/lib/permission.js','../js/app.js']);
 		</script>
 
 		<script>
@@ -131,16 +131,19 @@
 							case 'text':
 								mui.updateMessCount(true,true);
 								plus.device.vibrate(500);
+								mui.notice()
 								break;
 								
 							//接收图片信息
 							case 'img':
 								mui.updateMessCount(true,true);
 								plus.device.vibrate(500);
+								mui.notice()
 								break;
 							case 'sound':
 								mui.updateMessCount(true,true);
 								plus.device.vibrate(500);
+								mui.notice()
 								break;
 								
 							// 账号踢出提示

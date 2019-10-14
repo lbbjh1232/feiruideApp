@@ -3,7 +3,7 @@
     "id" : "H5537E55C", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.0.0", /*应用版本名称*/
+        "name" : "1.0.2", /*应用版本名称*/
         "code" : ""
     },
     "description" : "药械电子化管理工具", /*应用描述信息*/
@@ -396,8 +396,8 @@
                     "mdpi" : "", /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "", /*大屏启动图片，分辨率：320x442*/
                     "hdpi" : "C:/Users/Administrator/Desktop/start.9.png", /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : ""
+                    "xhdpi" : "C:/Users/Administrator/Desktop/start.9.png", /*720P高分屏启动图片，分辨率：720x1242*/
+                    "xxhdpi" : "C:/Users/Administrator/Desktop/start.9.png"
                 }
             },
             "plugins" : {

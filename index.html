@@ -13,7 +13,7 @@
 			link(['css/mui.min.css','css/iconfont.css','css/common.css','css/animate.css','css/index/index.css'],true);
 		</script>
 		
-	</head>
+	</head> 
  
 	<body>
 		
@@ -64,12 +64,15 @@
 			
 			<!-- 实用查询 -->
 			<div class="related-query">
-				<div class="query-title">【实用查询】</div>
-				<div class="query-menu" data-href="https://db.yaozh.com/instruct" data-title="药品说明书">药品说明书</div>
-				<div class="query-menu" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录">基本药物目录</div>
-				<div class="query-menu" data-href="https://db.yaozh.com/yibao" data-title="医保目录">医保目录</div>
-				<div class="query-menu" data-href="http://drugs.dxy.cn/index.htm" data-title="用药指南">用药指南</div>
-			</div>
+				<div class="query-title">实用查询</div>
+				<div class="query-menu-box">
+					<div class="query-menu" data-href="https://db.yaozh.com/instruct" data-title="药品说明书">药品说明书</div>
+					<div class="query-menu" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录">基本药物目录</div>
+					<div class="query-menu" data-href="https://db.yaozh.com/yibao" data-title="医保目录">医保目录</div>
+					<div class="query-menu" data-href="http://drugs.dxy.cn/index.htm" data-title="用药指南">用药指南</div>
+				</div>
+				 
+			</div> 
 				
 			<div class="nav-title">药品两票</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
@@ -216,7 +219,7 @@
 		</div>
 
 		<script type="text/javascript">
-			script(['js/mui.min.js','js/vue.js','js/util.js','js/api.js','js/app.js','js/lib/permission.js']);
+			script(['js/mui.min.js','js/vue.js','js/util.js','js/api.js','js/lib/permission.js','js/app.js']);
 		</script>
 		
 		<script type="text/javascript">
@@ -235,6 +238,7 @@
 					swipeBack: true //启用右滑关闭功能
 				});
 				
+				
 				var loadView = function(){
 					var accountInfo = plus.storage.getItem('accountInfo');
 					if(accountInfo != null){
@@ -245,6 +249,8 @@
 				}
 				
 				mui.plusReady(function() {
+					
+					mui.judgeStoragePermisson();
 					
 					mui.appUpdate();
 					

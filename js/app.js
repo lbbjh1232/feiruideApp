@@ -59,6 +59,25 @@
 
 // https网络请求封装
 (function($){
+	
+	// 判断存储权限是否打开
+	$.judgeStoragePermisson = function(){
+		var isOpen = permission.requestAndroidPermission('android.permission.WRITE_EXTERNAL_STORAGE');
+		isOpen.then(function(e){
+			if(e != 1){
+				mui.alert('为保证APP正常运行，请打开应用存储空间权限','提示','确认',function (e) {
+				   permission.gotoAppPermissionSetting();
+				})
+			}
+		})
+	}
+	
+	// 消息提示声
+	$.notice = function(){
+		var p = plus.audio.createPlayer( "../images/notice.wav" );
+		p.play( function () {}, function ( e ) {} );
+	}
+	
 	// 获取或生成设备唯一id
 	$.getUuid = function(){
 		var uuid = plus.storage.getItem('uuid');

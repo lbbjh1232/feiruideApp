@@ -11,7 +11,7 @@
             var html = '';  
             html += '<i class="mui-spinner mui-spinner-white"></i>';  
             html += '<p class="text">' + (message || "数据加载中") + '</p>';  
-
+ 
             //遮罩层  
             var mask=document.getElementsByClassName("mui-show-loading-mask");
             if(mask.length==0){  
@@ -20,7 +20,7 @@
                 document.body.appendChild(mask);  
                 mask.addEventListener("touchmove", function(e){e.stopPropagation();e.preventDefault();});  
             }else{  
-                mask[0].classList.remove("mui-show-loading-mask-hidden");  
+                mask[0].classList.remove("mui-show-loading-mask-hidden");
             }  
             //加载框  
             var toast=document.getElementsByClassName("mui-show-loading");  
@@ -682,7 +682,7 @@
 		});
 	};
 	
-	// 分享
+	// 微信分享
 	 $.share = function(srv, msg, button){
 	  if(!srv){
 	    // outLine('无效的分享服务！');
@@ -709,6 +709,11 @@
 		}, function(e){
 			console.log('分享到"'+srv.description+'"失败: '+JSON.stringify(e));
 		});
+	}
+	
+	// 拉起微信小程序
+	$.launchMiniPorgram = function(){
+		
 	}
 	
 	

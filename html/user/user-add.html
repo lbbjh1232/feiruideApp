@@ -35,7 +35,7 @@
 			
 				
 			<template v-for="(item,index) in result">
-				<div class="msg-item" >
+				<div class="msg-item deletes" v-bind:data-index="index">
 					<div class="avatar-box">   
 						<img v-bind:src="item.avatar" onerror="this.src='../../images/logo.png'" />
 					</div>
@@ -47,9 +47,9 @@
 						</div> 
 						<div class="msg-record">{{item.comp_name}} </div>  
 					</div>
-					<div  class="delete" v-bind:data-index="index">
+					<!-- <div  class="delete" v-bind:data-index="index">
 						添加
-					</div>
+					</div> -->
 				</div>
 			</template>
 			
@@ -155,7 +155,7 @@
 				});
 				
 				// 点击添加好友
-				mui('#app').on('tap','.delete',function(e){
+				mui('#app').on('tap','.deletes',function(e){
 					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 					var index = this.dataset.index;
 					var current = vm.result[index];
@@ -210,21 +210,21 @@
 				
 				
 				// 监听删除左滑动,右滑动
-				mui('#app').on('swipeleft','.msg-item',function(e){
-					var that = this;
-					this.style.transform = "translateX(-6.5rem)";
+				// mui('#app').on('swipeleft','.msg-item',function(e){
+				// 	var that = this;
+				// 	this.style.transform = "translateX(-6.5rem)";
 					
-					mui('.msg-item').each(function(){
-						if(that != this){
-							this.style.transform = "translateX(0rem)";
-						}
+				// 	mui('.msg-item').each(function(){
+				// 		if(that != this){
+				// 			this.style.transform = "translateX(0rem)";
+				// 		}
 						
-					});
-				})
+				// 	});
+				// })
 				
-				mui('#app').on('swiperight','.msg-item',function(e){
-					this.style.transform = "translateX(0rem)";
-				})
+				// mui('#app').on('swiperight','.msg-item',function(e){
+				// 	this.style.transform = "translateX(0rem)";
+				// })
 				
 			})
 			

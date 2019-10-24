@@ -3,7 +3,7 @@
     "id" : "H5537E55C", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.0.2", /*应用版本名称*/
+        "name" : "1.0.5", /*应用版本名称*/
         "code" : ""
     },
     "description" : "药械电子化管理工具", /*应用描述信息*/
@@ -86,9 +86,6 @@
         "Maps" : {
             "description" : "管理地图插件"
         },
-        "Speech" : {
-            "description" : "管理语音识别插件"
-        },
         "Webview" : {
             "description" : "窗口管理"
         },
@@ -112,7 +109,7 @@
             "bottom" : "0px",
             "background" : "#fff",
             "titleNView" : {
-                "backgroundcolor" : "#00C5CD",
+                "backgroundcolor" : "#3383FC",
                 "titletext" : "药械e家",
                 "titlecolor" : "#ffffff"
             },
@@ -395,15 +392,13 @@
                 "android" : {
                     "mdpi" : "", /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "", /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "C:/Users/Administrator/Desktop/start.9.png", /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "C:/Users/Administrator/Desktop/start.9.png", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "C:/Users/Administrator/Desktop/start.9.png"
+                    "hdpi" : "D:/备份/images/start.9.png", /*高分屏启动图片，分辨率：480x762*/
+                    "xhdpi" : "D:/备份/images/start.9.png", /*720P高分屏启动图片，分辨率：720x1242*/
+                    "xxhdpi" : "D:/备份/images/start.9.png"
                 }
             },
             "plugins" : {
-                "speech" : {
-                    "ifly" : {}
-                },
+                "speech" : {},
                 "push" : {
                     "unipush" : {}
                 },

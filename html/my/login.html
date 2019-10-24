@@ -41,7 +41,7 @@
 					<label>短信验证</label>
 					<input id='smsInput' type="text" v-model="smsNumber" class="code" placeholder="请输入短信验证码">
 					<div id="smsCode" v-if="!sending" >{{notice}}</div>
-					<div class="sms-sending" v-else >{{countDown}}s</div>
+					<div class="sms-sending" v-if="sending" >{{countDown}}s</div>
 				</div>
 			</form>
 			

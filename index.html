@@ -10,14 +10,36 @@
 		</script>
 		
 		<script type="text/javascript">
-			link(['css/mui.min.css','css/iconfont.css','css/common.css','css/animate.css','css/index/index.css'],true);
+			link(['css/mui.min.css','css/iconfont.css','css/icon.css','css/common.css','css/animate.css','css/index/index.css'],true);
 		</script>
 		
-	</head> 
+	</head>
  
 	<body>
 		
 		<div class="mui-content" id="app">
+			<!-- 实用查询 -->
+			<div class="catelog-box">
+				<div class="catelog-item" data-href="https://db.yaozh.com/instruct" data-title="药品说明书">
+					<div class="catelog-log iconfont1 icon-shuomingshu"></div>
+					<div class="catelog-name">药品说明书</div>
+				</div>
+				<div class="catelog-item" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录">
+					<div class="catelog-log iconfont1 icon-jiyao"></div>
+					<div class="catelog-name">基药目录</div>
+				</div>
+				<div class="catelog-item" data-href="https://db.yaozh.com/yibao" data-title="医保目录">
+					<div class="catelog-log iconfont1 icon-jibao"></div>
+					<div class="catelog-name">医保目录</div>
+				</div>
+				<div class="catelog-item" data-href="http://drugs.dxy.cn/index.htm" data-title="用药指南">
+					<div class="catelog-log iconfont1 icon-yongyaozhinan"></div>
+					<div class="catelog-name">用药指南</div>
+				</div>
+				
+				
+			</div>
+			
 			<!-- 轮播图 -->
 			<div class="banner-box">		
 				<div class="mui-slider" id="slider">
@@ -62,18 +84,6 @@
 				<div class="notice-more"></div>
 			</div>
 			
-			<!-- 实用查询 -->
-			<div class="related-query">
-				<div class="query-title">实用查询</div>
-				<div class="query-menu-box">
-					<div class="query-menu" data-href="https://db.yaozh.com/instruct" data-title="药品说明书">药品说明书</div>
-					<div class="query-menu" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录">基本药物目录</div>
-					<div class="query-menu" data-href="https://db.yaozh.com/yibao" data-title="医保目录">医保目录</div>
-					<div class="query-menu" data-href="http://drugs.dxy.cn/index.htm" data-title="用药指南">用药指南</div>
-				</div>
-				 
-			</div> 
-				
 			<div class="nav-title">药品两票</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
 				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
@@ -259,7 +269,7 @@
 					
 					//监听系统通知栏消息点击事件  
 					plus.push.addEventListener('click', function(msg){
-						
+						plus.push.clear();
 					}, false);
 					
 					//接收透传消息
@@ -296,8 +306,6 @@
 					 slider.slider({
 						interval: 1000
 					 });
-					
-					
 						
 					// 通知文字轮播
 					var noticeArr = ['药械e家APP上线啦','药品票据电子化的时代已来临'];
@@ -307,7 +315,6 @@
 						if(index <= count-1){
 							title.innerText = '';
 							title.classList.remove('slideInUp');
-							
 							title.innerText = noticeArr[index];
 							title.classList.add('slideInUp');
 							++index;
@@ -458,7 +465,7 @@
 					})
 					
 					// 使用查询
-					mui('.related-query').on('tap','.query-menu',function(){
+					mui('.catelog-box').on('tap','.catelog-item',function(){
 						var href = this.dataset.href;
 						var title = this.dataset.title;
 						var win = 'html/search-tool/embed.html';

@@ -11,8 +11,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
 .icon-xiaoxi1:before {
   content: "\e7f3";
 }
@@ -111,7 +109,7 @@
 	font-size: 1.6rem;
 }
 .icon-guanbi:before {
-  content: "\e649";
+  content: "\e61d";
 	color:red;
 	font-size: 1.6rem;
 }

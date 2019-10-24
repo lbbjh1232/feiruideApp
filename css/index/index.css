@@ -30,7 +30,7 @@ body {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	border-bottom: 0.1rem solid rgba(105,105, 105,.1);
+	border-bottom: 0.1rem solid rgba(190,190, 190,.1);
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 }
@@ -99,7 +99,7 @@ body {
 	display: -webkit-flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	border-bottom: 0.1rem solid rgba(105,105, 105,.1);
+	border-bottom: 0.1rem solid rgba(190,190, 190,.1);
 	align-items: flex-start;
 }
 .query-menu-box{
@@ -126,6 +126,7 @@ body {
 	font-size: 1.3rem;
 	color:#1E90FF;
 	margin-left: 10px;
+	margin-bottom: 8px;
 }
 .progress{
 	width: 80%;
@@ -136,8 +137,35 @@ body {
 	font-size: 1.5rem;
 	padding-bottom: 5px;
 }
+.catelog-box{
+	background-color: #3383FC;
+	padding: 15px 8px;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+.catelog-box .catelog-item{
+	width: 22%;
+	text-align: center;
+	padding:12px 8px;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
+	background: rgba(255,255,255,.1);
+	border-radius: 5px;
+}
 
-
+.catelog-box .catelog-item .catelog-name{
+	font-size: 1.3rem;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	color: rgba(255,255,255,.8);
+	padding-top: 5px;
+}
 
 
 

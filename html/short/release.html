@@ -43,7 +43,7 @@
 				<div  class='mui-input-row'>
 					<label>药品名称</label>
 					<input type="text" class="mui-input-clear" v-model="drugName" placeholder="输入或选择药品名称">
-					<div class="iconfont icon-tianjia1 add-group1" id="chooseDrug"></div>
+					<div class="iconfont1 icon-tianjia1 add-group1" id="chooseDrug"></div>
 				</div>
 	
 				<div class="mui-input-row" >
@@ -128,8 +128,8 @@
 								value:1,
 								text:'限定'
 							}],
-							appointDrugText:'',
-							appointDrugValue:'',
+							appointDrugText:0,
+							appointDrugValue:'不限定',
 							
 							//限定生产厂家
 							supLimit: [{
@@ -139,8 +139,8 @@
 								value: 1,
 								text: '限定'
 							}],
-							appointProText: '',
-							appointProValue: '',
+							appointProText: '不限定',
+							appointProValue: 0,
 							produce : '',
 							netPrice : '',
 							count : '',

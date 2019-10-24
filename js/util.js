@@ -1,6 +1,6 @@
 var util = {
 	options: {
-		ACTIVE_COLOR: "#00C5CD",
+		ACTIVE_COLOR: "#3383FC",
 		NORMAL_COLOR: "#000",
 		subpages: ["html/message.html","html/friend.html", "html/my.html"]
 	},
@@ -18,7 +18,7 @@ var util = {
 	initSubpage: function(aniShow) {
 		
 		// 设置顶部状态栏
-		plus.navigator.setStatusBarBackground('#00C5CD');
+		plus.navigator.setStatusBarBackground('#3383FC');
 		
 		var subpage_style = {
 				top: 0,

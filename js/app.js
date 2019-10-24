@@ -65,7 +65,7 @@
 		var isOpen = permission.requestAndroidPermission('android.permission.WRITE_EXTERNAL_STORAGE');
 		isOpen.then(function(e){
 			if(e != 1){
-				mui.alert('为保证APP正常运行，请打开应用存储空间权限','提示','确认',function (e) {
+				mui.alert('为保证APP正常运行，请打开应用存储权限','提示','确认',function (e) {
 				   permission.gotoAppPermissionSetting();
 				})
 			}

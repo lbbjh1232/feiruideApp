@@ -5,8 +5,8 @@
 	display: -webkit-flex;
 	flex-direction: row;
 	padding: 1.8rem 5%;
-	background: linear-gradient(rgba(0,197,205,1),rgba(0,197,205,.6));
-	background: -webkit-linear-gradient(rgba(0,197,205,1),rgba(0,197,205,.6));
+	background: linear-gradient(rgba(51,131,252,1),rgba(51,131,252,.6));
+	background: -webkit-linear-gradient(rgba(51,131,252,1),rgba(51,131,252,.6));
 	align-items: center;
 }
 .userinfo-left img{

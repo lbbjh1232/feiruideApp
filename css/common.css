@@ -16,7 +16,7 @@ body {
 	padding: 0px;
 }
 /* *{touch-action: none;} */
-* { touch-action: pan-y; } 
+/* * { touch-action: pan-y; } */
 
 [v-cloak] {
   display: none;

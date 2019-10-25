@@ -12,7 +12,7 @@
 		<script type="text/javascript">
 			link(['css/mui.min.css','css/iconfont.css','css/icon.css','css/common.css','css/animate.css','css/index/index.css'],true);
 		</script>
-		
+	
 	</head>
  
 	<body>
@@ -83,6 +83,14 @@
 				</div>
 				<div class="notice-more"></div>
 			</div>
+			
+			<div class="divided-module"></div>
+			
+			<!-- <div class="slide-box">
+				<div class="slide-item slide-active" data-index="1">药品两票</div>
+				<div class="slide-item" data-index="2">药检报告</div>
+				<div class="slide-item" data-index="3">药品采购</div>
+			</div> -->
 			
 			<div class="nav-title">药品两票</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
@@ -157,7 +165,7 @@
 			</ul>
 			
 			<div class="nav-title">药品采购</div>
-			<ul class="mui-table-view mui-grid-view mui-grid-9" >
+			<ul  class="mui-table-view mui-grid-view mui-grid-9" >
 				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
 					<a href="javascript:void(0)" data-href="html/short/index.html" id="short">
 						<span class="mui-icon iconfont icon-xuqiu"></span>
@@ -166,6 +174,7 @@
 				</li>
 			</ul>
 			
+			<div class="divided-module"></div>
 			<!-- 
 			<div class="nav-title">新药申报</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9">
@@ -224,7 +233,7 @@
 			</ul>
 			 -->
 			
-
+			<!-- 新闻版块 -->
 			
 		</div>
 
@@ -238,6 +247,7 @@
 				el:'#app',
 				data:{
 					accountInfo:'',
+					currentIndex : 1
 				}
 			});
 			
@@ -245,7 +255,7 @@
 			(function() {
 				
 				mui.init({
-					swipeBack: true //启用右滑关闭功能
+					swipeBack: false
 				});
 				
 				
@@ -263,6 +273,21 @@
 					mui.judgeStoragePermisson();
 					
 					mui.appUpdate();
+					
+					// 菜单栏选择
+					// var slides = document.getElementsByClassName('slide-item');
+					// mui('.slide-box').on('tap','.slide-item',function(){
+					// 	var index = this.dataset.index,that = this;
+					// 	vm.currentIndex = index;
+					// 	this.classList.add('slide-active');
+					// 	// 删除未点击的样式
+					// 	mui('.slide-item').each(function(){
+					// 		if(this !== that){
+					// 			this.classList.remove('slide-active')
+					// 		}
+					// 	})
+						
+					// })
 					
 					// 获取设备clientid并存储
 					mui.getClientId();

@@ -482,7 +482,7 @@
 								mui.toast('配送信息不能为空');
 								return;
 							}
-							var res = mui.http_post(API.MODIFY_PROVIDE,{deliveryInfo : vm.deliveryInfo , pid : value.id,sing : 2});
+							var res = mui.http_post(API.MODIFY_PROVIDE,{deliveryInfo : vm.deliveryInfo , pid : value.id,sign : 2});
 							if(res.code == 200){
 								mui.toast(res.message);
 								getNetDrug(false);

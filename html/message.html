@@ -19,7 +19,7 @@
 		<div id="app">
 			 
 			<template v-for="(item,index) in result">  
-			<div class="msg-item" v-bind:data-id="item.id" v-bind:data-name="item.name" v-bind:data-avatar="item.avatar">   
+			<div class="msg-item" v-bind:data-id="item.id" v-bind:data-name="item.name" v-bind:data-avatar="item.avatar">
 				<div class="avatar-box">   
 					<img v-bind:src="item.avatar?item.avatar:'logo.png'" onerror="this.src='../images/logo.png'" />
 					<div v-if="item.count > 0" class="count-notice">{{item.count > 9 ? '9+':item.count}}</div>
@@ -31,7 +31,7 @@
 						<div class="name-right">{{item.info.time}}</div>
 					</div> 
 					<div class="msg-record">{{item.info.content}}</div>  
-				</div> 
+				</div>
 				
 				<div v-bind:data-toid="item.id" class="delete">
 					删除

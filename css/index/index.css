@@ -104,11 +104,11 @@ body {
 }
 .catelog-box{
 	background-color: #3383FC;
-	padding: 15px 8px;
+	padding: 15px 1rem;
 	display: flex;
 	display: -webkit-flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-between;
 }
 .catelog-box .catelog-item{
 	width: 22%;
@@ -131,32 +131,77 @@ body {
 	color: rgba(255,255,255,.8);
 	padding-top: 5px;
 }
-.slide-box{
-	display: box;
-	display: -webkit-box;
-	overflow-x: scroll;
-	-webkit-overflow-scrolling:touch;
-	margin: 10px  1rem 0;
-	border-bottom: 1px solid #EEEEEE;
-}
-.slide-item{
-	margin-right: 1rem;
-	padding-bottom: 8px;
-	font-size: 1.3rem;
-}
-.slide-active{
-	border-bottom: 2px solid #3383FC;
-	font-weight: bold;
-	color: #3383FC;
-	font-size: 1.5rem;
-}
-
 .divided-module{
 	height: 15px;
-	background: rgba(237,242,245,.8);
+	background: rgba(237,242,245,.3);
 	/* margin-bottom: 18px; */
 }
 
-
+/* 新闻模块 */
+.title-box{
+	padding: 1rem;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.news-title{
+	font-size: 2rem;
+}
+.news-subtitle{
+	font-size: 1.2rem;
+	color: gray;
+}
+.more{
+	font-size: 1.2rem;
+	padding: 0 10px;
+	color: #0062CC;
+	/* border: 1px solid #0062CC; */
+	border-radius: 5px;
+}
+.news-box{
+	height: 7.5rem;
+	margin: 0 1rem 1rem;
+	padding-bottom: 0.8rem;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: stretch;
+	border-bottom: 1px solid rgba(156,156,156,.1);
+}
+.news-box .news-left{
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	align-content: space-between;
+	width: 75%;
+	height: 100%;
+	flex-wrap: wrap;
+}
+.news-box .news-left .news-name{
+	width: 100%;
+	font-size: 1.5rem;
+	-webkit-line-clamp: 2;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	line-height: 1.5;
+}
+.news-box .news-left .news-date{
+	font-size: 1.2rem;
+	color: gray;
+	padding-top: 8px;
+}
+.news-box .news-right{
+	height: 100%;
+	width: 20%;
+}
+.news-box .news-right img{
+	
+	width: 100%;
+	height: 100%;
+}
 
 

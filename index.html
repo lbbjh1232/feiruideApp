@@ -86,12 +86,6 @@
 			
 			<div class="divided-module"></div>
 			
-			<!-- <div class="slide-box">
-				<div class="slide-item slide-active" data-index="1">药品两票</div>
-				<div class="slide-item" data-index="2">药检报告</div>
-				<div class="slide-item" data-index="3">药品采购</div>
-			</div> -->
-			
 			<div class="nav-title">药品两票</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
 				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
@@ -174,7 +168,7 @@
 				</li>
 			</ul>
 			
-			<div class="divided-module"></div>
+			<div class="divided-module"></div> 
 			<!-- 
 			<div class="nav-title">新药申报</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9">
@@ -234,6 +228,42 @@
 			 -->
 			
 			<!-- 新闻版块 -->
+			<div class="title-box">
+				<div class="news-title">新闻资讯 <span class="news-subtitle">实时掌握行业信息</span></div>
+				<div class="more">更多 &gt;&gt;</div>
+			</div>
+			
+			<div class="news-box">
+				<div class="news-left">
+					<div class="news-name">泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营</div>
+					<div class="news-date">2019-10-29</div>
+				</div>
+				<div class="news-right">
+					<img src="images/banner.png" />
+				</div>
+			</div>
+			
+			<div class="news-box">
+				<div class="news-left">
+					<div class="news-name">教育部：严格落实学校相关负责人陪餐制度</div>
+					<div class="news-date">2019-10-22</div>
+				</div>
+				<div class="news-right">
+					<img src="images/banner1.png" />
+				</div>
+			</div>
+			
+			<div class="news-box">
+				<div class="news-left">
+					<div class="news-name">阿里抛出零售新路线——全触点数字化 </div>
+					<div class="news-date">2019-10-19</div>
+				</div>
+				<div class="news-right">
+					<img src="images/banner2.png" />
+				</div>
+			</div>
+			
+			<!-- <div class="divided-module"></div> -->
 			
 		</div>
 
@@ -274,27 +304,52 @@
 					
 					mui.appUpdate();
 					
-					// 菜单栏选择
-					// var slides = document.getElementsByClassName('slide-item');
-					// mui('.slide-box').on('tap','.slide-item',function(){
-					// 	var index = this.dataset.index,that = this;
-					// 	vm.currentIndex = index;
-					// 	this.classList.add('slide-active');
-					// 	// 删除未点击的样式
-					// 	mui('.slide-item').each(function(){
-					// 		if(this !== that){
-					// 			this.classList.remove('slide-active')
-					// 		}
-					// 	})
-						
-					// })
-					
 					// 获取设备clientid并存储
 					mui.getClientId();
 					
 					//监听系统通知栏消息点击事件  
 					plus.push.addEventListener('click', function(msg){
-						plus.push.clear();
+						var payload = JSON.parse(msg.payload);
+						var type = payload.type;
+						// 判断是否登录
+						var accountInfo = plus.storage.getItem('accountInfo');
+						if( accountInfo == null ){
+							mui.toast('请先登录');
+							return;
+						}
+						switch (type){
+							case 'chat':
+								mui.openWindow({
+									url:"html/my/customer-chat.html",
+									id:"html/my/customer-chat.html",
+									extras:{
+										toInfo:{
+											id : payload.fromid,
+											name : payload.username,
+											avatar : payload.avatar
+										}
+									}
+								});
+								break;
+							
+							case 'useradd':
+								mui.openWindow({
+									url : 'html/user/new-friend.html',
+									id : 'html/user/new-friend.html',
+									show:{
+										autoShow:false,
+									}
+								});
+								
+							case 'short':
+								mui.trigger(document.getElementById('short'),'tap');
+								break;
+								
+							default:
+								break;
+						}
+						
+						
 					}, false);
 					
 					//接收透传消息
@@ -305,14 +360,6 @@
 						if(mui.os.ios){
 							//苹果系统
 							
-						}else{
-							//安卓系统
-							switch(payload.type){
-								case 'chat':
-									//来自聊天消息推送,无操作
-									break;
-								
-							}
 						}
 						
 					},false)

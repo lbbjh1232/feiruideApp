@@ -18,7 +18,8 @@ var loadView = function(){
 	}else{
 		vm.accountInfo = false;
 	}
-}
+};
+var sweixin = '';
 
 
 
@@ -27,6 +28,9 @@ mui.plusReady(function () {
 	//初始化
 	loadView();
 	var adminInfo = mui.getAdminId(),ws;
+	
+	//初始化微信服务
+	mui.updateSerivces();
 	
 	var currentView = plus.webview.currentWebview();
 	// 页面show监听
@@ -66,11 +70,19 @@ mui.plusReady(function () {
 		})
 	})
 	
-	 // 跳转至注册页
+	 // 跳转至小程序注册
 	mui('.mui-table-view').on('tap','#toReg',function(){
-		mui.openWindow({
-			url:"my/reg.html"
-		})
+		if(!sweixin){
+			plus.nativeUI.toast('未配置微信分享模块');
+			return;
+		}
+		sweixin.launchMiniProgram({
+			id: 'gh_b23524c39027',		// 小程序原始ID
+			type: 0										// 正式版
+		});
+		// mui.openWindow({
+		// 	url:"my/reg.html"
+		// })
 	})
 	
 	// 退出登录

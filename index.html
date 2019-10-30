@@ -230,7 +230,7 @@
 			<!-- 新闻版块 -->
 			<div class="title-box">
 				<div class="news-title">新闻资讯 <span class="news-subtitle">实时掌握行业信息</span></div>
-				<div class="more">更多 &gt;&gt;</div>
+				<div class="more" id="news-more">更多 &gt;&gt;</div>
 			</div>
 			
 			<div class="news-box">
@@ -546,6 +546,27 @@
 						ws.show('pop-in');
 					})
 					
+					// 查看新闻更多
+					document.getElementById('news-more').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'html/news/news-more.html',
+							id : 'html/news/news-more.html',
+							show : {
+								autoShow:true
+							}
+						})
+					})
+					
+					//新闻详情页
+					 mui('#app').on('tap','.news-box',function(){
+						 mui.openWindow({
+							 url : 'html/news/news-detail.html',
+							 id : 'html/news/news-detail.html',
+							 show : {
+								 autoShow : true
+							 }
+						 })
+					 })
 					
 				});
 			})();

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>新闻资讯</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css',],true);
+		</script>
+		<style type="text/css">
+			body{
+				background-color: #FFFFFF;
+			}
+			.mui-content{
+				margin-top: 1rem;
+			}
+		</style>
+
+	</head>
+ 
+	<body> 
+	
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新闻资讯</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			
+			<div class="news-box">
+				<div class="news-left">
+					<div class="news-name">泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营</div>
+					<div class="news-date">2019-10-29</div>
+				</div>
+				<div class="news-right">
+					<img src="../../images/banner.png" />
+				</div>
+			</div>
+			
+			<div class="news-box">
+				<div class="news-left">
+					<div class="news-name">教育部：严格落实学校相关负责人陪餐制度</div>
+					<div class="news-date">2019-10-22</div>
+				</div>
+				<div class="news-right">
+					<img src="../../images/banner1.png" />
+				</div>
+			</div>
+			
+			<div class="news-box">
+				<div class="news-left">
+					<div class="news-name">阿里抛出零售新路线——全触点数字化 </div>
+					<div class="news-date">2019-10-19</div>
+				</div>
+				<div class="news-right">
+					<img src="../../images/banner2.png" />
+				</div>
+			</div>
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh : {
+				container:"#app",
+				down : {
+					style:'circle',
+					color:'#3383FC', 
+					height:'50px',
+					range:'100px', 
+					offset:'0px', 
+					auto: false,
+					callback :function(){
+						alert('你好') 
+						mui('#app').pullRefresh().endPulldown();
+					} 
+			    },
+				up : {
+				      height:50,
+				      auto:false,
+				      contentrefresh : "正在加载...",
+				      contentnomore:'没有更多数据了',
+				      callback :function(){
+						  alert('上拉')
+						  this.endPullupToRefresh(true);
+					  }
+				    }
+			}
+		});
+		
+		var vm = new Vue({
+			el : '#app',
+			data : {
+				
+			}
+		})
+		mui.plusReady(function () {
+		    
+		})
+	</script>
+	
+</html>

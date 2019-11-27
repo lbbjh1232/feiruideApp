@@ -109,8 +109,10 @@ body {
 	display: -webkit-flex;
 	flex-direction: row;
 	justify-content: space-between;
+	flex-wrap: wrap;
 }
-.catelog-box .catelog-item{
+.catelog-box .catelog-item,.catelog-box .catelog-more{
+	margin-top: 10px;
 	width: 22%;
 	text-align: center;
 	padding:12px 8px;
@@ -126,7 +128,7 @@ body {
 	padding-top: 0.5rem;
 }
 .catelog-box .catelog-item .catelog-name{
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;

@@ -36,14 +36,16 @@
 	<body >
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">药检报告</h1>
+			<h1 class="mui-title">药检报告库</h1>
 		</header>
 		
 		<div id="app">
 		<!-- 顶部操作栏 -->	
-		<div class="search-box">
-			<div class="operation-btn" id="upload" ><button type="button" class="mui-btn mui-btn-success iconfont icon-upload"> 上传</button></div>
-			<div class="operation-btn" id="my-upload"><button type="button" class="mui-btn mui-btn-success">我的上传</button></div>
+		<div class="search-box" v-cloak>
+			
+			<div class="operation-btn" id="my-upload"><button type="button" class="mui-btn mui-btn-success">我的药检</button></div>
+			<div class="operation-btn" id="upload" ><button v-if="roleid != 7" type="button" class="mui-btn mui-btn-success iconfont icon-upload"> 上传</button></div>
+			
 			<div class="operation-btn"></div>
 			<div class="operation-btn filter"><button type="button" class="mui-btn mui-btn-primary mui-btn-outlined iconfont icon-shaixuan1">筛选</button></div>
 		</div>
@@ -288,6 +290,7 @@
 				upload : upload
 			},
 			data:{
+				roleid : 7,
 				loadMore:false,  //是否显示加载更多按钮
 				searchData:{
 					pageIndex:1,
@@ -377,8 +380,99 @@
 				// 初始化滚动组件
 				var scorll_one = mui('#scroll-one').scroll({deceleration: 0.001});
 				
-				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				vm.roleid = accountInfo.roleid;
 				vm.formData.cid = accountInfo.userid;
+				
+				vm.$nextTick(function(){
+					// 上传药检报告
+					if(vm.roleid != 7){
+						document.getElementById('upload').addEventListener('tap',function(){
+						vm.uploadShow = true;
+						vm.$nextTick(function(){
+							var scorll_three = mui('#scroll-trade').scroll({deceleration: 0.001});
+							
+							// 监听关闭
+							document.getElementById('close-trade').addEventListener('tap',function(e){
+								vm.uploadShow = false;
+								vm.drug = {};
+								vm.batchNumber = '';
+								vm.reportImage = [];
+							});
+							
+							// 选择药品
+							document.getElementById('chooseDrug').addEventListener('tap',function(){
+								mui.openWindow({
+									id : 'choose-drug.html',
+									url : 'choose-drug.html',
+									show : {
+										autoShow : false
+									},
+									extras : {
+										sign : 'html/report/index.html',
+									}
+								})
+							})
+							// 上传提交
+							document.getElementById('trade-sure').addEventListener('tap',function(){
+								var drug = vm.drug;
+								if(!drug.id){
+									mui.toast('请选择药品');
+									return;
+								}
+								
+								if(!vm.batchNumber){
+									mui.toast('请输入批号');
+									return;
+								}
+								
+								if(vm.reportImage.length == 0){
+									mui.toast('请上传药检报告');
+									return;
+								}
+								var params = {
+									drugid:drug.id,
+									roleid:accountInfo.roleid,
+									companyid:accountInfo.userid,
+									userid:accountInfo.id,
+									batch : vm.batchNumber,
+									report : vm.reportImage
+								}
+								var res = mui.http_post(API.ADD_REPORT,params);
+								if(res.code == 200){
+									mui.confirm('上传成功,是否继续上传?','提示',['取消','确认'],function (e) {
+										if(e.index == 1){
+											vm.drug = {};
+											vm.batchNumber = '';
+											vm.reportImage = [];
+											
+										}else{
+											mui.trigger(document.getElementById('close-trade'),'tap')
+										}
+									},'div')
+								}else{
+									mui.alert(res.message);
+								}
+								
+							})
+							
+							
+						})
+					})
+					}
+					
+					//我的上传
+					document.getElementById('my-upload').addEventListener('tap',function(){
+						mui.openWindow({
+							url : 'my-report.html',
+							id : 'my-report.html',
+							show : {
+								autoShow : true,
+							}
+						})
+					})
+					
+				})
 				
 				// 首次ajax获取数据后关闭等待窗口
 				getNetDrug(true);
@@ -506,90 +600,6 @@
 
 				})
 				
-				// 上传药检报告
-				document.getElementById('upload').addEventListener('tap',function(){
-					vm.uploadShow = true;
-					vm.$nextTick(function(){
-						var scorll_three = mui('#scroll-trade').scroll({deceleration: 0.001});
-						
-						// 监听关闭
-						document.getElementById('close-trade').addEventListener('tap',function(e){
-							vm.uploadShow = false;
-							vm.drug = {};
-							vm.batchNumber = '';
-							vm.reportImage = [];
-						});
-						
-						// 选择药品
-						document.getElementById('chooseDrug').addEventListener('tap',function(){
-							mui.openWindow({
-								id : 'choose-drug.html',
-								url : 'choose-drug.html',
-								show : {
-									autoShow : false
-								},
-								extras : {
-									sign : 'html/report/index.html',
-								}
-							})
-						})
-						// 上传提交
-						document.getElementById('trade-sure').addEventListener('tap',function(){
-							var drug = vm.drug;
-							if(!drug.id){
-								mui.toast('请选择药品');
-								return;
-							}
-							
-							if(!vm.batchNumber){
-								mui.toast('请输入批号');
-								return;
-							}
-							
-							if(vm.reportImage.length == 0){
-								mui.toast('请上传药检报告');
-								return;
-							}
-							var params = {
-								drugid:drug.id,
-								roleid:accountInfo.roleid,
-								companyid:accountInfo.userid,
-								userid:accountInfo.id,
-								batch : vm.batchNumber,
-								report : vm.reportImage
-							}
-							var res = mui.http_post(API.ADD_REPORT,params);
-							if(res.code == 200){
-								mui.confirm('上传成功,是否继续上传?','提示',['取消','确认'],function (e) {
-									if(e.index == 1){
-										vm.drug = {};
-										vm.batchNumber = '';
-										vm.reportImage = [];
-										
-									}else{
-										mui.trigger(document.getElementById('close-trade'),'tap')
-									}
-								},'div')
-							}else{
-								mui.alert(res.message);
-							}
-							
-						})
-						
-						
-					})
-				})
-				
-				//我的上传
-				document.getElementById('my-upload').addEventListener('tap',function(){
-					mui.openWindow({
-						url : 'my-report.html',
-						id : 'my-report.html',
-						show : {
-							autoShow : true,
-						}
-					})
-				})
 				
 				// 自定义获取药品
 				window.addEventListener('getDrug',function(e){

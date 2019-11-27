@@ -111,36 +111,36 @@
 	line-height:  40px;
 	background: rgba(0,0,0,.4);
 	text-align: center;
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	color: #FFFFFF;
 }
 #notice{
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	color: rgba(0,0,0,.5);
 	text-align: justify;
 }
 label{
-	font-size: 1.2rem;
+	font-size: 1.4rem;
 }
 input{
-	font-size: 1.2rem;
+	font-size: 1.4rem;
 }
 .mui-input-row label{
 	line-height:1;
 }
 @media(max-width:540px){
 	.mui-input-row label{
-		line-height:1.3;
+		line-height:1;
 	}
 }
 @media(max-width:480px){
 	.mui-input-row label{
-		line-height:1.5;
+		line-height:1.3;
 	}
 }
 @media(max-width:375px){
 	.mui-input-row label{
-		line-height:2.1;
+		line-height:1.68;
 	}
 }
 .mui-btn-block{

@@ -1,0 +1,12 @@
+.list-box{
+	padding: 8px 15px;
+}
+
+.list-box .list-item{
+	padding: 8px 0 3px 0;
+	font-size: 1.3rem;
+	/* text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap; */
+	border-bottom: 1px solid rgba(79,79,79,.1);
+}

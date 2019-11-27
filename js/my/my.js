@@ -72,17 +72,28 @@ mui.plusReady(function () {
 	
 	 // 跳转至小程序注册
 	mui('.mui-table-view').on('tap','#toReg',function(){
-		if(!sweixin){
-			plus.nativeUI.toast('未配置微信分享模块');
-			return;
-		}
-		sweixin.launchMiniProgram({
-			id: 'gh_b23524c39027',		// 小程序原始ID
-			type: 0										// 正式版
-		});
-		// mui.openWindow({
-		// 	url:"my/reg.html"
-		// })
+		// if(!sweixin){
+		// 	plus.nativeUI.toast('未配置微信分享模块');
+		// 	return;
+		// }
+		// sweixin.launchMiniProgram({
+		// 	id: 'gh_b23524c39027',		// 小程序原始ID
+		// 	type: 0										// 正式版
+		// });
+		mui.openWindow({
+			url:"my/reg.html"
+		})
+	});
+	
+	// 身份认证
+	mui('.mui-table-view').on('tap','#auth',function(){
+		mui.openWindow({
+			url:"my/auth.html",
+			id : 'my/auth.html',
+			show : {
+				autoShow : false,
+			}
+		})
 	})
 	
 	// 退出登录

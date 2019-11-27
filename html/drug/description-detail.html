@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>挂网药品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css',,'../../css/common.css','../../css/iconfont.css',],true);
+		</script>
+		<style type="text/css">
+			body{
+				background: #FFFFFF;
+			}
+			.mui-content{
+				margin: 8px 15px 15px;
+			}
+			.field-title{
+				font-size: 1.3rem;
+				color: #9C9C9C;
+				line-height: 1.6;
+				text-align: justify;
+			}
+			.field-content{
+				color: #000000;
+			}
+		</style>
+
+		
+	</head>
+
+	<body >
+		<div id="app">
+			
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">{{item.generic_name}}</h1>
+			</header>
+			
+			<div class="mui-content" >
+				
+				<div class="field-title">【通用名称】:&nbsp;<span class="field-content">{{item.generic_name}}</span></div>
+				<div class="field-title">【商品名称】:&nbsp;<span class="field-content">{{item.trade_name}}</span></div>
+				<div class="field-title">【批准文号】:&nbsp;<span class="field-content">{{item.approved_by}}</span></div>
+				<div class="field-title">【药品分类】:&nbsp;<span class="field-content">{{item.classification}}</span></div>
+				<div class="field-title">【生产企业】:&nbsp;<span class="field-content">{{item.supplier_name}}</span></div>
+				<div class="field-title">【药品性质】:&nbsp;<span class="field-content">{{item.nature}}</span></div>
+				<div class="field-title">【相关疾病】:&nbsp;<span class="field-content">{{item.related_diseases}}</span></div>
+				<div class="field-title">【性状】:&nbsp;<span class="field-content">{{item.character}}</span></div>
+				<div class="field-title">【主要成分】:&nbsp;<span class="field-content">{{item.main_ingredients}}</span></div>
+				<div class="field-title">【适应症】:&nbsp;<span class="field-content">{{item.indication}}</span></div>
+				<div class="field-title">【规格】:&nbsp;<span class="field-content">{{item.specifications}}</span></div>
+				<div class="field-title">【不良反应】:&nbsp;<span class="field-content">{{item.side_effects}}</span></div>
+				<div class="field-title">【用法用量】:&nbsp;<span class="field-content">{{item.usage_dosage}}</span></div>
+				<div class="field-title">【禁忌】:&nbsp;<span class="field-content">{{item.taboo}}</span></div>
+				<div class="field-title">【注意事项】:&nbsp;<span class="field-content">{{item.matters_needing_attention}}</span></div>
+				<div class="field-title">【孕妇及哺乳期妇女用药】:&nbsp;<span class="field-content">{{item.medication_women}}</span></div>
+				<div class="field-title">【儿童用药】:&nbsp;<span class="field-content">{{item.medication_children}}</span></div>
+				<div class="field-title">【老人用药】:&nbsp;<span class="field-content">{{item.medication_old}}</span></div>
+				<div class="field-title">【药物相互作用】:&nbsp;<span class="field-content">{{item.drug_interactions}}</span></div>
+				<div class="field-title">【药理毒理】:&nbsp;<span class="field-content">{{item.pharmacology_toxicology}}</span></div>
+				<div class="field-title">【药代动力学】:&nbsp;<span class="field-content">{{item.pharmacokinetics}}</span></div>
+				<div class="field-title">【贮藏】:&nbsp;<span class="field-content">{{item.storage}}</span></div>
+				<div class="field-title">【有效期】:&nbsp;<span class="field-content">{{item.term_validity}}</span></div>
+				
+				
+			</div>
+		</div>
+		
+	</body>
+	
+	<script src="../../js/mui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script> 
+		
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				item : {},
+				
+			}
+				
+		}); 
+		
+		mui.init();
+
+		window.onload = function(){
+			mui.plusReady(function () {
+				var item = mui.currentWebview.item;
+				vm.item = item;
+				vm.$nextTick(function(){
+					plus.nativeUI.closeWaiting();
+					mui.currentWebview.show();
+				})
+				
+				
+			})
+		}
+		
+		
+</script>
+	
+	
+	
+	
+	
+	
+</html>

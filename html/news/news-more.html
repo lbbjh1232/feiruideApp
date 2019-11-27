@@ -20,6 +20,7 @@
 			.mui-content{
 				margin-top: 1rem;
 			}
+			
 		</style>
 
 	</head>
@@ -33,35 +34,22 @@
 		
 		<div class="mui-content" id="app">
 			
-			<div class="news-box">
-				<div class="news-left">
-					<div class="news-name">泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营</div>
-					<div class="news-date">2019-10-29</div>
+			<template v-for="(item,index) in newsData">
+				<div class="news-box" :data-index="index">
+					<div class="news-left">
+						<div class="news-name">{{item.title}}</div>
+						<div class="news-date">{{item.create_time}}</div>
+					</div>
+					<div class="news-right">
+						<img :src="item.cover" onerror="this.src='../../images/60x60.gif'" />
+					</div>
 				</div>
-				<div class="news-right">
-					<img src="../../images/banner.png" />
-				</div>
+			</template>
+			<div id="">
+				
 			</div>
 			
-			<div class="news-box">
-				<div class="news-left">
-					<div class="news-name">教育部：严格落实学校相关负责人陪餐制度</div>
-					<div class="news-date">2019-10-22</div>
-				</div>
-				<div class="news-right">
-					<img src="../../images/banner1.png" />
-				</div>
-			</div>
-			
-			<div class="news-box">
-				<div class="news-left">
-					<div class="news-name">阿里抛出零售新路线——全触点数字化 </div>
-					<div class="news-date">2019-10-19</div>
-				</div>
-				<div class="news-right">
-					<img src="../../images/banner2.png" />
-				</div>
-			</div>
+	
 			
 		</div>
 	</body>
@@ -70,6 +58,25 @@
 	<script src="../../js/api.js"></script>
 	<script src="../../js/app.js"></script>
 	<script type="text/javascript">
+		function getNews(num){
+			let news = mui.http_post(API.GET_NEWS,{num : num});
+			if(news.code == 200){
+				vm.newsData = news.data.data;
+				if(news.data.more == 1){
+					vm.more = true;
+				}else{
+					vm.more = false;
+				}
+			}
+		}
+		var vm = new Vue({
+			el : '#app',
+			data : {
+				num : 20,
+				newsData : [],
+				more : true
+			}
+		})
 		mui.init({
 			pullRefresh : {
 				container:"#app",
@@ -81,31 +88,51 @@
 					offset:'0px', 
 					auto: false,
 					callback :function(){
-						alert('你好') 
+						getNews(20);
 						mui('#app').pullRefresh().endPulldown();
+						mui('#app').pullRefresh().enablePullupToRefresh();
 					} 
 			    },
-				up : {
-				      height:50,
-				      auto:false,
+				up:{
 				      contentrefresh : "正在加载...",
 				      contentnomore:'没有更多数据了',
 				      callback :function(){
-						  alert('上拉')
-						  this.endPullupToRefresh(true);
+						  vm.num = parseInt(vm.num) + 20;
+						  getNews(vm.num);
+						  if(vm.more){
+							  this.endPullupToRefresh(false);
+						  }else{
+							  this.endPullupToRefresh(true);
+						  }
 					  }
 				    }
 			}
 		});
 		
-		var vm = new Vue({
-			el : '#app',
-			data : {
-				
-			}
-		})
+		
 		mui.plusReady(function () {
-		    
+			plus.nativeUI.closeWaiting()
+			mui.currentWebview.show()
+			getNews(20);
+			
+			//新闻详情页
+			 mui('#app').on('tap','.news-box',function(){
+				 let index = this.dataset.index;
+				 let news = vm.newsData[index];
+				 mui.openWindow({
+					 url : 'news-detail.html',
+					 id : 'html/news/news-detail.html',
+					 show:{
+						 autoShow : false
+					 },
+					 extras : {
+						title : news.title,
+						conver : news.cover,
+						time : news.create_time,
+						content : news.content
+					 }
+				 })
+			 })
 		})
 	</script>
 	

@@ -18,7 +18,7 @@
 	<body >
 		<div id="app">
 			<header class="mui-bar mui-bar-nav" v-cloak>
-				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<a class="mui-icon mui-icon-left-nav mui-pull-left" id="go-back"></a>
 				<h1 class="mui-title" >{{title}}</h1>
 			</header>
 			
@@ -54,7 +54,7 @@
 			(function() {
 				
 				mui.init({
-					swipeBack: true //启用右滑关闭功能
+					// swipeBack: true //启用右滑关闭功能
 				});
 				mui.plusReady(function () {
 					var href = mui.currentWebview.href;
@@ -64,12 +64,25 @@
 					createEmbed(href);
 					
 					// 重写mui.back
-					
 					var old_back = mui.back;
 					mui.back = function(){
 						plus.nativeUI.closeWaiting();
 						old_back()
 					}
+					//控制页面回退
+					document.getElementById('go-back').addEventListener('tap',function(){
+						embed.canBack(function(e){
+							console.log(e.canBack)
+							if( e.canBack ){
+								embed.back()
+							}else{
+								mui.back()
+							}
+						})
+						
+					})
+					
+					
 					
 				})
 				

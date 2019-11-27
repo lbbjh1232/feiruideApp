@@ -16,26 +16,47 @@
 	</head>
  
 	<body>
-		
 		<div class="mui-content" id="app">
 			<!-- 实用查询 -->
 			<div class="catelog-box">
-				<div class="catelog-item" data-href="https://db.yaozh.com/instruct" data-title="药品说明书">
+				
+				<div class="catelog-item" id="to-net-drug">
+					<div class="catelog-log iconfont1 icon-guawang"></div>
+					<div class="catelog-name">挂网药品</div>
+				</div>
+				
+				<div class="catelog-item" data-href="http://drugs.dxy.cn" data-title="药品说明书" id="drug-description">
 					<div class="catelog-log iconfont1 icon-shuomingshu"></div>
 					<div class="catelog-name">药品说明书</div>
 				</div>
-				<div class="catelog-item" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录">
+				
+				<div class="catelog-item" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录" id="essential-drug">
 					<div class="catelog-log iconfont1 icon-jiyao"></div>
 					<div class="catelog-name">基药目录</div>
 				</div>
-				<div class="catelog-item" data-href="https://db.yaozh.com/yibao" data-title="医保目录">
+				
+				<div class="catelog-item" id="more">
+					<div class="catelog-log iconfont1" :class="more ? ' icon-shouqi' : ' icon-gengduo' "></div>
+				</div>
+				
+					
+				<div v-show="more" class="catelog-item catelog-url" data-href="http://cdsylbz.chengdu.gov.cn/ebaowx/html/mi.html" data-title="医保目录">
 					<div class="catelog-log iconfont1 icon-jibao"></div>
 					<div class="catelog-name">医保目录</div>
 				</div>
-				<div class="catelog-item" data-href="http://drugs.dxy.cn/index.htm" data-title="用药指南">
+				
+				<div v-show="more" class="catelog-item" data-href="http://drugs.dxy.cn/index.htm" data-title="用药指南" id="medication-guide">
 					<div class="catelog-log iconfont1 icon-yongyaozhinan"></div>
 					<div class="catelog-name">用药指南</div>
 				</div>
+				
+				<div v-show="more" class="catelog-item" id="four-and-seven">
+					<div class="catelog-log iconfont1 icon-sijiaqi"></div>
+					<div class="catelog-name">4+7品种</div>
+				</div>
+				
+				<div v-show="more" class="catelog-item" style="background: transparent;">
+				</div>	
 				
 				
 			</div>
@@ -148,7 +169,7 @@
 			 
 			</ul>
 			
-			<div class="nav-title">药检报告</div>
+			<div class="nav-title">检验报告</div>
 			<ul class="mui-table-view mui-grid-view mui-grid-9" >
 				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
 					<a href="javascript:void(0)" data-href="html/report/index.html" id="report">
@@ -233,35 +254,18 @@
 				<div class="more" id="news-more">更多 &gt;&gt;</div>
 			</div>
 			
-			<div class="news-box">
-				<div class="news-left">
-					<div class="news-name">泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营 泡泡玛特登陆阿里速卖通平台 开启全球跨境电商运营</div>
-					<div class="news-date">2019-10-29</div>
+			<template v-for="(item,index) in newsData">
+				<div class="news-box" :data-index="index">
+					<div class="news-left">
+						<div class="news-name">{{item.title}}</div>
+						<div class="news-date">{{item.create_time}}</div>
+					</div>
+					<div class="news-right">
+						<img :src="item.cover" onerror="this.src='./images/60x60.gif'"/>
+					</div>
 				</div>
-				<div class="news-right">
-					<img src="images/banner.png" />
-				</div>
-			</div>
+			</template>
 			
-			<div class="news-box">
-				<div class="news-left">
-					<div class="news-name">教育部：严格落实学校相关负责人陪餐制度</div>
-					<div class="news-date">2019-10-22</div>
-				</div>
-				<div class="news-right">
-					<img src="images/banner1.png" />
-				</div>
-			</div>
-			
-			<div class="news-box">
-				<div class="news-left">
-					<div class="news-name">阿里抛出零售新路线——全触点数字化 </div>
-					<div class="news-date">2019-10-19</div>
-				</div>
-				<div class="news-right">
-					<img src="images/banner2.png" />
-				</div>
-			</div>
 			
 			<!-- <div class="divided-module"></div> -->
 			
@@ -277,7 +281,9 @@
 				el:'#app',
 				data:{
 					accountInfo:'',
-					currentIndex : 1
+					currentIndex : 1,
+					newsData : [],
+					more : false,
 				}
 			});
 			
@@ -285,7 +291,22 @@
 			(function() {
 				
 				mui.init({
-					swipeBack: false
+					swipeBack: false,
+					pullRefresh : {
+						container:"#app",
+						down : {
+							style:'circle',
+							color:'#3383FC', 
+							height:'50px',
+							range:'100px', 
+							offset:'0px', 
+							auto: false,
+							callback :function(){
+								getNews();
+								mui('#app').pullRefresh().endPulldown();
+							}
+					    },
+					}
 				});
 				
 				
@@ -298,14 +319,84 @@
 					}
 				}
 				
+				// 获取新闻
+				function getNews(){
+					let news = mui.http_post(API.GET_NEWS,{num : 3});
+					if(news.code == 200){
+						vm.newsData = news.data.data;
+					}
+				}
+				
 				mui.plusReady(function() {
 					
-					mui.judgeStoragePermisson();
+					//mui.judgeStoragePermisson();
 					
 					mui.appUpdate();
 					
 					// 获取设备clientid并存储
 					mui.getClientId();
+					
+					// 实用查询-更多
+					mui('.catelog-box').on('tap','#more',function(){
+						let more = vm.more;
+						vm.more = !more;
+					});
+					
+					// 实用查询
+					// 挂网药品
+					mui('.catelog-box').on('tap','#to-net-drug',function(){
+						mui.openWindow({
+							 url:'html/drug/net-drug.html',
+							 id:'html/drug/net-drug.html',
+							 show:{
+								 autoShow:false,
+							 }
+						});
+					});
+					// 药品说明书
+					mui('.catelog-box').on('tap','#drug-description',function(){
+						mui.openWindow({
+							 url:'html/drug/drug-description.html',
+							 id:'html/drug/drug-description.html',
+							 show:{
+								 autoShow:false,
+							 }
+						});
+					})
+					
+					//查询基药目录
+					mui('.catelog-box').on('tap','#essential-drug',function(){
+						 mui.openWindow({
+						 	 url:'html/drug/essential-drug.html',
+						 	 id:'html/drug/essential-drug.html',
+						 	 show:{
+						 		 autoShow:false,
+						 	 }
+						 });
+					 })
+					
+					//查询用药指南
+					mui('.catelog-box').on('tap','#medication-guide',function(){
+						mui.openWindow({
+							 url:'html/drug/medication-guide.html',
+							 id:'html/drug/medication-guide.html',
+							 show:{
+								 autoShow:false,
+							 }
+						});
+					})
+					
+					// 4+7
+					mui('.catelog-box').on('tap','#four-and-seven',function(){
+						mui.openWindow({
+							 url:'html/drug/four-seven-drug.html',
+							 id:'html/drug/four-seven-drug.html',
+							 show:{
+								 autoShow:false,
+							 }
+						});
+					})
+					
 					
 					//监听系统通知栏消息点击事件  
 					plus.push.addEventListener('click', function(msg){
@@ -537,7 +628,7 @@
 					})
 					
 					// 使用查询
-					mui('.catelog-box').on('tap','.catelog-item',function(){
+					mui('.catelog-box').on('tap','.catelog-url',function(){
 						var href = this.dataset.href;
 						var title = this.dataset.title;
 						var win = 'html/search-tool/embed.html';
@@ -546,24 +637,35 @@
 						ws.show('pop-in');
 					})
 					
+					// 获取最新3条新闻
+					getNews()
+					
 					// 查看新闻更多
 					document.getElementById('news-more').addEventListener('tap',function(){
 						mui.openWindow({
 							url : 'html/news/news-more.html',
 							id : 'html/news/news-more.html',
 							show : {
-								autoShow:true
-							}
+								autoShow:false
+							} 
 						})
 					})
 					
 					//新闻详情页
 					 mui('#app').on('tap','.news-box',function(){
+						 let index = this.dataset.index;
+						 let news = vm.newsData[index];
 						 mui.openWindow({
 							 url : 'html/news/news-detail.html',
 							 id : 'html/news/news-detail.html',
-							 show : {
-								 autoShow : true
+							 show:{
+								 autoShow : false
+							 },
+							 extras : {
+								title : news.title,
+								conver : news.cover,
+								time : news.create_time,
+								content : news.content
 							 }
 						 })
 					 })

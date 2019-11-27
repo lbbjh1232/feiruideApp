@@ -1,4 +1,4 @@
-// 借口配置文件
+// 接口配置文件
 var DEV = "dev";
 var PRO = 'pro';
 // 环境选择
@@ -7,7 +7,9 @@ var ENVIRONMENT = PRO;
 // 接口地址
 var API = {
 	HOST : "https://test.yxt.feiruide.cn/index.php",
-	TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
+	//HOST : "http://www.yudzni.cn",
+	TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
+	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
 	CHECK_VERSION : '/user/checkVersion',
 	DOWNLOAD_APP : '/user/downloadApp',
 	SMS_CODE : '/user/smsCode',
@@ -20,6 +22,9 @@ var API = {
 	GET_DETAIL_TICKET : '/drug/getDetailTicket',
 	CHECK_TICKET : '/drug/checkTicket',
 	GET_COM_DRUG : '/drug/getComDrug',
+	GET_ESSENTIAL_DRUG : '/drug/getEssentialDrug',
+	GET_MEDICATION_GUIDE : '/drug/getMedicationGuide',
+	GET_DRUG_DESCRIPTION : '/drug/getDrugDescription',
 	
 	// 入库
 	GET_COM_TICKET : '/drug/getComTicket',
@@ -55,6 +60,8 @@ var API = {
 	GET_REPORT_DRUG : '/drug/getReportDrug',
 	ADD_REPORT : '/drug/addReport',
 	DEL_REPORT : '/drug/delReport',
+	GET_COMPANY : '/drug/getCompany',
+	REPORT_PUSH : '/drug/reportPush',
 	
 	// 短缺药品
 	GET_SHORTAGE : '/drug/getShortage',
@@ -72,7 +79,16 @@ var API = {
 	MODIFY_PROVIDE : '/drug/modifyProvide',
 	PRO_EDIT_SUBMIT : '/drug/proEditSubmit',
 	
+	// 账号注册 身份认证
+	REGISTER : '/user/register',
+	UPLOAD_AUTH : '/user/uploadAuth',
+	DELETE_AUTH : '/user/deleteAuth',
+	AUTH_SUBMIT : '/user/authSubmit',
+	GET_AUTH : '/user/getAuth',
 	
+	// 新闻资讯
+	GET_NEWS : '/news/getNews',
+	NEWS_DETAIL : '/news/newsDetail',
 	
 	
 

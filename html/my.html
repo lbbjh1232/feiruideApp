@@ -11,7 +11,7 @@
 			document.write('<script src="../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
 		<script type="text/javascript">
-			link(['../css/mui.min.css','../css/common.css','../css/iconfont.css','../css/my.css'],true);
+			link(['../css/mui.min.css','../css/common.css','../css/icon.css','../css/iconfont.css','../css/my.css'],true);
 		</script>
 
 	</head>
@@ -46,6 +46,7 @@
 						</a>
 					</li>
 					
+					
 					<li class="mui-table-view-cell">
 						<a href="javascript:void(0)" id="toReg"  class="mui-navigate-right">
 							<div class="menu-item-box">
@@ -57,6 +58,16 @@
 				</template>
 				
 				<template v-else>
+					
+					<li class="mui-table-view-cell" v-if="accountInfo.roleid == 12 ">
+						<a href="javascript:void(0)" id="auth" class="mui-navigate-right" >
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont icon-auth icon-left"></div>
+								<div class="operate-text"> 身份认证</div>
+							</div>
+						</a>
+					</li>
+					
 					<li class="mui-table-view-cell">
 						<a href="javascript:void(0)"  id="quit" class="mui-navigate-right">
 							<div class="menu-item-box">
@@ -67,7 +78,7 @@
 					</li>
 				</template>
 				
-				<template v-if=" accountInfo.roleid != 1 ">
+				<template v-if="accountInfo.roleid != 1 ">
 					<li class="mui-table-view-cell">
 						<a href="javascript:void(0)" id="custmer" class="mui-navigate-right" >
 							<div class="menu-item-box">

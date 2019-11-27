@@ -9,7 +9,7 @@
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
 		<script type="text/javascript">
-			link(['../../css/mui.min.css','../../css/common.css','../../css/imageview.css','../../css/iconfont.css','../../css/icon.css','../../css/animate.css','../../css/drug/net-drug.css','../../css/drug/check-ticket.css'],true);
+			link(['../../css/mui.min.css','../../css/common.css','../../css/imageview.css','../../css/iconfont.css','../../css/icon.css','../../css/animate.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/drug/net-drug.css','../../css/drug/check-ticket.css','../../css/list.css'],true);
 		</script>
 		<style type="text/css">
 			#scroll-edit{
@@ -17,7 +17,7 @@
 				height: 100%;
 				padding: 0;
 			}
-			#scroll-trade{
+			#scroll-trade,#scroll-push{
 				top: 4rem;
 				height: calc(99% - 3.5rem);
 			}
@@ -36,7 +36,7 @@
 	<body >
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">我的上传(药检报告)</h1>
+			<h1 class="mui-title">我的药检库</h1>
 		</header>
 		
 		<div id="app">
@@ -44,7 +44,8 @@
 		<div class="search-box">
 			<div class="operation-btn" id="upload" ><button type="button" class="mui-btn mui-btn-success iconfont icon-report-edit"> 修改</button></div>
 			<div class="operation-btn" id="delete"><button type="button" class="mui-btn mui-btn-danger iconfont icon-report-del"> 删除</button></div>
-			<div class="operation-btn"></div>
+			<div class="operation-btn" v-if="roleid != 7" id="push"><button  type="button" class="mui-btn mui-btn-warning iconfont icon-short-release"> 推送</button></div>
+			<div class="operation-btn" v-else></div>
 			<div class="operation-btn filter"><button type="button" class="mui-btn mui-btn-primary mui-btn-outlined iconfont icon-shaixuan1">筛选</button></div>
 		</div>
 		
@@ -57,7 +58,8 @@
 					<div class="drug-list-box " :class="item.sign?' choosed':''" :data-index="index" v-cloak>
 						<div class='drug-list-left-part' >
 				
-							<div class='text-clip'><span class='drug-list-title'>上传单位:</span> <span class='drug-list-name'>{{item.company_name}}</span></div>
+							<!-- <div class='text-clip'><span class='drug-list-title'>上传单位:</span> <span class='drug-list-name'>{{item.company_name}}</span></div> -->
+							<div class='text-clip'><span class='drug-list-title'>报告来源:</span> <span class='drug-list-name red'>{{item.send_name?'(推送)'+item.send_name:'自传'}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{item.generic_name}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>药品批号:</span> <span class='drug-list-name'>{{item.batch_number}}</span></div>
 						
@@ -168,12 +170,50 @@
 			</div>
 		</template>
 		
+		<!-- 搜索推送公司 -->
+		<template v-if="pushShow">
+			<div class='mask' style="z-index: 14;">
+			<div class='drug-detail-box'>
+				<div class='detail-box-top'>
+					<div class='text-detail'>选择推送单位</div>
+					<div class='iconfont icon-shanchu1 close' id="close-push"></div>
+				</div>
+				<div class="mui-scroll-wrapper" id="scroll-push">
+					<div class="mui-scroll">
+						<div class="mui-input-row">
+							<label>下游单位</label>
+							<input type="text"  class="" v-model="companyName"  placeholder="单位名称">
+						</div>
+						<div class="mui-input-row" id="role-choose">
+							<label>单位角色</label>
+							<input type="text"  class=""  readonly v-model="roleName" placeholder="选择角色">
+						</div>
+						
+						<div class="report-btn" style="margin-top:0;width: 100%;">
+							<button type="button" style="width: 100%;"  id="push-search" class="mui-btn mui-btn-success">搜 索</button>
+						</div>
+						
+						<div class="list-box">
+							<template v-for="(item,index) in companyData">
+								<div class="list-item" :data-id="item.id" >{{item.name}}</div>
+							</template>
+							
+						</div>
+						
+						
+					</div>
+				</div>
+			</div>
+			</div>
+		</template>
 		
 		</div> 
 	</body>
 	
 	<script src="../../js/mui.js"></script>
 	<script src="../../js/vue.js"></script>
+	<script src="../../js/lib/picker/mui.picker.min.js"></script>
+	<script src="../../js/lib/picker/mui.poppicker.js"></script>
 	<script src="../../js/lib/mui.zoom.js"></script>
 	<script src="../../js/lib/mui.previewimage.js"></script>
 	<script src="../../js/api.js"></script> 
@@ -289,6 +329,7 @@
 				upload : upload
 			},
 			data:{
+				roleid : 7,
 				value : '',
 				loadMore:false,  //是否显示加载更多按钮
 				searchData:{
@@ -308,7 +349,19 @@
 				reportImage : [],
 				formData:{text : '药检报告'},
 				drug : {},
-				batchNumber : ''
+				batchNumber : '',
+				pushShow : false,
+				companyName : '',
+				role : [{
+					text : '医疗机构',
+					value : 7,
+				},{
+					text : '经营企业',
+					value : 6
+				}],
+				roleName : '医疗机构',
+				roleValue : 7,
+				companyData : [],
 			},
 			methods:{
 				// 删除票据
@@ -372,7 +425,24 @@
 				}
 			}
 		}
+		
+		// 搜索公司函数
+		function searchCompany(){
+			let params = {
+				roleid : vm.roleValue,
+				name :vm.companyName
+			};
+			plus.nativeUI.showWaiting()
+			let res = mui.http_post(API.GET_COMPANY,params);
+			plus.nativeUI.closeWaiting();
+			if(res.code == 200){
+				vm.companyData = res.data;
+			}else{
+				mui.alert(res.message,'提示','确认',function (e) {});
+			}
 			
+		}
+		
 		window.onload = function(){
 			mui.plusReady(function () {
 				// 网络错误监听
@@ -381,7 +451,8 @@
 				// 初始化滚动组件
 				var scorll_one = mui('#scroll-one').scroll({deceleration: 0.001});
 				
-				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				vm.roleid = accountInfo.roleid;
 				vm.formData.cid = accountInfo.userid;
 				
 				// 首次ajax获取数据后关闭等待窗口
@@ -579,7 +650,7 @@
 							var res = mui.http_post(API.ADD_REPORT,params);
 							if(res.code == 200){
 								mui.toast('修改成功');
-								mui.trigger(document.getElementById('close-trade'),'tap')
+								mui.trigger(document.getElementById('close-trade'),'tap');
 								getNetDrug();
 							}else{
 								mui.alert(res.message);
@@ -610,6 +681,83 @@
 							}
 						}
 					},'div')
+				})
+				
+				
+				// 推送
+				vm.$nextTick(function(){
+					document.getElementById('push').addEventListener('tap',function(){
+						var index = vm.value;
+						if(index == ''){
+							mui.toast('请选择一条记录操作');
+							return;
+						}
+						var val = vm.searchResult[index];
+						
+						vm.pushShow = true;
+						vm.$nextTick(function(){
+							var scorll_push = mui('#scroll-push').scroll({deceleration: 0.001});
+							var picker = new mui.PopPicker(),setData = vm.role;
+							// 筛选
+							document.getElementById('role-choose').addEventListener('tap',function(){
+								picker.setData(setData);
+								picker.pickers[0].setSelectedIndex(0);
+								picker.show(function(item){
+									value = item[0];
+									vm.roleName = value.text;
+									vm.roleValue = value.value;
+								})
+							});
+							
+							// 搜索单位
+							document.getElementById('push-search').addEventListener('tap',function(){
+								if(!vm.companyName){
+									mui.alert('输入要搜索的单位名称','提示','确认',function (e) {});
+									return;
+								}
+								searchCompany();
+							})
+							
+							//选中推送单位
+							mui('.list-box').on('tap','.list-item',function(){
+								let id = this.dataset.id;
+								//console.log(JSON.stringify(val))
+								let params = {
+									deptId : id,
+									roleId : vm.roleValue,
+									drugId : val.drug_id,
+									batchNumber :val.batch_number,
+									path : val.path,
+									sendUserId : accountInfo.id
+								}
+								
+								mui.confirm('确认推送吗?','提示',['取消','确认'],function (e) {
+									if(e.index == 1){
+										let result = mui.http_post(API.REPORT_PUSH,params);
+										if(result.code == 200){
+											mui.toast('推送成功');
+											mui.trigger(document.getElementById('close-push'),'tap');
+										}else{
+											mui.alert(result.message,'提示','确定',function (e) {})
+										}
+									}
+								})
+								
+								
+							})
+							
+							
+							// 监听关闭
+							document.getElementById('close-push').addEventListener('tap',function(e){
+								vm.pushShow = false;
+								vm.roleName = '医疗机构';
+								vm.roleValue = 7;
+								vm.companyName = '';
+								vm.companyData = [];
+							});
+							
+						})
+					})
 				})
 				
 				

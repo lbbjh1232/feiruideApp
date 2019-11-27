@@ -10,6 +10,31 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-auth:before{
+	content: "\e635";
+	color: gray;
+	/* font-size: ; */
+}
+.icon-guawang:before{
+	content: "\e610";
+	color:rgba(255,255,255,.9);
+	font-size: 2.5rem;
+}
+.icon-sijiaqi:before{
+	content: "\e62c";
+	color:rgba(255,255,255,.9);
+	font-size: 2.5rem;
+}
+.icon-shouqi:before{
+	content: "\e891";
+	color:rgba(255,255,255,.9);
+	font-size: 2.5rem;
+}
+.icon-gengduo:before{
+	content: "\e86d";
+	color:rgba(255,255,255,.9);
+	font-size: 2.5rem;
+}
 .icon-yongyaozhinan:before{
 	content: "\e711";
 	color:rgba(255,255,255,.9);

@@ -147,6 +147,12 @@
 				min-width: 35px;
 				float: left;
 			}
+			.msg-item .msg-content-img{
+				padding: 0;
+				border: none;
+				border-radius: 0;
+				background-color:transparent;
+			}
 			.msg-item .msg-content .msg-content-inner {
 				overflow-x: hidden;
 				word-wrap:break-word;
@@ -164,6 +170,7 @@
 				-webkit-transform: rotateZ(45deg);
 				transform: rotateZ(45deg);
 			}
+			
 			.msg-item-self .msg-user,
 			.msg-item-self .msg-content {
 				float: right;
@@ -179,6 +186,9 @@
 				background-color: #4CD964;
 				color: #fff;
 				border-color: #2AC845;
+			}
+			.msg-item-self .msg-content-img{
+				background-color:transparent;
 			}
 			footer .mui-icon {
 				color: #000;
@@ -345,7 +355,7 @@
 						<img class="msg-user-img" onerror="this.src='../../images/logo.png'" src="<%=info.avatar%>" alt="" />
 						
 					<% } %>
-					<div class="msg-content">
+					<div class="msg-content <%= (item.type=='img'?' msg-content-img':'') %>" >
 						<div class="msg-content-inner">
 							<% if(item.type=='text' ) { %>
 								<%=( item.content|| '&nbsp;&nbsp;') %>
@@ -356,7 +366,7 @@
 								<span class="play-state">点击播放</span>
 							<% } %>
 						</div>
-						<div class="msg-content-arrow"></div>
+						<div class="<%= (item.type=='img'?'':'msg-content-arrow') %>"></div>
 					</div>
 					
 					<div class="mui-item-clear"></div>

@@ -1,0 +1,87 @@
+.steps-box{
+	width: 100%;
+	position: fixed;
+	margin: 10px auto 20px;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.steps-item{
+	width: 25%;
+	position: relative;
+}
+.steps-item .steps-ico{
+	width: 26px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	border: #dddee1 solid 1px;
+	border-radius: 26px;
+	line-height: 24px;
+}
+.steps-ico-1{
+	text-align: center;
+	font-size: 1,5rem;
+}
+.steps-title{
+	font-size: 1.4rem;
+	text-align: center;
+	margin-top: 8px;
+	font-weight: bold;
+}
+.steps-line{
+	position: absolute;
+	width: 70%;
+	height: 1px;
+	background: #dddee1;
+	top: 12px;
+	left: -35%;
+	z-index: 0;
+}
+.steps-active .steps-ico-1{
+	color: white;
+	background: #2d8cf0;
+}
+.steps-active .steps-line{
+	background: #2d8cf0;
+}
+.auth-box{
+	margin-top: 100px;
+	padding: 0 15px;
+}
+
+/* 认证须知 */
+.notice-title{
+	text-align: center;
+	font-size: 1.8rem;
+	font-weight: bold;
+	color: #0066D6;
+}
+.notice-mark{
+	font-size: 1.6rem;
+	font-weight: bold;
+	text-align: justify;
+	margin-top: 10px;
+}
+.notice-item{
+	font-size: 1.6rem;
+	margin-top: 8px;
+	text-align: justify;
+	line-height: 1.5;
+}
+.notice button{
+	width: 80%;
+	display: block;
+	margin: 15px auto;
+	font-size: 1.8rem;
+}
+.account-title{
+	margin-top: 10px;
+	font-size: 1.6rem;
+	color: #0066D6;
+}
+.wait-content{
+	font-size: 1.6rem;
+	margin-top: 10px;
+}
+

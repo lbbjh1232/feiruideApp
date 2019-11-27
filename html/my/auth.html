@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/imageview.css','../../css/LCalendar.css','../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/my/login.css','../../css/warehouse/into.css','../../css/my/auth.css'],true);
+		</script>
+
+	</head>
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">身份认证</h1>
+		</header>
+		<div class="mui-content" id="app" v-cloak>
+			<!-- 步骤条 -->
+			<div class="steps-box">
+				<div class="steps-item steps-active">
+					<div class="steps-ico steps-ico-1">1</div>
+					<div class="steps-title">认证须知</div>
+				</div>
+				
+				<div class="steps-item " :class="step_two || step_three || step_four ? 'steps-active':''">
+					<div class="steps-ico steps-ico-1">2</div>
+					<div class="steps-title">资料提交</div>
+					<div class="steps-line"></div>
+				</div>
+				
+				<div class="steps-item" :class="step_three || step_four ? 'steps-active':''">
+					<div class="steps-ico steps-ico-1">3</div>
+					<div class="steps-title">等待审核</div>
+					<div class="steps-line"></div>
+				</div>
+				
+				<div class="steps-item " :class="step_four ? 'steps-active':''">
+					<div class="steps-ico steps-ico-1">4</div>
+					<div class="steps-title">认证完成</div>
+					<div class="steps-line"></div>
+				</div>
+			</div>
+			
+			<!-- 内容 -->
+			<div class="auth-box">
+				
+				<!-- 认证须知 -->
+				<div class="notice" v-if="step_one">
+					<div class="notice-title">认证须知</div>
+					<div class="notice-mark">为了平台的安全，需要您提供如下的认证资料：</div>
+					<div class="notice-item">1、个人身份证信息；</div>
+					<div class="notice-item">2、个人身份证正反面照片；</div>
+					<div class="notice-item">3、个人所在单位营业执照副本或者医疗机构执业许可证的照片。</div>
+					
+					<button type="button" id="notice1" class="mui-btn mui-btn-blue">同 意</button>
+				</div>
+				
+				<!-- 认证角色 -->
+				<template v-if="step_two">
+					<div class="role notice" v-if="isRole">
+						<div class="notice-title">认证角色</div>
+						<div class="notice-mark">角色选择相关提示：</div>
+						<div class="notice-item">1、若是卫生计生委用户，请选择卫生计生委；</div>
+						<div class="notice-item">2、若是医院用户，请选择医院；</div>
+						<div class="notice-item">4、若是药品经营企业（配送公司）用户，请选择药品经营企业；</div>
+						<div class="notice-item">5、若是药品生产企业用户，请选择药品生产企业；</div>
+						<div class="notice-item">6、若是需要进行新药申报的个人用户，请选择医药代表。</div>
+						
+							
+						<form id='login-form' class="mui-input-group">
+							<div class="mui-input-row">
+								<label>认证角色</label>
+								<input id='choose-role' type="text"  readonly v-model="roleText"  class="mui-input" placeholder="选择认证角色">
+							</div>
+							
+							<div class="mui-input-row">
+								<label>单位名称</label>
+								<input  type="text" v-model="company"  class="mui-input" placeholder="输入完整单位名称">
+							</div>
+						</form>
+						
+						<button type="button" id="next-account" class="mui-btn mui-btn-blue">下一步，完善个人信息</button>
+					</div>
+					
+					
+					<div class="account notice" v-if="isAccount">
+						<div class="notice-title">个人信息</div>
+						<div class="account-title">身份证信息:</div>
+						<form  class="mui-input-group" style="margin-top: 3px;">
+							<div class="mui-input-row">
+								<label>真实姓名</label>
+								<input  type="text"  v-model="name"  class="mui-input" placeholder="输入身份证姓名">
+							</div>
+							
+							<div class="mui-input-row">
+								<label>证件号码</label>
+								<input  type="text" v-model="code"  class="mui-input" placeholder="输入身份证号码">
+							</div>
+							
+							<div class="mui-input-row">
+								<label>到期时间</label>
+								<input id="endTime" type="text" v-model="endTime"  class="mui-input" placeholder="选择到期时间">
+							</div>
+						</form>
+						
+						<div class="account-title">身份证照片:</div>
+						<div class="form-box padding-9 ">
+							<div class="upload-tip">#身份证正面，支持上传JPG、JEPG、PNG格式</div>
+							<upload :file="frontImage" :group="2" :formdata="formData1" :max="1"  :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
+							
+							<div class="upload-tip">#身份证反面，支持上传JPG、JEPG、PNG格式</div>
+							<upload :file="reverseImage" :group="2" :formdata="formData2" :max="1"  :url="url" @oncomplete="complete2" @ondelete="delete2" ></upload>
+						</div>
+						
+						<div class="mui-row">
+							<div class="mui-col-sm-3 mui-col-xs-3">
+								<button style="width: 100%;" type="button" id="pre-role" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
+							</div>
+							<div class="mui-col-sm-9 mui-col-xs-9">
+								<button type="button" id="next-company" class="mui-btn mui-btn-blue">下一步，完善单位信息</button>
+							</div>
+						</div>
+						
+						
+						
+					</div>
+					
+					
+					<div class="company notice" v-if="isCompany">
+						<div class="notice-title">单位信息</div>
+						<div class="account-title">营业执照信息:</div>
+						<form  class="mui-input-group" style="margin-top: 3px;">
+							<div class="mui-input-row input-disabled">
+								<label>单位名称</label>
+								<input  type="text"  v-model="company" readonly class="mui-input" placeholder="输入单位名称">
+							</div>
+							
+							<div class="mui-input-row">
+								<label>信用代码</label>
+								<input  type="text" v-model="creditCode"  class="mui-input" placeholder="输入营业代码">
+							</div>
+						</form>
+						
+						<div class="account-title">营业执照（副本）照片:</div>
+						<div class="form-box padding-9 ">
+							<div class="upload-tip">#支持上传JPG、JEPG、PNG格式</div>
+							<upload :file="licenseImage" :group="3" :formdata="formData3" :max="1"  :url="url" @oncomplete="complete3" @ondelete="delete3" ></upload>
+							
+						</div>
+						
+						<div class="mui-row">
+							<div class="mui-col-sm-3 mui-col-xs-3">
+								<button style="width: 100%;" id="pre-account" type="button" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
+							</div>
+							<div class="mui-col-sm-9 mui-col-xs-9">
+								<button type="button" id="next-submit" class="mui-btn mui-btn-blue">提交审核</button>
+							</div>
+						</div>
+						
+						
+						
+					</div>
+					
+				</template>
+				
+				<!-- 等待审核页面 -->
+				<template v-if="step_three">
+					
+					<!-- 提交等待 -->
+					<div class="waiting notice" v-if="status == 0">
+						<div class="notice-title">等待审核</div>
+						<div class="wait-content"> 认证资料提交成功，我们会很快进行审核，审核过程中可能会拨打您所留手机号。请及时登录系统查看审核进度。</div>
+					</div>
+					
+					<!-- 审核失败 -->
+					<div class="waiting notice" v-if="status == 2">
+						<div class="notice-title">审核失败</div>
+						<div class="wait-content red">失败原因: {{reason}}</div>
+						
+						<button type="button" id="rewrite" class="mui-btn mui-btn-blue">返回修改认证资料</button>
+					</div>
+					
+					<!-- 审核成功 -->
+					<div class="waiting notice" v-if="status == 1">
+						<div class="notice-title">审核成功</div>
+						<div class="wait-content " style="text-align: center;">您提交的认证资料已通过审核！</div>
+						
+						<button type="button" id="confirm" class="mui-btn mui-btn-blue">下一步，认证完成</button>
+					</div>
+					
+				</template>
+				
+				<!-- 认证完成 -->
+				<template v-if="step_four">
+					
+					<!-- 审核成功 -->
+					<div class="notice auth-ok">
+						<div class="notice-title">认证完成</div>
+						<div class="wait-content " style="text-align: center;">您的认证已通过，退出系统后重新登录，即可正常使用，如果您在使用中遇到什么困难和问题，请及时联系我们解决。</div>
+						
+						<button type="button" id="relogin" class="mui-btn mui-btn-blue">重新登录</button>
+					</div>
+					
+				</template>
+				
+			</div>
+		
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src='../../js/lib/mui.zoom.js'></script>
+	<script src='../../js/lib/mui.previewimage.js'></script>
+	<script src="../../js/lib/picker/mui.picker.min.js"></script>
+	<script src="../../js/lib/picker/mui.poppicker.js"></script>
+	<script src='../../js/lib/LCalendar.js'></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	<!-- 上传组件模板 -->
+	<script type="text/x-template" id="upload-template">
+		<div class="upload-box">
+			<template v-for="(item,index) in file">
+				<div class="upload-img-box">
+					<img :src="item.url" data-preview-src="" :data-preview-group="group" />
+					<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+				</div>
+			</template>
+			
+			<div v-if="file.length < max " class="weui-uploader__input-box" @tap="onSelect"></div>
+			<div class="clear"></div>
+			
+		</div>
+	</script>
+		
+	<script type="text/javascript">
+		var accountInfo,new_back;
+		function loadAuth(){
+			let auth = mui.http_post(API.GET_AUTH,{id : accountInfo.id});
+			if(auth.code == 200){
+				let data = auth.data;
+				let state = data.state_flag;
+				let license = [{
+					url : API.IMAGE_HOST + '/iauth' + data.company_photo,
+					save : data.company_photo
+				}];
+				let front = [{
+					url : API.IMAGE_HOST + '/iauth' + data.id_photo_front,
+					save : data.id_photo_front
+				}];
+				let reverse = [{
+					url : API.IMAGE_HOST + '/iauth' + data.id_photo_reverse,
+					save : data.id_photo_reverse
+				}];
+				
+				vm.company = data.iauth_name;
+				vm.name = data.real_name;
+				vm.endTime = data.id_out_date;
+				vm.code = data.id_number;
+				vm.creditCode = data.company_uscc;
+				vm.roleValue = data.role_id;
+				vm.roleText = vm.role[ parseInt(data.role_id) - 6].text;
+				vm.licenseImage = license;
+				vm.frontImage = front;
+				vm.reverseImage = reverse;
+				vm.reason = data.fail_content;
+				vm.status = state;
+				vm.sign = 1;
+				vm.authId = data.id;
+				vm.step_one = false;
+				vm.step_two = false;
+				vm.step_three = true;
+				vm.$nextTick(function(){
+					plus.nativeUI.closeWaiting();
+					mui.currentWebview.show();
+					// 重新认证
+					mui('.waiting').on('tap','#rewrite',function(){
+						vm.step_one = true;
+						vm.step_two = false;
+						vm.step_three = false;
+					});
+					
+					// 认证完成
+					mui('.waiting').on('tap','#confirm',function(){
+						vm.step_four = true;
+						vm.step_three = false;
+						vm.$nextTick(function(){
+							mui('.auth-ok').on('tap','#relogin',function(){
+								// plus.nativeUI.showWaiting();
+								plus.storage.removeItem('accountInfo');
+								new_back();
+							})
+						})
+					})
+				})
+				
+			}
+		}
+		
+		//定义上传组件
+		var upload = {
+			template : '#upload-template',
+			data : function(){
+				return {
+					
+				}
+			},
+			// 定义组件属性
+			props : {
+				url : String,
+				formdata : {type : Object,default : function(){ return {}}},
+				file : {type :Array,default: function(){ return []} },
+				max : {type : Number,default:2},
+				group : {type : Number }
+			},
+			methods:{
+				// 上传方法
+				imgUpload : function(path,url){
+					var that = this;
+					plus.nativeUI.showWaiting()
+					var task = plus.uploader.createUpload(url,{method:"POST",blocksize:204800,priority:100},function(t,status){
+						plus.nativeUI.closeWaiting();
+						
+						// 上传完成,成功或失败
+						var datas = JSON.parse(t.responseText); //返回图片存储地址
+						if( status == 200 ){
+							// 上传成功
+							that.$emit("oncomplete",{url:datas});
+							
+						}else{
+							
+							mui.alert(datas.err,'提示','确认',function (e) {
+							},'div');
+							
+						}
+						
+					});
+					task.addFile(path,{key:'upload'});
+					// 添加参数
+					for(var key in that.formdata){
+						task.addData(key,that.formdata[key].toString());
+					}
+					task.start();
+				},
+				// 选择图片
+				onSelect : function(){ 
+					var btnArray = [{
+						title: "拍照"
+					}, {
+						title: "从相册选择"
+					}],that = this;
+					
+					plus.nativeUI.actionSheet({
+						title: "选择照片",
+						cancel: "取消",
+						buttons: btnArray
+					}, function(e) {
+						var index = e.index;
+						switch (index) {
+							case 0:
+								break;
+							case 1:
+							// 拍照
+								var cmr = plus.camera.getCamera();
+								cmr.captureImage(function(path) {
+									var localUrl = "file://" + plus.io.convertLocalFileSystemURL(path);
+									that.imgUpload(localUrl,that.url);
+								});
+								break;
+								
+							case 2:
+							//选择相册
+								plus.gallery.pick(function(path) {
+									that.imgUpload(path,that.url);
+								}, function(err) {}, {maximum:1});
+								break;
+						}
+					});
+					
+				},
+				// 删除
+				onDelete : function(e){
+					this.$emit("ondelete",{index:e})
+				}
+			}
+		}
+		
+		var vm = new Vue({
+			el : '#app',
+			components:{
+				upload : upload
+			},
+			data : {
+				step_one : true,
+				step_two : false,
+				isRole : true,
+				isAccount : false,
+				isCompany : false,
+				step_three : false,
+				step_four : false,
+				role : [
+					{
+						value: 6,
+						text: '药品经营企业'
+					}, {
+						value: 7,
+						text: '医疗机构'
+					}, {
+						value: 8,
+						text: '卫生计生委'
+					}, {
+						value: 9,
+						text: '药品生产企业'
+					}, {
+						value: 10,
+						text: '医药代表'
+					}, {
+						value: 11,
+						text: '临床科室'
+					}
+				],
+				roleText : '',
+				roleValue : 0,
+				company : '',
+				name : '',
+				code : '',
+				endTime: '',
+				creditCode : '',
+				url : API.HOST + API.UPLOAD_AUTH,			//上传地址
+				frontImage : [],	//正面照
+				reverseImage : [],	//反面照
+				licenseImage : [],	//营业执照
+				formData1 : {text:'身份证正面'},
+				formData2 : {text:'身份证反面'},
+				formData3 : {text : '营业执照'},
+				authId : '',
+				status : 1, 	//审核状态
+				sign : '',		//默认首次提交 1：修改提交
+				reason : ''
+				
+				
+			},
+			methods:{
+				// 删除照片
+				deleteTicket(indexs,target){
+					var that = this;
+					mui.confirm('确认删除吗?','提示',['取消','确认'],function (e) {
+						if(e.index == 1){
+							plus.nativeUI.showWaiting();
+							var res = mui.http_post(API.DELETE_AUTH,{url:that[target][indexs].save});
+							if(res.code == 200){
+								that[target].splice(indexs,1)
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {},'div')
+							}
+							plus.nativeUI.closeWaiting();
+						}
+						
+					},'div')
+				},
+				
+				complete1 : function(e){
+					this.frontImage.push(e.url)
+				},
+				complete2 : function(e){
+					this.reverseImage.push(e.url)
+				},
+				complete3 : function(e){
+					this.licenseImage.push(e.url)
+				},
+				delete1 : function(e){
+					this.deleteTicket(e.index,'frontImage')
+				},
+				delete2 : function(e){
+					this.deleteTicket(e.index,'reverseImage')
+				},
+				delete3 : function(e){
+					this.deleteTicket(e.index,'licenseImage')
+				}
+				
+			}
+		});
+		mui.init();
+		
+		mui.plusReady(function () {
+			
+			new_back = function(){
+				var old_back = mui.back;
+				var myview = plus.webview.getWebviewById('html/my.html');
+				var messageview = plus.webview.getWebviewById('html/message.html');
+				var friendview = plus.webview.getWebviewById('html/friend.html');
+				var indexview = plus.webview.getLaunchWebview();
+				mui.fire(myview,'loginLoad');	//重载个人中心
+				mui.fire(indexview,'loginLoad');	//重载消息总数					
+				mui.fire(messageview,'loginLoad');	//重载
+				mui.fire(friendview,'loginLoad');	//重载好友
+				old_back();
+				// return true;
+				
+			}
+			
+		    
+			accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			vm.formData1.cid = accountInfo.id;
+			vm.formData2.cid = accountInfo.id;
+			vm.formData3.cid = accountInfo.id;
+			// 加载审核记录
+			loadAuth();
+			
+			var calendar = new LCalendar();
+			
+			// 认证须知确认
+			mui('.notice').on('tap','#notice1',function(){
+				vm.step_one = false;
+				vm.step_two = true;
+				vm.$nextTick(function(){
+					// 资料提交
+					var picker = new mui.PopPicker(),setData = vm.role;
+					mui('.role').on('tap','#choose-role',function(){
+						picker.setData(setData);
+						picker.pickers[0].setSelectedIndex(0);
+						picker.show(function(item){
+							let value = item[0];
+							vm.roleText = value.text;
+							vm.roleValue = value.value;
+						});
+					});
+					
+					// //确认角色
+					mui('.role').on('tap','#next-account',function(){
+						if(!vm.roleValue){
+							mui.toast('请选择认证角色');
+							return;
+						}
+						if(!vm.company){
+							mui.toast('请输入单位名称');
+							return;
+						}
+						vm.isRole = false;
+						vm.isAccount = true;
+						
+						vm.$nextTick(function(){
+							
+							// 预览图片
+							mui.previewImage();
+							
+							// 选择开票日期
+							var start = calendar.init({
+								'trigger': '#endTime',
+								'type': 'date',
+								'minDate':'',
+								'maxDate':''
+							});
+							mui('.account').on('tap','#endTime',function(){
+								// 获取截止时间
+								var max = mui.date( parseInt( new Date().getTime() /1000 ) );
+								start.show({minDate : max , type : 'date' });
+							})
+							
+							// 确认个人信息
+							mui('.account').on('tap','#next-company',function(){
+								if(!vm.name){
+									mui.toast('请输入姓名');
+									return;
+								}
+								if(!vm.code){
+									mui.toast('请输入证件号码');
+									return;
+								}
+								if(vm.frontImage.length == 0){
+									mui.toast('请上传身份证正面照');
+									return;
+								}
+								if(vm.reverseImage.length == 0){
+									mui.toast('请上传身份证反面照');
+									return;
+								}
+								vm.isAccount = false;
+								vm.isCompany = true;
+								vm.$nextTick(function(){
+									// 上一步到个人信息
+									mui('.company').on('tap','#pre-account',function(){
+										vm.isAccount = true;
+										vm.isCompany = false;
+									});
+									
+									// 提交审核
+									mui('.company').on('tap','#next-submit',function(){
+										
+										if(!vm.creditCode){
+											mui.toast('请输入信用代码');
+											return;
+										}
+										if(vm.licenseImage.length == 0){
+											mui.toast('请上传营业执照');
+											return;
+										}
+										
+										// 提交
+										let params = {
+											roleId : vm.roleValue,
+											company : vm.company,
+											frontImage : vm.frontImage[0],
+											reverseImage : vm.reverseImage[0],
+											licenseImage : vm.licenseImage[0],
+											username: vm.name,
+											idCode : vm.code,
+											creditCode : vm.creditCode,
+											endTime : vm.endTime,
+											userId : accountInfo.id,
+											authId : vm.authId,
+											sign : vm.sign,
+										}
+										let res = mui.http_post(API.AUTH_SUBMIT,params);
+										if(res.code == 200){
+											vm.step_three = true;
+											vm.step_two = false;
+											vm.step_one = false;
+											vm.status = 0;
+											mui.toast('提交成功');
+										}
+										
+									})
+									
+								})
+							})
+							
+							// 上一步到确认角色
+							mui('.account').on('tap','#pre-role',function(){
+								vm.isRole = true;
+								vm.isAccount = false;
+							})
+							
+							
+						})
+					})
+					
+					
+					
+				})
+			})
+			
+			
+			
+			
+			
+			
+			
+		})
+		
+		
+		
+	</script>
+	
+</html>

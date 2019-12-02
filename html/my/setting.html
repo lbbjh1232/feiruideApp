@@ -116,7 +116,7 @@
 			
 			// 分享app
 			document.getElementById('share').addEventListener('tap',function(){
-				var msg={type:'web',thumbs:['_www/images/logo1.png'],href:API.HOST+'/user/shareApp',title : '药械e家-票据管理平台',content : '我正在使用药械e家APP进行药品票据管理，你也快来试试吧!'};
+				var msg={type:'web',thumbs:['_www/images/logo1.png'],href:API.HOST+'/user/shareApp',title : '药械e家 - 药械互联互通+票据管理',content : '我正在使用药械e家APP进行药品票据管理，你也快来试试吧!'};
 				
 				sweixin?plus.nativeUI.actionSheet({title:'选择分享平台',cancel:'取消',buttons:buttons}, function(e){
 					(e.index>0)&&mui.share(sweixin, msg, buttons[e.index-1]);

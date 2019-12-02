@@ -131,7 +131,7 @@
 				<div class='drug-detail-box'>
 					<div class='detail-box-top'>
 						<div class='text-detail'>上传药检报告</div>
-						<div class='iconfont icon-shanchu2 close' id="close-btn"></div>
+						<div class='iconfont1 icon-shanchu2 close' id="close-btn"></div>
 					</div>
 					<div class="mui-scroll-wrapper" id="scroll-two">
 						<div class="mui-scroll reason-content">
@@ -167,7 +167,7 @@
 				<template v-for="(item,index) in file">
 					<div class="upload-img-box">
 						<img :src="item.url" data-preview-src="" :data-preview-group="group" />
-						<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+						<div :data-index="index" class="delete-icon iconfont1 icon-shanchu1" @tap="onDelete(index)"></div>
 					</div>
 				</template>
 				

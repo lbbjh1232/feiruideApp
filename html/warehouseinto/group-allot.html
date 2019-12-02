@@ -31,7 +31,7 @@
 				<div class="mui-input-row choose">
 					<label>集团企业</label>
 					<input type="text" class="mui-input-clear" v-model="groupCompanyText" id="chooseGroup" readonly  placeholder="选择集团企业">
-					<div class="iconfont icon-tianjia1 add-group" @tap="addGroup"></div>
+					<div class="iconfont1 icon-tianjia1 add-group" @tap="addGroup"></div>
 				</div>
 				
 				<div class="mui-input-row">
@@ -97,7 +97,7 @@
 				<div class='drug-detail-box'>
 					<div class='detail-box-top'>
 						<div class='text-detail'>新增集团内企业</div>
-						<div class='iconfont icon-shanchu2 close' id="close-trade"></div>
+						<div class='iconfont1 icon-shanchu2 close' id="close-trade"></div>
 					</div>
 					<div class="mui-scroll-wrapper" id="scroll-trade">
 						<div class="mui-scroll reason-content">
@@ -139,7 +139,7 @@
 				<template v-for="(item,index) in file">
 					<div class="upload-img-box">
 						<img :src="item.url" data-preview-src="" :data-preview-group="group" />
-						<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+						<div :data-index="index" class="delete-icon iconfont1 icon-shanchu1" @tap="onDelete(index)"></div>
 					</div>
 				</template>
 				

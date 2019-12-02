@@ -42,6 +42,7 @@
 							<div class='text-clip'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>{{item.specifications}}*{{item.conversion_ratio}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.production_enterprise}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'><span class='red'>{{item.the_net_price?item.the_net_price:'自主定价'}}</span>{{item.the_net_price?'元':''}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>中标价格:</span> <span class='drug-list-name'><span class='red'>{{item.medium_bid_price?item.medium_bid_price:'未定价'}}</span>{{item.medium_bid_price?'元':''}}</span></div>
 						</div>
 						<div  id='' class='drug-list-right-part'><span class="iconfont icon-icon--"></span></div>
 					</div>
@@ -95,6 +96,10 @@
 					<div class="detail-row">
 						<div class='text-clip'><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'><span class='red'>{{current.the_net_price?current.the_net_price:'自主定价'}}</span>{{current.the_net_price?'元':''}}</span></div>
 						<div class='text-clip'><span class='drug-list-title'>贵重:</span> <span class='drug-list-name'>{{current.precious==1?'是':'否'}}</span></div>
+					</div>
+					
+					<div class="detail-row">
+						<div class='text-clip'><span class='drug-list-title'>中标价格:</span> <span class='drug-list-name'><span class='red'>{{current.medium_bid_price?current.medium_bid_price:'未定价'}}</span>{{current.medium_bid_price?'元':''}}</span></div>
 					</div>
 					
 					

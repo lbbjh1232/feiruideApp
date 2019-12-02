@@ -6,13 +6,13 @@ var ENVIRONMENT = PRO;
 
 // 接口地址
 var API = {
-	HOST : "https://test.yxt.feiruide.cn/index.php",
-	//HOST : "http://www.yudzni.cn",
-	TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
-	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
+	//HOST : "https://test.yxt.feiruide.cn/index.php",
+	HOST : "https://yxt.feiruide.cn/index.php",
+	TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
+	IMAGE_HOST : 'https://ticket.yp.feiruide.cn',
+	SMS_CODE : '/user/smsCode',
 	CHECK_VERSION : '/user/checkVersion',
 	DOWNLOAD_APP : '/user/downloadApp',
-	SMS_CODE : '/user/smsCode',
 	LOGIN : "/user/login",
 	SAVE_CLIENT_ID : '/user/saveClientId',
 	GET_NET_DRUG : "/drug/getNetDrug",

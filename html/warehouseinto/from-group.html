@@ -131,7 +131,7 @@
 				<div class='drug-detail-box'>
 					<div class='detail-box-top'>
 						<div class='text-detail'>上传药检报告</div>
-						<div class='iconfont icon-shanchu2 close' id="close-btn"></div>
+						<div class='iconfont1 icon-shanchu2 close' id="close-btn"></div>
 					</div>
 					<div class="mui-scroll-wrapper" id="scroll-two">
 						<div class="mui-scroll reason-content">
@@ -163,7 +163,7 @@
 				   注：属于从本公司集团公司调拨的药品，如果已上传了生产企业到集团公司的第一票，则可通过此按钮“前往添加集团内部调拨票”。如果还未上传生产企业到集团公司的第一票，则可关闭弹窗，进行上传。
 				</div>
 				<!-- 删除按钮 -->
-				<div class="close-icon iconfont icon-shanchu1" @tap="closeAllot"></div>
+				<div class="close-icon iconfont1 icon-shanchu1" @tap="closeAllot"></div>
 				
 			</div>
 			
@@ -180,7 +180,7 @@
 				<template v-for="(item,index) in file">
 					<div class="upload-img-box">
 						<img :src="item.url" data-preview-src="" :data-preview-group="group" />
-						<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+						<div :data-index="index" class="delete-icon iconfont1 icon-shanchu1" @tap="onDelete(index)"></div>
 					</div>
 				</template>
 				

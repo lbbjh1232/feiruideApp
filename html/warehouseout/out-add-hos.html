@@ -496,7 +496,7 @@
 								mui.toast('"' + item.generic_name + '" 出库数量不合法');
 								return;
 							}
-							if (item.outCount > item.surplus_amount) {
+							if (item.out_count > item.surplus_amount) {
 								mui.toast('"' + item.generic_name + '" 出库数量不能大于 ' + item.surplus_amount);
 								return;
 							}

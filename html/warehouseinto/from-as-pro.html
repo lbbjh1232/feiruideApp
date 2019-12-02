@@ -10,11 +10,12 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<script type="text/javascript">
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
-		</script> 
+		</script>
 		   
 		<script type="text/javascript">
-			link(['../../css/mui.min.css','../../css/icon.css','../../css/common.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/LCalendar.css','../../css/warehouse/into.css'],true);
-		</script>  
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/LCalendar.css','../../css/warehouse/into.css'],true);
+		</script>
+		
 	</head>
 
 	<body>
@@ -149,7 +150,7 @@
 				<div class='drug-detail-box'>
 					<div class='detail-box-top'>
 						<div class='text-detail'>上传药检报告</div>
-						<div class='iconfont icon-shanchu2 close' id="close-btn"></div>
+						<div class='iconfont1 icon-shanchu2 close' id="close-btn"></div>
 					</div>
 					<div class="mui-scroll-wrapper" id="scroll-two">
 						<div class="mui-scroll reason-content">
@@ -173,7 +174,7 @@
 				<div class='drug-detail-box'>
 					<div class='detail-box-top'>
 						<div class='text-detail'>上传科工贸证明</div>
-						<div class='iconfont icon-shanchu2 close' id="close-trade"></div>
+						<div class='iconfont1 icon-shanchu2 close' id="close-trade"></div>
 					</div>
 					<div class="mui-scroll-wrapper" id="scroll-trade">
 						<div class="mui-scroll reason-content">
@@ -206,7 +207,7 @@
 				<div class='drug-detail-box'>
 					<div class='detail-box-top'>
 						<div class='text-detail'>上传总代证明</div>
-						<div class='iconfont icon-shanchu2 close' id="close-agent"></div>
+						<div class='iconfont1 icon-shanchu2 close' id="close-agent"></div>
 					</div>
 					<div class="mui-scroll-wrapper" id="scroll-agent">
 						<div class="mui-scroll reason-content">
@@ -259,7 +260,7 @@
 				<template v-for="(item,index) in file">
 					<div class="upload-img-box">
 						<img :src="item.url" data-preview-src="" :data-preview-group="group" />
-						<div :data-index="index" class="delete-icon iconfont icon-shanchu1" @tap="onDelete(index)"></div>
+						<div :data-index="index" class="delete-icon iconfont1 icon-shanchu1" @tap="onDelete(index)"></div>
 					</div>
 				</template>
 				

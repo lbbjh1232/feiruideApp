@@ -108,7 +108,7 @@ var API = {
 	GET_NEW_FRIEND : '/chat/getNewFriend',
 	CHECK_USER : '/chat/checkUser',
 	NEW_RECORD_DEL : '/chat/newRecordDel',
-	FRIEND_DEL : '/chat/friendDel',
+	FRIEND_DEL : '/chat/friendDel', 
 	
 };
 

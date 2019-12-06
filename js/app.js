@@ -201,7 +201,7 @@
 				   e.index
 				},'div')
 				
-				return;
+				// return;
 				
 			}
 			
@@ -709,11 +709,6 @@
 		}, function(e){
 			console.log('分享到"'+srv.description+'"失败: '+JSON.stringify(e));
 		});
-	}
-	
-	// 拉起微信小程序
-	$.launchMiniPorgram = function(){
-		
 	}
 	
 	

@@ -6,15 +6,15 @@ var ENVIRONMENT = PRO;
 
 // 接口地址
 var API = {
-	//HOST : "https://test.yxt.feiruide.cn/index.php",
-	HOST : "https://yxt.feiruide.cn/index.php",
+	HOST : "https://test.yxt.feiruide.cn/index.php",
+	// HOST : "https://yxt.feiruide.cn/index.php",
 	TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
 	IMAGE_HOST : 'https://ticket.yp.feiruide.cn',
 	SMS_CODE : '/user/smsCode',
 	CHECK_VERSION : '/user/checkVersion',
+	SAVE_CLIENT_ID : '/user/saveClientId',
 	DOWNLOAD_APP : '/user/downloadApp',
 	LOGIN : "/user/login",
-	SAVE_CLIENT_ID : '/user/saveClientId',
 	GET_NET_DRUG : "/drug/getNetDrug",
 	GET_HOS_DRUG : "/drug/getHosDrug",
 	GET_HOS_TICKET : "/drug/getHosTicket",
@@ -113,7 +113,7 @@ var API = {
 };
 
 var CONFIG = {
-	WS_HOST : 'ws://47.98.253.189:8282',
+	WS_HOST : 'ws://47.98.253.189:8383',
 }
 
 // 全局数据

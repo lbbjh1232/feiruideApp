@@ -4,6 +4,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<title>首页</title>
 		<script type="text/javascript">
 			document.write('<script src="js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
@@ -278,7 +282,7 @@
 		<script type="text/javascript">
 			// vue实例挂载
 			var vm = new Vue({
-				el:'#app',
+				el:'#app', 
 				data:{
 					accountInfo:'',
 					currentIndex : 1,
@@ -327,17 +331,18 @@
 					}
 				}
 				
-				mui.plusReady(function() {
-					
+				
+				document.addEventListener("plusready",function() {
 					//mui.judgeStoragePermisson();
 					
 					mui.appUpdate();
-					
+					 
 					// 获取设备clientid并存储
 					mui.getClientId();
 					
 					// 实用查询-更多
 					mui('.catelog-box').on('tap','#more',function(){
+						mui.notice()
 						let more = vm.more;
 						vm.more = !more;
 					});
@@ -569,7 +574,6 @@
 							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
 							   e.index
 							},'div');
-						
 							return;
 						}
 						 
@@ -671,7 +675,7 @@
 						 })
 					 })
 					
-				});
+				},false);
 			})();
 		</script>
 	</body>

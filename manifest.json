@@ -105,6 +105,9 @@
         "Share" : {}
     },
     "plus" : {
+		"kernel": {  
+			"ios": "UIWebview"    //或者 "WKWebview"  "UIWebview" 
+		},  
         "launchwebview" : {
             "bottom" : "0px",
             "background" : "#fff",
@@ -158,7 +161,7 @@
                         {
                             "tag" : "font",
                             "id" : "messageIcon",
-                            "text" : "",
+                            "text" : "\ue7f3",
                             "position" : {
                                 "top" : "5px",
                                 "left" : "25%",
@@ -189,7 +192,7 @@
                         {
                             "tag" : "font",
                             "id" : "newsIcon",
-                            "text" : "",
+                            "text" : "\ue63a",
                             "position" : {
                                 "top" : "5px",
                                 "left" : "50%",

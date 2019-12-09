@@ -396,9 +396,9 @@
 	
 	//绘制底部菜单未读消息提示,消息列表页
 	$.updateMessCount = function(isCount,isList){
+		// console.log(112121);
 		var view = plus.webview.getLaunchWebview(),
 		nviewEvent = plus.nativeObj.View.getViewById("icon"),myid = $.getMyId(),count = 0;
-		
 		var countLoad = function(count){
 					var num = count >= 10 ? "9+" : count;
 					var leftPos = Math.ceil(window.innerWidth / 8); 

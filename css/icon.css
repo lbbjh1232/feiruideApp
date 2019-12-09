@@ -10,6 +10,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+.icon-fanhuidingbu:before {
+	content: "\e64a";
+	font-size: 3rem;
+}
+
 .icon-auth:before{
 	content: "\e635";
 	color: gray;

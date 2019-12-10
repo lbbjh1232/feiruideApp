@@ -247,15 +247,15 @@
 				let data = auth.data;
 				let state = data.state_flag;
 				let license = [{
-					url : API.IMAGE_HOST + '/iauth' + data.company_photo,
+					url : API.IMAGE_HOST + '/iauth/' + data.company_photo,
 					save : data.company_photo
 				}];
 				let front = [{
-					url : API.IMAGE_HOST + '/iauth' + data.id_photo_front,
+					url : API.IMAGE_HOST + '/iauth/' + data.id_photo_front,
 					save : data.id_photo_front
 				}];
 				let reverse = [{
-					url : API.IMAGE_HOST + '/iauth' + data.id_photo_reverse,
+					url : API.IMAGE_HOST + '/iauth/' + data.id_photo_reverse,
 					save : data.id_photo_reverse
 				}];
 				
@@ -300,6 +300,9 @@
 					})
 				})
 				
+			}else{
+				plus.nativeUI.closeWaiting();
+				mui.currentWebview.show();
 			}
 		}
 		

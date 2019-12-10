@@ -19,9 +19,9 @@
             //show_num[i] = txt.toLowerCase();
 			txt = txt.toLowerCase();
 			text = text+txt;
-            var x = 40 + i * 40;//文字在canvas上的x坐标
+            var x = 40 + i * 40;	//文字在canvas上的x坐标
             var y = 40 + Math.random() * 20;//文字在canvas上的y坐标
-            context.font = "bold 6rem 微软雅黑";
+            context.font = "bold 65px 微软雅黑";
 
             context.translate(x, y);
             context.rotate(deg);

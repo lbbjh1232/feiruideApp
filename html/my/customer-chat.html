@@ -402,6 +402,10 @@
 			<div id="audio_tips" class="rsalert">手指上滑，取消发送</div>
 		</div>
 		
+		<!-- audio播放音频 -->
+		<audio id="audio" src=""></audio>
+		
+		
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/vue.js"></script>
 
@@ -524,7 +528,8 @@
 						areaMsgList: doc.querySelector('#msg-list'),
 						boxSoundAlert: doc.querySelector('#sound-alert'),
 						h: doc.querySelector('#h'),
-						content: doc.querySelector('.mui-content')
+						content: doc.querySelector('.mui-content'),
+						audio : doc.getElementById('audio')
 					};
 					ui.h.style.width = ui.boxMsgText.offsetWidth + 'px';
 					//alert(ui.boxMsgText.offsetWidth );
@@ -536,26 +541,43 @@
 						var msgType = msgItem.getAttribute('msg-type');
 						var msgContent = msgItem.getAttribute('msg-content'); //播放地址
 						if (msgType == 'sound') {
-							player = plus.audio.createPlayer(msgContent);
-							
-							if(currentPlay != ''){
-								currentPlay.stop();
+							//player = plus.audio.createPlayer(msgContent);
+							ui.audio.src = msgContent;
+							// console.log(ui.audio.src)
+							ui.audio.load();
+							if(currentItem != ''){
+								// currentPlay.stop();
 								currentItem.querySelector('.play-state').innerText = '点击播放';
-								
 							}
 							
-							currentPlay = player;
+							
+							// currentPlay = player;
 							currentItem = msgItem;
 							
 							var playState = msgItem.querySelector('.play-state');
-							playState.innerText = '正在播放...';
-							player.play(function() {
-								// 播放成功
+							playState.innerText = '加载中...';
+							
+							ui.audio.oncanplay = function(){
+								playState.innerText = '正在播放...';
+								ui.audio.play();
+							}
+							
+							ui.audio.onended = function(){
 								playState.innerText = '点击播放';
-							}, function(e) {
-								//播放失败
+							}
+							
+							ui.audio.onerror = function(){
+								console.log(ui.audio.error.code)
 								playState.innerText = '点击播放';
-							});
+								mui.toast("加载出错啦")
+							}
+							// player.play(function() {
+							// 	// 播放成功
+							// 	playState.innerText = '点击播放';
+							// }, function(e) {
+							// 	//播放失败
+							// 	playState.innerText = '点击播放';
+							// });
 						}
 					};
 					
@@ -961,7 +983,7 @@
 						startTimestamp = (new Date()).getTime();
 						recorder.record({
 							filename: "_doc/audio/",
-							format:'amr'
+							format:mui.os.ios ? "mp3" : "amr"
 						}, function(path) {
 							
 							console.log(path)

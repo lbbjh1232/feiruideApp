@@ -980,10 +980,10 @@
 							plus.nativeUI.toast("不能获取录音对象");
 							return;
 						}
-						startTimestamp = (new Date()).getTime();
+						startTimestamp = (new Date()).getTime(); 
 						recorder.record({
-							filename: "_doc/audio/",
-							format:mui.os.ios ? "mp3" : "amr"
+							filename : "_doc/audio/",
+							format : "mp3"
 						}, function(path) {
 							
 							console.log(path)

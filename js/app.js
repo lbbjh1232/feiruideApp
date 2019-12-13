@@ -631,6 +631,7 @@
 		if( parseInt(current[2]) < parseInt(newver[2]) ){
 			return true;
 		}
+		
 		return false;
 	}
 	

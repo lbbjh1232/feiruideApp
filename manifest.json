@@ -3,18 +3,18 @@
     "id" : "H5537E55C", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.1.9", /*应用版本名称*/
+        "name" : "1.2.1", /*应用版本名称*/
         "code" : ""
     },
-    "description" : "药械电子化管理工具", /*应用描述信息*/
+    "description" : "医疗行业互联互通+票据管理平台", /*应用描述信息*/
     "icons" : {
         "72" : "icon.png"
     },
     "launch_path" : "index.html", /*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
     "developer" : {
-        "name" : "", /*开发者名称*/
+        "name" : "四川飞瑞德医疗科技有限公司", /*开发者名称*/
         "email" : "", /*开发者邮箱地址*/
-        "url" : ""
+        "url" : "四川南充市"
     },
     "permissions" : {
         "Accelerometer" : {
@@ -105,9 +105,9 @@
         "Share" : {}
     },
     "plus" : {
-		"kernel": {  
-			"ios": "UIWebview"    //或者 "WKWebview"  "UIWebview" 
-		},  
+        "kernel" : {
+            "ios" : "UIWebview" //或者 "WKWebview"  "UIWebview" 
+        },
         "launchwebview" : {
             "bottom" : "0px",
             "background" : "#fff",
@@ -129,8 +129,8 @@
                     "tags" : [
                         {
                             "tag" : "font",
-                            "id" : "indexIcons", 
-                            "text" : "\ue637",
+                            "id" : "indexIcons",
+                            "text" : "",
                             "position" : {
                                 "top" : "5px",
                                 "left" : "0",
@@ -161,7 +161,7 @@
                         {
                             "tag" : "font",
                             "id" : "messageIcons",
-                            "text" : "\ue7f3",
+                            "text" : "",
                             "position" : {
                                 "top" : "5px",
                                 "left" : "25%",
@@ -192,7 +192,7 @@
                         {
                             "tag" : "font",
                             "id" : "newsIcons",
-                            "text" : "\ue63a",
+                            "text" : "",
                             "position" : {
                                 "top" : "5px",
                                 "left" : "50%",
@@ -223,7 +223,7 @@
                         {
                             "tag" : "font",
                             "id" : "contactIcons",
-                            "text" : "\ue638",
+                            "text" : "",
                             "position" : {
                                 "top" : "5px",
                                 "left" : "75%",
@@ -312,7 +312,7 @@
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>"
                 ],
                 "targetSdkVersion" : 26,
-                "minSdkVersion" : 21
+                "minSdkVersion" : 22
             },
             "orientation" : [ "portrait-primary" ], /*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
             "icons" : {
@@ -401,6 +401,11 @@
                 }
             },
             "plugins" : {
+                "audio" : {
+                    "mp3" : {
+                        "description" : "Android平台录音支持MP3格式文件"
+                    }
+                },
                 "speech" : {},
                 "push" : {
                     "unipush" : {}
@@ -426,36 +431,36 @@
                 "resources" : [
                     "js/mui.min.js",
                     "css/mui.min.css",
-					"fonts/iconfont.ttf",
-					"fonts/icon.ttf",
+                    "fonts/iconfont.ttf",
+                    "fonts/icon.ttf",
                     "js/util.js"
                 ],
-                "refer" : [ ],
+                "refer" : [],
                 "priority" : 0
             },
             "launch.html" : {
                 "resources" : [
                     "js/mui.min.js",
                     "css/mui.min.css",
-					// "fonts/mui.ttf",
-					// "fonts/icon.ttf",
-					"fonts/iconfont.ttf"
-                    
+                    // "fonts/mui.ttf",
+                    // "fonts/icon.ttf",
+                    "fonts/iconfont.ttf"
                 ],
-                "refer" : [
-                    "html/friend.html",
-                    "html/message.html",
-                    "html/my.html"
-                ],
+                "refer" : [ "html/friend.html", "html/message.html", "html/my.html" ],
                 "priority" : 0
             },
             "html/friend.html" : {
-                "resources" : [ "fonts/iconfont.ttf","fonts/icon.ttf",  "css/mui.min.css", "js/mui.min.js" ],
+                "resources" : [
+                    "fonts/iconfont.ttf",
+                    "fonts/icon.ttf",
+                    "css/mui.min.css",
+                    "js/mui.min.js"
+                ],
                 "refer" : [],
                 "priority" : 0
             },
             "html/message.html" : {
-                "resources" : [ "css/mui.min.css", "js/mui.min.js"],
+                "resources" : [ "css/mui.min.css", "js/mui.min.js" ],
                 "refer" : [],
                 "priority" : 0
             },

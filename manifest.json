@@ -23,9 +23,6 @@
         "Audio" : {
             "description" : "访问麦克风"
         },
-        "Messaging" : {
-            "description" : "短彩邮件插件"
-        },
         "Cache" : {
             "description" : "管理应用缓存"
         },
@@ -34,9 +31,6 @@
         },
         "Console" : {
             "description" : "跟踪调试输出日志"
-        },
-        "Contacts" : {
-            "description" : "访问系统联系人信息"
         },
         "Device" : {
             "description" : "访问设备信息"
@@ -83,9 +77,6 @@
         "Barcode" : {
             "description" : "管理二维码扫描插件"
         },
-        "Maps" : {
-            "description" : "管理地图插件"
-        },
         "Webview" : {
             "description" : "窗口管理"
         },
@@ -101,7 +92,6 @@
         "Push" : {},
         "OAuth" : {},
         "iBeacon" : {},
-        "Payment" : {},
         "Share" : {}
     },
     "plus" : {
@@ -271,8 +261,16 @@
                 "p12" : "", /*iOS应用打包个人证书，打包配置文件关联的个人证书*/
                 "devices" : "universal", /*iOS应用支持的设备类型，可取值iphone/ipad/universal*/
                 "frameworks" : [],
-                "idfa" : false
+                "idfa" : false,
+                "capabilities" : {
+                    "entitlements" : {
+                        // 合并到工程entitlements文件的数据（json格式）  
+                        "com.apple.developer.associated-domains" : [ "applinks:ticket.yp.feiruide.cn" ]
+                    },
+                    "plists" : {}
+                }
             },
+            // 合并到工程Info.plist文件的数据（json格式）  
             "google" : {
                 "packagename" : "", /*Android应用包名，如io.dcloud.HelloH5*/
                 "keystore" : "", /*Android应用打包使用的密钥库文件*/
@@ -413,13 +411,15 @@
                 "oauth" : {
                     "weixin" : {
                         "appid" : "wx6cae89f9425f6153",
-                        "appsecret" : "7947ef8717b69f026324c5e8fb40b772"
+                        "appsecret" : "7947ef8717b69f026324c5e8fb40b772",
+                        "UniversalLinks" : "https://ticket.feiruide.cn/ulink/"
                     }
                 },
                 "payment" : {},
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx6cae89f9425f6153"
+                        "appid" : "wx6cae89f9425f6153",
+                        "UniversalLinks" : "https://ticket.feiruide.cn/ulink/"
                     }
                 }
             }

@@ -587,6 +587,10 @@
 	// 下载app
 	$.downloadApp = function(){
 		// 创建下载任务
+		if(mui.os.ios){
+			return ;
+		}
+		
 		var i;
 		var task = plus.downloader.createDownload(API.HOST + API.DOWNLOAD_APP,{method : 'POST'},function(t,status){
 			// 删除下载进度节点
@@ -654,6 +658,7 @@
 						$.downloadApp();
 				   }
 				})
+				
 			}else{
 				if(isCheck){
 					mui.toast('已是最新版本');

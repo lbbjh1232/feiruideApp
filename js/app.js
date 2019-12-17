@@ -93,9 +93,16 @@
 		var accountInfo = plus.storage.getItem('accountInfo') != null ? JSON.parse( plus.storage.getItem('accountInfo') ) : {token : ''},userid = '',clientid = '';
 		
 		//绑定用户clientid
-		if( plus.storage.getItem('accountInfo') != null && plus.storage.getItem('clientid') != null ){
-			userid = JSON.parse( plus.storage.getItem('accountInfo') ).id;
+		if(plus.storage.getItem('clientid') != null){
 			clientid = plus.storage.getItem('clientid');
+		}
+		
+		if( plus.storage.getItem('uid') != null){
+			userid = plus.storage.getItem('uid');
+		}
+		
+		if( plus.storage.getItem('accountInfo') != null){
+			userid = JSON.parse( plus.storage.getItem('accountInfo') ).id;
 		}
 		
 		var obj = { device_uid : userid , device_cid : clientid};
@@ -121,7 +128,7 @@
 		if(result == 'fail'){
 			mui.alert('请求异常，稍后再试','提示','确定',function (e) {
 			   //console.log(e);
-			},'div');
+			});
 			
 			return;
 			
@@ -367,6 +374,8 @@
 		
 			if(checkUser.code == 200){
 				myid = checkUser.data.uid;
+				//将游客id存储起来
+				plus.storage.setItem("uid",myid.toString());
 				
 			}else{
 				//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
@@ -521,16 +530,16 @@
 	// 获取设备推送clientID、token(ios使用)
 	$.getClientId = function(){
 		var pinf = plus.push.getClientInfo();
-		var cid = pinf.clientid;				//客户端标识  
+		var cid = pinf.clientid;				//客户端标识
 		var version = mui.os.android ? 1 : 2;
 		var token = pinf.token;
 		
 		setTimeout(function() {
 			cid = pinf.clientid;
 			token = pinf.token;
-			
+			// alert("cid: "+cid + "token: "+token)
 			//存储到服务器
-			if(cid != 'null' || token != 'null'  ){
+			if(cid != 'null' && token != 'null'  ){
 				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor});
 				plus.storage.setItem('clientid',res.data.info.toString());
 			}

@@ -441,8 +441,8 @@
 								mui.trigger(document.getElementById('short'),'tap');
 								break;
 								
-							default:
 								break;
+							default:
 						}
 						
 						
@@ -450,6 +450,7 @@
 					
 					//接收透传消息
 					plus.push.addEventListener('receive',function(msg){
+						alert(JSON.stringify(msg));
 						var payload = msg.payload;
 						var content = msg.content;
 						

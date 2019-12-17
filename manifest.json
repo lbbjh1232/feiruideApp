@@ -92,7 +92,8 @@
         "Push" : {},
         "OAuth" : {},
         "iBeacon" : {},
-        "Share" : {}
+        "Share" : {},
+        "Statistic" : {}
     },
     "plus" : {
         "kernel" : {
@@ -306,6 +307,7 @@
                     "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>"
                 ],
@@ -423,7 +425,8 @@
                     }
                 }
             }
-        }
+        },
+        "screenOrientation" : [ "portrait-primary" ]
     },
     "dependencies" : {
         "pages" : {

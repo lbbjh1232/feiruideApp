@@ -319,11 +319,13 @@
 						if(e.index == 1){
 							plus.nativeUI.showWaiting();
 							var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
-							if(res.code == 200){
-								that[target].splice(indexs,1)
-							}else{
-								mui.alert(res.message,'提示','确认',function (e) {},'div')
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									that[target].splice(indexs,1)
+								}else{
+									mui.alert(res.message,'提示','确认',function (e) {},'div')
+								}
+							})
 							plus.nativeUI.closeWaiting();
 						}
 						
@@ -361,15 +363,17 @@
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 			
 		window.onload = function(){
@@ -406,7 +410,7 @@
 									id : 'choose-drug.html',
 									url : 'choose-drug.html',
 									show : {
-										autoShow : false
+										autoShow : true
 									},
 									extras : {
 										sign : 'html/report/index.html',
@@ -439,20 +443,23 @@
 									report : vm.reportImage
 								}
 								var res = mui.http_post(API.ADD_REPORT,params);
-								if(res.code == 200){
-									mui.confirm('上传成功,是否继续上传?','提示',['取消','确认'],function (e) {
-										if(e.index == 1){
-											vm.drug = {};
-											vm.batchNumber = '';
-											vm.reportImage = [];
-											
-										}else{
-											mui.trigger(document.getElementById('close-trade'),'tap')
-										}
-									},'div')
-								}else{
-									mui.alert(res.message);
-								}
+								res.then(res=>{
+									if(res.code == 200){
+										mui.confirm('上传成功,是否继续上传?','提示',['取消','确认'],function (e) {
+											if(e.index == 1){
+												vm.drug = {};
+												vm.batchNumber = '';
+												vm.reportImage = [];
+												
+											}else{
+												mui.trigger(document.getElementById('close-trade'),'tap')
+											}
+										})
+									}else{
+										mui.alert(res.message);
+									}
+								})
+								
 								
 							})
 							

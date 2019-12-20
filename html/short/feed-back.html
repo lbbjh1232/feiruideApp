@@ -195,15 +195,17 @@
 			if(first){
 				mui.currentWebview.show();
 			} 
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 
 		window.onload = function(){
@@ -314,15 +316,18 @@
 							plus.nativeUI.showWaiting()
 							var res = mui.http_post(API.SURE_BUY,params);
 							plus.nativeUI.closeWaiting()
-							if(res.code == 200){
-								mui.toast(res.message);
-								getNetDrug(false);
-								
-							}else{
-								mui.alert(res.message,'提示','确认',function (e) {},'div')();
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast(res.message);
+									getNetDrug(false);
+									
+								}else{
+									mui.alert(res.message,'提示','确认',function (e) {});
+								}
+							})
+							
 						}
-					},'div');
+					});
 					
 					
 					event = event||window.event;

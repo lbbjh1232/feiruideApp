@@ -170,15 +170,17 @@
 					}
 					// 发送验证码
 					var res = mui.http_post(API.SMS_CODE,{mobile:vm.phone});
-					console.log(JSON.stringify(res));
-					if(res.code == 200){
-						mui.toast(res.message);
-					}else{
-						mui.alert(res.message,'提示','确认',function (e) {
-						   e.index
-						},'div');
-						return;
-					}
+					res.then(res=>{
+						if(res.code == 200){
+							mui.toast(res.message);
+						}else{
+							mui.alert(res.message,'提示','确认',function (e) {
+							   e.index
+							});
+							return;
+						}
+					})
+					
 		
 					vm.confirmPhone = vm.phone;
 					vm.sending = true;
@@ -296,16 +298,17 @@
 					plus.nativeUI.showWaiting();
 					var res = mui.http_post(API.REGISTER,params);
 					plus.nativeUI.closeWaiting();
-					if(res.code == 200){
-						mui.toast('注册成功');
-						setTimeout(function(){
-							mui.back();
-						},800);
-					}else{
-						mui.toast(res.message);
-						return;
-					}
-					
+					res.then(res=>{
+						if(res.code == 200){
+							mui.toast('注册成功');
+							setTimeout(function(){
+								mui.back();
+							},800);
+						}else{
+							mui.toast(res.message);
+							return;
+						}
+					})
 					
 				})
 				

@@ -96,13 +96,16 @@
 				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 				var res = mui.http_post(API.SEARCH_USER,{accountInfo:accountInfo,value:vm.searchValue});
 				plus.nativeUI.closeWaiting();
-				if(res.code == 200){
-					vm.result = res.data;
-					
-				}else{
-					mui.alert(res.message,'提示','确认',function (e) {},'div');
-					
-				}
+				res.then(res=>{
+					if(res.code == 200){
+						vm.result = res.data;
+						
+					}else{
+						mui.alert(res.message,'提示','确认',function (e) {});
+						
+					}
+				})
+				
 				
 			} 
 			
@@ -164,11 +167,13 @@
 					plus.nativeUI.showWaiting();
 					var res = mui.http_post(API.CHECK_RELATION_TYPE,{myuid:accountInfo.id,touid:current.id});
 					plus.nativeUI.closeWaiting();
+					res.then(res=>{
+						if(res.code == 201){
+							mui.alert(res.message,'提示','确认',function(){});
+							return; 
+						}
+					})
 					
-					if(res.code == 201){
-						mui.alert(res.message,'提示','确认',function(){},'div');
-						return; 
-					}
 					
 					vm.checkShow = true;
 					vm.message = '我是 '+accountInfo.username;
@@ -182,25 +187,27 @@
 						// 监听发送
 						document.getElementById('submit').addEventListener('tap',function(){
 							if(!vm.message){
-								mui.alert('验证消息不能为空','提示','确认',function(e){},'div');
+								mui.alert('验证消息不能为空','提示','确认',function(e){});
 								return;
 							}
 							
 							// 发送添加好友
 							var data = mui.http_post(API.USER_ADD_REQUEST,{msg:vm.message,myuid:accountInfo.id,touid:current.id});
+							data.then(data=>{
+								if(data.code == 200){
+									mui.toast(data.message);
+									setTimeout(function(){
+										vm.checkShow = false;
+										vm.message = '';
+									},500)
+								}else{
+									mui.alert(data.message,'提示','确认',function(){
+										vm.checkShow = false;
+									});
+									
+								}
+							})
 							
-							if(data.code == 200){
-								mui.toast(data.message);
-								setTimeout(function(){
-									vm.checkShow = false;
-									vm.message = '';
-								},500)
-							}else{
-								mui.alert(data.message,'提示','确认',function(){
-									vm.checkShow = false;
-								},'div');
-								
-							}
 						})
 						
 						

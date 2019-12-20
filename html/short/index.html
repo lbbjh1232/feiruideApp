@@ -197,15 +197,17 @@
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 			
 		window.onload = function(){
@@ -316,7 +318,7 @@
 						url : 'my-release.html',
 						id : 'my-release.html',
 						show : {
-							autoShow : false,
+							autoShow : true,
 						}
 					})
 				})
@@ -327,7 +329,7 @@
 						url : 'my-provide.html',
 						id : 'my-provide.html',
 						show : {
-							autoShow : false,
+							autoShow : true,
 						}
 					})
 				})
@@ -369,24 +371,26 @@
 					var val = vm.searchResult[index];
 					var closetime = val.close_time;
 					if(new Date(closetime).getTime() < new Date().getTime()){
-						mui.alert('该短缺药品已过期','提示',function(e){},'div');
+						mui.alert('该短缺药品已过期','提示',function(e){});
 						return;
 					}
 					
 					// 查询是否已提供
-					var res = mui.http_get(API.IS_PRPVIDE,{roleId : accountInfo.roleid,companyId : accountInfo.userid, sid : val.id});
+					var res = mui.http_post(API.IS_PRPVIDE,{roleId : accountInfo.roleid,companyId : accountInfo.userid, sid : val.id});
+					res.then(res=>{
+						if(res.code == 200){
+							mui.openWindow({
+								id : 'provide.html',
+								url : 'provide.html',
+								extras : {
+									val : val
+								}
+							})
+						}else{
+							mui.alert(res.message,'提示',function(){});
+						}
+					})
 					
-					if(res.code == 200){
-						mui.openWindow({
-							id : 'provide.html',
-							url : 'provide.html',
-							extras : {
-								val : val
-							}
-						})
-					}else{
-						mui.alert(res.message,'提示',function(){},'div');
-					}
 					var event = event||window.event;
 					event.stopPropagation()
 					
@@ -408,7 +412,6 @@
 							autoShow:true,
 						}
 					})
-					
 					var event = event||window.event;
 					event.stopPropagation()
 

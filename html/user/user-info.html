@@ -80,14 +80,16 @@
 								plus.nativeUI.showWaiting();
 								var res = mui.http_post(API.CHECK_USER,{rid:rid});
 								plus.nativeUI.closeWaiting(); 
-
-								if(res.code == 200){ 
-									mui.back();
-								}else{
-									mui.alert(res.message,'提示','确认',function (e) {
-									   e.index
-									},'div');  
-								}
+								res.then(res=>{
+									if(res.code == 200){
+										mui.back();
+									}else{
+										mui.alert(res.message,'提示','确认',function (e) {
+										   e.index
+										});  
+									}
+								})
+								
 							}
 						})
 						

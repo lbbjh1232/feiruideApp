@@ -16,7 +16,7 @@
 		<script type="text/javascript">
 			link(['css/mui.min.css','css/iconfont.css','css/icon.css','css/common.css','css/animate.css','css/index/index.css'],true);
 		</script>
-	
+	 
 	</head>
  
 	<body>
@@ -44,7 +44,7 @@
 				</div>
 				
 					
-				<div v-show="more" class="catelog-item catelog-url" data-href="http://cdsylbz.chengdu.gov.cn/ebaowx/html/mi.html" data-title="医保目录">
+				<div v-show="more" class="catelog-item catelog-url" data-href="http://cdsylbz.chengdu.gov.cn/ebaowx/html/mi.html" data-title="医保目录查询">
 					<div class="catelog-log iconfont1 icon-jibao"></div>
 					<div class="catelog-name">医保目录</div>
 				</div>
@@ -324,15 +324,19 @@
 				}
 				
 				// 获取新闻
-				function getNews(){
+				function getNews(){ 
 					let news = mui.http_post(API.GET_NEWS,{num : 3});
-					if(news.code == 200){
-						vm.newsData = news.data.data;
-					}
+					news.then(data=>{
+						if(data.code == 200){
+							vm.newsData = data.data.data;
+						} 
+					});
+					
 				}
 				
-				
 				document.addEventListener("plusready",function() {
+					
+					
 					//mui.judgeStoragePermisson();
 					mui.appUpdate();
 					 
@@ -353,7 +357,7 @@
 							 url:'html/drug/net-drug.html',
 							 id:'html/drug/net-drug.html',
 							 show:{
-								 autoShow:false,
+								 autoShow:true,
 							 }
 						});
 					});
@@ -363,7 +367,7 @@
 							 url:'html/drug/drug-description.html',
 							 id:'html/drug/drug-description.html',
 							 show:{
-								 autoShow:false,
+								 autoShow:true,
 							 }
 						});
 					})
@@ -374,7 +378,7 @@
 						 	 url:'html/drug/essential-drug.html',
 						 	 id:'html/drug/essential-drug.html',
 						 	 show:{
-						 		 autoShow:false,
+						 		 autoShow:true,
 						 	 }
 						 });
 					 })
@@ -385,7 +389,7 @@
 							 url:'html/drug/medication-guide.html',
 							 id:'html/drug/medication-guide.html',
 							 show:{
-								 autoShow:false,
+								 autoShow:true,
 							 }
 						});
 					})
@@ -396,7 +400,7 @@
 							 url:'html/drug/four-seven-drug.html',
 							 id:'html/drug/four-seven-drug.html',
 							 show:{
-								 autoShow:false,
+								 autoShow:true,
 							 }
 						});
 					})
@@ -404,15 +408,12 @@
 					
 					//监听系统通知栏消息点击事件  
 					plus.push.addEventListener('click', function(msg){
-						var payload = JSON.parse(msg.payload);
+						var payload = typeof(msg.payload) != 'string' ? msg.payload : JSON.parse(msg.payload);
 						var type = payload.type;
 						// 判断是否登录
 						var accountInfo = plus.storage.getItem('accountInfo');
-						if( accountInfo == null ){
-							mui.toast('请先登录');
-							return;
-						}
-						switch (type){
+						
+						switch(type){
 							case 'chat':
 								mui.openWindow({
 									url:"html/my/customer-chat.html",
@@ -428,6 +429,10 @@
 								break;
 							
 							case 'useradd':
+								if( accountInfo == null ){
+									mui.toast('请先登录');
+									return;
+								}
 								mui.openWindow({
 									url : 'html/user/new-friend.html',
 									id : 'html/user/new-friend.html',
@@ -438,11 +443,15 @@
 								break;
 								
 							case 'short':
+								if( accountInfo == null ){
+									mui.toast('请先登录');
+									return;
+								}
 								mui.trigger(document.getElementById('short'),'tap');
 								break;
 								
-								break;
 							default:
+								break;
 						}
 						
 						
@@ -450,13 +459,14 @@
 					
 					//接收透传消息
 					plus.push.addEventListener('receive',function(msg){
-						alert(JSON.stringify(msg));
-						var payload = msg.payload;
+						// alert(JSON.stringify(msg));
 						var content = msg.content;
+						var payload = JSON.parse(msg.payload);
 						
-						if(mui.os.ios){
-							//苹果系统
-							
+						if(mui.os.ios && payload.mark == undefined){
+							//苹果系统,服务器推送过来的 则创建本地消息
+							payload.mark = true;
+							plus.push.createMessage(content, JSON.stringify(payload),{title : msg.title});
 						}
 						
 					},false)
@@ -573,7 +583,7 @@
 						if( [0,1].indexOf(type) != -1 ){
 							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
 							   e.index
-							},'div');
+							});
 							return;
 						}
 						 
@@ -581,7 +591,7 @@
 							 url:targetNav,
 							 id:targetNav,
 							 show:{
-								 autoShow:false,
+								 autoShow:true,
 							 }
 						 });
 						
@@ -592,11 +602,11 @@
 						var href = this.dataset.href;
 						var accountInfo = plus.storage.getItem('accountInfo');
 						if(accountInfo == null){
-							mui.alert('请先登录','提示','确认',function (e) {},'div');
+							mui.alert('请先登录','提示','确认',function (e) {});
 							return;
 						}
 						if( '6,7'.indexOf(JSON.parse(accountInfo).roleid) == -1 ){
-							mui.alert('该角色无权限','提示','确认',function (e) {},'div');
+							mui.alert('该角色无权限','提示','确认',function (e) {});
 							return;
 						}else{
 							mui.openWindow({
@@ -615,11 +625,11 @@
 						var href = this.dataset.href;
 						var accountInfo = plus.storage.getItem('accountInfo');
 						if(accountInfo == null){
-							mui.alert('请先登录','提示','确认',function (e) {},'div');
+							mui.alert('请先登录','提示','确认',function (e) {});
 							return;
 						}
 						if( '6,7,9'.indexOf(JSON.parse(accountInfo).roleid) == -1 ){
-							mui.alert('该角色无权限','提示','确认',function (e) {},'div');
+							mui.alert('该角色无权限','提示','确认',function (e) {});
 							return;
 						}else{
 							mui.openWindow({
@@ -664,7 +674,7 @@
 							 url : 'html/news/news-detail.html',
 							 id : 'html/news/news-detail.html',
 							 show:{
-								 autoShow : false
+								 autoShow : true
 							 },
 							 extras : {
 								title : news.title,

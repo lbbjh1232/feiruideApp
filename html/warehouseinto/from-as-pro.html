@@ -456,13 +456,16 @@
 								}
 								
 								var res = mui.http_post(API.CHECK_DRUG_REPORT,{batchNumber : value , drugId : current.id});
-								if(res.data.id){
-									mui.toast('药检报告已存在');
-								}else{
-									mui.toast('请上传药检报告');
-								}
-								vm.$set(this.drug[index],'reportId',res.data.id);
-								vm.$set(this.drug[index],'reportUrl',res.data.picture_paths);
+								res.then(res=>{
+									if(res.data.id){
+										mui.toast('药检报告已存在');
+									}else{
+										mui.toast('请上传药检报告');
+									}
+									vm.$set(this.drug[index],'reportId',res.data.id);
+									vm.$set(this.drug[index],'reportUrl',res.data.picture_paths);
+								})
+								
 								
 							},
 							
@@ -528,7 +531,6 @@
 								var index = e.target.dataset.index;
 								// 存在多个且不是最后一个
 								if( this.drug.length > parseInt(index)+1 ){
-									console.log(1)
 									this.drug.splice(index,1);
 									return;
 								}
@@ -584,7 +586,7 @@
 									document.getElementById('close-btn').addEventListener('tap',function(e){
 										// 判断是否保存
 										if( !mui.isEqualArr(that.reportImage,that.reportBefore) ){
-											mui.alert('还未保存哟?','提示','确认',function (e) {},'div')
+											mui.alert('还未保存哟?','提示','确认',function (e) {})
 											return;
 											
 										}else{
@@ -597,7 +599,7 @@
 									// 监听提交
 									document.getElementById('report-sure').addEventListener('tap',function(){
 										if(that.reportImage.length == 0){
-											mui.alert('上传不能为空','提示','确认',function(){},'div');
+											mui.alert('上传不能为空','提示','确认',function(){});
 											return;
 										}
 										var str = '';
@@ -624,15 +626,18 @@
 									if(e.index == 1){
 										plus.nativeUI.showWaiting();
 										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
-										if(res.code == 200){
-											that[target].splice(indexs,1)
-										}else{
-											mui.alert(res.message,'提示','确认',function (e) {},'div')
-										}
+										res.then(res=>{
+											if(res.code == 200){
+												that[target].splice(indexs,1)
+											}else{
+												mui.alert(res.message,'提示','确认',function (e) {})
+											}
+										})
+										
 										plus.nativeUI.closeWaiting();
 									}
 									
-								},'div')
+								})
 							},
 							
 							// 上传科工贸
@@ -959,20 +964,20 @@
 									id : 'choose-producer.html',
 									url : 'choose-producer.html',
 									show:{
-										autoShow:false,
+										autoShow:true,
 									},
 									extras : {
 										sign : 'from-as-pro.html'
 									}
 								});
 								
-							},'div')
+							})
 						}else{
 							mui.openWindow({
 								id : 'choose-producer.html',
 								url : 'choose-producer.html',
 								show:{
-									autoShow:false,
+									autoShow:true,
 								},
 								extras : {
 									sign : 'from-as-pro.html'
@@ -989,9 +994,12 @@
 						// 判断科工贸一体化证明是否存在
 						if(vm.agentTypeValue == 3){
 							var res = mui.http_post(API.CHECK_TRADE_EXIST,{sid : e.detail.sid});
-							if(res.code ==201){
-								mui.toast(res.message);
-							}
+							res.then(res=>{
+								if(res.code ==201){
+									mui.toast(res.message);
+								}
+							})
+							
 						}
 						vm.$nextTick(function(){
 							// 选择药品
@@ -1002,7 +1010,7 @@
 									id : 'choose-drug.html',
 									url : 'choose-drug.html',
 									show : {
-										autoShow : false
+										autoShow : true
 									},
 									extras : {
 										sign : 'from-as-pro.html',
@@ -1024,13 +1032,16 @@
 								drugNumber: drug.system_number,
 								domestic: vm.agentTypeValue
 							});
-							if (res.data.id) {
-								mui.toast('总代证明已存在');
-							} else {
-								mui.toast('总代证明不存在，请上传');
-							}
-							drug.agentId = res.data.id;  
-							drug.agentUrl = res.data.agency_photo;
+							res.then(res=>{
+								if (res.data.id) {
+									mui.toast('总代证明已存在');
+								} else {
+									mui.toast('总代证明不存在，请上传');
+								}
+								drug.agentId = res.data.id;  
+								drug.agentUrl = res.data.agency_photo;
+								vm.$set(vm.drug,index,drug);
+							})
 						}
 						vm.$set(vm.drug,index,drug);
 						
@@ -1120,16 +1131,16 @@
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.WAREHOUSE_INTO_FROM_AS_PRO,params);
 						plus.nativeUI.closeWaiting()
-						
-						if(res.code == 200){
-							mui.toast('入库成功 '+res.data.info+' 条记录')
-							setTimeout(function(){
-								mui.back();
-							},800)
-						}else{
-							mui.alert(res.message,'提示','确认',function (e) {},'div')
-						}
-						
+						res.then(res=>{
+							if(res.code == 200){
+								mui.toast('入库成功 '+res.data.info+' 条记录')
+								setTimeout(function(){
+									mui.back();
+								},800)
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {})
+							}
+						})
 						
 					})
 						

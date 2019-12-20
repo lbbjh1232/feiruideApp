@@ -221,14 +221,10 @@
 			PDFJS.getDocument(url).then(function(pdfDoc_) {
 				pdfDoc = pdfDoc_;
 				document.getElementById('page_count').textContent = pdfDoc.numPages;
-
 				// Initial/first page rendering
 				renderPage(pageNum);
 			}).catch(function(e){
-				//console.log(e)
-				mui.alert('文件错误或不存在','提示','确认',function (e) {
-					
-				},'div')
+				mui.alert('文件错误或不存在','提示','确认',function (e) {})
 			});
 		
 	    

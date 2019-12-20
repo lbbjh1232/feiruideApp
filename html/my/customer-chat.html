@@ -459,8 +459,9 @@
 					
 					var old_back = mui.back;
 					mui.back = function(){
-						var self = plus.webview.currentWebview();
+						var self = plus.webview.currentWebview(),message = plus.webview.getWebviewById('html/message.html');
 						mui.fire(self.opener(),'refresh');
+						mui.fire(message,'refresh');
 						self.close();
 					}
 					
@@ -476,14 +477,16 @@
 						var uuid = mui.getUuid();
 						var checkUser = mui.http_post(API.CHECK_NONE_USER,{uuid:uuid});
 						myAvatar = '../../images/logo.png';
+						checkUser.then(checkUser=>{
+							if(checkUser.code == 200){
+								myid = checkUser.data.uid;
+								
+							}else{
+								//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
+								myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
+							}
+						})
 						
-						if(checkUser.code == 200){ 
-							myid = checkUser.data.uid;
-							
-						}else{
-							//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
-							myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
-						}
 					}
 					
 					
@@ -493,7 +496,7 @@
 					vm.name = toInfo.name;
 					
 					//加载历史记录
-					record = mui.messageLoad(myid,toid);
+					var record_init = mui.messageLoad(myid,toid);
 				
 					plus.webview.currentWebview().setStyle({
 						softinputMode: "adjustResize"
@@ -622,7 +625,10 @@
 					
 					
 					//初始化对话列表
-					bindMsgList();
+					record_init.then(res=>{
+						record = res;
+						bindMsgList();
+					})
 					
 					//渲染数据
 					var send = function(msg) {
@@ -699,7 +705,6 @@
 											stime : time
 										});
 									}
-									console.log(time)
 									break;
 								//接收图片信息
 								case 'img':
@@ -752,7 +757,6 @@
 					websocket();
 					
 					window.addEventListener('resize', function() {
-						console.log('窗口变换')
 						ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
 					}, false);
 					
@@ -792,7 +796,8 @@
 					//存储发送的数据到数据库
 					var saveMessage = function(params,content,type){
 						var res = mui.http_post(API.SAVE_MESSAGE,params);
-						if(res.code == 200){
+						res.then(res=>{
+							if(res.code == 200){
 							var recordId = res.data.id;
 							var time = res.data.time;
 							
@@ -822,6 +827,7 @@
 						}else{
 							mui.toast('系统异常，发送失败');
 						}
+						})
 					}
 					
 					ui.footerRight.addEventListener('release', function(event) {

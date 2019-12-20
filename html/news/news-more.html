@@ -60,14 +60,17 @@
 	<script type="text/javascript">
 		function getNews(num){
 			let news = mui.http_post(API.GET_NEWS,{num : num});
-			if(news.code == 200){
-				vm.newsData = news.data.data;
-				if(news.data.more == 1){
-					vm.more = true;
-				}else{
-					vm.more = false;
+			news.then(news=>{
+				if(news.code == 200){
+					vm.newsData = news.data.data;
+					if(news.data.more == 1){
+						vm.more = true;
+					}else{
+						vm.more = false;
+					}
 				}
-			}
+			})
+			
 		}
 		var vm = new Vue({
 			el : '#app',
@@ -123,7 +126,7 @@
 					 url : 'news-detail.html',
 					 id : 'html/news/news-detail.html',
 					 show:{
-						 autoShow : false
+						 autoShow : true
 					 },
 					 extras : {
 						title : news.title,

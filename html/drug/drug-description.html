@@ -120,15 +120,17 @@
 			if(first){
 				mui.currentWebview.show();
 			} 
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(data=>{
+				if(data.code == 200){
+					vm.searchResult = data.data;
+					if(data.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 			
 		window.onload = function(){
@@ -158,7 +160,7 @@
 							item : item,
 						},
 						show : {
-							autoShow : false,
+							autoShow : true,
 						}
 					})
 					

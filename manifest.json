@@ -97,7 +97,7 @@
     },
     "plus" : {
         "kernel" : {
-            "ios" : "UIWebview" //或者 "WKWebview"  "UIWebview" 
+            "ios" : "WKWebview" //或者 "WKWebview"  "UIWebview"
         },
         "launchwebview" : {
             "bottom" : "0px",

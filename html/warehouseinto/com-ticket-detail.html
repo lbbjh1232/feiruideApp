@@ -353,11 +353,13 @@
 			if(first){
 				mui.currentWebview.show();
 			} 
+			res.then(res=>{
+				if(res.code == 200){
+					vm.urls = res.data.category;
+					vm.info = res.data.info;
+				}
+			})
 			
-			if(res.code == 200){
-				vm.urls = res.data.category;
-				vm.info = res.data.info;
-			}
 		}
 			
 		window.onload = function(){
@@ -371,7 +373,6 @@
 				mui.networkError();
 				var self = plus.webview.currentWebview();
 				vm.intoid = self.intoid;
-				console.log(self.intoid)
 				// 首次ajax获取数据后关闭等待窗口
 				vm.$nextTick(function(){
 					getNetDrug(true);

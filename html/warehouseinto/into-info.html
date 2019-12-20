@@ -344,15 +344,17 @@
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 			
 		window.onload = function(){
@@ -654,14 +656,14 @@
 				mui('.search-box').on('tap','.delete',function(){
 					var index = vm.value;
 					if(index == ''){
-						mui.alert('请选择一条记录操作','提示','确认',function (e) {},'div');
+						mui.alert('请选择一条记录操作','提示','确认',function (e) {});
 						return;
 					}
 					
 					var current = vm.searchResult[index];
 					var state = current.i_state;
 					if(state == 1 || state == 3){
-						mui.alert('已存在出库记录,无法删除','提示','确认',function(){},'div');
+						mui.alert('已存在出库记录,无法删除','提示','确认',function(){});
 						return;
 					}
 					var val = current.generic_name;
@@ -674,12 +676,15 @@
 							plus.nativeUI.showWaiting()
 							var res = mui.http_post(API.DEL_DRUG_INTO,params);
 							plus.nativeUI.closeWaiting()
-							if(res.code == 200){
-								mui.toast('删除成功');
-								getNetDrug(false);
-							}else{
-								mui.alert(res.message,'提示','确认',function(){},'div');
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast('删除成功');
+									getNetDrug(false);
+								}else{
+									mui.alert(res.message,'提示','确认',function(){});
+								}
+							})
+							
 						}
 					},'div')
 					
@@ -690,14 +695,14 @@
 				mui('.search-box').on('tap','.edit',function(){
 					var index = vm.value;
 					if(index == ''){
-						mui.alert('请选择一条记录操作','提示','确认',function (e) {},'div');
+						mui.alert('请选择一条记录操作','提示','确认',function (e) {});
 						return;
 					}
 					
 					var current = vm.searchResult[index];
 					var state = current.i_state;
 					if(state == 1 || state == 3){
-						mui.alert('已存在出库记录,无法删除','提示','确认',function(){},'div');
+						mui.alert('已存在出库记录,无法删除','提示','确认',function(){});
 						return;
 					}
 					
@@ -824,13 +829,16 @@
 								allotCount
 							}
 							var res = mui.http_post(API.EDIT_DRUG_INTO,params);
-							if(res.code == 200){
-								mui.toast('修改成功');
-								mui.trigger(mask,'tap')
-								getNetDrug(false);
-							}else{
-								mui.alert(res.message,'提示','确认',function(){},'div')
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast('修改成功');
+									mui.trigger(mask,'tap')
+									getNetDrug(false);
+								}else{
+									mui.alert(res.message,'提示','确认',function(){})
+								}
+							})
+							
 							
 						})
 						
@@ -840,7 +848,7 @@
 				
 				//编辑票据
 				mui('.search-box').on('tap','.edit-ticket',function(){
-					mui.alert('该功能暂未开放','提示','确认',function(){},'div');
+					mui.alert('该功能暂未开放','提示','确认',function(){});
 				})
 			
 				

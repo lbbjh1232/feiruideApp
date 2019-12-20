@@ -225,7 +225,7 @@
 							}else{
 								
 								mui.alert(datas.err,'提示','确认',function (e) {
-								},'div');
+								});
 								
 							}
 							
@@ -336,7 +336,7 @@
 									url : 'group-allot.html',
 									id : 'group-allot.html',
 									show : {
-										autoShow : false
+										autoShow : true
 									}
 								})
 							},
@@ -358,13 +358,16 @@
 								}
 								
 								var res = mui.http_post(API.CHECK_DRUG_REPORT,{batchNumber : value , drugId : current.id});
-								if(res.data.id){
-									mui.toast('药检报告已存在');
-								}else{
-									mui.toast('请上传药检报告');
-								}
-								vm.$set(this.drug[index],'reportId',res.data.id);
-								vm.$set(this.drug[index],'reportUrl',res.data.picture_paths);
+								res.then(res=>{
+									if(res.data.id){
+										mui.toast('药检报告已存在');
+									}else{
+										mui.toast('请上传药检报告');
+									}
+									vm.$set(this.drug[index],'reportId',res.data.id);
+									vm.$set(this.drug[index],'reportUrl',res.data.picture_paths);
+								})
+								
 								
 							},
 							
@@ -486,7 +489,7 @@
 									document.getElementById('close-btn').addEventListener('tap',function(e){
 										// 判断是否保存
 										if( !mui.isEqualArr(that.reportImage,that.reportBefore) ){
-											mui.alert('还未保存哟?','提示','确认',function (e) {},'div')
+											mui.alert('还未保存哟?','提示','确认',function (e) {})
 											return;
 											
 										}else{
@@ -498,7 +501,7 @@
 									// 监听提交
 									document.getElementById('report-sure').addEventListener('tap',function(){
 										if(that.reportImage.length == 0){
-											mui.alert('上传不能为空','提示','确认',function(){},'div');
+											mui.alert('上传不能为空','提示','确认',function(){});
 											return;
 										}
 										var str = '';
@@ -525,15 +528,18 @@
 									if(e.index == 1){
 										plus.nativeUI.showWaiting();
 										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
-										if(res.code == 200){
-											that[target].splice(indexs,1)
-										}else{
-											mui.alert(res.message,'提示','确认',function (e) {},'div')
-										}
+										res.then(res=>{
+											if(res.code == 200){
+												that[target].splice(indexs,1)
+											}else{
+												mui.alert(res.message,'提示','确认',function (e) {})
+											}
+										})
+										
 										plus.nativeUI.closeWaiting();
 									}
 									
-								},'div')
+								})
 							},
 							
 							// 上传
@@ -629,20 +635,20 @@
 									id : 'choose-producer.html',
 									url : 'choose-producer.html',
 									show:{
-										autoShow:false,
+										autoShow:true,
 									},
 									extras : {
 										sign : 'from-group.html',
 									}
 								});
 								
-							},'div')
+							})
 						}else{
 							mui.openWindow({
 								id : 'choose-producer.html',
 								url : 'choose-producer.html',
 								show:{
-									autoShow:false,
+									autoShow:true,
 								},
 								extras : {
 									sign : 'from-group.html',
@@ -666,7 +672,7 @@
 									id : 'choose-drug.html',
 									url : 'choose-drug.html',
 									show : {
-										autoShow : false
+										autoShow : true
 									},
 									extras : {
 										sign : 'from-group.html',
@@ -768,16 +774,16 @@
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.WAREHOUSE_INTO_FROM_GROUP,params);
 						plus.nativeUI.closeWaiting()
-						
-						if(res.code == 200){
-							mui.toast('入库成功 '+res.data.info+' 条记录')
-							setTimeout(function(){
-								mui.back();
-							},800)
-						}else{
-							mui.alert(res.message,'提示','确认',function (e) {},'div')
-						}
-						
+						res.then(res=>{
+							if(res.code == 200){
+								mui.toast('入库成功 '+res.data.info+' 条记录')
+								setTimeout(function(){
+									mui.back();
+								},800)
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {})
+							}
+						})
 						
 					})
 						

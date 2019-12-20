@@ -215,15 +215,17 @@
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 			
 		window.onload = function(){
@@ -365,14 +367,17 @@
 					mui.confirm('确认删除吗?','提示',['取消','确认'],function (e) {
 						if(e.index == 1){
 							var res = mui.http_post(API.CLOSE_SHORTAGE,{sid : value.id , sign : 2});
-							if(res.code == 200){
-								mui.toast(res.message);
-								getNetDrug(false);
-							}else{
-								mui.alert(res.message,'提示','确认',function (e) {},'div');
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast(res.message);
+									getNetDrug(false);
+								}else{
+									mui.alert(res.message,'提示','确认',function (e) {});
+								}
+							})
+							
 						}
-					},'div')
+					})
 					
 					
 				})
@@ -411,17 +416,20 @@
 					mui.confirm('确认关闭短缺需求 <i class="red">'+value.drug_name +'</i> ?','提示',['取消','确认'],function (e) {
 						if(e.index == 1){
 							var res = mui.http_post(API.CLOSE_SHORTAGE,params);
-							if(res.code == 200){
-								mui.toast(res.message);
-								getNetDrug(false);
-								
-							}else{
-								mui.alert(res.message,'提示','确认',function (e) {
-								   e.index
-								},'div')
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast(res.message);
+									getNetDrug(false);
+									
+								}else{
+									mui.alert(res.message,'提示','确认',function (e) {
+									   e.index
+									})
+								}
+							})
+							
 						}
-					},'div');
+					});
 					var event = event||window.event;
 					event.stopPropagation()
 				})

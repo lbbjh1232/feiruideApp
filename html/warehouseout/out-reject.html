@@ -419,15 +419,17 @@
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 			
 		window.onload = function(){
@@ -444,7 +446,9 @@
 				// 获取医院
 				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 				var hos = mui.http_post(API.GET_HOSPITAL,{companyID:accountInfo.userid});
-				vm.hospital = hos.data;
+				hos.then(hos=>{
+					vm.hospital = hos.data;
+				})
 				 
 				//加载更多
 				mui('.loadMore').on('tap','button',function(){
@@ -501,12 +505,15 @@
 							mui.confirm('确定解决并向【<i class="red">'+ current.hos_name+'</i> 】'+'发送通知?','提示',['取消','确认'],function (e) {
 								if(e.index == 1){
 									var res = mui.http_post(API.REJECT_TO_HOS,{outId : current.id});
-									if(res.code == 200){
-										mui.toast(res.message);
-										vm.rejectShow = false;
-										vm.current = {};
-										getNetDrug(false);
-									}
+									res.then(res=>{
+										if(res.code == 200){
+											mui.toast(res.message);
+											vm.rejectShow = false;
+											vm.current = {};
+											getNetDrug(false);
+										}
+									})
+									
 								}
 							},'div')
 						})
@@ -791,14 +798,14 @@
 				mui('.search-box').on('tap','.delete',function(){
 					var index = vm.value;
 					if(index == ''){
-						mui.alert('请选择一条记录操作','提示','确认',function (e) {},'div');
+						mui.alert('请选择一条记录操作','提示','确认',function (e) {});
 						return;
 					}
 					
 					var current = vm.searchResult[index];
 					var state = current.state;
 					if( state == 1){
-						mui.alert('该出库已查验,无法删除','提示','确认',function(){},'div');
+						mui.alert('该出库已查验,无法删除','提示','确认',function(){});
 						return;
 					}
 					var val = current.generic_name;
@@ -811,12 +818,14 @@
 							plus.nativeUI.showWaiting()
 							var res = mui.http_post(API.DEL_DRUG_OUT,params);
 							plus.nativeUI.closeWaiting()
-							if(res.code == 200){
-								mui.toast('删除成功');
-								getNetDrug(false);
-							}else{
-								mui.alert(res.message,'提示','确认',function(){},'div');
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast('删除成功');
+									getNetDrug(false);
+								}else{
+									mui.alert(res.message,'提示','确认',function(){});
+								}
+							})
 						}
 					},'div')
 					
@@ -827,14 +836,14 @@
 				mui('.search-box').on('tap','.edit',function(){
 					var index = vm.value;
 					if(index == ''){
-						mui.alert('请选择一条记录操作','提示','确认',function (e) {},'div');
+						mui.alert('请选择一条记录操作','提示','确认',function (e) {});
 						return;
 					}
 					
 					var current = vm.searchResult[index];
 					var state = current.state;
 					if(state == 1){
-						mui.alert('该出库已查验,无法删除','提示','确认',function(){},'div');
+						mui.alert('该出库已查验,无法删除','提示','确认',function(){});
 						return;
 					}
 					
@@ -938,13 +947,16 @@
 								intoId : vm.into_id
 							}
 							var res = mui.http_post(API.EDIT_DRUG_OUT,params);
-							if(res.code == 200){
-								mui.toast('修改成功');
-								mui.trigger(mask,'tap')
-								getNetDrug(false);
-							}else{
-								mui.alert(res.message,'提示','确认',function(){},'div')
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast('修改成功');
+									mui.trigger(mask,'tap')
+									getNetDrug(false);
+								}else{
+									mui.alert(res.message,'提示','确认',function(){})
+								}
+							})
+							
 							
 						})
 						
@@ -954,7 +966,7 @@
 				
 				//编辑票据
 				mui('.search-box').on('tap','.edit-ticket',function(){
-					mui.alert('该功能暂未开放','提示','确认',function(){},'div');
+					mui.alert('该功能暂未开放','提示','确认',function(){});
 				})
 			
 				

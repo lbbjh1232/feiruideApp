@@ -6,6 +6,8 @@
 		<title>新闻资讯</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<script type="text/javascript">
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
@@ -52,14 +54,13 @@
 		</header>
 		
 		<div class="mui-content" id="app">
-			<div class="news-title">
+			<div class="news-title" v-cloak>
 				{{title}}
 			</div>
-			<div class="publisher">药械e家电子平台 &nbsp;&nbsp;&nbsp;<span id="publish-date">{{time}}</span></div>
+			<div class="publisher" v-cloak>药械e家电子平台 &nbsp;&nbsp;&nbsp;<span id="publish-date">{{time}}</span></div>
 			
 			<!-- 详情 -->
 			<div class="news-detail-box" v-html="content">
-				
 				
 			</div>
 			
@@ -82,22 +83,26 @@
 				content : ''
 			}
 		})
-		mui.plusReady(function () {
-		    // var id = mui.currentWebview.nid;
-			vm.title = mui.currentWebview.title;
-			// vm.cover = mui.currentWebview.cover;
-			vm.time = mui.currentWebview.time;
-			vm.content = mui.currentWebview.content;
-			vm.$nextTick(function(){
-				var imageViewer = new mui.ImageViewer('img', {
-					dbl: false
-				});
+		window.onload = function(){
+			mui.plusReady(function () {
+			    // var id = mui.currentWebview.nid;
+				vm.title = mui.currentWebview.title;
+				// vm.cover = mui.currentWebview.cover;
+				vm.time = mui.currentWebview.time;
+				vm.content = mui.currentWebview.content;
 				mui.currentWebview.show();
 				plus.nativeUI.closeWaiting();
+				vm.$nextTick(function(){
+					var imageViewer = new mui.ImageViewer('img', {
+						dbl: false
+					});
+					
+				})
+				
+				
 			})
-			
-			
-		})
+		}
+		
 	</script>
 	
 </html>

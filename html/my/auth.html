@@ -243,67 +243,69 @@
 		var accountInfo,new_back;
 		function loadAuth(){
 			let auth = mui.http_post(API.GET_AUTH,{id : accountInfo.id});
-			if(auth.code == 200){
-				let data = auth.data;
-				let state = data.state_flag;
-				let license = [{
-					url : API.IMAGE_HOST + '/iauth/' + data.company_photo,
-					save : data.company_photo
-				}];
-				let front = [{
-					url : API.IMAGE_HOST + '/iauth/' + data.id_photo_front,
-					save : data.id_photo_front
-				}];
-				let reverse = [{
-					url : API.IMAGE_HOST + '/iauth/' + data.id_photo_reverse,
-					save : data.id_photo_reverse
-				}];
-				
-				vm.company = data.iauth_name;
-				vm.name = data.real_name;
-				vm.endTime = data.id_out_date;
-				vm.code = data.id_number;
-				vm.creditCode = data.company_uscc;
-				vm.roleValue = data.role_id;
-				vm.roleText = vm.role[ parseInt(data.role_id) - 6].text;
-				vm.licenseImage = license;
-				vm.frontImage = front;
-				vm.reverseImage = reverse;
-				vm.reason = data.fail_content;
-				vm.status = state;
-				vm.sign = 1;
-				vm.authId = data.id;
-				vm.step_one = false;
-				vm.step_two = false;
-				vm.step_three = true;
-				vm.$nextTick(function(){
-					plus.nativeUI.closeWaiting();
-					mui.currentWebview.show();
-					// 重新认证
-					mui('.waiting').on('tap','#rewrite',function(){
-						vm.step_one = true;
-						vm.step_two = false;
-						vm.step_three = false;
-					});
+			auth.then(auth=>{
+				if(auth.code == 200){
+					let data = auth.data;
+					let state = data.state_flag;
+					let license = [{
+						url : API.IMAGE_HOST + '/iauth/' + data.company_photo,
+						save : data.company_photo
+					}];
+					let front = [{
+						url : API.IMAGE_HOST + '/iauth/' + data.id_photo_front,
+						save : data.id_photo_front
+					}];
+					let reverse = [{
+						url : API.IMAGE_HOST + '/iauth/' + data.id_photo_reverse,
+						save : data.id_photo_reverse
+					}];
 					
-					// 认证完成
-					mui('.waiting').on('tap','#confirm',function(){
-						vm.step_four = true;
-						vm.step_three = false;
-						vm.$nextTick(function(){
-							mui('.auth-ok').on('tap','#relogin',function(){
-								// plus.nativeUI.showWaiting();
-								plus.storage.removeItem('accountInfo');
-								new_back();
+					vm.company = data.iauth_name;
+					vm.name = data.real_name;
+					vm.endTime = data.id_out_date;
+					vm.code = data.id_number;
+					vm.creditCode = data.company_uscc;
+					vm.roleValue = data.role_id;
+					vm.roleText = vm.role[ parseInt(data.role_id) - 6].text;
+					vm.licenseImage = license;
+					vm.frontImage = front;
+					vm.reverseImage = reverse;
+					vm.reason = data.fail_content;
+					vm.status = state;
+					vm.sign = 1;
+					vm.authId = data.id;
+					vm.step_one = false;
+					vm.step_two = false;
+					vm.step_three = true;
+					vm.$nextTick(function(){
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show();
+						// 重新认证
+						mui('.waiting').on('tap','#rewrite',function(){
+							vm.step_one = true;
+							vm.step_two = false;
+							vm.step_three = false;
+						});
+						
+						// 认证完成
+						mui('.waiting').on('tap','#confirm',function(){
+							vm.step_four = true;
+							vm.step_three = false;
+							vm.$nextTick(function(){
+								mui('.auth-ok').on('tap','#relogin',function(){
+									// plus.nativeUI.showWaiting();
+									plus.storage.removeItem('accountInfo');
+									new_back();
+								})
 							})
 						})
 					})
-				})
-				
-			}else{
-				plus.nativeUI.closeWaiting();
-				mui.currentWebview.show();
-			}
+					
+				}else{
+					plus.nativeUI.closeWaiting();
+					mui.currentWebview.show();
+				}
+			})
 		}
 		
 		//定义上传组件
@@ -457,11 +459,13 @@
 						if(e.index == 1){
 							plus.nativeUI.showWaiting();
 							var res = mui.http_post(API.DELETE_AUTH,{url:that[target][indexs].save});
-							if(res.code == 200){
-								that[target].splice(indexs,1)
-							}else{
-								mui.alert(res.message,'提示','确认',function (e) {},'div')
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									that[target].splice(indexs,1)
+								}else{
+									mui.alert(res.message,'提示','确认',function (e) {},'div')
+								}
+							})
 							plus.nativeUI.closeWaiting();
 						}
 						
@@ -621,13 +625,16 @@
 											sign : vm.sign,
 										}
 										let res = mui.http_post(API.AUTH_SUBMIT,params);
-										if(res.code == 200){
-											vm.step_three = true;
-											vm.step_two = false;
-											vm.step_one = false;
-											vm.status = 0;
-											mui.toast('提交成功');
-										}
+										res.then(res=>{
+											if(res.code == 200){
+												vm.step_three = true;
+												vm.step_two = false;
+												vm.step_one = false;
+												vm.status = 0;
+												mui.toast('提交成功');
+											}
+										})
+										
 										
 									})
 									

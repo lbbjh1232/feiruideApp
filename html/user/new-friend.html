@@ -61,9 +61,12 @@
 			
 			var getList = function(){
 				var res = mui.http_post(API.GET_NEW_FRIEND,{myid:myid});
-				if(res.code == 200){
-					vm.result = res.data;
-				}
+				res.then(res=>{
+					if(res.code == 200){
+						vm.result = res.data;
+					}
+				})
+				
 			}
 			    
 			 window.onload = function(){ 
@@ -92,15 +95,16 @@
 					mui('#app').on('tap','.delete',function(){
 						var rid = this.dataset.id;
 						var del = mui.http_post(API.NEW_RECORD_DEL,{rid:rid});
+						del.then(del=>{
+							if(del.code == 200){
+								//直接删除节点
+								document.getElementById('app').removeChild(this.parentNode);
+								
+							}else{
+								mui.alert(del.message,'提示','确认',function (e) {});  
+							} 
+						})
 						
-						if(del.code == 200){
-							//直接删除节点
-							document.getElementById('app').removeChild(this.parentNode);
-							
-						}else{
-							
-							mui.alert(del.message,'提示','确认',function (e) {},'div');  
-						} 
 					}); 
 					
 					// 跳转验证

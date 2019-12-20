@@ -240,22 +240,19 @@
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.PRO_SUBMIT,params);
 						plus.nativeUI.closeWaiting();
-						
-						if (res.code == 200) {
-							mui.toast(res.message);
-							var old_back = mui.back;
-							var target = plus.webview.getWebviewById('html/short/index.html')
-							mui.fire(target,'refreshs')
-							old_back();
-							return false;
-						} else {
-							mui.toast(res.message);
-						}   
-						
-						
-						
+						res.then(res=>{
+							if (res.code == 200) {
+								mui.toast(res.message);
+								var old_back = mui.back;
+								var target = plus.webview.getWebviewById('html/short/index.html')
+								mui.fire(target,'refreshs')
+								old_back();
+								return false;
+							} else {
+								mui.toast(res.message);
+							}   
+						})
 					})
-					
 					
 				})
 			}

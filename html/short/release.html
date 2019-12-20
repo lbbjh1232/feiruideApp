@@ -201,7 +201,7 @@
 							url : 'choose-short-drug.html',
 							id : 'choose-short-drug.html',
 							show : {
-								autoShow : false,
+								autoShow : true,
 							},
 							extras : {
 								sign : 'release.html'
@@ -273,16 +273,19 @@
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.RE_SUBMIT,params);
 						plus.nativeUI.closeWaiting();
-						if (res.code == 200) {
-							mui.toast(res.message);
-							var old_back = mui.back;
-							var target = plus.webview.getWebviewById(vm.target)
-							mui.fire(target,'refreshs')
-							old_back();
-							return false;
-						} else {
-							mui.toast(res.message);
-						}   
+						res.then(res=>{
+							if (res.code == 200) {
+								mui.toast(res.message);
+								var old_back = mui.back;
+								var target = plus.webview.getWebviewById(vm.target)
+								mui.fire(target,'refreshs')
+								old_back();
+								return false;
+							} else {
+								mui.toast(res.message);
+							}   
+						})
+						
 						
 						
 						

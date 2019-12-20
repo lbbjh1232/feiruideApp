@@ -409,11 +409,13 @@
 			if(first){
 				mui.currentWebview.show();
 			} 
+			res.then(res=>{
+				if(res.code == 200){
+					vm.urls = res.data.category;
+					vm.info = res.data.info;
+				}
+			})
 			
-			if(res.code == 200){
-				vm.urls = res.data.category;
-				vm.info = res.data.info;
-			}
 		}
 			
 		window.onload = function(){

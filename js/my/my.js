@@ -27,8 +27,15 @@ mui.plusReady(function () {
 	
 	//初始化
 	loadView();
-	var adminInfo = mui.getAdminId(),ws;
-	
+	var admin = mui.getAdminId(),ws,adminInfo;
+	//获取客户id 
+	admin.then(res=>{
+		if(res.code == 200){
+			adminInfo = res.data.aid;
+		}else{
+			adminInfo = ''
+		}
+	})
 	//初始化微信服务
 	mui.updateSerivces();
 	
@@ -110,13 +117,26 @@ mui.plusReady(function () {
 				plus.nativeUI.closeWaiting();
 
 			}
-		},'div');
+		});
 		
 	});
 	
 	// 联系客服,随机分配在线客服(默认超级管理员为客服)
 	mui('.mui-table-view').on('tap','#custmer',function(){
-	
+		if(!adminInfo){
+			mui.alert('客服未连接成功,请重新连接','提示','确认',function(){
+				admin = mui.getAdminId();
+				admin.then(res=>{
+					if(res.code == 200){
+						adminInfo = res.data.aid;
+						mui.toast('连接成功');
+					}else{
+						mui.toast('连接失败');
+					}
+				})
+			});
+			return;
+		}
 		mui.openWindow({
 			url:"my/customer-chat.html",
 			id:"my/customer-chat.html",

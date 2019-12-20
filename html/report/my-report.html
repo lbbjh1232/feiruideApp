@@ -371,11 +371,14 @@
 						if(e.index == 1){
 							plus.nativeUI.showWaiting();
 							var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
-							if(res.code == 200){
-								that[target].splice(indexs,1)
-							}else{
-								mui.alert(res.message,'提示','确认',function (e) {},'div')
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									that[target].splice(indexs,1)
+								}else{
+									mui.alert(res.message,'提示','确认',function (e) {},'div')
+								}
+							})
+							
 							plus.nativeUI.closeWaiting();
 						}
 						
@@ -415,15 +418,17 @@
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
+			
 		}
 		
 		// 搜索公司函数
@@ -435,11 +440,14 @@
 			plus.nativeUI.showWaiting()
 			let res = mui.http_post(API.GET_COMPANY,params);
 			plus.nativeUI.closeWaiting();
-			if(res.code == 200){
-				vm.companyData = res.data;
-			}else{
-				mui.alert(res.message,'提示','确认',function (e) {});
-			}
+			res.then(res=>{
+				if(res.code == 200){
+					vm.companyData = res.data;
+				}else{
+					mui.alert(res.message,'提示','确认',function (e) {});
+				}
+			})
+			
 			
 		}
 		
@@ -648,13 +656,16 @@
 								report : vm.reportImage
 							}
 							var res = mui.http_post(API.ADD_REPORT,params);
-							if(res.code == 200){
-								mui.toast('修改成功');
-								mui.trigger(document.getElementById('close-trade'),'tap');
-								getNetDrug();
-							}else{
-								mui.alert(res.message);
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast('修改成功');
+									mui.trigger(document.getElementById('close-trade'),'tap');
+									getNetDrug();
+								}else{
+									mui.alert(res.message);
+								}
+							})
+							
 							
 						})
 						
@@ -673,14 +684,17 @@
 					mui.confirm('确认删除吗?','提示',['取消','确认'],function (e) {
 						if(e.index == 1){
 							var res = mui.http_post(API.DEL_REPORT,{id : val.id});
-							if(res.code == 200){
-								mui.toast('删除成功');
-								getNetDrug();
-							}else{
-								mui.alert(res.message,'提示','确认',function(e){});
-							}
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast('删除成功');
+									getNetDrug();
+								}else{
+									mui.alert(res.message,'提示','确认',function(e){});
+								}
+							})
+							
 						}
-					},'div')
+					})
 				})
 				
 				
@@ -734,12 +748,14 @@
 								mui.confirm('确认推送吗?','提示',['取消','确认'],function (e) {
 									if(e.index == 1){
 										let result = mui.http_post(API.REPORT_PUSH,params);
-										if(result.code == 200){
-											mui.toast('推送成功');
-											mui.trigger(document.getElementById('close-push'),'tap');
-										}else{
-											mui.alert(result.message,'提示','确定',function (e) {})
-										}
+										result.then(result=>{
+											if(result.code == 200){
+												mui.toast('推送成功');
+												mui.trigger(document.getElementById('close-push'),'tap');
+											}else{
+												mui.alert(result.message,'提示','确定',function (e) {})
+											}
+										})
 									}
 								})
 								

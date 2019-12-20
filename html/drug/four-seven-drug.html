@@ -16,7 +16,7 @@
 	<body >
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">4+7品种</h1>
+			<h1 class="mui-title">4+7品种查询</h1>
 		</header>
 		
 		<div id="app">
@@ -277,15 +277,16 @@
 			if(first){
 				mui.currentWebview.show();
 			} 
-			
-			if(res.code == 200){
-				vm.searchResult = res.data;
-				if(res.message == 1){
-					vm.loadMore = false
-				}else{
-					vm.loadMore = true;
+			res.then(res=>{
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
 				}
-			}
+			})
 		}
 			
 		window.onload = function(){

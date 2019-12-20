@@ -193,10 +193,12 @@
 				if(first){
 					mui.currentWebview.show();
 				}  
+				res.then(res=>{
+					if(res.code == 200){
+						vm.searchResult = res.data;
+					}
+				})
 				
-				if(res.code == 200){ 
-					vm.searchResult = res.data;
-				}
 			}
 			
 			window.onload = function(){
@@ -271,7 +273,6 @@
 					mui('#scroll-one').on('tap','.check-detail',function(event){
 						vm.detailShow = true;
 						vm.$nextTick(function(){
-							// vm.$nextTick(function(){
 								mui('#scroll-two').scroll({deceleration: 0.001});
 								
 								// 监听关闭
@@ -279,7 +280,6 @@
 									vm.detailShow = false;
 									vm.current = {}
 								})
-							// })
 							
 						})
 						var index = this.dataset.index;

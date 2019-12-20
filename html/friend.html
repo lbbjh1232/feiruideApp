@@ -118,13 +118,15 @@
 						
 						var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 						var res = mui.http_post(API.GET_USER_LIST,{myid:accountInfo.id});
+						res.then(res=>{
+							if(res.code == 200){
+								
+								vm.result = res.data.list;
+								vm.count = res.data.count;
+								
+							}
+						})
 						
-						if(res.code == 200){
-							
-							vm.result = res.data.list;
-							vm.count = res.data.count;
-							
-						}
 							
 					}else{
 							// 没有登录的话
@@ -175,7 +177,7 @@
 						});
 						
 					}else{
-						mui.alert('请先登录!','提示','确认',function(){},'div');
+						mui.alert('请先登录!','提示','确认',function(){});
 					}
 				});
 				

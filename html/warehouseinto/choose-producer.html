@@ -94,10 +94,12 @@
 				if(first){
 					mui.currentWebview.show();
 				} 
+				res.then(res=>{
+					if(res.code == 200){
+						vm.searchResult = res.data;
+					}
+				})
 				
-				if(res.code == 200){
-					vm.searchResult = res.data;
-				}
 			}
 			
 			window.onload = function(){

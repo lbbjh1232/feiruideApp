@@ -110,50 +110,85 @@
 		
 		var url = API.HOST + url;
 		var result = 'success';
-		mui.ajax(url,{
-			type:method,
-			async:false,
-			data:params,
-			dataType:'json',
-			headers : {auth :'Bearer ' + accountInfo.token},
-			success:function(data){
-				result = data;
-				// console.log(JSON.stringify(result))
-			},
-			error:function(xhr,type,errorThrown){
-				result = 'fail';
-			}
+		return new Promise(function(resolve,reject){
+			mui.ajax(url,{
+				type:method,
+				async:true,
+				data:params,
+				dataType:'json',
+				headers : {auth :'Bearer ' + accountInfo.token},
+				success:(data)=>{
+					result = data;
+					if(result.code == 203){
+						var message = plus.webview.getWebviewById('html/message.html');
+						mui.fire(message,'kickOut',{msg : result.message});
+						reject();
+						
+					}else{
+						//正常返回
+						console.log(JSON.stringify(result))
+						resolve(result);
+					}
+				},
+				error:(xhr,type,errorThrown)=>{
+					// result = 'fail';
+					mui.alert('请求异常，稍后再试','提示','确定',function (e) {});
+					reject();
+				}
+			}); 
 		});
 		
-		if(result == 'fail'){
-			mui.alert('请求异常，稍后再试','提示','确定',function (e) {
-			   //console.log(e);
-			});
+		// mui.ajax(url,{
+		// 	type:method,
+		// 	async:true,
+		// 	data:params,
+		// 	dataType:'json',
+		// 	headers : {auth :'Bearer ' + accountInfo.token},
+		// 	success:(data)=>{
+		// 		result = data;
+		// 		if(result.code == 203){
+		// 			var message = plus.webview.getWebviewById('html/message.html');
+		// 			mui.fire(message,'kickOut',{msg : result.message});
+		// 			return;
+					
+		// 		}else{
+		// 			//正常返回
+		// 			return  result;
+		// 		}
+		// 	},
+		// 	error:(xhr,type,errorThrown)=>{
+		// 		result = 'fail';
+		// 		mui.alert('请求异常，稍后再试','提示','确定',function (e) {});
+		// 		return;
+		// 	}
+		// });
+		
+		// if(result == 'fail'){
+		// 	mui.alert('请求异常，稍后再试','提示','确定',function (e) {});
+		// 	return;
 			
-			return;
-			
-		}else{
-			// 接口鉴权返回
-			if(result.code == 203){
-				var message = plus.webview.getWebviewById('html/message.html');
-				mui.fire(message,'kickOut',{msg : result.message});
-				return;
+		// }else{
+		// 	// 接口鉴权返回
+		// 	if(result.code == 203){
+		// 		var message = plus.webview.getWebviewById('html/message.html');
+		// 		mui.fire(message,'kickOut',{msg : result.message});
+		// 		return;
 				
-			}else{
-				//正常返回
-				return  result;
+		// 	}else{
+		// 		//正常返回
+		// 		return  result;
 
-			}
-		}
+		// 	}
+		// }
 		
 	};
 	
 	$.http_post = function(url,params){
-		return $.http(url,params,'post');
+		return $.http(url,params,'POST');
 	};
 	
 	$.http_get = function(url,params){
-		return $.http(url,params,'get');
+		return $.http(url,params,'GET');
 	};
 	
 	// 表单失去焦点
@@ -366,41 +401,38 @@
 		if( accountInfo != null ){
 			//已登录
 			myid = accountInfo.id; //以系统用户id为唯一标识
+			plus.storage.setItem('myid',myid.toString())
 			
 		}else{
 			//未登录及游客时,将设备标识存入用户表
 			var uuid = $.getUuid();
 			var checkUser = $.http_post(API.CHECK_NONE_USER,{uuid:uuid});
-		
-			if(checkUser.code == 200){
-				myid = checkUser.data.uid;
-				//将游客id存储起来
-				plus.storage.setItem("uid",myid.toString());
-				
-			}else{
-				//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
-				myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
-			}
+			
+			checkUser.then(checkUser=>{
+				if(checkUser.code == 200){
+					myid = checkUser.data.uid;
+					
+					//将游客id存储起来,用于绑定clientid
+					plus.storage.setItem("uid",myid.toString());
+					
+				}else{
+					//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
+					myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
+				}
+				plus.storage.setItem("myid",myid.toString());
+			})
 		}
-		return myid;
 	}
 	
 	//获取客服通讯id
 	$.getAdminId = function(){ 
-		var res = $.http_post(API.CHECK_ADMIN_ID,{});  
-		if(res.code == 200){
-			return res.data.aid;
-		}
+		return $.http_post(API.CHECK_ADMIN_ID,{});  
+		
 	}
 	
 	//加载用户聊天记录
-	$.messageLoad = function(fromid,toid,record){
-		var res = $.http_post(API.LOAD_MESSAGE_LIST,{fromid:fromid,toid:toid});
-		if(res.code = 200){
-			return res.data;
-		}else{
-			return [];
-		}
+	$.messageLoad = function(fromid,toid){
+		return $.http_post(API.LOAD_MESSAGE_LIST,{fromid:fromid,toid:toid});
 	}
 	
 	//绘制底部菜单未读消息提示,消息列表页
@@ -455,38 +487,41 @@
 				
 			
 			var res  = $.http_post(API.GET_CHAT_LIST,{fromid:myid});
-			if(res.code == 200){
-				count = res.data.totlecount;
-				//总数，列表都加载
-				if(isCount && isList){
-					if(nviewEvent != null){
-						nviewEvent.close();
-					}
-					if(count > 0){
-						countLoad(count);
-					}
-					vm.result = res.data.userinfo;
-					
-				}
-				
-				//只加载总数
-				if(isCount && !isList){
-					if(nviewEvent != null){
-						nviewEvent.close();
+			res.then(res=>{
+				if(res.code == 200){
+					count = res.data.totlecount;
+					//总数，列表都加载
+					if(isCount && isList){
+						if(nviewEvent != null){
+							nviewEvent.close();
+						}
+						if(count > 0){
+							countLoad(count);
+						}
+						vm.result = res.data.userinfo;
+						
 					}
 					
-					if(count > 0){
-						countLoad(count);
-					
+					//只加载总数
+					if(isCount && !isList){
+						if(nviewEvent != null){
+							nviewEvent.close();
+						}
+						
+						if(count > 0){
+							countLoad(count);
+						
+						}
 					}
-				}
-				
-				// 只加载列表
-				if(isList && !isCount){
-					vm.result = res.data.userinfo;
-				}
-				
-			}		
+					
+					// 只加载列表
+					if(isList && !isCount){
+						vm.result = res.data.userinfo;
+					}
+					
+				}		
+			})
+			
 			
 
 		}
@@ -541,7 +576,9 @@
 			//存储到服务器
 			if(cid != 'null' && token != 'null'  ){
 				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor});
-				plus.storage.setItem('clientid',res.data.info.toString());
+				res.then(res=>{
+					plus.storage.setItem('clientid',res.data.info.toString());
+				})
 			}
 			
 			if(cid == 'null'){
@@ -657,22 +694,24 @@
 			
 			// 查询更新版本
 			var res = $.http_post(API.CHECK_VERSION,{});
-			var newVer = res.data.app_version;
-			
-			var message = msg == undefined ? '发现了新的版本，为保障你的功能正常使用，请立即更新!' : msg + newVer;
-			if( compareVersion(wgtVer,newVer) ){
-				mui.confirm(message,'更新提示',['更新','取消'],function (e){
-				   if(e.index == 0){
-						// 开始下载
-						$.downloadApp();
-				   }
-				})
-				
-			}else{
-				if(isCheck){
-					mui.toast('已是最新版本');
+			res.then(res=>{
+				var newVer = res.data.app_version;
+				var message = msg == undefined ? '发现了新的版本，为保障你的功能正常使用，请立即更新!' : msg + newVer;
+				if( compareVersion(wgtVer,newVer) ){
+					mui.confirm(message,'更新提示',['更新','取消'],function (e){
+					   if(e.index == 0){
+							// 开始下载
+							$.downloadApp();
+					   }
+					})
+					
+				}else{
+					if(isCheck){
+						mui.toast('已是最新版本');
+					}
 				}
-			}
+				
+			})
 			
 			
 		});

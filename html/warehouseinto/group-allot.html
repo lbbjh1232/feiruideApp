@@ -184,7 +184,7 @@
 							}else{
 								
 								mui.alert(datas.err,'提示','确认',function (e) {
-								},'div');
+								});
 								
 							}
 							
@@ -301,19 +301,19 @@
 											groupImage : that.groupImage
 										}
 										var res = mui.http_post(API.ADD_GROUP_COMPANY,params);
-										if (res.code == 200) {
-											mui.alert('添加成功,请等待审核','提示','确认',function (e) {
-												that.groupNmae = '';
-												that.groupImage = [];
-												that.groupShow = false;
-											},'div');
-											
-										} else {
-											mui.alert('添加失败,系统异常','提示','确认',function (e) {},'div');
-											
-								
-										}
-										
+										res.then(res=>{
+											if (res.code == 200) {
+												mui.alert('添加成功,请等待审核','提示','确认',function (e) {
+													that.groupNmae = '';
+													that.groupImage = [];
+													that.groupShow = false;
+												});
+												
+											} else {
+												mui.alert('添加失败,系统异常','提示','确认',function (e) {});
+												
+											}
+										})
 										
 									})
 									
@@ -416,15 +416,18 @@
 									if(e.index == 1){
 										plus.nativeUI.showWaiting();
 										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
-										if(res.code == 200){
-											that[target].splice(indexs,1)
-										}else{
-											mui.alert(res.message,'提示','确认',function (e) {},'div')
-										}
+										res.then(res=>{
+											if(res.code == 200){
+												that[target].splice(indexs,1)
+											}else{
+												mui.alert(res.message,'提示','确认',function (e) {})
+											}
+										})
+										
 										plus.nativeUI.closeWaiting();
 									}
 									
-								},'div')
+								})
 							},
 							
 							// 上传
@@ -454,13 +457,15 @@
 					
 					plus.nativeUI.closeWaiting();
 					mui.currentWebview.show();
+					group.then(grouop=>{
+						if (group.code == 200) {
+							vm.groupCompany = group.data;
+							
+						} else {
+							mui.toast(group.message);
+						}
+					})
 					
-					if (group.code == 200) {
-						vm.groupCompany = group.data;
-						
-					} else {
-						mui.toast(group.message);
-					}
 					
 					// 预览图片
 					mui.previewImage();
@@ -593,17 +598,16 @@
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.WAREHOUSE_INTO_FROM_ALLOT,params);
 						plus.nativeUI.closeWaiting()
-						
-						if(res.code == 200){
-							mui.toast('成功: ' + res.data.right + '条' + ' 失败: ' + res.data.fail + '条')
-							setTimeout(function(){
-								mui.back();
-							},800)
-						}else{
-							mui.alert(res.message,'提示','确认',function (e) {},'div')
-						}
-						
-						
+						res.then(res=>{
+							if(res.code == 200){
+								mui.toast('成功: ' + res.data.right + '条' + ' 失败: ' + res.data.fail + '条')
+								setTimeout(function(){
+									mui.back();
+								},800)
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {})
+							}
+						})
 					})
 						
 					

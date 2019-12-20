@@ -354,15 +354,17 @@
 									if(e.index == 1){
 										plus.nativeUI.showWaiting();
 										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
-										if(res.code == 200){
-											that[target].splice(indexs,1)
-										}else{
-											mui.alert(res.message,'提示','确认',function (e) {},'div')
-										}
+										res.then(res=>{
+											if(res.code == 200){
+												that[target].splice(indexs,1)
+											}else{
+												mui.alert(res.message,'提示','确认',function (e) {})
+											}
+										})
 										plus.nativeUI.closeWaiting();
 									}
 									
-								},'div')
+								})
 							},
 							
 							// 上传
@@ -392,7 +394,9 @@
 					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 					var hos = mui.http_post(API.GET_HOSPITAL,{companyID:accountInfo.userid});
 					plus.nativeUI.closeWaiting()
-					vm.hospital = hos.data;
+					hos.then(hos=>{
+						vm.hospital = hos.data;
+					})
 					
 					// 预览图片
 					mui.previewImage();
@@ -417,7 +421,7 @@
 										id : 'choose-out-drug.html',
 										url : 'choose-out-drug.html',
 										show : {
-											autoShow : false
+											autoShow : true
 										},
 										extras : {
 											sign : 'out-add-normal.html'
@@ -537,15 +541,17 @@
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.WAREHOUSE_OUT,params);
 						plus.nativeUI.closeWaiting()
+						res.then(res=>{
+							if(res.code == 200){
+								mui.toast('出库成功 ' + res.data.right + ' 条,' + '失败 ' + res.data.fail + ' 条');
+								setTimeout(function(){
+									mui.back();
+								},800)
+							}else{
+								mui.alert(res.message,'提示','确认',function (e) {})
+							}
+						})
 						
-						if(res.code == 200){
-							mui.toast('出库成功 ' + res.data.right + ' 条,' + '失败 ' + res.data.fail + ' 条');
-							setTimeout(function(){
-								mui.back();
-							},800)
-						}else{
-							mui.alert(res.message,'提示','确认',function (e) {},'div')
-						}
 						
 						
 					})

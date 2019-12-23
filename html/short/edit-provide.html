@@ -229,8 +229,8 @@
 						}
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.PRO_EDIT_SUBMIT,params);
-						plus.nativeUI.closeWaiting();
 						res.then(res=>{
+							plus.nativeUI.closeWaiting();
 							if (res.code == 200) {
 								mui.toast(res.message);
 								var old_back = mui.back;

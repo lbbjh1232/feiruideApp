@@ -404,12 +404,12 @@
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}
 			var res = mui.http_post(url,params);
-			plus.nativeUI.closeWaiting(); 
 			    
 			if(first){
 				mui.currentWebview.show();
 			} 
 			res.then(res=>{
+				plus.nativeUI.closeWaiting();
 				if(res.code == 200){
 					vm.urls = res.data.category;
 					vm.info = res.data.info;
@@ -444,7 +444,6 @@
 				// 查看pdf文件
 				mui('#scroll1').on('tap','.pdf-btn',function(){
 					var urls = this.dataset.url;
-					console.log(urls)
 					
 					mui.openWindow({
 						url:'../pdf-view.html',

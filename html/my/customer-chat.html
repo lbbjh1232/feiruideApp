@@ -466,26 +466,26 @@
 					}
 					
 					// 绑定用户数据,未登录的用户,以设备唯一标识来绑定通讯id
-					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')),myid,myAvatar,toInfo,toid,record = [],ws;
+					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')),myid=mui.getMyId(),myAvatar,toInfo,toid,record = [],ws;
 					if( accountInfo != null ){
 						//已登录
-						myid = accountInfo.id; //以系统用户id为唯一标识
+						//myid = accountInfo.id; //以系统用户id为唯一标识
 						myAvatar = accountInfo.avatar;
 						
 					}else{
-						//未登录及游客时,将设备标识存入用户表
-						var uuid = mui.getUuid();
-						var checkUser = mui.http_post(API.CHECK_NONE_USER,{uuid:uuid});
+						// //未登录及游客时,将设备标识存入用户表
+						// var uuid = mui.getUuid();
+						// var checkUser = mui.http_post(API.CHECK_NONE_USER,{uuid:uuid});
 						myAvatar = '../../images/logo.png';
-						checkUser.then(checkUser=>{
-							if(checkUser.code == 200){
-								myid = checkUser.data.uid;
+						// checkUser.then(checkUser=>{
+						// 	if(checkUser.code == 200){
+						// 		myid = checkUser.data.uid;
 								
-							}else{
-								//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
-								myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
-							}
-						})
+						// 	}else{
+						// 		//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
+						// 		myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
+						// 	}
+						// })
 						
 					}
 					
@@ -626,7 +626,7 @@
 					
 					//初始化对话列表
 					record_init.then(res=>{
-						record = res;
+						record = res.data;
 						bindMsgList();
 					})
 					

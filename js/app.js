@@ -131,7 +131,7 @@
 					}
 				},
 				error:(xhr,type,errorThrown)=>{
-					// result = 'fail';
+					plus.nativeUI.closeWaiting();
 					mui.alert('请求异常，稍后再试','提示','确定',function (e) {});
 					reject();
 				}
@@ -395,7 +395,7 @@
 	}
 		
 	// 获取用户通讯id
-	$.getMyId= function(){
+	$.setMyId= function(){
 		//查询游客还是系统用户
 		var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 		if( accountInfo != null ){
@@ -424,10 +424,18 @@
 		}
 	}
 	
+	$.getMyId = function(){
+		if(plus.storage.getItem("myid") == null){
+			$.setMyId();
+			$.getMyId();
+		}else{
+			return plus.storage.getItem("myid");
+		}
+	}
+	
 	//获取客服通讯id
 	$.getAdminId = function(){ 
-		return $.http_post(API.CHECK_ADMIN_ID,{});  
-		
+		return $.http_post(API.CHECK_ADMIN_ID,{});
 	}
 	
 	//加载用户聊天记录

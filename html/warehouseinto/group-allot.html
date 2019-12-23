@@ -417,6 +417,7 @@
 										plus.nativeUI.showWaiting();
 										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
 										res.then(res=>{
+											plus.nativeUI.closeWaiting();
 											if(res.code == 200){
 												that[target].splice(indexs,1)
 											}else{
@@ -424,7 +425,6 @@
 											}
 										})
 										
-										plus.nativeUI.closeWaiting();
 									}
 									
 								})
@@ -477,7 +477,7 @@
 						// picker.pickers[0].setSelectedIndex(vm.groupCompanyValue-1)
 						
 						picker.show(function(item){
-							value = item[0];
+							let value = item[0];
 							vm.groupCompanyValue = value.value;
 							vm.groupCompanyText = value.text;
 							vm.$nextTick(function(){
@@ -488,7 +488,7 @@
 										id : 'choose-drug-allot.html',
 										url : 'choose-drug-allot.html',
 										show : {
-											autoShow : false
+											autoShow : true
 										}
 										
 									})
@@ -597,8 +597,8 @@
 						
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.WAREHOUSE_INTO_FROM_ALLOT,params);
-						plus.nativeUI.closeWaiting()
 						res.then(res=>{
+							plus.nativeUI.closeWaiting()
 							if(res.code == 200){
 								mui.toast('成功: ' + res.data.right + '条' + ' 失败: ' + res.data.fail + '条')
 								setTimeout(function(){

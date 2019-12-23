@@ -357,7 +357,6 @@
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}
 			var res = mui.http_post(url,params);
-			plus.nativeUI.closeWaiting();
 			
 			if(first){
 				mui.currentWebview.show();
@@ -365,6 +364,7 @@
 			vm.value = [];
 			
 			res.then(res=>{
+				plus.nativeUI.closeWaiting();
 				if(res.code == 200){
 					vm.searchResult = res.data;
 					if(res.message == 1){
@@ -389,8 +389,10 @@
 				
 				// 加载本院经营企业
 				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
-				var comp = mui.http_post(API.GET_HOS_COMAPNY,{hospitalID:accountInfo.userid});  
-				vm.jyCompany = comp.data;
+				var comp = mui.http_post(API.GET_HOS_COMAPNY,{hospitalID:accountInfo.userid});
+				comp.then(comp=>{
+					vm.jyCompany = comp.data;
+				})
 				
 				//加载更多
 				mui('.loadMore').on('tap','button',function(){
@@ -782,7 +784,6 @@
 							var res = mui.http_post(API.CHECK_TICKET,params);
 							if(res.code == 200){
 								mui.toast('驳回成功');
-								
 								setTimeout(function(){
 									mui.trigger(document.getElementById('close-btn3'),'tap')
 									//重载数据
@@ -821,17 +822,19 @@
 						if(e.index == 1){
 							mui.showLoading('提交')
 							var res = mui.http_post(API.CHECK_TICKET,params);
-							mui.hideLoading();
+							res.then(res=>{
+								mui.hideLoading();
+								if(res.code == 200){
+									mui.toast('查验通过 '+ res.data.info + ' 条记录');
+									setTimeout(function(){
+										getNetDrug(false);
+									},500)
+								}
+							})
 							
-							if(res.code == 200){
-								mui.toast('查验通过 '+ res.data.info + ' 条记录');
-								setTimeout(function(){
-									getNetDrug(false);
-								},500)
-							}
 						}
 						
-					},'div')
+					})
 				})
 				
 				// 查验取消操作
@@ -865,17 +868,19 @@
 						if(e.index == 1){
 							mui.showLoading('提交')
 							var res = mui.http_post(API.CHECK_TICKET,params);
-							mui.hideLoading();
+							res.then(res=>{
+								mui.hideLoading();
+								if(res.code == 200){
+									mui.toast('取消通过 '+ res.data.info + ' 条记录');
+									setTimeout(function(){
+										getNetDrug(false);
+									},500)
+								}
+							})
 							
-							if(res.code == 200){
-								mui.toast('取消通过 '+ res.data.info + ' 条记录');
-								setTimeout(function(){
-									getNetDrug(false);
-								},500)
-							}
 						}
 						
-					},'div')
+					})
 					
 				})
 				

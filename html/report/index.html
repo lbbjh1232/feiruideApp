@@ -320,13 +320,13 @@
 							plus.nativeUI.showWaiting();
 							var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
 							res.then(res=>{
+								plus.nativeUI.closeWaiting();
 								if(res.code == 200){
 									that[target].splice(indexs,1)
 								}else{
-									mui.alert(res.message,'提示','确认',function (e) {},'div')
+									mui.alert(res.message,'提示','确认',function (e) {})
 								}
 							})
-							plus.nativeUI.closeWaiting();
 						}
 						
 					},'div')
@@ -357,13 +357,13 @@
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}
 			var res = mui.http_post(url,params);
-			plus.nativeUI.closeWaiting();
 			
 			if(first){
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
 			res.then(res=>{
+				plus.nativeUI.closeWaiting();
 				if(res.code == 200){
 					vm.searchResult = res.data;
 					if(res.message == 1){
@@ -442,8 +442,10 @@
 									batch : vm.batchNumber,
 									report : vm.reportImage
 								}
+								plus.nativeUI.showWaiting()
 								var res = mui.http_post(API.ADD_REPORT,params);
 								res.then(res=>{
+									plus.nativeUI.closeWaiting()
 									if(res.code == 200){
 										mui.confirm('上传成功,是否继续上传?','提示',['取消','确认'],function (e) {
 											if(e.index == 1){

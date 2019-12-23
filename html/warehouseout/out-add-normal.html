@@ -170,7 +170,7 @@
 							}else{
 								
 								mui.alert(datas.err,'提示','确认',function (e) {
-								},'div');
+								});
 								
 							}
 							
@@ -355,13 +355,13 @@
 										plus.nativeUI.showWaiting();
 										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
 										res.then(res=>{
+											plus.nativeUI.closeWaiting();
 											if(res.code == 200){
 												that[target].splice(indexs,1)
 											}else{
 												mui.alert(res.message,'提示','确认',function (e) {})
 											}
 										})
-										plus.nativeUI.closeWaiting();
 									}
 									
 								})
@@ -540,8 +540,8 @@
 						
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.WAREHOUSE_OUT,params);
-						plus.nativeUI.closeWaiting()
 						res.then(res=>{
+							plus.nativeUI.closeWaiting()
 							if(res.code == 200){
 								mui.toast('出库成功 ' + res.data.right + ' 条,' + '失败 ' + res.data.fail + ' 条');
 								setTimeout(function(){
@@ -551,9 +551,6 @@
 								mui.alert(res.message,'提示','确认',function (e) {})
 							}
 						})
-						
-						
-						
 					})
 						
 					

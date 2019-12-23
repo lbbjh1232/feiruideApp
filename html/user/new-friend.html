@@ -59,9 +59,11 @@
 				}
 			})
 			
-			var getList = function(){
+			var getList = function(myid){
+				plus.nativeUI.showWaiting()
 				var res = mui.http_post(API.GET_NEW_FRIEND,{myid:myid});
 				res.then(res=>{
+					plus.nativeUI.closeWaiting()
 					if(res.code == 200){
 						vm.result = res.data;
 					}
@@ -81,21 +83,24 @@
 					}
 					 
 					var myid = mui.getMyId();
-					getList();
+					
+					getList(myid);
 					
 					plus.nativeUI.closeWaiting();
 					mui.currentWebview.show();
 			
 					// 返回当前页自定事件刷新
 					window.addEventListener('refresh',function(){
-						getList();
+						getList(myid);
 					});
 					
 					// 删除当前记录
 					mui('#app').on('tap','.delete',function(){
 						var rid = this.dataset.id;
+						plus.nativeUI.showWaiting()
 						var del = mui.http_post(API.NEW_RECORD_DEL,{rid:rid});
 						del.then(del=>{
+							plus.nativeUI.closeWaiting()
 							if(del.code == 200){
 								//直接删除节点
 								document.getElementById('app').removeChild(this.parentNode);

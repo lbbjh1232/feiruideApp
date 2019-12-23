@@ -338,13 +338,13 @@
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}
 			var res = mui.http_post(url,params);
-			plus.nativeUI.closeWaiting();
 			
 			if(first){
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
 			res.then(res=>{
+				plus.nativeUI.closeWaiting();
 				if(res.code == 200){
 					vm.searchResult = res.data;
 					if(res.message == 1){
@@ -675,8 +675,8 @@
 						if(e.index == 1){
 							plus.nativeUI.showWaiting()
 							var res = mui.http_post(API.DEL_DRUG_INTO,params);
-							plus.nativeUI.closeWaiting()
 							res.then(res=>{
+								plus.nativeUI.closeWaiting()
 								if(res.code == 200){
 									mui.toast('删除成功');
 									getNetDrug(false);
@@ -702,7 +702,7 @@
 					var current = vm.searchResult[index];
 					var state = current.i_state;
 					if(state == 1 || state == 3){
-						mui.alert('已存在出库记录,无法删除','提示','确认',function(){});
+						mui.alert('已存在出库记录,无法修改','提示','确认',function(){});
 						return;
 					}
 					

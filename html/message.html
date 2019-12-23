@@ -63,8 +63,8 @@
 			      
 			mui.plusReady(function () {
 				
-				var myid = mui.getMyId(),ws;
-				
+				mui.setMyId() 
+				var myid = mui.getMyId(),ws; 
 				// 账号踢出函数
 				var kickOut = function(msg){
 					var index = plus.webview.getLaunchWebview(),message = plus.webview.currentWebview(),friend = plus.webview.getWebviewById('html/friend.html'),my = plus.webview.getWebviewById('html/my.html');

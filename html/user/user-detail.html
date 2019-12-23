@@ -96,8 +96,8 @@
 							if(e.index == 1){
 								plus.nativeUI.showWaiting();
 								var res = mui.http_post(API.FRIEND_DEL,{myid:mui.getMyId(),toid:info.id});
-								plus.nativeUI.closeWaiting();
 								res.then(res=>{
+									plus.nativeUI.closeWaiting();
 									if(res.code == 200){
 										mui.back();
 									}else{

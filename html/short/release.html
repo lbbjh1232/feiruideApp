@@ -175,7 +175,6 @@
 						
 						picker.show(function(item){
 							value = item[0];
-							console.log(JSON.stringify(value))
 							vm.appointProValue = value.value;
 							vm.appointProText = value.text;
 							
@@ -272,8 +271,8 @@
 						}
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.RE_SUBMIT,params);
-						plus.nativeUI.closeWaiting();
 						res.then(res=>{
+							plus.nativeUI.closeWaiting();
 							if (res.code == 200) {
 								mui.toast(res.message);
 								var old_back = mui.back;

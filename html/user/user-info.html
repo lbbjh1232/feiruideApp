@@ -79,8 +79,8 @@
 							if(e.index == 0){
 								plus.nativeUI.showWaiting();
 								var res = mui.http_post(API.CHECK_USER,{rid:rid});
-								plus.nativeUI.closeWaiting(); 
 								res.then(res=>{
+									plus.nativeUI.closeWaiting();
 									if(res.code == 200){
 										mui.back();
 									}else{

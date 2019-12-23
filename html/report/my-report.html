@@ -372,6 +372,7 @@
 							plus.nativeUI.showWaiting();
 							var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
 							res.then(res=>{
+								plus.nativeUI.closeWaiting();
 								if(res.code == 200){
 									that[target].splice(indexs,1)
 								}else{
@@ -379,10 +380,9 @@
 								}
 							})
 							
-							plus.nativeUI.closeWaiting();
 						}
 						
-					},'div')
+					})
 				},
 				
 				complete1:function(e){
@@ -412,13 +412,13 @@
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}
 			var res = mui.http_post(url,params);
-			plus.nativeUI.closeWaiting();
 			
 			if(first){
 				mui.currentWebview.show();
 			} 
 			vm.value = '';
 			res.then(res=>{
+				plus.nativeUI.closeWaiting();
 				if(res.code == 200){
 					vm.searchResult = res.data;
 					if(res.message == 1){
@@ -439,8 +439,8 @@
 			};
 			plus.nativeUI.showWaiting()
 			let res = mui.http_post(API.GET_COMPANY,params);
-			plus.nativeUI.closeWaiting();
 			res.then(res=>{
+				plus.nativeUI.closeWaiting();
 				if(res.code == 200){
 					vm.companyData = res.data;
 				}else{
@@ -747,8 +747,10 @@
 								
 								mui.confirm('确认推送吗?','提示',['取消','确认'],function (e) {
 									if(e.index == 1){
+										plus.nativeUI.showWaiting();
 										let result = mui.http_post(API.REPORT_PUSH,params);
 										result.then(result=>{
+											plus.nativeUI.closeWaiting();
 											if(result.code == 200){
 												mui.toast('推送成功');
 												mui.trigger(document.getElementById('close-push'),'tap');

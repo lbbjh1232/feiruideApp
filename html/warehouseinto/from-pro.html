@@ -29,14 +29,14 @@
 			<div class="form-box">
 				<div class="mui-input-row choose">
 					<label>生产企业</label>
-					<input type="text" class="mui-input-clear" v-model="producer.name" id="chooseProducer" readonly  placeholder="选择生产企业">
+					<input type="text" class="mui-input-clear" v-model="producer.name" id="chooseProducer" readonly placeholder="选择生产企业">
 					
 				</div>
 				<div class="mui-input-row">
 					<label>发货单号</label>
 					<input type="text" class="mui-input-clear" v-model="sendNumber"  placeholder="输入发货单号 (选填)">
 				</div>
-				<div class="mui-input-row input-disabled">
+				<div class="mui-input-row input-disabled"> 
 					<label>来源类型</label>
 					<input type="text" class="mui-input-clear" readonly placeholder="生产企业 ☞ 本公司">
 				</div>
@@ -503,13 +503,13 @@
 										plus.nativeUI.showWaiting();
 										var res = mui.http_post(API.DELETE_TICKET,{url:that[target][indexs].save});
 										res.then(res=>{
+											plus.nativeUI.closeWaiting();
 											if(res.code == 200){
 												that[target].splice(indexs,1)
 											}else{
 												mui.alert(res.message,'提示','确认',function (e) {})
 											}
 										})
-										plus.nativeUI.closeWaiting();
 									}
 									
 								})
@@ -608,20 +608,20 @@
 									id : 'choose-producer.html',
 									url : 'choose-producer.html',
 									show:{
-										autoShow:false,
+										autoShow:true,
 									},
 									extras : {
 										sign : 'from-pro.html',
 									}
 								});
 								
-							},'div')
+							})
 						}else{
 							mui.openWindow({
 								id : 'choose-producer.html',
 								url : 'choose-producer.html',
 								show:{
-									autoShow:false,
+									autoShow:true,
 								},
 								extras : {
 									sign : 'from-pro.html',
@@ -645,7 +645,7 @@
 									id : 'choose-drug.html',
 									url : 'choose-drug.html',
 									show : {
-										autoShow : false
+										autoShow : true
 									},
 									extras : {
 										sign : 'from-pro.html',
@@ -746,8 +746,8 @@
 						
 						plus.nativeUI.showWaiting();
 						var res = mui.http_post(API.WAREHOUSE_INTO_FROM_PRO,params);
-						plus.nativeUI.closeWaiting()
 						res.then(res=>{
+							plus.nativeUI.closeWaiting()
 							if(res.code == 200){
 								mui.toast('入库成功 '+res.data.info+' 条记录')
 								setTimeout(function(){

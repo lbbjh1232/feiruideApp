@@ -3,8 +3,8 @@
     "id" : "H5537E55C", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.2.1", /*应用版本名称*/
-        "code" : ""
+        "name" : "1.2.2", /*应用版本名称*/
+        "code" : 10
     },
     "description" : "医疗行业互联互通+票据管理平台", /*应用描述信息*/
     "icons" : {
@@ -269,6 +269,12 @@
                         "com.apple.developer.associated-domains" : [ "applinks:ticket.yp.feiruide.cn" ]
                     },
                     "plists" : {}
+                },
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "发送消息图片或上传图片",
+                    "NSPhotoLibraryAddUsageDescription" : "保存图片",
+                    "NSCameraUsageDescription" : "拍照上传",
+                    "NSMicrophoneUsageDescription" : "语音消息发送"
                 }
             },
             // 合并到工程Info.plist文件的数据（json格式）  
@@ -375,11 +381,14 @@
                 "ios" : {
                     "iphone" : {
                         "default" : "", /*iPhone3启动图片选，分辨率：320x480*/
-                        "retina35" : "", /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-                        "retina40" : "", /*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
-                        "retina47" : "", /*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
-                        "retina55" : "", /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
-                        "retina55l" : ""
+                        "retina35" : "D:/备份/images/start.9.png", /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+                        "retina40" : "D:/备份/images/start.9.png", /*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
+                        "retina47" : "D:/备份/images/start.9.png", /*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
+                        "retina55" : "D:/备份/images/start.9.png", /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
+                        "retina55l" : "",
+                        "portrait-896h@3x" : "D:/备份/images/start.9.png",
+                        "portrait-896h@2x" : "D:/备份/images/start.9.png",
+                        "iphonex" : "D:/备份/images/start.9.png"
                     },
                     "ipad" : {
                         "portrait" : "", /*iPad竖屏启动图片，分辨率：768x1004*/

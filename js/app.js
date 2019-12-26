@@ -420,13 +420,15 @@
 					myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
 				}
 				plus.storage.setItem("myid",myid.toString());
+			}).catch(err=>{
+				myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
+				plus.storage.setItem("myid",myid.toString());
 			})
 		}
 	}
 	
 	$.getMyId = function(){
 		if(plus.storage.getItem("myid") == null){
-			$.setMyId();
 			$.getMyId();
 		}else{
 			return plus.storage.getItem("myid");

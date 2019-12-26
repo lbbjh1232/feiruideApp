@@ -23,7 +23,7 @@ var util = {
 		var subpage_style = {
 				top: 0,
 				bottom: 52,
-				// kernel:"UIWebview"
+				kernel:"WKWebview"
 			},
 			subpages = util.options.subpages,
 			self = plus.webview.currentWebview(),

@@ -4,7 +4,7 @@
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
         "name" : "1.2.2", /*应用版本名称*/
-        "code" : 10
+        "code" : 20
     },
     "description" : "医疗行业互联互通+票据管理平台", /*应用描述信息*/
     "icons" : {
@@ -271,10 +271,28 @@
                     "plists" : {}
                 },
                 "privacyDescription" : {
-                    "NSPhotoLibraryUsageDescription" : "发送消息图片或上传图片",
-                    "NSPhotoLibraryAddUsageDescription" : "保存图片",
-                    "NSCameraUsageDescription" : "拍照上传",
-                    "NSMicrophoneUsageDescription" : "语音消息发送"
+                    "NSPhotoLibraryUsageDescription" : "是否允许此App访问相册",
+                    "NSPhotoLibraryAddUsageDescription" : "是否允许此App添加相册",
+                    "NSCameraUsageDescription" : "是否允许此App使用你的相机？",
+                    "NSMicrophoneUsageDescription" : "是否允许此App使用你的麦克风？",
+                    "NSCalendarsUsageDescription" : "是否允许此App使用日历？",
+                    "NSContactsUsageDescription" : "是否允许此App读取通讯录信息？",
+                    "NSBluetoothPeripheralUsageDescription" : "是否允许此App访问蓝牙?",
+                    "NSBluetoothAlwaysUsageDescription" : "是否允许此App访问蓝牙?",
+                    "NSSpeechRecognitionUsageDescription" : "是否允许此App使用语音识别？",
+                    "NSRemindersUsageDescription" : "是否允许此App访问提醒事项？",
+                    "NSMotionUsageDescription" : "App需要您的同意,才能访问运动与健身",
+                    "NSHealthUpdateUsageDescription" : "App需要您的同意,才能访问健康更新",
+                    "NSHealthShareUsageDescription" : "App需要您的同意,才能访问健康分享",
+                    "NSAppleMusicUsageDescription" : "是否允许此App访问媒体库?",
+                    "NFCReaderUsageDescription" : "",
+                    "NSHealthClinicalHealthRecordsShareUsageDescription" : "",
+                    "NSHomeKitUsageDescription" : "",
+                    "NSSiriUsageDescription" : "是否允许此App使用Siri？",
+                    "NSFaceIDUsageDescription" : "",
+                    "NSLocationWhenInUseUsageDescription" : "App需要您的同意,才能在使用期间访问位置",
+                    "NSLocationAlwaysUsageDescription" : "App需要您的同意,才能在后台访问位置",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "是否允许此App访问位置信息？"
                 }
             },
             // 合并到工程Info.plist文件的数据（json格式）  
@@ -385,10 +403,15 @@
                         "retina40" : "D:/备份/images/start.9.png", /*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
                         "retina47" : "D:/备份/images/start.9.png", /*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
                         "retina55" : "D:/备份/images/start.9.png", /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
-                        "retina55l" : "",
+                        "retina55l" : "D:/备份/images/start.9.png",
                         "portrait-896h@3x" : "D:/备份/images/start.9.png",
                         "portrait-896h@2x" : "D:/备份/images/start.9.png",
-                        "iphonex" : "D:/备份/images/start.9.png"
+                        "iphonex" : "D:/备份/images/start.9.png",
+                        "retina40l" : "D:/备份/images/start.9.png",
+                        "retina47l" : "D:/备份/images/start.9.png",
+                        "iphonexl" : "D:/备份/images/start.9.png",
+                        "landscape-896h@2x" : "D:/备份/images/start.9.png",
+                        "landscape-896h@3x" : "D:/备份/images/start.9.png"
                     },
                     "ipad" : {
                         "portrait" : "", /*iPad竖屏启动图片，分辨率：768x1004*/

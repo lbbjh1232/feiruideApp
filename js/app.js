@@ -133,7 +133,6 @@
 				error:(xhr,type,errorThrown)=>{
 					plus.nativeUI.closeWaiting();
 					mui.alert('请求异常，稍后再试','提示','确定',function (e) {});
-					reject();
 				}
 			}); 
 		});
@@ -404,10 +403,14 @@
 			plus.storage.setItem('myid',myid.toString())
 			
 		}else{
-			//未登录及游客时,将设备标识存入用户表
+			// 如果存在着无需在请求
+			if(plus.storage.getItem("myid") != null){
+				return;
+			}
+			
+			//首次打开未登录及游客时,将设备标识存入用户表
 			var uuid = $.getUuid();
 			var checkUser = $.http_post(API.CHECK_NONE_USER,{uuid:uuid});
-			
 			checkUser.then(checkUser=>{
 				if(checkUser.code == 200){
 					myid = checkUser.data.uid;
@@ -420,7 +423,7 @@
 					myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
 				}
 				plus.storage.setItem("myid",myid.toString());
-			}).catch(err=>{
+			},err=>{
 				myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
 				plus.storage.setItem("myid",myid.toString());
 			})
@@ -429,7 +432,10 @@
 	
 	$.getMyId = function(){
 		if(plus.storage.getItem("myid") == null){
-			$.getMyId();
+			// setTimeout(function(){
+				// $.getMyId();
+			// },2000)
+			return 0;
 		}else{
 			return plus.storage.getItem("myid");
 		}
@@ -574,6 +580,8 @@
 	
 	// 获取设备推送clientID、token(ios使用)
 	$.getClientId = function(){
+		if(plus.storage.getItem('clientid') != null ) return;
+		
 		var pinf = plus.push.getClientInfo();
 		var cid = pinf.clientid;				//客户端标识
 		var version = mui.os.android ? 1 : 2;
@@ -775,3 +783,4 @@
 	
 	
 })(mui)
+

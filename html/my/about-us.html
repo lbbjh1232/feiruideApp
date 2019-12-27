@@ -94,7 +94,13 @@
 				</div>
 			</div>
 			
+			
+			
 			<div class="copyright">
+				<div>
+					<span id="agreement">《用户协议》</span>
+					<span id="private">《隐私政策》</span>
+				</div>
 				<div>Copyright&copy;2018 - 2019</div>
 				<div>四川飞瑞德医疗科技有限公司</div>
 				<div>All rights reserved</div>
@@ -117,6 +123,23 @@
 		});
 		
 		mui.plusReady(function () {
+			// 跳转到用户协议和隐私政策
+			document.getElementById('agreement').addEventListener("tap",function(){
+				var win = '../search-tool/embed.html';
+				var title = "用户协议";
+				var href = "https://yxt.feiruide.cn/index.php/user/agreement"
+				// 创建窗口
+				var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+				ws.show('pop-in');
+			})
+			document.getElementById('private').addEventListener("tap",function(){
+				var win = '../search-tool/embed.html';
+				var title = "隐私政策";
+				var href = "https://yxt.feiruide.cn/index.php/user/private"
+				// 创建窗口
+				var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+				ws.show('pop-in');
+			})
 			plus.runtime.getProperty(plus.runtime.appid,function(info){
 				vm.version = info.version;
 			});

@@ -11,11 +11,11 @@
 		<script type="text/javascript">
 			document.write('<script src="../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
-		
+		 
 		<script type="text/javascript">
 			link(['../css/mui.min.css','../css/iconfont.css','../css/common.css','../css/animate.css','../css/my/message.css'],true);
 		</script>
-		
+		 
 	</head>
 	<body>
 		  
@@ -44,6 +44,8 @@
 			</div>
 			</template>
 			
+			<div v-show="result.length == 0 ? true:false" class="no-msg">暂无消息</div>
+			
 			
 		</div>
 		</div>
@@ -63,8 +65,7 @@
 			      
 			mui.plusReady(function () {
 				
-				mui.setMyId() 
-				var myid = mui.getMyId(),ws; 
+				var ws;
 				// 账号踢出函数
 				var kickOut = function(msg){
 					var index = plus.webview.getLaunchWebview(),message = plus.webview.currentWebview(),friend = plus.webview.getWebviewById('html/friend.html'),my = plus.webview.getWebviewById('html/my.html');
@@ -96,7 +97,7 @@
 				mui.updateMessCount(false,true);
  
 				var websocket = function(){
-					// 建立通讯 
+					// 建立通讯
 					ws = new WebSocket(CONFIG.WS_HOST);
 					
 					ws.onclose = function () {
@@ -126,7 +127,7 @@
 							case 'init': 
 								var data = JSON.stringify({
 									type:'bind',
-									myid:myid,
+									myid:mui.getMyId(),
 								})
 								ws.send(data);
 								break;
@@ -189,7 +190,7 @@
 					mui.confirm('确认删除?','提示',['取消','确认'],function (e) {
 						if(e.index == 1){
 							plus.nativeUI.showWaiting();
-							var res = mui.http_post(API.DELETE_RECORED,{fromid:myid,toid:toid});
+							var res = mui.http_post(API.DELETE_RECORED,{fromid:mui.getMyId(),toid:toid});
 							plus.nativeUI.closeWaiting();
 							
 							// 更新页面

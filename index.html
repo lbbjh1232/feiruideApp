@@ -314,6 +314,7 @@
 				});
 				
 				
+				
 				var loadView = function(){
 					var accountInfo = plus.storage.getItem('accountInfo');
 					if(accountInfo != null){
@@ -336,10 +337,10 @@
 				
 				document.addEventListener("plusready",function() {
 					
-					
-					//mui.judgeStoragePermisson();
 					mui.appUpdate();
-					 
+					
+					mui.setMyId();
+					
 					// 获取设备clientid并存储
 					mui.getClientId();
 					

@@ -59,6 +59,7 @@
 				mui.plusReady(function () {
 					var href = mui.currentWebview.href;
 					var title = mui.currentWebview.title;
+					var sign = mui.currentWebview.sign != undefined ? true : false;
 					ws = plus.webview.currentWebview();
 					vm.title = title;
 					createEmbed(href);
@@ -67,6 +68,10 @@
 					var old_back = mui.back;
 					mui.back = function(){
 						plus.nativeUI.closeWaiting();
+						if(sign){
+							var index = plus.webview.getLaunchWebview();
+							mui.fire(index,"showInfo")
+						}
 						old_back()
 					}
 					//控制页面回退

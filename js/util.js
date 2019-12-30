@@ -129,7 +129,7 @@ var util = {
 			if(accountInfo==null){
 				mui.alert('请先登录','提示','确认',function (e) {
 				   e.index
-				},'div');
+				});
 				return;
 			}
 			mui.openWindow({

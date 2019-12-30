@@ -271,7 +271,6 @@
 			</template>
 			
 			
-			<!-- <div class="divided-module"></div> -->
 			
 		</div>
 
@@ -332,10 +331,106 @@
 							vm.newsData = data.data.data;
 						} 
 					});
-					
 				}
 				
 				document.addEventListener("plusready",function() {
+					var self = plus.webview.currentWebview();
+					if(plus.storage.getItem("launchFlag") == null ){
+
+						// 显示遮罩层
+						self.setStyle({mask:"rgba(0,0,0,0.5)"});
+						var view = new plus.nativeObj.View('agreement',
+							{top:'100px',left:'10%',height:'330px',width:'80%',backgroundColor:"rgb(255,255,255)"},
+							[{tag:"font",text:"用户协议及隐私政策",position:{top:"20px",height:"wrap_content",width:"100%"},textStyles:{size:"18px",align:"center",color:"rgba(0,0,0,.8)"}},
+							{tag:"font",text:"您在使用药械e家产品或服务前，请认真阅读并充分理解《用户协议》、《隐私政策》的相关说明:",position:{top:"50px",height:"wrap_content",left:"10%",width:"80%"},textStyles:{size:"14px",align:"left",color:"rgb(119,136,153)",whiteSpace:"normal",family:"微软雅黑"}},
+
+							{tag:"font",text:'说明：您点击"拒绝"，您将无法完成注册及无法使用药械e家的产品和服务；您点击"同意"，视为您同意《用户协议》和《隐私政策》的完整内容。',position:{top:"110px",height:"wrap_content",left:"10%",width:"80%"},textStyles:{size:"14px",align:"left",color:"rgb(119,136,153)",whiteSpace:"normal",family:"微软雅黑"}},
+							]);
+							view.show();
+							
+							// 添加用户协议
+							var view1 = new plus.nativeObj.View("agree",{top:"290px",left:"18%",height:"wrap_content",width:"50%"},[{tag:"font",text:"《用户协议》",position:{left:"0px",height:"30px"},textStyles:{size:"14px",align:"left",color:"rgb(30,144,255)",whiteSpace:"normal",family:"微软雅黑",decoration:"underline"}}
+							]);
+							view1.show();
+							
+							// 添加隐私政策
+							var view2 = new plus.nativeObj.View("private",{top:"320px",left:"18%",height:"wrap_content"},[{tag:"font",text:"《隐私政策》",position:{left:"0",height:"30px"},textStyles:{size:"14px",align:"left",color:"rgb(30,144,255)",whiteSpace:"normal",family:"微软雅黑",decoration:"underline"}}
+							]);
+							view2.show();
+							
+							// 添加拒绝按钮
+							var view3 = new plus.nativeObj.View("reject",{top:"370px",left:"18%",height:"wrap_content",width:"32%"});
+							view3.drawRect({borderColor:"rgb(119,136,153)",borderWidth:"1px",radius:"20px"},{left:"0",width:"100%",height:"35px"});
+							view3.drawText("拒 绝",{height:"35px",left:"0",width:"100%"},{size:"18px",align:"center",color:"rgb(119,136,153)"},"reject");
+							view3.show();
+							
+							//添加功用按钮
+							var view4 = new plus.nativeObj.View("recept",{top:"370px",left:"52%",height:"wrap_content",width:"32%"});
+							view4.drawRect({borderColor:"rgb(119,136,153)",borderWidth:"1px",radius:"20px"},{left:"0",width:"100%",height:"35px"});
+							view4.drawText("同 意",{height:"35px",left:"0",width:"100%"},{size:"18px",align:"center",color:"rgb(119,136,153)"},"reject");
+							view4.show();
+							
+							function hideInfo(){
+								view.hide()
+								view1.hide()
+								view2.hide()
+								view3.hide()
+								view4.hide()
+								self.setStyle({mask:"none"});
+							}
+							function showInfo(){
+								self.setStyle({mask:"rgba(0,0,0,0.5)"});
+								view.show()
+								view1.show()
+								view2.show()
+								view3.show()
+								view4.show()
+							}
+							
+							// 事件监听
+							var win = 'html/search-tool/embed.html';
+							view1.addEventListener("click",function(){
+								hideInfo()
+								var title = "用户协议";
+								var href = "https://yxt.feiruide.cn/index.php/user/agreement"
+								// 创建窗口
+								var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href,sign:1})
+								ws.show('pop-in');
+							},false);
+							
+							view2.addEventListener("click",function(){
+								hideInfo()
+								var title = "隐私政策";
+								var href = "https://yxt.feiruide.cn/index.php/user/private"
+								// 创建窗口
+								var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href,sign:1})
+								ws.show('pop-in');
+							},false);
+							
+							view3.addEventListener("click",function(){
+								mui.toast("必须同意之后才能继续使用该产品")
+							},false)
+							
+							view4.addEventListener("click",function(){
+								// 删除view
+								view.close()
+								view1.close()
+								view2.close()
+								view3.close()
+								view4.close()
+								self.setStyle({mask:"none"})
+								plus.storage.setItem("launchFlag","yes");
+								plus.navigator.closeSplashscreen();
+							},false)
+						
+						
+						// 用户协议或隐私政策返回后显示弹窗
+						window.addEventListener("showInfo",function(){
+							showInfo() 
+						})
+					
+					}
+						
 					
 					mui.appUpdate();
 					
@@ -507,7 +602,6 @@
 					//网络错误监听
 					mui.networkError();
 					
-					var self = plus.webview.currentWebview();
 					
 					// 监听首页show事件
 					self.addEventListener('show',function(){

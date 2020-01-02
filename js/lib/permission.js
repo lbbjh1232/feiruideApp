@@ -4,7 +4,6 @@
 
 var isIos
 // #ifdef APP-PLUS
-// isIos = (plus.os.name == "iOS")
 isIos = mui.os.ios;
 // #endif
 
@@ -223,7 +222,6 @@ function gotoAppPermissionSetting() {
 		var UIApplication = plus.ios.import("UIApplication");
 		var application2 = UIApplication.sharedApplication();
 		var NSURL2 = plus.ios.import("NSURL");
-		// var setting2 = NSURL2.URLWithString("prefs:root=LOCATION_SERVICES");		
 		var setting2 = NSURL2.URLWithString("app-settings:");
 		application2.openURL(setting2);
 
@@ -231,7 +229,6 @@ function gotoAppPermissionSetting() {
 		plus.ios.deleteObject(NSURL2);
 		plus.ios.deleteObject(application2);
 	} else {
-		// console.log(plus.device.vendor);
 		var Intent = plus.android.importClass("android.content.Intent");
 		var Settings = plus.android.importClass("android.provider.Settings");
 		var Uri = plus.android.importClass("android.net.Uri");
@@ -245,7 +242,6 @@ function gotoAppPermissionSetting() {
 }
 
 // 检查系统的设备服务是否开启
-// var checkSystemEnableLocation = async function () {
 function checkSystemEnableLocation() {
 	if (isIos) {
 		var result = false;

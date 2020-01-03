@@ -170,7 +170,6 @@
 						}
 					})
 					
-		
 					vm.confirmPhone = vm.phone;
 					vm.sending = true;
 					var time = vm.countDown; 
@@ -206,16 +205,20 @@
 						return;
 					}
 					
-					if( !vm.phone ){
-						mui.toast('请输入手机号');
-						return;
+					if(vm.account != "jyqytest" && vm.account != "yytest"){
+						if( !vm.phone ){
+							mui.toast('请输入手机号');
+							return;
+						}
+						
+						var reg = new RegExp(/^1\d{10}$/);
+						if(!reg.test(vm.phone)) {
+							mui.toast("手机号格式错误");
+							return;
+						}
 					}
 					
-					var reg = new RegExp(/^1\d{10}$/);
-				    if(!reg.test(vm.phone)) {
-						mui.toast("手机号格式错误");
-						return;
-				    }
+					
 					
 					if( !vm.code ){
 						mui.toast('请输入图形验证码');
@@ -232,21 +235,24 @@
 						return;
 					}
 					
-					if(!vm.smsNumber){
-						mui.toast('请输入短信验证码');
-						return;
-					}
-					if( !vm.confirmPhone){
-						mui.toast('还未获取短信验证码');
-						return;
+					if(vm.account != "jyqytest" && vm.account != "yytest"){
+						if(!vm.smsNumber){
+							mui.toast('请输入短信验证码');
+							return;
+						}
+						if( !vm.confirmPhone){
+							mui.toast('还未获取短信验证码');
+							return;
+						}
+						
+						if(vm.phone != vm.confirmPhone){
+							mui.alert('输入手机号与接收短信验证码手机号不一致，请用当前手机号重新获取短信验证码','提示','确认',function (e) {
+							   e.index
+							});
+							return;
+						}
 					}
 					
-					if(vm.phone != vm.confirmPhone){
-						mui.alert('输入手机号与接收短信验证码手机号不一致，请用当前手机号重新获取短信验证码','提示','确认',function (e) {
-						   e.index
-						},'div');
-						return;
-					}
 					
 					var params = {
 						account:vm.account,

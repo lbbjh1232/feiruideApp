@@ -4,7 +4,7 @@
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
         "name" : "1.2.2", /*应用版本名称*/
-        "code" : 50
+        "code" : 60
     },
     "description" : "医疗行业互联互通+票据管理平台", /*应用描述信息*/
     "icons" : {
@@ -90,9 +90,9 @@
             "description" : "原生对象"
         },
         "Push" : {},
-        "OAuth" : {},
         "iBeacon" : {},
         "Share" : {},
+        "OAuth" : {},
         "Statistic" : {}
     },
     "plus" : {
@@ -275,24 +275,7 @@
                     "NSPhotoLibraryAddUsageDescription" : "是否允许此App添加相册",
                     "NSCameraUsageDescription" : "是否允许此App使用你的相机？",
                     "NSMicrophoneUsageDescription" : "是否允许此App使用你的麦克风？",
-                    "NSCalendarsUsageDescription" : "是否允许此App使用日历？",
-                    "NSContactsUsageDescription" : "是否允许此App读取通讯录信息？",
-                    "NSBluetoothPeripheralUsageDescription" : "是否允许此App访问蓝牙?",
-                    "NSBluetoothAlwaysUsageDescription" : "是否允许此App访问蓝牙?",
-                    "NSSpeechRecognitionUsageDescription" : "是否允许此App使用语音识别？",
-                    "NSRemindersUsageDescription" : "是否允许此App访问提醒事项？",
-                    "NSMotionUsageDescription" : "App需要您的同意,才能访问运动与健身",
-                    "NSHealthUpdateUsageDescription" : "App需要您的同意,才能访问健康更新",
-                    "NSHealthShareUsageDescription" : "App需要您的同意,才能访问健康分享",
-                    "NSAppleMusicUsageDescription" : "是否允许此App访问媒体库?",
-                    "NFCReaderUsageDescription" : "",
-                    "NSHealthClinicalHealthRecordsShareUsageDescription" : "",
-                    "NSHomeKitUsageDescription" : "",
-                    "NSSiriUsageDescription" : "是否允许此App使用Siri？",
-                    "NSFaceIDUsageDescription" : "",
-                    "NSLocationWhenInUseUsageDescription" : "App需要您的同意,才能在使用期间访问位置",
-                    "NSLocationAlwaysUsageDescription" : "App需要您的同意,才能在后台访问位置",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "是否允许此App访问位置信息？"
+                    "NSCalendarsUsageDescription" : "是否允许此App使用日历？"
                 }
             },
             // 合并到工程Info.plist文件的数据（json格式）  

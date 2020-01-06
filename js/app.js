@@ -126,7 +126,7 @@
 						
 					}else{
 						//正常返回
-						console.log(JSON.stringify(result))
+						// console.log(JSON.stringify(result))
 						resolve(result);
 					}
 				},
@@ -240,7 +240,7 @@
 				
 				mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
 				   e.index
-				},'div')
+				})
 				
 				// return;
 				
@@ -590,16 +590,13 @@
 		setTimeout(function() {
 			cid = pinf.clientid;
 			token = pinf.token;
-			// alert("cid: "+cid + "token: "+token)
 			//存储到服务器
 			if(cid != 'null' && token != 'null'  ){
 				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor});
 				res.then(res=>{
 					plus.storage.setItem('clientid',res.data.info.toString());
 				})
-			}
-			
-			if(cid == 'null'){
+			}else{
 				$.getClientId();
 			}
 			

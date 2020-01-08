@@ -649,6 +649,9 @@
 	$.downloadApp = function(){
 		// 创建下载任务
 		if(mui.os.ios){
+			plus.runtime.openURL("https://apps.apple.com/cn/app/id1492786744",function(){
+				mui.toast("打开appstore失败");
+			})
 			return ;
 		}
 		

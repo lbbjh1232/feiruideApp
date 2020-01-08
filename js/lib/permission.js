@@ -155,6 +155,19 @@ function judgeIosPermissionMemo() {
 	return result;
 }
 
+// 判断网络权限是否开启
+function judgeIosPermissionNet(){
+	var result = false;
+	var cellularData = plus.ios.newObject("CTCellularData");  
+	var state = cellularData.plusGetAttribute("restrictedState");  
+	if (state == 2) {  
+		result = true;
+		console.log("已经开启了互联网权限:NotRestricted");  
+	}
+	plus.ios.deleteObject(cellularData);
+	return result;
+}
+
 // Android权限查询
 function requestAndroidPermission(permissionID) {
 	return new Promise((resolve, reject) => {
@@ -212,6 +225,8 @@ function judgeIosPermission(permissionID) {
 		return judgeIosPermissionCalendar()
 	} else if (permissionID == "memo") {
 		return judgeIosPermissionMemo()
+	} else if(permissionID == "net"){
+		return judgeIosPermissionNet();
 	}
 	return false;
 }

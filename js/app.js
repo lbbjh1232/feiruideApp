@@ -111,6 +111,7 @@
 		var url = API.HOST + url;
 		var result = 'success';
 		return new Promise(function(resolve,reject){
+			plus.nativeUI.showWaiting()
 			mui.ajax(url,{
 				type:method,
 				async:true,
@@ -118,6 +119,7 @@
 				dataType:'json',
 				headers : {auth :'Bearer ' + accountInfo.token},
 				success:(data)=>{
+					plus.nativeUI.closeWaiting();
 					result = data;
 					if(result.code == 203){
 						var message = plus.webview.getWebviewById('html/message.html');
@@ -133,6 +135,7 @@
 				error:(xhr,type,errorThrown)=>{
 					plus.nativeUI.closeWaiting();
 					mui.alert('请求异常，稍后再试','提示','确定',function (e) {});
+					
 				}
 			}); 
 		});

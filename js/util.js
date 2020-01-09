@@ -18,7 +18,7 @@ var util = {
 	initSubpage: function(aniShow) {
 		
 		// 设置顶部状态栏
-		plus.navigator.setStatusBarBackground('#3383FC');
+		// plus.navigator.setStatusBarBackground('#3383FC');
 		
 		var subpage_style = {
 				top: 0,

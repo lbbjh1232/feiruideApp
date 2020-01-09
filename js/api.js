@@ -87,6 +87,7 @@ var API = {
 	DELETE_AUTH : '/user/deleteAuth',
 	AUTH_SUBMIT : '/user/authSubmit',
 	GET_AUTH : '/user/getAuth',
+	CANCLE : '/user/cancle',
 	
 	// 新闻资讯
 	GET_NEWS : '/news/getNews',

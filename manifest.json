@@ -145,7 +145,7 @@
 		"launchwebview" : 
 		{
 			"bottom" : "0px",
-			"background" : "#fff",
+			"background" : "#3383FC",
 			"titleNView" : 
 			{
 				"backgroundcolor" : "#3383FC",
@@ -317,6 +317,10 @@
 			"waiting" : false,
 			"delay" : 1000
 		},
+		"statusbar" : 
+		{
+			"background" : "#3383FC"
+		},
 		"popGesture" : "close", /*设置应用默认侧滑返回关闭Webview窗口，"none"为无侧滑返回功能，"hide"为侧滑隐藏Webview窗口。参考http://ask.dcloud.net.cn/article/102*/
 		
 		"runmode" : "normal", /*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
@@ -339,7 +343,7 @@
 				
 				"frameworks" : [],
 				"idfa" : false,
-				"deploymentTarget" : "10",
+				"deploymentTarget" : "10.0",
 				"capabilities" : 
 				{
 					"entitlements" : 
@@ -382,7 +386,7 @@
 			// 合并到工程Info.plist文件的数据（json格式）  
 			"google" : 
 			{
-				"packagename" : "", /*Android应用包名，如io.dcloud.HelloH5*/
+				"packagename" : "cn.feiruide.yp", /*Android应用包名，如io.dcloud.HelloH5*/
 				
 				"keystore" : "", /*Android应用打包使用的密钥库文件*/
 				
@@ -390,6 +394,11 @@
 				
 				"aliasname" : "", /*Android应用打包使用密钥库中证书的别名*/
 				
+				"permissionPhoneState" : 
+				{
+					"request" : "always",
+					"prompt" : "方便app顺利运行,请同意相关权限"
+				},
 				"permissions" : 
 				[
 					"<uses-feature android:name=\"android.hardware.camera\"/>",

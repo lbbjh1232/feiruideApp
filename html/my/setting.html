@@ -84,15 +84,19 @@
 				</li>
 			</ul>
 			 <div class="divided-line"></div>
-			 <ul class="mui-table-view">
-			 	
-			 	<li class="mui-table-view-cell">
-			 		<a href="javascript:void(0)" id="cancle" style="text-align: center;" >
-			 				注销账号
-			 		</a>
-			 	</li>
-			 </ul>
-			 <div class="divided-line"></div>
+			 
+			 <template v-if="islogin">
+					 
+				 <ul class="mui-table-view">
+					
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="cancle" style="text-align: center;" >
+								注销账号
+						</a>
+					</li>
+				 </ul>
+				 <div class="divided-line"></div>
+			 </template>
 			
 		</div>
 	</body>
@@ -105,6 +109,7 @@
 			el : '#app',
 			data : {
 				version : '',
+				islogin:false,
 			}
 		});
 		var shares=null;
@@ -116,6 +121,39 @@
 		];
 		
 		mui.plusReady(function () {
+			
+			if(plus.storage.getItem('accountInfo') != null){
+				 vm.islogin = true;
+				 vm.$nextTick(function(){
+					let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+					document.getElementById("cancle").addEventListener('tap',function(){
+						mui.confirm("确认注销账号?","提示",['确认','取消'],function(e){
+							if(e.index === 0){
+								// 发出请求
+								let res = mui.http_post(API.CANCLE,{uid : accountInfo.id})
+								res.then(res=>{
+									if(res.code == 200){
+										mui.toast('注销成功');
+										// 跳出页面
+										plus.storage.removeItem('accountInfo'); //删除用户登录缓存
+										var messageview = plus.webview.getWebviewById('html/message.html');
+										var myview = plus.webview.getWebviewById('html/my.html');
+										var indexview = plus.webview.getLaunchWebview();
+										mui.fire(indexview,'loginLoad');	//重载首页
+										mui.fire(myview,'loginLoad');	//重载首页
+										mui.fire(messageview,'loginLoad');	//重载消息列表页
+										vm.islogin = false;
+									}else{
+										mui.toast('注销失败');
+									}
+								})
+							}
+						})
+					})
+				})
+			}
+			
+			
 			plus.runtime.getProperty(plus.runtime.appid,function(info){
 				vm.version = info.version;
 			});

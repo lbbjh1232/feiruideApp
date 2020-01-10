@@ -111,7 +111,7 @@
 		var url = API.HOST + url;
 		var result = 'success';
 		return new Promise(function(resolve,reject){
-			plus.nativeUI.showWaiting()
+			// plus.nativeUI.showWaiting()
 			mui.ajax(url,{
 				type:method,
 				async:true,

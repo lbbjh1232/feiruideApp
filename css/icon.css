@@ -10,6 +10,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-focus-buy:before {
+	content: "\e6fb";
+	color:rgba(255,255,255,.9);
+	font-size: 2.5rem;
+}
+
 
 .icon-fanhuidingbu:before {
 	content: "\e64a";

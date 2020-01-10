@@ -75,22 +75,22 @@
 					<div class=''><span class='drug-list-title'>包装:</span> <span class='drug-list-name'>{{current.packaging}}</span></div>
 					<div class='text-clip'><span class='drug-list-title'>药品编号:</span> <span class='drug-list-name'>{{current.system_number}}</span></div>
 					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>基药类别:</span> <span class='drug-list-name'>{{JyCategory[current.base_medicine_category].text}}</span></div>
+						<div class='text-clip'><span class='drug-list-title'>基药类别:</span> <span class='drug-list-name'>{{current.base_medicine_category==0?'-':JyCategory[current.base_medicine_category].text}}</span></div>
 						<div class='text-clip'><span class='drug-list-title'>新农合:</span> <span class='drug-list-name'>{{current.new_farming_and==1?'是':'否'}}</span></div>
 					</div>
 					
 					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>采购类别:</span> <span class='drug-list-name'>{{BuyCategory[current.procurement_categories].text}}</span></div>
+						<div class=''><span class='drug-list-title'>采购类别:</span> <span class='drug-list-name'>{{current.procurement_categories==0?'-':BuyCategory[current.procurement_categories].text}}</span></div>
 						<div class='text-clip'><span class='drug-list-title'>国产:</span> <span class='drug-list-name'>{{current.domestic==1?'是':'否'}}</span></div>
 					</div>
 					
 					<div class="detail-row">
 						<div class='text-clip'><span class='drug-list-title'>批准文号:</span> <span class='drug-list-name'>{{current.approved_by}}</span></div>
-						<div class='text-clip'><span class='drug-list-title'>川产:</span> <span class='drug-list-name'>{{IsChuanProduce[current.sichuan_is_produced].text}}</span></div>
+						<div class='text-clip'><span class='drug-list-title'>川产:</span> <span class='drug-list-name'>{{current.sichuan_is_produced==0?'-':IsChuanProduce[current.sichuan_is_produced].text}}</span></div>
 					</div>
 					
 					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>国家新5.0码:</span> <span class='drug-list-name'>{{current.new_country_code}}</span></div>
+						<div class='text-clip'><span class='drug-list-title'>{{NewCountryCode}}:</span> <span class='drug-list-name'>{{current.new_country_code}}</span></div>
 						<div class='text-clip'><span class='drug-list-title'>医保:</span> <span class='drug-list-name'>{{current.health_care==1 ?'是':'否'}}</span></div>
 					</div>
 					
@@ -237,6 +237,7 @@
 		var vm = new Vue({
 			el:'#app',
 			data:{
+				NewCountryCode :globalData.NewCountryCode,
 				 //存储条件
 				storageCondition: globalData.storageCondition,
 				//药品分类

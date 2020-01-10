@@ -16,7 +16,7 @@
 	<body >
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">4+7品种查询</h1>
+			<h1 class="mui-title">集中采购(扩围)品种查询</h1>
 		</header>
 		
 		<div id="app">
@@ -42,7 +42,7 @@
 							<div class='text-clip'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>{{item.specifications}}*{{item.conversion_ratio}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{item.production_enterprise}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'><span class='red'>{{item.the_net_price?item.the_net_price:'自主定价'}}</span>{{item.the_net_price?'元':''}}</span></div>
-							<div class='text-clip'><span class='drug-list-title'>中标价格:</span> <span class='drug-list-name'><span class='red'>{{item.medium_bid_price?item.medium_bid_price:'未定价'}}</span>{{item.medium_bid_price?'元':''}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>收录类别:</span> <span class='drug-list-name'>{{item.category}}</span></div>
 						</div>
 						<div  id='' class='drug-list-right-part'><span class="iconfont icon-icon--"></span></div>
 					</div>
@@ -71,7 +71,8 @@
 					<div class=''><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{current.generic_name}}</span></div>
 					<div class=''><span class='drug-list-title'>规格:</span> <span class='drug-list-name'>{{current.specifications}}*{{current.conversion_ratio}}</span></div>
 					<div class=''><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{current.production_enterprise}}</span></div>
-					<div class=''><span class='drug-list-title'>包装:</span> <span class='drug-list-name'>{{current.packaging}}</span></div>
+					<div class=''><span class='drug-list-title'>包装:</span> <span class='drug-list-name'>{{current.packaging?current.packaging:'-'}}</span></div>
+					<div class='text-clip'><span class='drug-list-title'>最小制剂单位:</span> <span class='drug-list-name'>{{current.minimum_preparation_unit}}</span></div>
 					<div class='text-clip'><span class='drug-list-title'>药品编号:</span> <span class='drug-list-name'>{{current.system_number}}</span></div>
 					<div class="detail-row">
 						<div class='text-clip'><span class='drug-list-title'>基药类别:</span> <span class='drug-list-name'>{{current.base_medicine_category==0?'-':JyCategory[current.base_medicine_category].text}}</span></div>
@@ -85,7 +86,7 @@
 					
 					<div class="detail-row">
 						<div class='text-clip'><span class='drug-list-title'>批准文号:</span> <span class='drug-list-name'>{{current.approved_by}}</span></div>
-						<div class='text-clip'><span class='drug-list-title'>川产:</span> <span class='drug-list-name'>{{IsChuanProduce[current.sichuan_is_produced].text}}</span></div>
+						<div class='text-clip'><span class='drug-list-title'>川产:</span> <span class='drug-list-name'>{{current.sichuan_is_produced==0?'-':IsChuanProduce[current.sichuan_is_produced].text}}</span></div>
 					</div>
 					
 					<div class="detail-row">
@@ -99,7 +100,8 @@
 					</div>
 					
 					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>中标价格:</span> <span class='drug-list-name'><span class='red'>{{current.medium_bid_price?current.medium_bid_price:'未定价'}}</span>{{current.medium_bid_price?'元':''}}</span></div>
+						<div class='text-clip'><span class='drug-list-title'>收录类别:</span> <span class='drug-list-name'>{{current.category}}</span></div>
+						<div class='text-clip'><span class='drug-list-title'>是否中选:</span> <span class='drug-list-name'>{{current.selection_state==1?'是':'否'}}</span></div>
 					</div>
 					
 					
@@ -268,7 +270,7 @@
 			first = first == undefined || first == false ? false : true;
 
 			var url =API.GET_NET_DRUG,params = vm.searchData;
-			params.quantity_purchase = 1;
+			params.focus = 1;
 			if(!first){
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}

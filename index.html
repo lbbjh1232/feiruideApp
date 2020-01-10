@@ -44,7 +44,7 @@
 				</div>
 				
 					
-				<div v-show="more" class="catelog-item catelog-url" data-href="http://cdsylbz.chengdu.gov.cn/ebaowx/html/mi.html" data-title="医保目录查询">
+				<div v-show="more" class="catelog-item catelog-url" data-href="http://cdsylbz.chengdu.gov.cn/cdsi_wxgzh/html/threeCatalog/threeCatalog.html" data-title="医保目录查询">
 					<div class="catelog-log iconfont1 icon-jibao"></div>
 					<div class="catelog-name">医保目录</div>
 				</div>
@@ -59,7 +59,9 @@
 					<div class="catelog-name">4+7品种</div>
 				</div>
 				
-				<div v-show="more" class="catelog-item" style="background: transparent;">
+				<div v-show="more" class="catelog-item" id="focus-buy">
+					<div class="catelog-log iconfont1 icon-focus-buy"></div>
+					<div class="catelog-name">集采(扩围)</div>
 				</div>	
 				
 				
@@ -494,7 +496,17 @@
 								 autoShow:true,
 							 }
 						});
-					})
+					});
+					// 集中采购(扩围)
+					mui('.catelog-box').on('tap','#focus-buy',function(){
+						mui.openWindow({
+							 url:'html/drug/focus-buy-drug.html',
+							 id:'html/drug/focus-buy-drug.html',
+							 show:{
+								 autoShow:true,
+							 }
+						});
+					});
 					
 					
 					//监听系统通知栏消息点击事件  

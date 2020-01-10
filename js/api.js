@@ -310,4 +310,5 @@ var globalData = {
           value: 2,
           text: '否'
       }],
+	  NewCountryCode:"国家新6.0码"
 }

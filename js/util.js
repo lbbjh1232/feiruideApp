@@ -141,6 +141,12 @@ var util = {
 		switch(currIndex){
 			case 0:
 				text = '药械e家';
+				buttons.push({
+					text:'\ue60f',
+					fontSrc:'fonts/icon.ttf',
+					fontSize : '25px',
+					float:'right',
+				})
 				break;
 				
 			case 1: 

@@ -138,6 +138,14 @@ var util = {
 			})
 		}
 		
+		// 切换角色
+		var switchRole = function(){
+			mui.openWindow({
+				url : 'html/user/switch-role.html',
+				id : 'switch-role.html'
+			})
+		}
+		
 		switch(currIndex){
 			case 0:
 				text = '药械e家';
@@ -146,7 +154,9 @@ var util = {
 					fontSrc:'fonts/icon.ttf',
 					fontSize : '25px',
 					float:'right',
-				})
+					onclick: switchRole
+				});
+				
 				break;
 				
 			case 1: 

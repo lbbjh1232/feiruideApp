@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<meta charset="utf-8">
+		<title>切换角色</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script> 
+		   
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/user/switch-role.css'],true); 
+		</script>
+	</head> 
+
+	<body>   
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">切换角色</h1>
+		</header>
+		<div class="mui-content" id="app">
+			<div class="role-box">
+				<div class="role-item" data-roleid="6">药品经营企业</div>
+				<div class="role-item" data-roleid="7">医疗机构</div>
+				<div class="role-item" data-roleid="11">临床科室</div>
+				<div class="role-item" data-roleid="9">药品生产企业</div>
+				<div class="role-item" data-roleid="8">卫健委</div>
+				<div class="role-item" data-roleid="10">医药代表</div>
+			</div>
+			 
+		</div>
+		
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+
+		<script>
+			mui.init();
+			
+			window.onload = function(){
+				mui.plusReady(function () {
+					//重写返回
+					let newback = function(){
+						let oldback = mui.back;
+						mui.fire(plus.webview.getLaunchWebview(),'switch');
+						oldback();
+					}
+					mui('.role-box').on('tap','.role-item',function(){
+						let roleid = this.dataset.roleid;
+						plus.storage.setItem('role',roleid.toString());
+						newback();
+					})
+					
+					 
+				})
+			}
+		</script>
+	</body>
+</html>

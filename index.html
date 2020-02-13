@@ -113,31 +113,32 @@
 			
 			<div class="divided-module"></div>
 			
-			<div class="nav-title">药品两票</div>
-			<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-					<a href="javascript:void(0)" data-href="html/drug/net-drug.html">
-						<span class="mui-icon iconfont icon--liuchengguanli"></span>
-						<div class="mui-media-body">挂网药品</div>
-					</a>
-				</li>
+			<div v-show="['6','7','11'].indexOf(viewRoleId) != -1">
+				<div class="nav-title">药品两票</div>
+				<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)"  data-limit="1" data-href="html/drug/net-drug.html">
+							<span class="mui-icon iconfont icon--liuchengguanli"></span>
+							<div class="mui-media-body">挂网药品</div>
+						</a>
+					</li>
 				 
 				<!-- 经营企业 -->
-				<template v-if="accountInfo.roleid == 6 ? true : false">
+				<template v-if=" viewRoleId == 6 ">
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/drug/com-drug.html">
+						<a href="javascript:void(0)" data-roleid="6" data-limit="2" data-href="html/drug/com-drug.html">
 							<span class="mui-icon iconfont icon-shengdanjieicon-"></span>
 							<div class="mui-media-body">本企药品</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/warehouseinto/index.html">
+						<a href="javascript:void(0)" data-roleid="6" data-limit="2" data-href="html/warehouseinto/index.html">
 							<span class="mui-icon iconfont icon-jiashu"></span>
 							<div class="mui-media-body">票据入库</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/warehouseout/index.html">
+						<a href="javascript:void(0)" data-roleid="6" data-limit="2" data-href="html/warehouseout/index.html">
 							<span class="mui-icon iconfont icon-jianshu"></span>
 							<div class="mui-media-body">票据出库</div>
 						</a>
@@ -146,54 +147,72 @@
 				</template>
 				 
 				<!-- 临床科室 -->
-				<template v-if="accountInfo.roleid == 11 ? true : false">
+				<template v-if="viewRoleId == 11">
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/drug/hos-drug.html">
-							<span class="mui-icon iconfont icon-shengdanjieicon-"></span>
-							<div class="mui-media-body">本院药品</div>
-						</a> 
-					</li>
-				</template>
-				
-				<!-- 医疗机构 -->
-				<template v-if="accountInfo.roleid == 7 ? true : false">
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/drug/hos-drug.html">
+						<a href="javascript:void(0)" data-roleid="11" data-limit="2" data-href="html/drug/hos-drug.html">
 							<span class="mui-icon iconfont icon-shengdanjieicon-"></span>
 							<div class="mui-media-body">本院药品</div>
 						</a>
 					</li>
+				</template>
+				
+				<!-- 医疗机构 -->
+				<template v-if="viewRoleId==7">
+					<li  class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-roleid="7" data-limit="2" data-href="html/drug/hos-drug.html">
+							<span class="mui-icon iconfont icon-shengdanjieicon-"></span>
+							<div class="mui-media-body">本院药品</div>
+						</a>
+					</li>
+					
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-href="html/drug/check-ticket.html">
+						<a href="javascript:void(0)" data-roleid="7" data-limit="2" data-href="html/drug/check-ticket.html">
 							<span class="mui-icon iconfont icon--jiandinggujia"></span>
 							<div class="mui-media-body">票据查验</div>
 						</a>
 					</li>
 
 				</template>
-				
-			 
 			</ul>
+			</div>
 			
-			<div class="nav-title">检验报告</div>
-			<ul class="mui-table-view mui-grid-view mui-grid-9" >
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
-					<a href="javascript:void(0)" data-href="html/report/index.html" id="report">
-						<span class="mui-icon iconfont icon--biaodanguanli"></span>
-						<div class="mui-media-body">药检报告</div>
-					</a>
-				</li>
-			</ul>
+			<div v-show=" '6,7,9'.indexOf(viewRoleId) != -1">
+				<div class="nav-title">检验报告</div>
+				<ul class="mui-table-view mui-grid-view mui-grid-9" id="checkReport">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+						<a href="javascript:void(0)" data-roleid="6,7,9" data-limit="2" data-href="html/report/index.html">
+							<span class="mui-icon iconfont icon--biaodanguanli"></span>
+							<div class="mui-media-body">药检报告</div>
+						</a>
+					</li>
+				</ul>
+			</div>
 			
-			<div class="nav-title">药品采购</div>
-			<ul  class="mui-table-view mui-grid-view mui-grid-9" >
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
-					<a href="javascript:void(0)" data-href="html/short/index.html" id="short">
-						<span class="mui-icon iconfont icon-xuqiu"></span>
-						<div class="mui-media-body">短缺药品采购</div>
-					</a>
-				</li>
-			</ul>
+			<div v-show=" '6,7'.indexOf(viewRoleId) != -1">
+				<div class="nav-title">药品采购</div>
+				<ul  class="mui-table-view mui-grid-view mui-grid-9" id="drugBuy">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/short/index.html">
+							<span class="mui-icon iconfont icon-xuqiu"></span>
+							<div class="mui-media-body">短缺药品采购</div>
+						</a>
+					</li>
+					
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/short/index.html">
+							<span class="mui-icon iconfont icon-xuqiu"></span>
+							<div class="mui-media-body">采购计划单</div>
+						</a>
+					</li>
+					
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/short/index.html">
+							<span class="mui-icon iconfont icon-xuqiu"></span>
+							<div class="mui-media-body">品种/库存查询</div>
+						</a>
+					</li>
+				</ul>
+			</div>
 			
 			<!-- 
 			<div class="nav-title">新药申报</div>
@@ -218,39 +237,42 @@
 				</li>
 			</ul>
 			 -->
-			<div class="nav-title">电子首营</div>
-			<ul class="mui-table-view mui-grid-view mui-grid-9">
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-					<a href="#">
-						<span class="mui-icon iconfont icon--cangpinyijiao"></span>
-						<div class="mui-media-body">首营交换</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-					<a href="#">
-						<span class="mui-icon iconfont icon-xiangshang2"></span>
-						<div class="mui-media-body">我的请求</div>
-					</a>
-				</li> 
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-					<a href="#">
-						<span class="mui-icon iconfont icon-xiangxia2"></span>
-						<div class="mui-media-body">客户请求</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-					<a href="#">
-						<span class="mui-icon iconfont icon--shoucangzheguanli"></span>
-						<div class="mui-media-body">客户资料库</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-					<a href="#">
-						<span class="mui-icon iconfont icon--jiaoseguanli"></span>
-						<div class="mui-media-body">我的首营</div>
-					</a>
-				</li>
-			</ul>
+			<div v-show="['6','7','9'].indexOf(viewRoleId) != -1">
+				<div class="nav-title">电子首营</div>
+				<ul class="mui-table-view mui-grid-view mui-grid-9" id="eleFile">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)">
+							<span class="mui-icon iconfont icon--cangpinyijiao"></span>
+							<div class="mui-media-body">首营交换</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)">
+							<span class="mui-icon iconfont icon-xiangshang2"></span>
+							<div class="mui-media-body">我的请求</div>
+						</a>
+					</li> 
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)">
+							<span class="mui-icon iconfont icon-xiangxia2"></span>
+							<div class="mui-media-body">客户请求</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)">
+							<span class="mui-icon iconfont icon--shoucangzheguanli"></span>
+							<div class="mui-media-body">客户资料库</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)">
+							<span class="mui-icon iconfont icon--jiaoseguanli"></span>
+							<div class="mui-media-body">我的首营</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			
 			<div class="divided-module"></div>
 			
 			<!-- 新闻版块 -->
@@ -288,6 +310,7 @@
 					currentIndex : 1,
 					newsData : [],
 					more : false,
+					viewRoleId : '6',
 				}
 			});
 			
@@ -312,8 +335,6 @@
 					    },
 					}
 				});
-				
-				
 				
 				var loadView = function(){
 					var accountInfo = plus.storage.getItem('accountInfo');
@@ -610,15 +631,19 @@
 					
 					
 					// 监听首页show事件
-					self.addEventListener('show',function(){
-						loadView();
-					})
+					// self.addEventListener('show',function(){
+					// 	loadView();
+					// })
 					
 					//监听登录/退出后重载
 					window.addEventListener('loginLoad',function(){
 						mui.updateMessCount(true,false);
 						loadView();
-
+					});
+					
+					//监听角色切换
+					window.addEventListener('switch',function(){
+						vm.viewRoleId = plus.storage.getItem('role')||'6'
 					})
 					
 					
@@ -683,8 +708,23 @@
 					mui.getClientId();
 					
 					var targetNav;
+					
 					// 药品两票菜单点击
 					mui('#drug').on('tap','a',function(e){
+						// 判断是否登录
+						if(this.dataset.limit == 2){
+							//登录提示
+							if(!vm.accountInfo){
+								mui.alert('请先登录','提示','确认',function(e){});
+								return;
+							}
+							let roleid = (this.dataset.roleid).split(',');
+							if(roleid.indexOf(vm.accountInfo.roleid) ==-1 ){
+								mui.alert('登录角色的权限受限','提示','确认',function(e){});
+								return;
+							}
+							
+						}
 						 targetNav = this.dataset.href;
 						
 						// 判断网络情况
@@ -707,49 +747,83 @@
 					});
 					
 					// 短缺药品采购
-					document.getElementById('short').addEventListener('tap',function(e){
-						var href = this.dataset.href;
-						var accountInfo = plus.storage.getItem('accountInfo');
-						if(accountInfo == null){
-							mui.alert('请先登录','提示','确认',function (e) {});
-							return;
+					var shortView;
+					mui('#drugBuy').on('tap','a',function(e){
+						// 判断是否登录
+						if(this.dataset.limit == 2){
+							//登录提示
+							if(!vm.accountInfo){
+								mui.alert('请先登录','提示','确认',function(e){});
+								return;
+							}
+							let roleid = (this.dataset.roleid).split(',');
+							if(roleid.indexOf(vm.accountInfo.roleid) ==-1 ){
+								mui.alert('登录角色的权限受限','提示','确认',function(e){});
+								return;
+							}
+							
 						}
-						if( '6,7'.indexOf(JSON.parse(accountInfo).roleid) == -1 ){
-							mui.alert('该角色无权限','提示','确认',function (e) {});
-							return;
-						}else{
-							mui.openWindow({
-								 url:href,
-								 id:href,
-								 show:{
-									 autoShow:true,
-								 }
+						 shortView = this.dataset.href;
+						
+						// 判断网络情况
+						var type = plus.networkinfo.getCurrentType();
+						if( [0,1].indexOf(type) != -1 ){
+							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
+							   e.index
 							});
+							return;
 						}
-					})
+						 
+						 mui.openWindow({
+							 url:shortView,
+							 id:shortView,
+							 show:{
+								 autoShow:true,
+							 }
+						 });
+						
+					});
 					
 					
 					// 打开药检报告
-					document.getElementById('report').addEventListener('tap',function(e){
-						var href = this.dataset.href;
-						var accountInfo = plus.storage.getItem('accountInfo');
-						if(accountInfo == null){
-							mui.alert('请先登录','提示','确认',function (e) {});
-							return;
-						}
-						if( '6,7,9'.indexOf(JSON.parse(accountInfo).roleid) == -1 ){
-							mui.alert('该角色无权限','提示','确认',function (e) {});
-							return;
-						}else{
-							mui.openWindow({
-								 url:href,
-								 id:href,
-								 show:{
-									 autoShow:true,
-								 }
+					var reportView;
+					mui('#checkReport').on('tap','a',function(e){
+						// 判断是否登录
+						if(this.dataset.limit == 2){
+							//登录提示
+							if(!vm.accountInfo){
+								mui.alert('请先登录','提示','确认',function(e){});
+								return;
+							}
+							let roleid = (this.dataset.roleid).split(',');
+							
+							if(roleid.indexOf( vm.accountInfo.roleid ) != -1 ){
+								mui.alert('登录角色的权限受限','提示','确认',function(e){});
+								return;
+							}
+							
+						} 
+						 reportView = this.dataset.href;
+						
+						// 判断网络情况
+						var type = plus.networkinfo.getCurrentType();
+						if( [0,1].indexOf(type) != -1 ){
+							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
+							   e.index
 							});
+							return;
 						}
-					})
+						 
+						 mui.openWindow({
+							 url:reportView,
+							 id:reportView,
+							 show:{
+								 autoShow:true,
+							 }
+						 });
+						
+					});
+					
 					
 					// 使用查询
 					mui('.catelog-box').on('tap','.catelog-url',function(){

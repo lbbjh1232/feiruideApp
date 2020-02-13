@@ -258,6 +258,7 @@
 							<div class="mui-media-body">客户请求</div>
 						</a>
 					</li>
+					
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
 						<a href="javascript:void(0)">
 							<span class="mui-icon iconfont icon--shoucangzheguanli"></span>
@@ -265,7 +266,7 @@
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)">
+						<a href="javascript:void(0)" data-roleid="6,7,9" data-limit="2" data-href="html/firstcamp/my-camp.html">
 							<span class="mui-icon iconfont icon--jiaoseguanli"></span>
 							<div class="mui-media-body">我的首营</div>
 						</a>
@@ -358,7 +359,6 @@
 				document.addEventListener("plusready",function() {
 					var self = plus.webview.currentWebview();
 					if(plus.storage.getItem("launchFlag") == null ){
-
 						// 显示遮罩层
 						self.setStyle({mask:"rgba(0,0,0,0.5)"});
 						
@@ -454,7 +454,6 @@
 					
 					}
 						
-
 					
 					// 实用查询-更多
 					mui('.catelog-box').on('tap','#more',function(){
@@ -824,7 +823,44 @@
 						
 					});
 					
-					
+					//打开首营资料
+					var campView;
+					mui('#eleFile').on('tap','a',function(e){
+						// 判断是否登录
+						if(this.dataset.limit == 2){
+							//登录提示
+							if(!vm.accountInfo){
+								mui.alert('请先登录','提示','确认',function(e){});
+								return;
+							}
+							let roleid = (this.dataset.roleid).split(',');
+							
+							if(roleid.indexOf( vm.accountInfo.roleid ) != -1 ){
+								mui.alert('登录角色的权限受限','提示','确认',function(e){});
+								return;
+							}
+							
+						} 
+						 campView = this.dataset.href;
+						
+						// 判断网络情况
+						var type = plus.networkinfo.getCurrentType();
+						if( [0,1].indexOf(type) != -1 ){
+							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
+							   e.index
+							});
+							return;
+						}
+						 
+						 mui.openWindow({
+							 url:campView,
+							 id:campView,
+							 show:{
+								 autoShow:true,
+							 }
+						 });
+						
+					});
 					// 使用查询
 					mui('.catelog-box').on('tap','.catelog-url',function(){
 						var href = this.dataset.href;

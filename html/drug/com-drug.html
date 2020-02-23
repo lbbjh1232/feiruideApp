@@ -74,6 +74,7 @@
 					<div class=''><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{current.production_enterprise}}</span></div>
 					<div class=''><span class='drug-list-title'>包装:</span> <span class='drug-list-name'>{{current.packaging}}</span></div>
 					<div class='text-clip'><span class='drug-list-title'>药品编号:</span> <span class='drug-list-name'>{{current.system_number}}</span></div>
+					
 					<div class="detail-row">
 						<div class='text-clip'><span class='drug-list-title'>基药类别:</span> <span class='drug-list-name'>{{current.base_medicine_category==0?'-':JyCategory[current.base_medicine_category].text}}</span></div>
 						<div class='text-clip'><span class='drug-list-title'>新农合:</span> <span class='drug-list-name'>{{current.new_farming_and==1?'是':'否'}}</span></div>
@@ -87,6 +88,7 @@
 					<div class="detail-row">
 						<div class='text-clip'><span class='drug-list-title'>批准文号:</span> <span class='drug-list-name'>{{current.approved_by}}</span></div>
 						<div class='text-clip'><span class='drug-list-title'>川产:</span> <span class='drug-list-name'>{{current.sichuan_is_produced==0?'-':IsChuanProduce[current.sichuan_is_produced].text}}</span></div>
+					</div>
 					
 					<div class="detail-row">
 						<div class='text-clip'><span class='drug-list-title'>{{NewCountryCode}}:</span> <span class='drug-list-name'>{{current.new_country_code}}</span></div>
@@ -225,7 +227,7 @@
 		var vm = new Vue({
 			el:'#app',
 			data:{
-				NewCountryCode ：globalData.NewCountryCode,
+				NewCountryCode :globalData.NewCountryCode,
 				 //存储条件
 				storageCondition: globalData.storageCondition,
 				//药品分类
@@ -364,9 +366,9 @@
 					})
 					var index = this.dataset.index;
 					//重组储存条件
-					var current = vm.searchResult[index];
+					var current = JSON.parse(JSON.stringify(vm.searchResult[index]))  ;
 					var storage = current['storage_condition'];  //格式 '1,2,3'
-					
+					console.log(storage)
 					var str = '';
 					if ( storage ){
 						var arr = storage.split(',');

@@ -42,6 +42,11 @@
 			table,ul,ul li{
 				max-width: 100%;
 			}
+			.enclosure{
+				padding-bottom: 5px;
+				font-size: 1.2rem;
+				color: #0062CC;
+			}
 		</style>
 
 	</head>
@@ -54,17 +59,29 @@
 		</header>
 		
 		<div class="mui-content" id="app">
-			<div class="news-title" v-cloak>
-				{{title}}
+			<div v-cloak>
+				<div class="news-title" >
+					{{title}}
+				</div>
+				
+				<div class="publisher" >
+					药械e家电子平台 &nbsp;&nbsp;&nbsp;<span id="publish-date">{{time}}</span>
+				</div>
 			</div>
-			<div class="publisher" v-cloak>药械e家电子平台 &nbsp;&nbsp;&nbsp;<span id="publish-date">{{time}}</span></div>
 			
 			<!-- 详情 -->
 			<div class="news-detail-box" v-html="content">
 				
 			</div>
 			
+			<!-- 附件 -->
+			<div class="enclosure-box" v-cloak>
+				<div class="enclosure" v-for="item in enclosure" :data-ext="item.ext" :data-url="item.url">
+					{{item.title}}
+				</div>
+			</div>
 		</div>
+		
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/mui.imageViewer.js"></script>
@@ -80,7 +97,8 @@
 				title : '',
 				cover : '',
 				time : '',
-				content : ''
+				content : '',
+				enclosure : [],		//为空不显示
 			}
 		})
 		window.onload = function(){
@@ -90,6 +108,7 @@
 				// vm.cover = mui.currentWebview.cover;
 				vm.time = mui.currentWebview.time;
 				vm.content = mui.currentWebview.content;
+				vm.enclosure = mui.currentWebview.file;
 				mui.currentWebview.show();
 				plus.nativeUI.closeWaiting();
 				vm.$nextTick(function(){
@@ -97,7 +116,36 @@
 						dbl: false
 					});
 					
-				})
+					// 预览附件
+					mui('.enclosure-box').on('tap','.enclosure',function(e){
+						let ext = this.dataset.ext;
+						let url = this.dataset.url;
+						
+						if(ext == 2){
+							// 预览pdf文件
+							mui.openWindow({
+								url:'../pdf-view.html',
+								id: '../pdf-view.html',
+								extras:{
+									name: url
+								},
+								show:{
+									autoShow:true,
+								}
+								
+							})
+						}else{
+							var href = 'https://view.officeapps.live.com/op/view.aspx?src='+url;
+							var title = '附件预览';
+							var win = '../office-view.html';
+							// 创建窗口
+							var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+							ws.show('pop-in');
+						}
+						
+					})
+					
+				});
 				
 				
 			})

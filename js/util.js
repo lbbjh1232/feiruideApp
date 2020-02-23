@@ -150,9 +150,11 @@ var util = {
 			case 0:
 				text = '药械e家';
 				buttons.push({
-					text:'\ue60f',
-					fontSrc:'fonts/icon.ttf',
-					fontSize : '25px',
+					text:'切换角色',
+					width:"80px",
+					// text:'\ue60f',
+					// fontSrc:'fonts/icon.ttf',
+					fontSize : '12px',
 					float:'right',
 					onclick: switchRole
 				});

@@ -10,6 +10,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-huoyuan::before{
+	content: "\e606";
+	color: #1E90FF;
+}
+.icon-jihuadan::before{
+	content: "\e60b";
+	color: #1E90FF;
+}
+
 .icon-focus-buy:before {
 	content: "\e6fb";
 	color:rgba(255,255,255,.9);

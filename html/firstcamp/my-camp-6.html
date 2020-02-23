@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>挂网药品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css',,'../../css/common.css','../../css/iconfont.css','../../css/drug/net-drug.css','../../css/drug/ticket-detail.css','../../css/imageview.css','../../css/firstcamp/mycamp.css'],true);
+		</script>
+
+		
+	</head>
+
+	<body >
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的首营</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1">
+				本企业首营资料
+			</a>
+					<a class="mui-control-item" href="#item2">
+				品种首营资料
+			</a>
+				</div>
+				
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-sm-6 mui-col-xs-6"></div>
+				<div class="mui-slider-group">
+					<div id="item1" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="scan-title">
+									<span>查看首营</span>
+									<div class="scan-notice">（显示红色表示首营资料即将过期或已经过期）</div>
+								</div>
+								
+								<div class="scan-box">
+									<div class="scan-item"><button data-rid="1" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.business_license_overdue?'mui-btn-red':''">营业执照(三合一)</button></div>
+									<div class="scan-item"><button data-rid="3" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.gmp_gsp_certificate_overdue?'mui-btn-red':''">《药品经营质量管理规范》认证证书</button></div>
+									<div class="scan-item"><button data-rid="2" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.production_or_business_license_overdue?'mui-btn-red':''">药品经营许可证</button></div>
+									<div class="scan-item"><button data-rid="5" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.quality_assurance_agreement_overdue?'mui-btn-red':''">质量保证协议（注：有效期不得超过一年）</button></div>
+									<div class="scan-item"><button data-rid="6" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.purchaser_proxy_overdue?'mui-btn-red':''">采购人员的合法资格证明材料（身份证复印件、委托授权书）</button></div>
+									<div class="scan-item"><button data-rid="7" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.salesman_proxy_overdue?'mui-btn-red':''">供货单位销售人员合法资料证明材料(身份证复印件+委托授权书)</button></div>
+									<div class="scan-item"><button data-rid="8" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.last_year_enterprise_report_overdue?'mui-btn-red':''">上一年企业年度报告公示情况</button></div>
+									<div class="scan-item"><button data-rid="11" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.out_photo_overdue?'mui-btn-red':''">随货同行单（票）样式</button></div>
+									<div class="scan-item"><button data-rid="9" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.seal_record_overdue?'mui-btn-red':''">相关印章样式（公章、质检章、发票专用章、出库章等）</button></div>
+									<div class="scan-item"><button data-rid="10" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.open_permit_invoice_info_overdue?'mui-btn-red':''">开户户名、开户银行及账号</button></div>
+									<div class="scan-item"><button data-rid="12" type="button" class="mui-btn mui-btn-blue mui-btn-outlined" :class="enterprise.quality_system_file_overdue?'mui-btn-red':''">供货单位质量管理体系评价表</button></div>
+								</div>
+								
+								<!-- 隐藏显示-->
+								<div class="img-review">
+									<template v-for="item in current">
+										<img :src="item" class="img" onerror="javascript:this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC'" style="display: none;" data-preview-src="" data-preview-group="1">
+									</template>
+								</div>
+								
+								<div class="scan-title">
+									<span>编辑首营</span>
+								</div>
+								<div class="edit-box">
+									<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined">编辑企业首营资料</button>
+								</div>
+							
+							</div>
+						</div>
+					</div>
+					
+					<div id="item2" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll" v-cloak>
+								阿道夫阿斯顿发
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+			
+			
+		</div>
+		
+		
+	</body>
+	
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/lib/mui.zoom.js"></script>
+	<script src="../../js/lib/mui.previewimage.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script> 
+	<script src="../../js/app.js"></script> 
+		
+	<script type="text/javascript">
+		
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				roleid : '',
+				enterprise:{}, 	//企业首营结果集
+				current:[],
+			}
+				
+		}); 
+		// 获取首营资料
+		function getEnterpriseFirst(){
+			let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			vm.roleid = accountInfo.roleid;
+			let res = mui.http_post(API.GET_ENTERPRISE_FIRST,{companyId:accountInfo.userid,roleid:accountInfo.roleid});
+			res.then(res=>{
+				plus.nativeUI.closeWaiting();
+				if(res.code == 200){
+					vm.enterprise = res.data;
+				}
+			})
+		}
+		
+		mui.init();
+
+		window.onload = function(){
+			mui.plusReady(function () {
+				//初始化首营资料
+				getEnterpriseFirst();
+				
+				mui('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});
+				
+				
+				// 预览企业首营
+				mui('.scan-box').on('tap','button',function(e){
+					let id = this.dataset.rid;
+					let arr = [];
+					switch( parseInt(id) ){
+						case 1:
+							arr = vm.enterprise.business_license;
+							break;
+						case 2:
+							arr = vm.enterprise.production_or_business_license;
+							break;
+						case 3:
+							arr = vm.enterprise.gmp_gsp_certificate;
+							break;
+						case 4:
+							arr = vm.enterprise.blank_contract;
+							break;
+						case 5:
+							arr = vm.enterprise.quality_assurance_agreement;
+							break;
+						case 6:
+							arr = vm.enterprise.purchaser_proxy;
+							break;
+						case 7:
+							arr = vm.enterprise.salesman_proxy;
+							break;
+						case 8:
+							arr = vm.enterprise.last_year_enterprise_report;
+							break;
+						case 9:
+							arr = vm.enterprise.seal_record;
+							break;
+						case 10:
+							arr = vm.enterprise.open_permit_invoice_info;
+							break;
+						case 11:
+							arr = vm.enterprise.out_photo;
+							break;
+						case 12:
+							arr = vm.enterprise.quality_system_file;
+							break;
+						case 13:
+							arr = vm.enterprise.practice_license;
+							break;
+						case 14:
+							arr = vm.enterprise.qualified_supplier_file;
+							break;            
+					}
+					if( arr.length == 0 ){
+						mui.toast('该资料不存在');
+						return;
+					}
+					let newArr = [];
+					for(let i=0;i<arr.length;i++){
+						newArr.push( API.IMAGE_HOST+'/' + arr[i].url );
+					}
+					vm.current = newArr;
+					vm.$nextTick(function(){
+						setTimeout(function(){
+							// 预览图片
+							mui.previewImage();
+							
+							// 触发点击
+							mui.trigger(document.getElementsByClassName('img')[0],'tap');
+						},1000)
+						
+					})
+					
+					
+				})
+				
+				
+			})
+		}
+		
+		
+</script>
+	
+	
+	
+	
+	
+	
+</html>

@@ -199,16 +199,16 @@
 					</li>
 					
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
-						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/short/index.html">
-							<span class="mui-icon iconfont icon-xuqiu"></span>
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/purchase/index.html">
+							<span class="mui-icon iconfont1 icon-jihuadan"></span>
 							<div class="mui-media-body">采购计划单</div>
 						</a>
 					</li>
 					
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
 						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/short/index.html">
-							<span class="mui-icon iconfont icon-xuqiu"></span>
-							<div class="mui-media-body">品种/库存查询</div>
+							<span class="mui-icon iconfont1 icon-huoyuan"></span>
+							<div class="mui-media-body">货源查询</div>
 						</a>
 					</li>
 				</ul>
@@ -236,7 +236,7 @@
 					</a>
 				</li>
 			</ul>
-			 -->
+			
 			<div v-show="['6','7','9'].indexOf(viewRoleId) != -1">
 				<div class="nav-title">电子首营</div>
 				<ul class="mui-table-view mui-grid-view mui-grid-9" id="eleFile">
@@ -266,24 +266,35 @@
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
-						<a href="javascript:void(0)" data-roleid="6,7,9" data-limit="2" data-href="html/firstcamp/my-camp.html">
+						<a href="javascript:void(0)" data-roleid="6,7,9" data-limit="2" data-sign="1" data-href="html/firstcamp/my-camp">
 							<span class="mui-icon iconfont icon--jiaoseguanli"></span>
 							<div class="mui-media-body">我的首营</div>
 						</a>
 					</li>
 				</ul>
 			</div>
-			
+			 -->
 			<div class="divided-module"></div>
 			
 			<!-- 新闻版块 -->
 			<div class="title-box">
-				<div class="news-title">新闻资讯 <span class="news-subtitle">实时掌握行业信息</span></div>
+				<div class="news-tabs">
+					<a class="mui-control-item" :class="currentTab==1?'active':''" data-id="1">
+						新闻资讯
+					</a>
+					<a class="mui-control-item" :class="currentTab==2?'active':''" data-id="2">
+						4+7政策
+					</a>
+					
+				</div>
+				
 				<div class="more" id="news-more">更多 &gt;&gt;</div>
+				<!-- <div class="news-subtitle">实时掌握行业信息</div> -->
 			</div>
 			
-			<template v-for="(item,index) in newsData">
-				<div class="news-box" :data-index="index">
+			<div v-show="currentTab == 1">
+				<template v-for="(item,index) in newsData">
+				<div class="news-box news-1" :data-index="index">
 					<div class="news-left">
 						<div class="news-name">{{item.title}}</div>
 						<div class="news-date">{{item.create_time}}</div>
@@ -293,7 +304,21 @@
 					</div>
 				</div>
 			</template>
+			</div>
 			
+			<div v-show="currentTab == 2">
+				<template v-for="(item,index) in policyData">
+				<div class="news-box news-2" :data-index="index">
+					<div class="news-left">
+						<div class="news-name">{{item.title}}</div>
+						<div class="news-date">{{item.create_time}}</div>
+					</div>
+					<div class="news-right">
+						<img :src="item.cover" onerror="this.src='./images/60x60.gif'"/>
+					</div>
+				</div>
+			</template>
+			</div>
 			 
 			
 		</div>
@@ -310,8 +335,10 @@
 					accountInfo:'',
 					currentIndex : 1,
 					newsData : [],
+					policyData : [],
 					more : false,
 					viewRoleId : '6',
+					currentTab : 1
 				}
 			});
 			
@@ -344,16 +371,24 @@
 					}else{
 						vm.accountInfo = '';
 					}
+					vm.viewRoleId = plus.storage.getItem('role') || '6';
 				}
 				
 				// 获取新闻
 				function getNews(){ 
-					let news = mui.http_post(API.GET_NEWS,{num : 3});
+					let news = mui.http_post(API.GET_NEWS,{num : 3,sign:1});
 					news.then(data=>{
 						if(data.code == 200){
 							vm.newsData = data.data.data;
 						}
 					});
+					let policy = mui.http_post(API.GET_NEWS,{num : 3,sign:2});
+					policy.then(data=>{
+						if(data.code == 200){
+							vm.policyData = data.data.data;
+						}
+					});
+					
 				}
 				
 				document.addEventListener("plusready",function() {
@@ -642,7 +677,7 @@
 					
 					//监听角色切换
 					window.addEventListener('switch',function(){
-						vm.viewRoleId = plus.storage.getItem('role')||'6'
+						loadView();
 					})
 					
 					
@@ -718,8 +753,8 @@
 								return;
 							}
 							let roleid = (this.dataset.roleid).split(',');
-							if(roleid.indexOf(vm.accountInfo.roleid) ==-1 ){
-								mui.alert('登录角色的权限受限','提示','确认',function(e){});
+							if(roleid.indexOf(vm.accountInfo.roleid.toString()) == -1 ){
+								mui.alert('登录角色受限','提示','确认',function(e){});
 								return;
 							}
 							
@@ -745,7 +780,7 @@
 						
 					});
 					
-					// 短缺药品采购
+					// 药品采购
 					var shortView;
 					mui('#drugBuy').on('tap','a',function(e){
 						// 判断是否登录
@@ -756,8 +791,8 @@
 								return;
 							}
 							let roleid = (this.dataset.roleid).split(',');
-							if(roleid.indexOf(vm.accountInfo.roleid) ==-1 ){
-								mui.alert('登录角色的权限受限','提示','确认',function(e){});
+							if(roleid.indexOf(vm.accountInfo.roleid.toString()) ==-1 ){
+								mui.alert('登录角色受限','提示','确认',function(e){});
 								return;
 							}
 							
@@ -796,8 +831,8 @@
 							}
 							let roleid = (this.dataset.roleid).split(',');
 							
-							if(roleid.indexOf( vm.accountInfo.roleid ) != -1 ){
-								mui.alert('登录角色的权限受限','提示','确认',function(e){});
+							if(roleid.indexOf( vm.accountInfo.roleid.toString() ) == -1 ){
+								mui.alert('登录角色受限','提示','确认',function(e){});
 								return;
 							}
 							
@@ -824,43 +859,46 @@
 					});
 					
 					//打开首营资料
-					var campView;
-					mui('#eleFile').on('tap','a',function(e){
-						// 判断是否登录
-						if(this.dataset.limit == 2){
-							//登录提示
-							if(!vm.accountInfo){
-								mui.alert('请先登录','提示','确认',function(e){});
-								return;
-							}
-							let roleid = (this.dataset.roleid).split(',');
+				// 	var campView;
+				// 	mui('#eleFile').on('tap','a',function(e){
+				// 		// 判断是否登录
+				// 		if(this.dataset.limit == 2){
+				// 			//登录提示
+				// 			if(!vm.accountInfo){
+				// 				mui.alert('请先登录','提示','确认',function(e){});
+				// 				return;
+				// 			}
+				// 			let roleid = (this.dataset.roleid).split(',');
 							
-							if(roleid.indexOf( vm.accountInfo.roleid ) != -1 ){
-								mui.alert('登录角色的权限受限','提示','确认',function(e){});
-								return;
-							}
-							
-						} 
-						 campView = this.dataset.href;
+				// 			if(roleid.indexOf( vm.accountInfo.roleid.toString() ) == -1 ){
+				// 				mui.alert('登录角色受限','提示','确认',function(e){});
+				// 				return;
+				// 			}
+				// 		} 
+				// 		 campView = this.dataset.href;
+				// 		 if(this.dataset.sign == 1){
+				// 			 campView = campView + '-' + vm.accountInfo.roleid.toString() + '.html'
+				// 		 }
 						
-						// 判断网络情况
-						var type = plus.networkinfo.getCurrentType();
-						if( [0,1].indexOf(type) != -1 ){
-							mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
-							   e.index
-							});
-							return;
-						}
+				// 		// 判断网络情况
+				// 		var type = plus.networkinfo.getCurrentType();
+				// 		if( [0,1].indexOf(type) != -1 ){
+				// 			mui.alert('网络异常，请确认网络情况','提示','确认',function (e) {
+				// 			   e.index
+				// 			});
+				// 			return;
+				// 		}
 						 
-						 mui.openWindow({
-							 url:campView,
-							 id:campView,
-							 show:{
-								 autoShow:true,
-							 }
-						 });
+				// 		 mui.openWindow({
+				// 			 url:campView,
+				// 			 id:campView,
+				// 			 show:{
+				// 				 autoShow:true,
+				// 			 }
+				// 		 });
 						
-					});
+				// 	});
+				
 					// 使用查询
 					mui('.catelog-box').on('tap','.catelog-url',function(){
 						var href = this.dataset.href;
@@ -871,22 +909,31 @@
 						ws.show('pop-in');
 					})
 					
+					// 切换tabs
+					mui('.news-tabs').on('tap','.mui-control-item',function(){
+						let id = this.dataset.id;
+						vm.currentTab = id;
+					})
+					
 					// 获取最新3条新闻
 					getNews()
 					
-					// 查看新闻更多
+					// 查看更多
 					document.getElementById('news-more').addEventListener('tap',function(){
 						mui.openWindow({
 							url : 'html/news/news-more.html',
 							id : 'html/news/news-more.html',
 							show : {
 								autoShow:true
-							} 
+							},
+							extras:{
+								sid : vm.currentTab
+							}
 						})
 					})
 					
 					//新闻详情页
-					 mui('#app').on('tap','.news-box',function(){
+					 mui('#app').on('tap','.news-1',function(){
 						 let index = this.dataset.index;
 						 let news = vm.newsData[index];
 						 mui.openWindow({
@@ -900,6 +947,25 @@
 								conver : news.cover,
 								time : news.create_time,
 								content : news.content
+							 }
+						 })
+					 })
+					 
+					 mui('#app').on('tap','.news-2',function(){
+						 let index = this.dataset.index;
+						 let news = vm.policyData[index];
+						 mui.openWindow({
+							 url : 'html/news/news-detail.html',
+							 id : 'html/news/news-detail.html',
+							 show:{
+								 autoShow : true
+							 },
+							 extras : {
+								title : news.title,
+								conver : news.cover,
+								time : news.create_time,
+								content : news.content,
+								file : news.file_url
 							 }
 						 })
 					 })

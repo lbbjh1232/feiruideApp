@@ -28,11 +28,12 @@
 					<div class="catelog-log iconfont1 icon-guawang"></div>
 					<div class="catelog-name">挂网药品</div>
 				</div>
-				
-				<div class="catelog-item" data-href="http://drugs.dxy.cn" data-title="药品说明书" id="drug-description">
-					<div class="catelog-log iconfont1 icon-shuomingshu"></div>
-					<div class="catelog-name">药品说明书</div>
+				<div class="catelog-item" id="four-and-seven">
+					<div class="iconfont1 icon-new"></div>
+					<div class="catelog-log iconfont1 icon-sijiaqi"></div>
+					<div class="catelog-name">4+7品种</div>
 				</div>
+				
 				
 				<div class="catelog-item" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录" id="essential-drug">
 					<div class="catelog-log iconfont1 icon-jiyao"></div>
@@ -54,9 +55,9 @@
 					<div class="catelog-name">用药指南</div>
 				</div>
 				
-				<div v-show="more" class="catelog-item" id="four-and-seven">
-					<div class="catelog-log iconfont1 icon-sijiaqi"></div>
-					<div class="catelog-name">4+7品种</div>
+				<div  v-show="more"  class="catelog-item" data-href="http://drugs.dxy.cn" data-title="药品说明书" id="drug-description">
+					<div class="catelog-log iconfont1 icon-shuomingshu"></div>
+					<div class="catelog-name">药品说明书</div>
 				</div>
 				
 				<div v-show="more" class="catelog-item" id="focus-buy">
@@ -198,7 +199,7 @@
 						</a>
 					</li>
 					
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+					<!-- <li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
 						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/purchase/index.html">
 							<span class="mui-icon iconfont1 icon-jihuadan"></span>
 							<div class="mui-media-body">采购计划单</div>
@@ -210,7 +211,7 @@
 							<span class="mui-icon iconfont1 icon-huoyuan"></span>
 							<div class="mui-media-body">货源查询</div>
 						</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 			
@@ -282,9 +283,9 @@
 					<a class="mui-control-item" :class="currentTab==1?'active':''" data-id="1">
 						新闻资讯
 					</a>
-					<a class="mui-control-item" :class="currentTab==2?'active':''" data-id="2">
+					<!-- <a class="mui-control-item" :class="currentTab==2?'active':''" data-id="2">
 						4+7政策
-					</a>
+					</a> -->
 					
 				</div>
 				
@@ -306,7 +307,7 @@
 			</template>
 			</div>
 			
-			<div v-show="currentTab == 2">
+			<!-- <div v-show="currentTab == 2">
 				<template v-for="(item,index) in policyData">
 				<div class="news-box news-2" :data-index="index">
 					<div class="news-left">
@@ -318,7 +319,7 @@
 					</div>
 				</div>
 			</template>
-			</div>
+			</div> -->
 			 
 			
 		</div>
@@ -382,12 +383,12 @@
 							vm.newsData = data.data.data;
 						}
 					});
-					let policy = mui.http_post(API.GET_NEWS,{num : 3,sign:2});
-					policy.then(data=>{
-						if(data.code == 200){
-							vm.policyData = data.data.data;
-						}
-					});
+					// let policy = mui.http_post(API.GET_NEWS,{num : 3,sign:2});
+					// policy.then(data=>{
+					// 	if(data.code == 200){
+					// 		vm.policyData = data.data.data;
+					// 	}
+					// });
 					
 				}
 				
@@ -673,6 +674,7 @@
 					window.addEventListener('loginLoad',function(){
 						mui.updateMessCount(true,false);
 						loadView();
+						mui.setMyId();
 					});
 					
 					//监听角色切换
@@ -951,24 +953,24 @@
 						 })
 					 })
 					 
-					 mui('#app').on('tap','.news-2',function(){
-						 let index = this.dataset.index;
-						 let news = vm.policyData[index];
-						 mui.openWindow({
-							 url : 'html/news/news-detail.html',
-							 id : 'html/news/news-detail.html',
-							 show:{
-								 autoShow : true
-							 },
-							 extras : {
-								title : news.title,
-								conver : news.cover,
-								time : news.create_time,
-								content : news.content,
-								file : news.file_url
-							 }
-						 })
-					 })
+					 // mui('#app').on('tap','.news-2',function(){
+						//  let index = this.dataset.index;
+						//  let news = vm.policyData[index];
+						//  mui.openWindow({
+						// 	 url : 'html/news/news-detail.html',
+						// 	 id : 'html/news/news-detail.html',
+						// 	 show:{
+						// 		 autoShow : true
+						// 	 },
+						// 	 extras : {
+						// 		title : news.title,
+						// 		conver : news.cover,
+						// 		time : news.create_time,
+						// 		content : news.content,
+						// 		file : news.file_url
+						// 	 }
+						//  })
+					 // })
 					
 				},false);
 			})();

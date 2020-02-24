@@ -54,7 +54,25 @@
 		</script>
 
 		<script>
-			mui.init();
+			
+			mui.init({
+					swipeBack: false,
+					pullRefresh : {
+						container:"#app",
+						down : {
+							style:'circle',
+							color:'#3383FC', 
+							height:'50px',
+							range:'100px', 
+							offset:'0px', 
+							auto: false,
+							callback :function(){
+								mui.updateMessCount(true,true);
+								mui('#app').pullRefresh().endPulldown();
+							}
+					    },
+					}
+				});
 			// vm初始化
 			var vm = new Vue({
 				el:'#app',

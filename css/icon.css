@@ -9,10 +9,20 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-new::before{
+	display: inline-block;
+	content: "\e720";
+	color: red;
+	font-size: 2rem;
+	width: 2rem;
+	height: 2rem;
+	text-align: left;
+	line-height: 1;
+}
 .icon-huoyuan::before{
 	content: "\e606";
 	color: #1E90FF;
+	
 }
 .icon-jihuadan::before{
 	content: "\e60b";

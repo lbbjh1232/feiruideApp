@@ -89,7 +89,7 @@
 		return uuid;
 	};
 	
-	$.http = function(url,params,method){
+	$.http = function(url,params,method,show){
 		var accountInfo = plus.storage.getItem('accountInfo') != null ? JSON.parse( plus.storage.getItem('accountInfo') ) : {token : ''},userid = '',clientid = '';
 		
 		//绑定用户clientid
@@ -134,7 +134,10 @@
 				},
 				error:(xhr,type,errorThrown)=>{
 					plus.nativeUI.closeWaiting();
-					mui.alert('请求异常，稍后再试','提示','确定',function (e) {});
+					if(show == undefined){
+						mui.toast('网络异常，稍后再试');
+					}
+					
 					
 				}
 			}); 
@@ -185,8 +188,8 @@
 		
 	};
 	
-	$.http_post = function(url,params){
-		return $.http(url,params,'POST');
+	$.http_post = function(url,params,show){
+		return $.http(url,params,'POST',show);
 	};
 	
 	$.http_get = function(url,params){
@@ -246,7 +249,9 @@
 				})
 				
 				// return;
-				
+			}else{
+				$.setMyId();
+				$.getClientId();
 			}
 			
 		})
@@ -399,17 +404,14 @@
 	// 获取用户通讯id
 	$.setMyId= function(){
 		//查询游客还是系统用户
-		var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+		var accountInfo = plus.storage.getItem('accountInfo');
 		if( accountInfo != null ){
+			accountInfo = JSON.parse(accountInfo);
 			//已登录
 			myid = accountInfo.id; //以系统用户id为唯一标识
 			plus.storage.setItem('myid',myid.toString())
 			
 		}else{
-			// 如果存在着无需在请求
-			if(plus.storage.getItem("myid") != null){
-				return;
-			}
 			
 			//首次打开未登录及游客时,将设备标识存入用户表
 			var uuid = $.getUuid();
@@ -425,9 +427,6 @@
 					//随机分配字符,存入之后,无法现在游客记录上,客服可以显示
 					myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
 				}
-				plus.storage.setItem("myid",myid.toString());
-			},err=>{
-				myid =  Math.random().toString(36).slice(-8)+new Date().getTime();
 				plus.storage.setItem("myid",myid.toString());
 			})
 		}
@@ -445,7 +444,7 @@
 	}
 	
 	//获取客服通讯id
-	$.getAdminId = function(){ 
+	$.getAdminId = function(){
 		return $.http_post(API.CHECK_ADMIN_ID,{});
 	}
 	
@@ -595,7 +594,7 @@
 			token = pinf.token;
 			//存储到服务器
 			if(cid != 'null' && token != 'null'  ){
-				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor});
+				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor},false);
 				res.then(res=>{
 					plus.storage.setItem('clientid',res.data.info.toString());
 				})
@@ -667,7 +666,7 @@
 				plus.runtime.install(t.filename);
 				
 			}else{
-				mui.alert('下载失败','提示','确认',function (e) {},'div');
+				mui.alert('下载失败','提示','确认',function (e) {});
 			}
 		});
 		

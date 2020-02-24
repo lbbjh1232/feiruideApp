@@ -37,7 +37,7 @@ mui.plusReady(function () {
 		}
 	})
 	//初始化微信服务
-	mui.updateSerivces();
+	//mui.updateSerivces();
 	
 	var currentView = plus.webview.currentWebview();
 	// 页面show监听

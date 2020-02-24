@@ -408,6 +408,7 @@
 		
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/vue.js"></script>
+		<script src="../../js/lib/permission.js"></script>
 
 		<script src="../../js/mui.imageViewer.js"></script>
 		<script src="../../js/arttmpl.js"></script>
@@ -467,6 +468,7 @@
 					
 					// 绑定用户数据,未登录的用户,以设备唯一标识来绑定通讯id
 					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')),myid=mui.getMyId(),myAvatar,toInfo,toid,record = [],ws;
+					console.log(myid);
 					if( accountInfo != null ){
 						//已登录
 						//myid = accountInfo.id; //以系统用户id为唯一标识
@@ -974,8 +976,19 @@
 					var startTimestamp = null;
 					var stopTimestamp = null;
 					var stopTimer = null;
+					
 					// 录音操作
 					ui.boxMsgSound.addEventListener('hold', function(event) {
+						// 判断麦克风权限是否打开
+						if(!permission.judgeIosPermission('record')){
+							mui.confirm('麦克风未授权,是否去设置?','提示',['否','是'],function(e){
+								if(e.index == 1){
+									permission.gotoAppPermissionSetting()
+								}
+							})
+							return;
+						}
+						
 						recordCancel = false;
 						if(stopTimer)clearTimeout(stopTimer);
 						audio_tips.innerHTML = "手指上划，取消发送";
@@ -1024,6 +1037,9 @@
 					}, false);
 					
 					ui.boxMsgSound.addEventListener('release', function(event) {
+						if(recorder == null){
+							return;
+						}
 						//console.log('release');
 						if (audio_tips.classList.contains("cancel")) {
 							audio_tips.classList.remove("cancel");

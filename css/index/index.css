@@ -111,6 +111,9 @@ body {
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
+.catelog-box .catelog-item{
+	position: relative;
+}
 .catelog-box .catelog-item,.catelog-box .catelog-more{
 	margin-top: 10px;
 	width: 22%;
@@ -188,6 +191,13 @@ body {
 	color: #0062CC;
 	/* border: 1px solid #0062CC; */
 	border-radius: 5px;
+}
+.icon-new{
+	width: 2rem;
+	height: 2rem;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 

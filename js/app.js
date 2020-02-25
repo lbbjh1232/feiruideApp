@@ -593,7 +593,7 @@
 			cid = pinf.clientid;
 			token = pinf.token;
 			//存储到服务器
-			if(cid != 'null' && token != 'null'  ){
+			if(cid != 'null' && token != 'null' && !cid && !token ){
 				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor},false);
 				res.then(res=>{
 					plus.storage.setItem('clientid',res.data.info.toString());
@@ -680,28 +680,31 @@
 			var percent = downloadSize / totleSize;
 			var number = (Math.round(percent * 100) / 100) * 100;
 			mui('#update').progressbar().setProgress(number);
-			
 		},1000)
 		
 	}
 	
 	// app版本比较
 	function compareVersion(currentVer,newVer){
-		var current = currentVer.toString().split('.');
-		var newver = newVer.toString().split('.');
+		// var current = currentVer.toString().split('.');
+		// var newver = newVer.toString().split('.');
 		// 版本比较
-		if( parseInt(current[0]) < parseInt(newver[0]) ){
+		// if( parseInt(current[0]) < parseInt(newver[0]) ){
+		// 	return true;
+		// }
+		
+		// if( parseInt(current[1]) < parseInt(newver[1]) ){
+		// 	return true;
+		// }
+		
+		// if( parseInt(current[2]) < parseInt(newver[2]) ){
+		// 	return true;
+		// }
+		var current = currentVer.toString().replace(/\./g,'');
+		var newver = newVer.toString().replace(/\./g,'');
+		if(parseInt(current) < parseInt(newver)){
 			return true;
 		}
-		
-		if( parseInt(current[1]) < parseInt(newver[1]) ){
-			return true;
-		}
-		
-		if( parseInt(current[2]) < parseInt(newver[2]) ){
-			return true;
-		}
-		
 		return false;
 	}
 	

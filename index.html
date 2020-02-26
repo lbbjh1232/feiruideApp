@@ -369,14 +369,15 @@
 					var accountInfo = plus.storage.getItem('accountInfo');
 					if(accountInfo != null){
 						vm.accountInfo = JSON.parse( accountInfo );
+						vm.viewRoleId = (JSON.parse( accountInfo )).roleid.toString();
 					}else{
 						vm.accountInfo = '';
+						vm.viewRoleId =  plus.storage.getItem('role') || '6';
 					}
-					vm.viewRoleId = plus.storage.getItem('role') || '6';
 				}
 				
 				// 获取新闻
-				function getNews(){ 
+				function getNews(){
 					let news = mui.http_post(API.GET_NEWS,{num : 3,sign:1});
 					news.then(data=>{
 						if(data.code == 200){

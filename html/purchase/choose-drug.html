@@ -19,7 +19,7 @@
 	<body> 
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">选择药品</h1>
+			<h1 class="mui-title">选择本院药品</h1>
 		</header>
 		
 		<div id="app">
@@ -74,7 +74,7 @@
 			</div>
 			
 			<!-- 药品详情 -->
-			<template  v-if="detailShow">
+			<template  v-if="detailShow"> 
 			<div class='mask'>
 			<div class='drug-detail-box'>
 				<div class='detail-box-top'>
@@ -205,7 +205,7 @@
 					var back = function(params){
 						params = params || {};
 						var old_back = mui.back;
-						var target = plus.webview.getWebviewById(vm.target)
+						var target = plus.webview.getWebviewById(vm.target);
 						mui.fire(target,'getDrug',params)
 						old_back();
 						return false;
@@ -269,7 +269,6 @@
 					mui('#scroll-one').on('tap','.check-detail',function(event){
 						vm.detailShow = true;
 						vm.$nextTick(function(){
-							// vm.$nextTick(function(){
 								mui('#scroll-two').scroll({deceleration: 0.001});
 								
 								// 监听关闭
@@ -277,7 +276,6 @@
 									vm.detailShow = false;
 									vm.current = {}
 								})
-							// })
 							
 						})
 						var index = this.dataset.index;

@@ -404,7 +404,7 @@
 					// 选择票制客户医院
 					var picker = new mui.PopPicker();
 					document.getElementById('chooseHos').addEventListener('tap',function(){
-						var current = vm.hospital;
+						var current = JSON.parse(JSON.stringify(vm.hospital);
 						current.shift()
 						picker.setData(current);
 						

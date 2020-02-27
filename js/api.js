@@ -11,7 +11,7 @@ var API = {
 	TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
 	// TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
 	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
-	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
+	// IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
 	SMS_CODE : '/user/smsCode',
 	CHECK_VERSION : '/user/checkVersion',
 	SAVE_CLIENT_ID : '/user/saveClientId',
@@ -83,6 +83,11 @@ var API = {
 	
 	//首营资料
 	GET_ENTERPRISE_FIRST : '/drug/getEnterPriseFirst',
+	
+	
+	// 采购计划单
+	UPLOAD_PURCHASE : '/drug/uploadPurchase',
+	DELETE_PURCHASE : '/drug/deletePurchase',
 	
 	
 	// 账号注册 身份认证

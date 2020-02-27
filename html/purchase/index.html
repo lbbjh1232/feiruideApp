@@ -49,7 +49,7 @@
 			.add-text{
 				text-align: center;
 				font-size: 1.2rem;
-				color: red;
+				color: #FF7F00;
 			}
 			.plan-date{
 				background-color: #efeff4;
@@ -75,6 +75,9 @@
 				text-align: center;
 				color: #007AFF;
 			}
+			.icon-tianjia1::before{
+				color:#FF7F00 ;
+			}
 			
 		</style>
 	</head>
@@ -96,8 +99,8 @@
 						<div class="drug-list-box" >
 							<div class='drug-list-left-part' style="width: 80%;" >
 								<div class="plan-date"> 订单 2020-2-26 14:15:20</div>
-								<div class="delivery">指定配送公司 : <span class="deli-company">某某药品公司大师傅</span></div>
-								<div class="delivery">订单状态跟踪 : <span class="deli-company">订单未发送</span></div>
+								<div class="delivery">配送公司 : <span class="deli-company">某某药品公司大师傅</span></div>
+								<div class="delivery">订单状态 : <span class="deli-company">订单未发送</span></div>
 							</div>
 							<div class='drug-list-right-part' style="width: 20%;">
 								<div class="plan-check">详情 &gt;&gt;</div>
@@ -213,8 +216,6 @@
 				})
 				
 				scroll.addEventListener('scroll',function(){
-					console.log(scorll_one.maxScrollY)
-					console.log(scorll_one.y)
 					y=scorll_one.y;
 					if( y < -100 ){
 						vm.scrollY = true;
@@ -241,19 +242,16 @@
 				// 发布计划
 				var releaseEle = document.getElementById('plan-add-btn');
 				releaseEle.addEventListener('tap',function(e){
-					console.log(e.detail.gesture.changedTouches[0].pageX )
-					console.log(this.offsetTop)
-					// console.log(this.offsetWidth)
-					// console.log(this.offsetHeight)
-					// console.log(window.innerHeight)
-					// console.log(this.offsetWidth)
-					//console.log(parseInt(window.innerHeight) - parseInt(this.offsetHeight) - parseInt(this.offsetTop)) 
+					mui.openWindow({
+						url : 'purchase-add.html',
+						id : 'purchase-add',
+					})
+					
 				});
 				
+				// 拖动发布按钮
 				var startX ,startY,starttapX,starttapY,dragX,dragY;
-				var legalX = 
 				releaseEle.addEventListener('dragstart',function(e){
-					
 					let startEvent = e.detail.gesture.changedTouches[0];
 					starttapX = Math.round(startEvent.pageX);
 					starttapY = Math.round(startEvent.pageY);
@@ -264,7 +262,6 @@
 				})
 				
 				releaseEle.addEventListener('drag',function(e){
-					
 					let moveEvent = e.detail.gesture.changedTouches[0];
 					dragX = Math.round(moveEvent.pageX);
 					dragY = Math.round(moveEvent.pageY);
@@ -281,13 +278,6 @@
 						releaseEle.style.left = left.toString() + 'px';
 						releaseEle.style.bottom = bottom.toString() + 'px';
 					}
-					
-					
-					
-					
-				})
-				releaseEle.addEventListener('dragend',function(e){
-					
 				})
 				
 			})

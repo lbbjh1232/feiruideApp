@@ -34,14 +34,14 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">发布采购计划单</h1>
+			<h1 class="mui-title">修改采购计划单</h1>
 		</header>
 		
 		<div class="mui-content into-box" id="app">
 			
 			<div class="form-title">选择配送公司</div>
 			<div class="form-box">
-				<div class="mui-input-row choose">
+				<div class="mui-input-row choose  input-disabled">
 					<label>配送公司</label>
 					<input type="text" class="mui-input-clear"  id="chooseDelivery" v-model="companyText" readonly placeholder="选择配送公司">
 				</div>
@@ -213,6 +213,8 @@
 					var back = function(){
 						let old_back = mui.back;
 						mui.fire(plus.webview.getWebviewById('html/purchase/index.html'),'refresh');
+						// 关闭详情页
+						plus.webview.getWebviewById('plan-detail').close();
 						old_back()
 					}
 					
@@ -227,8 +229,7 @@
 							companyText:'',
 							companyValue : '',
 							currentIndex : '',
-							mark: ''
-							
+							mark: '',
 						},
 						components:{
 							upload : upload
@@ -335,24 +336,38 @@
 					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
 					vm.formData1.cid = accountInfo.userid;
 					vm.accountInfo = accountInfo;
+					var planid = mui.currentWebview.planid;
+					vm.companyValue = mui.currentWebview.companyid;
+					vm.companyText = mui.currentWebview.companyname;
 					
-					let res = mui.http_post(API.GET_HOS_COMAPNY,{sign:1,hospitalID : accountInfo.userid});
-					res.then(args=>{
-						vm.company = args.data;
+					// 获取配送公司目录
+					// let res = mui.http_post(API.GET_HOS_COMAPNY,{sign:1,hospitalID : accountInfo.userid});
+					// res.then(args=>{
+					// 	vm.company = args.data;
+					// });
+					
+					// 获取计划单详情
+					let plan = mui.http_post(API.GET_SINGLE_PLAN,{planid:planid});
+					plan.then(plan=>{
+						if(plan.code==200){
+							vm.mark = plan.data.info.remark;
+							vm.billImage = plan.data.info.url;
+							vm.drug = plan.data.drug.length == 0 ? [{}]: plan.data.drug
+						}
 					})
 					
 					// 选择配送公司
-					var picker = new mui.PopPicker();
-					document.getElementById('chooseDelivery').addEventListener('tap',function(){
-						var current = JSON.parse(JSON.stringify(vm.company) ) ;
-						current.shift()
-						picker.setData(current);
+					// var picker = new mui.PopPicker();
+					// document.getElementById('chooseDelivery').addEventListener('tap',function(){
+					// 	var current = JSON.parse(JSON.stringify(vm.company) ) ;
+					// 	current.shift()
+					// 	picker.setData(current);
 						
-						picker.show(function(item){
-							vm.companyValue = item[0].value;
-							vm.companyText = item[0].text;
-						})
-					})
+					// 	picker.show(function(item){
+					// 		vm.companyValue = item[0].value;
+					// 		vm.companyText = item[0].text;
+					// 	})
+					// })
 					
 					// 选择药品
 					mui('.drug-box').on('tap','.choose-drug',function(){
@@ -364,7 +379,7 @@
 								autoShow : true
 							},
 							extras : {
-								sign : 'purchase-add'
+								sign : 'purchase-edit'
 							}
 						})
 						
@@ -406,7 +421,7 @@
 								}
 								
 								//判断数字是否合法
-								if (item.amount.indexOf('.') != -1 || item.amount.indexOf(0) === 0 || isNaN(item.amount)) {
+								if (item.amount.toString().indexOf('.') != -1 || item.amount.toString().indexOf(0) === 0 || isNaN(item.amount)) {
 									mui.toast('"' + item.generic_name + '" 采购数量不合法');
 									return;
 								}
@@ -426,34 +441,25 @@
 							methodTwo = 1;
 						}
 						// 提交数据
-						mui.confirm('现在推送到配送公司吗?','提示',['稍后','现在'],function (e) {
-							let state = 6;
-							if(e.index == 0){
-								state = 0;
+						let params = {
+							companyId : vm.companyValue ,
+							drug : drugs,
+							billImage : vm.billImage.length > 0 ? vm.billImage : '',
+							mark : vm.mark,
+							methodOne,
+							planid,
+						}
+						plus.nativeUI.showWaiting('提交中',{width:'20%'})
+						let res = mui.http_post(API.EDIT_PURCHASE_PLAN,params);
+						res.then(res=>{
+							if(res.code == 200){
+								mui.toast('操作成功');
+								back();
+							}else{
+								mui.alert(res.message)
 							}
-							let params = {
-								companyId : vm.companyValue ,
-								drug : drugs,
-								billImage : vm.billImage.length > 0 ? vm.billImage : '',
-								mark : vm.mark,
-								hospitalId : accountInfo.userid,
-								methodOne,
-								methodTwo,
-								state
-							}
-							plus.nativeUI.showWaiting('提交中',{width:'20%'})
-							let res = mui.http_post(API.SUBMIT_PURCHASE_PLAN,params);
-							
-							res.then(res=>{
-								if(res.code == 200){
-									mui.toast('操作成功');
-									back();
-								}else{
-									mui.alert(res.message)
-								}
-							})
-							
 						})
+							
 						
 						
 						

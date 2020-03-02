@@ -64,7 +64,7 @@
 			}
 			.delivery{
 				font-size:1.5rem;
-				color: #007AFF;
+				/* color: #007AFF; */
 				padding-top: 3px;
 			}
 			.deli-company{
@@ -92,18 +92,16 @@
 		<!-- 顶部操作栏 -->	
 			<!-- 滚动组件区域 -->
 			<div class="mui-scroll-wrapper" id="scroll-one">
-		
 				<div class="mui-scroll" v-cloak>
-					
 					<template v-for="(item,index) in searchResult">
 						<div class="drug-list-box" >
 							<div class='drug-list-left-part' style="width: 80%;" >
-								<div class="plan-date"> 订单 2020-2-26 14:15:20</div>
-								<div class="delivery">配送公司 : <span class="deli-company">某某药品公司大师傅</span></div>
-								<div class="delivery">订单状态 : <span class="deli-company">订单未发送</span></div>
+								<div class="plan-date"> 订单 {{item.create_time}}</div>
+								<div class="delivery">配送公司 : <span class="deli-company">{{item.company_name}}</span></div>
+								<div class="delivery">订单状态 : <span class="deli-company" :style=" 'color:'+ state[item.state].color +';' ">{{state[item.state].text}}</span></div>
 							</div>
 							<div class='drug-list-right-part' style="width: 20%;">
-								<div class="plan-check">详情 &gt;&gt;</div>
+								<div class="plan-check" :data-index="index">详情 &gt;&gt;</div>
 							</div>
 						</div>
 					</template>
@@ -113,7 +111,7 @@
 						<button v-if="loadMore" type="button" class="mui-btn mui-btn-blue">加载更多...</button>
 						<span v-else class="none-text">到底了，没有数据了...</span>
 					</div>
-
+					
 				</div>
 			</div>
 		
@@ -149,8 +147,36 @@
 				searchResult:[],	//搜索数据集
 				scrollY:false,
 				releaseBtn : true,
+				state: [ {
+						text : '订单待揽收',
+						color:'gray'
+					},
+					{
+						text : '订单被驳回',
+						color:'red'
+					},
+					{
+						text : '订单已揽收',
+						color:'#008B45'
+					},
+					{
+						text : '订单配送中',
+						color:'#008B45'
+					},
+					{
+						text : '订单已完成',
+						color:'gray'
+					},
+					{
+						text : '订单已失效',
+						color:'gray'
+					},
+					{
+						text : '订单待发出',
+						color:'#FF7F00'
+					}
+				]
 			}
-				
 		}); 
 		
 		mui.init();
@@ -162,8 +188,9 @@
 
 			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 			var searchData = vm.searchData;
+			searchData.hospitalId = accountInfo.userid;
 			
-			var url =API.REPORT_LIST,params = searchData;
+			var url =API.GET_PURCHASE_PLAN,params = searchData;
 			if(!first){
 				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			}
@@ -184,7 +211,6 @@
 					}
 				}
 			})
-			
 		}
 			
 		window.onload = function(){
@@ -206,6 +232,26 @@
 					vm.searchData = params;
 					getNetDrug(false);
 				});
+				
+				// 自定义刷新
+				window.addEventListener('refresh',function(){
+					getNetDrug(false);
+				});
+				
+				// 查看详情
+				mui('.mui-scroll').on('tap','.plan-check',function(){
+					let index = this.dataset.index;
+					mui.openWindow({
+						url : 'plan-detail.html',
+						id : 'plan-detail',
+						show:{
+							autoShow : true
+						},
+						extras : {
+							value: vm.searchResult[index]
+						}
+					})
+				})
 				
 				
 				// 滚动监听

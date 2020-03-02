@@ -88,6 +88,12 @@ var API = {
 	// 采购计划单
 	UPLOAD_PURCHASE : '/drug/uploadPurchase',
 	DELETE_PURCHASE : '/drug/deletePurchase',
+	SUBMIT_PURCHASE_PLAN :'/drug/submitPurchasePlan',
+	GET_PURCHASE_PLAN : '/drug/getPurchasePlan',
+	GET_PLAN_DRUG : '/drug/getPlanDrug',
+	GET_SINGLE_PLAN : '/drug/getSinglePlan',
+	EDIT_PURCHASE_PLAN :'/drug/editPurchasePlan',
+	CHANGE_PLAN_STATE :'/drug/changePlanState',
 	
 	
 	// 账号注册 身份认证

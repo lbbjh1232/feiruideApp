@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>挂网药品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/animate.css','../../css/drug/net-drug.css'],true);
+		</script>
+		<style type="text/css">
+			.mui-scroll-wrapper {
+			    top: 44px;
+			    height: calc(99% - 40px);
+			}
+			#scroll-edit{
+				top: 0.5rem;
+				height: 100%;
+				padding: 0;
+			}
+			#scroll-trade{
+				top: 4rem;
+				height: calc(99% - 3.5rem);
+			}
+			#scroll-trade .mui-scroll{
+				text-align: justify;
+				width: 100%;
+			}
+			.report-btn{
+				margin-top: 1.5rem;
+				width: 20%;
+			}
+			.plan-add-box{
+				position: fixed;
+				bottom: 5px;
+				left: 40%;
+				width: 20%;
+				z-index:20 ;
+			}
+			.icon-tianjia1{
+				text-align: center;
+			}
+			.icon-tianjia1::before{
+				font-size: 4rem;
+			}
+			.add-text{
+				text-align: center;
+				font-size: 1.2rem;
+				color: #FF7F00;
+			}
+			.plan-date{
+				background-color: #efeff4;
+				width: fit-content;
+				width: -webkit-fit-content;
+				width: -moz-fit-content;
+				padding: 2px 6px;
+				border-radius: 5px;
+				font-size: 1.5rem;
+				font-weight: bold;
+				color: red;
+			}
+			.delivery{
+				font-size:1.5rem;
+				/* color: #007AFF; */
+				padding-top: 3px;
+			}
+			.deli-company{
+				color: #000000;
+			}
+			.plan-check{
+				font-size: 1.5rem;
+				text-align: center;
+				color: #007AFF;
+			}
+			.icon-tianjia1::before{
+				color:#FF7F00 ;
+			}
+			
+		</style>
+	</head>
+
+	<body >
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">采购订单</h1>
+		</header>
+		
+		<div id="app">
+		<!-- 顶部操作栏 -->	
+			<!-- 滚动组件区域 -->
+			<div class="mui-scroll-wrapper" id="scroll-one">
+				<div class="mui-scroll" v-cloak>
+					<template v-for="(item,index) in searchResult">
+						<div class="drug-list-box" >
+							<div class='drug-list-left-part' style="width: 80%;" >
+								<div class="plan-date"> 订单 {{item.create_time}}</div>
+								<div class="delivery">采购医院 : <span class="deli-company">{{item.hos_name}}</span></div>
+								<div class="delivery">订单状态 : <span class="deli-company" :style=" 'color:'+ state[item.state].color +';' ">{{state[item.state].text}}</span></div>
+							</div>
+							<div class='drug-list-right-part' style="width: 20%;">
+								<div class="plan-check" :data-index="index">详情 &gt;&gt;</div>
+							</div>
+						</div>
+					</template>
+					
+					<!-- 加载更多按钮 -->
+					<div class="loadMore">
+						<button v-if="loadMore" type="button" class="mui-btn mui-btn-blue">加载更多...</button>
+						<span v-else class="none-text">到底了，没有数据了...</span>
+					</div>
+					
+				</div>
+			</div>
+		
+			<!-- 返回顶部 -->
+			<div id="backtop" v-if="scrollY" class="iconfont1 icon-fanhuidingbu"></div>
+			
+		</div>
+	</body>
+	
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script> 
+	<script src="../../js/app.js"></script>
+	
+	
+	<script type="text/javascript">
+		
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				roleid : 6,
+				loadMore:false,  //是否显示加载更多按钮
+				searchData:{
+					pageIndex:1,
+				},
+				searchResult:[],	//搜索数据集
+				scrollY:false,
+				state: [{
+						text : '订单待接收',
+						color:'#FF7F00'
+					},
+					{
+						text : '订单已驳回',
+						color:'red'
+					},
+					{
+						text : '订单已接收',
+						color:'#008B45'
+					},
+					{
+						text : '订单配送中',
+						color:'#008B45'
+					},
+					{
+						text : '订单已完成',
+						color:'gray'
+					},
+					{
+						text : '订单已失效',
+						color:'gray'
+					},
+					{
+						text : '订单待发出',
+						color:'#FF7F00'
+					}]
+			}
+		}); 
+		
+		mui.init();
+		 
+		// 加载数据函数
+		function getNetDrug(first){
+			// 获取公司id
+			first = first == undefined || first == false ? false : true;
+
+			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			var searchData = vm.searchData;
+			searchData.companyId = accountInfo.userid;
+			
+			var url =API.GET_COM_PURCHASE_PLAN,params = searchData;
+			if(!first){
+				plus.nativeUI.showWaiting('加载中',{width:'20%'});
+			}
+			var res = mui.http_post(url,params);
+			
+			if(first){
+				mui.currentWebview.show();
+			} 
+			vm.value = '';
+			res.then(res=>{
+				plus.nativeUI.closeWaiting();
+				if(res.code == 200){
+					vm.searchResult = res.data;
+					if(res.message == 1){
+						vm.loadMore = false
+					}else{
+						vm.loadMore = true;
+					}
+				}
+			})
+		}
+			
+		window.onload = function(){
+			mui.plusReady(function () {
+				
+				// 初始化滚动组件
+				var scorll_one = mui('#scroll-one').scroll({deceleration: 0.001});
+				
+				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				vm.roleid = accountInfo.roleid;
+
+				// 首次ajax获取数据后关闭等待窗口
+				getNetDrug(true);
+
+				//加载更多
+				mui('.loadMore').on('tap','button',function(){
+					var params = vm.searchData;
+					params.pageIndex = ++params.pageIndex;
+					vm.searchData = params;
+					getNetDrug(false);
+				});
+				
+				// 自定义刷新
+				window.addEventListener('refresh',function(){
+					getNetDrug(false);
+				});
+				
+				// 查看详情
+				mui('.mui-scroll').on('tap','.plan-check',function(){
+					let index = this.dataset.index;
+					mui.openWindow({
+						url : 'com-plan-detail.html',
+						id : 'com-plan-detail',
+						show:{
+							autoShow : true
+						},
+						extras : {
+							value: vm.searchResult[index]
+						}
+					})
+				})
+				
+				
+				// 滚动监听
+				var scroll = document.getElementById('scroll-one'),y;
+				mui.pullDownRefresh(scroll,scorll_one,function(){
+					vm.searchData = {pageIndex:1},
+					getNetDrug();
+				})
+				
+				scroll.addEventListener('scroll',function(){
+					y=scorll_one.y;
+					if( y < -100 ){
+						vm.scrollY = true;
+						vm.$nextTick(function(){						
+							// 返回顶部
+							var tops = document.getElementById('backtop');
+							tops.addEventListener('tap',function(){
+								scorll_one.scrollTo(0,0,1000);
+							})
+							
+						})
+					}else{
+						vm.scrollY = false;
+					}
+					
+					if(scorll_one.maxScrollY - y < -30 || y == 0){
+						vm.releaseBtn = true;
+					}else{
+						vm.releaseBtn = false;
+					}
+					
+				})
+				
+				
+			})
+		}
+		
+		
+	</script>
+	
+	
+	
+	
+	
+	
+</html>

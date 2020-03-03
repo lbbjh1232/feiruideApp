@@ -9,7 +9,7 @@
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
 		<script type="text/javascript">
-			link(['../../css/mui.min.css',,'../../css/common.css','../../css/iconfont.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/drug/ticket-detail.css'],true);
+			link(['../../css/mui.min.css',,'../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/imageview.css','../../css/drug/net-drug.css','../../css/drug/ticket-detail.css','../../css/drug/check-ticket.css'],true);
 		</script>
 		<style type="text/css">
 			.image-item img{
@@ -49,13 +49,13 @@
 	<body >
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">采购计划单详情</h1>
+			<h1 class="mui-title">采购订单详情</h1>
 		</header>
 		
 		<div class="mui-content" id="app">
 			<div class="content-box" v-cloak>
-				<div class="plan-detail-title">*指定配送公司:</div>
-				<div class="plan-detail-content">{{plan.company_name}}</div>
+				<div class="plan-detail-title">*采购医院:</div>
+				<div class="plan-detail-content">{{plan.hos_name}}</div>
 				<div class="plan-detail-title padding-top-8">*药品采购清单:</div>
 				
 				<div class="plan-order" v-for="(item,index) in drug">
@@ -77,15 +77,43 @@
 				<div class="plan-detail-content" v-show="plan.reject_remark && plan.state==1?true:false">{{plan.reject_remark}}</div>
 				
 				<div class="opertion-btn-box">
-					<button type="button" v-show="'0,1,6'.indexOf(plan.state) != -1" class="mui-btn mui-btn-blue edit">修改</button>
-					<button type="button" v-show="'1,6'.indexOf(plan.state) != -1" class="mui-btn mui-btn-green sendOut">发送</button>
-					<button type="button" v-show="'0,1,6'.indexOf(plan.state) != -1" class="mui-btn mui-btn-gray withdraw">撤销</button>
-					<button type="button" v-show="'3'.indexOf(plan.state) != -1" class="mui-btn mui-btn-success complete">确认收货</button>
-					<button type="button" v-show="'5'.indexOf(plan.state) != -1" class="mui-btn mui-btn-success reaction">重新激活</button>
-					<button type="button" v-show="'0,1,4,5,6'.indexOf(plan.state) != -1" class="mui-btn mui-btn-danger delete">删除</button>
+					<button type="button" v-show="'0'.indexOf(plan.state) != -1" class="mui-btn mui-btn-blue accept">接收订单</button>
+					<button type="button" v-show="'0'.indexOf(plan.state) != -1" class="mui-btn mui-btn-danger reject">驳回订单</button>
+					<button type="button" v-show="'2'.indexOf(plan.state) != -1" class="mui-btn mui-btn-green delivery">开始配送</button>
+					
 				</div>
 				
 			</div>
+			
+			<!-- 驳回理由填写 -->
+			<template v-if="rejectShow">
+				<div class='mask'>
+				<div class='drug-detail-box'>
+					<div class='detail-box-top'>
+						<div class='text-detail'>填写驳回原因</div>
+						<div class='iconfont icon-guanbi close' id="close-btn3"></div>
+					</div>
+					<div class="mui-scroll-wrapper" id="scroll-four">
+						<div class="mui-scroll">
+						
+							<div class="item-input-wrap">
+							  <textarea v-model="reason"  rows="10" placeholder="填写驳回原因"></textarea>
+							</div>
+							
+							<div class="reason-btn">
+								<button type="button" class="mui-btn mui-btn-success">提 交</button>
+								<button type="button" class="mui-btn mui-btn-danger">取 消</button>
+							</div>
+							
+							
+							
+							
+						</div>
+					</div>
+				</div>
+				</div>
+			</template>
+			
 		</div>
 		
 		
@@ -105,34 +133,36 @@
 				imageNotice:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAALVBMVEXMzMyWlpa/v7+kpKSysrLGxsaqqqqZmZnJycmdnZ25ubnDw8O8vLy1tbWvr6/R6wGhAAACUklEQVRo3u3Vz2vTYBzH8Q9tM2sLo98krKSgtI9M/Al9LBubwlghDJUdKvMkHjYVFLxYRA96qYh4Ne4faG9ehLiL13YevG44hseV/SPmyQ9KbVxSvAh+X6fStO/k++RJC8YYY4wxxhhjjDHG2D9LuPg7hZcteIrHHfjkMyBy8Amh7FPg1ApSaGXLLbg7hw4dhcE6EJE6QnfKwBcLKZBSkkSNvZhgCaH9ClA7kz64dd2F510Y1CaCTv2zGFaEuIwkGt1fB5qrUGoU+j1YoL4kxUCSGTN3Fhea241G44Tgaao+bLS9Dz1HkoGxTKQ3g8o9IYS8JsTVKKh7b+wC6FEVaHeRwoDIatzYerCvX4m5KeQxgbzjBTVykUJO5ExAdmsl/Dk4W6Zzi2tk2/ZaHQmE+GHJJWqpYGE9HFncHq3hzjzQMyla3hISqIsoH1hQwSxFjFFQaX+g8/Ytw/ZsIsHjlUMTNfPk4KBKVbzRkU7WROYJ7t4E8gCGRJveq/GgBi/YU7e8j0Szj2zl2IWSIcfRJx89FXRSLeFoziqU93NysdyJCxa9rb+cKjgnlCCYly/kQnshLuifznKnDG5QX9Z75X5cML+Xl0uYbuRMuwJZL5DRjwnOGN+sDqa6wnyTul4Q38lazeyqTa4Lz6UguEH0GtMFL9IrqKAmqZujsU0ZHP6I6UZ+a7h+EIVtjAc1f4AhHaUJGrbif+Nn9CelQRNCdABk/F/pjDqMQnsu3YOi2C0EnBImBUF8TbOIxXkk04LzFV0wxhhjjDHGGGOMMcYYY/+1XyrVd5/ZWTw4AAAAAElFTkSuQmCC',
 				plan : {state:0},	//默认给一个初始状态
 				drug:[],
-				state:[{
-						text : '订单待揽收',
-						color:'gray'
-					},
-					{
-						text : '订单被驳回',
-						color:'red'
-					},
-					{
-						text : '订单已揽收',
-						color:'#008B45'
-					},
-					{
-						text : '订单配送中',
-						color:'#008B45'
-					},
-					{
-						text : '订单已完成',
-						color:'gray'
-					},
-					{
-						text : '订单已失效',
-						color:'gray'
-					},
-					{
-						text : '订单待发出',
-						color:'#FF7F00'
-					}]
+				state:[	{
+							text : '订单待接收',
+							color:'#FF7F00'
+						},
+						{
+							text : '订单已驳回',
+							color:'red'
+						},
+						{
+							text : '订单已接收',
+							color:'#008B45'
+						},
+						{
+							text : '订单配送中',
+							color:'#008B45'
+						},
+						{
+							text : '订单已完成',
+							color:'gray'
+						},
+						{
+							text : '订单已失效',
+							color:'gray'
+						},
+						{
+							text : '订单待发出',
+							color:'#FF7F00'
+					}],
+				rejectShow : false,
+				reason : '',
 				
 			}
 				
@@ -142,8 +172,6 @@
 
 		window.onload = function(){
 			mui.plusReady(function () {
-
-				
 				var self = plus.webview.currentWebview();
 				vm.plan = self.value;
 				
@@ -158,91 +186,67 @@
 				// 预览图片
 				mui.previewImage();
 				
-				// 修改
-				mui('.opertion-btn-box').on('tap','.edit',function(){
-					mui.openWindow({
-						url : 'purchase-edit.html',
-						id : 'purchase-edit',
-						show : {
-							autoShow:true
-						},
-						extras:{
-							companyid : vm.plan.company_id,
-							companyname : vm.plan.company_name,
-							planid:vm.plan.id,
+				
+				//接收订单
+				mui('.opertion-btn-box').on('tap','.accept',function(){
+					mui.confirm('确认接收该订单吗?','提示',['取消','确认'],function (e) {
+						if(e.index==1){
+							let res = mui.http_post(API.CHANGE_PLAN_STATE,{state : 2,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
+							res.then(res=>{
+								if(res.code == 200){
+									mui.fire(plus.webview.getWebviewById('html/purchase/com-index.html'),'refresh');
+									mui.back()
+								}
+							})
+						}
+					})
+				})
+				
+				// 驳回订单
+				mui('.opertion-btn-box').on('tap','.reject',function(){
+					vm.rejectShow = true;
+					vm.$nextTick(function(){
+						var scorll_four = mui('#scroll-four').scroll({deceleration: 0.001});
+						
+						// 监听关闭
+						document.getElementById('close-btn3').addEventListener('tap',function(){
+							vm.rejectShow = false;
+							vm.reason = '';
+						})
+						mui('.reason-btn').on('tap','.mui-btn-danger',function(){
+							vm.rejectShow = false;
+							vm.reason = '';
+						})
+						
+						// 监听驳回原因提交
+						mui('.reason-btn').on('tap','.mui-btn-success',function(){
+							var reason = vm.reason;
+							if(reason == ''){
+								mui.toast('请填写驳回原因!');
+								return;
+							}
+							let res = mui.http_post(API.CHANGE_PLAN_STATE,{state : 1,reason:reason,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
+							res.then(res=>{
+								if(res.code == 200){
+									mui.fire(plus.webview.getWebviewById('html/purchase/com-index.html'),'refresh');
+									mui.back();
+								}
+							})
 							
-						}
-					})
-				})
-
-				
-				//发送计划
-				mui('.opertion-btn-box').on('tap','.sendOut',function(){
-					mui.confirm('确认发送到配送公司?','提示',['取消','确认'],function (e) {
-						if(e.index==1){
-							let res = mui.http_post(API.CHANGE_PLAN_STATE,{state : 0,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
-							res.then(res=>{
-								if(res.code == 200){
-									mui.fire(plus.webview.getWebviewById('html/purchase/index.html'),'refresh');
-									mui.back()
-								}
-							})
-						}
+							
+						})
+						
 					})
 				})
 				
-				// 撤销计划
-				mui('.opertion-btn-box').on('tap','.withdraw',function(){
-					mui.confirm('确认撤销采购计划单?','提示',['取消','确认'],function (e) {
+				//开始配送
+				mui('.opertion-btn-box').on('tap','.delivery',function(){
+					mui.confirm('开始配送该订单吗?','提示',['取消','确认'],function (e) {
 						if(e.index==1){
-							let res = mui.http_post(API.CHANGE_PLAN_STATE,{state : 5,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
+							let res = mui.http_post(API.CHANGE_PLAN_STATE,{state : 3,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
 							res.then(res=>{
 								if(res.code == 200){
-									mui.fire(plus.webview.getWebviewById('html/purchase/index.html'),'refresh');
-									mui.back()
-								}
-							})
-						}
-					})
-				})
-				// 确认收货
-				mui('.opertion-btn-box').on('tap','.complete',function(){
-					mui.confirm('确认收货吗?','提示',['取消','确认'],function (e) {
-						if(e.index==1){
-							let res = mui.http_post(API.CHANGE_PLAN_STATE,{state : 4,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
-							res.then(res=>{
-								if(res.code == 200){
-									mui.fire(plus.webview.getWebviewById('html/purchase/index.html'),'refresh');
-									mui.back()
-								}
-							})
-						}
-					})
-				})
-				
-				// 重新激活
-				mui('.opertion-btn-box').on('tap','.reaction',function(){
-					mui.confirm('激活订单吗?','提示',['取消','确认'],function (e) {
-						if(e.index==1){
-							let res = mui.http_post(API.CHANGE_PLAN_STATE,{state : 6,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
-							res.then(res=>{
-								if(res.code == 200){
-									mui.fire(plus.webview.getWebviewById('html/purchase/index.html'),'refresh');
-									mui.back()
-								}
-							})
-						}
-					})
-				})
-				
-				// 删除订单
-				mui('.opertion-btn-box').on('tap','.delete',function(){
-					mui.confirm('确认删除吗?','提示',['取消','确认'],function (e) {
-						if(e.index==1){
-							let res = mui.http_post(API.CHANGE_PLAN_STATE,{del:1,state:vm.plan.state,planid:vm.plan.id,companyid:vm.plan.company_id,hospitalid:vm.plan.hospital_id});
-							res.then(res=>{
-								if(res.code == 200){
-									mui.fire(plus.webview.getWebviewById('html/purchase/index.html'),'refresh');
+									mui.fire(plus.webview.getWebviewById('html/purchase/com-index.html'),'refresh');
 									mui.back()
 								}
 							})

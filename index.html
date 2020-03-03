@@ -35,13 +35,13 @@
 				</div>
 				
 				
-				<div class="catelog-item" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录" id="essential-drug">
-					<div class="catelog-log iconfont1 icon-jiyao"></div>
-					<div class="catelog-name">基药目录</div>
-				</div>
+				<div  class="catelog-item" id="focus-buy">
+					<div class="catelog-log iconfont1 icon-focus-buy"></div>
+					<div class="catelog-name">集采(扩围)</div>
+				</div>	
 				
-				<div class="catelog-item" id="more">
-					<div class="catelog-log iconfont1" :class="more ? ' icon-shouqi' : ' icon-gengduo' "></div>
+				<div v-show="!more" class="catelog-item more1">
+					<div class="catelog-log iconfont1 icon-gengduo"></div>
 				</div>
 				
 					
@@ -60,11 +60,13 @@
 					<div class="catelog-name">药品说明书</div>
 				</div>
 				
-				<div v-show="more" class="catelog-item" id="focus-buy">
-					<div class="catelog-log iconfont1 icon-focus-buy"></div>
-					<div class="catelog-name">集采(扩围)</div>
-				</div>	
-				
+				<div v-show="more" class="catelog-item" data-href="https://db.yaozh.com/basicdir" data-title="基本药物目录" id="essential-drug">
+					<div class="catelog-log iconfont1 icon-jiyao"></div>
+					<div class="catelog-name">基药目录</div>
+				</div>
+				<div v-show="more" class="catelog-item more1">
+					<div class="catelog-log iconfont1 icon-shouqi" ></div>
+				</div>
 				
 			</div>
 			
@@ -199,15 +201,22 @@
 						</a>
 					</li>
 					
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'7'.indexOf(viewRoleId) != -1">
 						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/purchase/index.html">
 							<span class="mui-icon iconfont1 icon-jihuadan"></span>
 							<div class="mui-media-body">采购计划单</div>
 						</a>
 					</li>
 					
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
-						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/short/index.html">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'6'.indexOf(viewRoleId) != -1">
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/purchase/com-index.html">
+							<span class="mui-icon iconfont1 icon-jihuadan"></span>
+							<div class="mui-media-body">采购订单</div>
+						</a>
+					</li>
+					
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'7'.indexOf(viewRoleId) != -1">
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/stock/index.html">
 							<span class="mui-icon iconfont1 icon-huoyuan"></span>
 							<div class="mui-media-body">货源查询</div>
 						</a>
@@ -493,8 +502,7 @@
 						
 					
 					// 实用查询-更多
-					mui('.catelog-box').on('tap','#more',function(){
-						mui.notice()
+					mui('.catelog-box').on('tap','.more1',function(){
 						let more = vm.more;
 						vm.more = !more;
 					});

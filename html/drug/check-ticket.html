@@ -752,7 +752,6 @@
 						var scorll_four = mui('#scroll-four').scroll({deceleration: 0.001});
 						var list = document.querySelector('.mui-table-view.mui-table-view-radio');
 						list.addEventListener('selected',function(e){
-							//console.log("当前选中的为："+e.detail.el.innerText);
 							vm.fastReason = e.detail.el.innerText;
 						});
 						

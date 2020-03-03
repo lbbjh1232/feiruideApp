@@ -6,12 +6,12 @@ var ENVIRONMENT = PRO;
 
 // 接口地址
 var API = {
-	HOST : "https://test.yxt.feiruide.cn/index.php",
-	// HOST : "https://yxt.feiruide.cn/index.php",
-	TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
-	// TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
-	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
-	// IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
+	// HOST : "https://test.yxt.feiruide.cn/index.php",
+	HOST : "https://yxt.feiruide.cn/index.php",
+	// TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
+	TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
+	// IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
+	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
 	SMS_CODE : '/user/smsCode',
 	CHECK_VERSION : '/user/checkVersion',
 	SAVE_CLIENT_ID : '/user/saveClientId',
@@ -94,7 +94,10 @@ var API = {
 	GET_SINGLE_PLAN : '/drug/getSinglePlan',
 	EDIT_PURCHASE_PLAN :'/drug/editPurchasePlan',
 	CHANGE_PLAN_STATE :'/drug/changePlanState',
+	GET_COM_PURCHASE_PLAN :'/drug/getComPurchasePlan',
 	
+	// 货源查询
+	GET_STOCK_DRUG : '/drug/getStockDrug',
 	
 	// 账号注册 身份认证
 	REGISTER : '/user/register',

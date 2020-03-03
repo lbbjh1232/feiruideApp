@@ -266,7 +266,7 @@
 								}
 								
 								// 检查数据是否合法
-								if(this.drug[index].amount.indexOf('.') != -1 ||  this.drug[index].amount.indexOf(0)===0 || isNaN(this.drug[index].amount) ){
+								if(this.drug[index].amount.toString().indexOf('.') != -1 ||  this.drug[index].amount.toString().indexOf(0)===0 || isNaN(this.drug[index].amount) ){
 									mui.toast('采购数量不合法');
 									vm.$set(this.drug[index],'amount','');
 									return;

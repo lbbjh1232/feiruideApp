@@ -109,14 +109,9 @@
 				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 				params.companyID = accountInfo.userid;
 				
-				if(!first){
-					plus.nativeUI.showWaiting('加载中',{width:'20%'});
-				}
+				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 				var res = mui.http_post(url,params);
 				
-				if(first){
-					mui.currentWebview.show();
-				}  
 				res.then(res=>{
 					plus.nativeUI.closeWaiting();
 					if(res.code == 200){

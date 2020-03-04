@@ -85,7 +85,7 @@
 	<body >
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">采购订单</h1>
+			<h1 class="mui-title">采购计划单</h1>
 		</header>
 		
 		<div id="app">
@@ -182,14 +182,9 @@
 			searchData.companyId = accountInfo.userid;
 			
 			var url =API.GET_COM_PURCHASE_PLAN,params = searchData;
-			if(!first){
-				plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			}
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
 			
-			if(first){
-				mui.currentWebview.show();
-			} 
 			vm.value = '';
 			res.then(res=>{
 				plus.nativeUI.closeWaiting();

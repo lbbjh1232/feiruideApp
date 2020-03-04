@@ -686,20 +686,6 @@
 	
 	// app版本比较
 	function compareVersion(currentVer,newVer){
-		// var current = currentVer.toString().split('.');
-		// var newver = newVer.toString().split('.');
-		// 版本比较
-		// if( parseInt(current[0]) < parseInt(newver[0]) ){
-		// 	return true;
-		// }
-		
-		// if( parseInt(current[1]) < parseInt(newver[1]) ){
-		// 	return true;
-		// }
-		
-		// if( parseInt(current[2]) < parseInt(newver[2]) ){
-		// 	return true;
-		// }
 		var current = currentVer.toString().replace(/\./g,'');
 		var newver = newVer.toString().replace(/\./g,'');
 		if(parseInt(current) < parseInt(newver)){
@@ -784,6 +770,14 @@
 		}, function(e){
 			console.log('分享到"'+srv.description+'"失败: '+JSON.stringify(e));
 		});
+	};
+	
+	//第三方连接
+	$.thirdLink = function(title,href){
+		var win = '/html/search-tool/embed.html';
+		// 创建窗口
+		var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+		ws.show('pop-in');
 	}
 	
 	

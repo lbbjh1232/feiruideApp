@@ -409,14 +409,9 @@
 			searchData.companyID = accountInfo.userid;
 			
 			var url =API.GET_REJECT_OUT,params = searchData;
-			if(!first){
-				plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			}
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
 			
-			if(first){
-				mui.currentWebview.show();
-			} 
 			vm.value = '';
 			res.then(res=>{
 				plus.nativeUI.closeWaiting();
@@ -778,7 +773,6 @@
 				mui('.mui-scroll').on('tap','.checkTick',function(event){
 					var id = this.dataset.id;
 					var name = this.dataset.name;
-					console.log(id)
 					mui.openWindow({
 						url:'../drug/ticket-detail.html',
 						id:'../drug/ticket-detail.html',

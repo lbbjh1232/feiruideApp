@@ -182,14 +182,10 @@
 				var url =API.PRO_NET_DRUG,params = vm.searchData;
 				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 				
-				if(!first){
-					plus.nativeUI.showWaiting('加载中',{width:'20%'});
-				}
-				var res = mui.http_post(url,params);
+				plus.nativeUI.showWaiting('加载中',{width:'20%'});
 				
-				if(first){
-					mui.currentWebview.show();
-				}  
+				var res = mui.http_post(url,params);
+
 				res.then(res=>{
 					plus.nativeUI.closeWaiting();
 					if(res.code == 200){

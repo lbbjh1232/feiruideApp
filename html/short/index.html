@@ -187,14 +187,9 @@
 			var searchData = vm.searchData;
 			
 			var url =API.GET_SHORTAGE,params = searchData;
-			if(!first){
-				plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			}
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
 			
-			if(first){
-				mui.currentWebview.show();
-			} 
 			vm.value = '';
 			res.then(res=>{
 				plus.nativeUI.closeWaiting();

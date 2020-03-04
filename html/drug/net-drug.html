@@ -263,14 +263,9 @@
 			first = first == undefined || first == false ? false : true;
 
 			var url =API.GET_NET_DRUG,params = vm.searchData;
-			if(!first){
-				plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			}
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
 			
-			if(first){
-				mui.currentWebview.show();
-			} 
 			res.then(data=>{
 				plus.nativeUI.closeWaiting();
 				if(data.code == 200){
@@ -282,14 +277,7 @@
 					}
 				}
 			})
-			// if(res.code == 200){
-			// 	vm.searchResult = res.data;
-			// 	if(res.message == 1){
-			// 		vm.loadMore = false
-			// 	}else{
-			// 		vm.loadMore = true;
-			// 	}
-			// }
+			
 		}
 			
 		window.onload = function(){

@@ -113,8 +113,8 @@
 			mui.plusReady(function() {
 			
 			var self = plus.webview.currentWebview();
-			console.log(self.name)
-			var url = self.name;
+			console.log(self.name);
+			var url = self.name; 
 			var pdfDoc = null,
 				pageNum = 1,
 				pageRendering = false,
@@ -218,13 +218,16 @@
 			/**
 			 * Asynchronously downloads PDF.
 			 */
+			plus.nativeUI.showWaiting('加载文档',{width:'20%'})
 			PDFJS.getDocument(url).then(function(pdfDoc_) {
+				plus.nativeUI.closeWaiting()
 				pdfDoc = pdfDoc_;
 				document.getElementById('page_count').textContent = pdfDoc.numPages;
 				// Initial/first page rendering
 				renderPage(pageNum);
 			}).catch(function(e){
-				mui.alert('文件错误或不存在','提示','确认',function (e) {})
+				plus.nativeUI.closeWaiting()
+				mui.alert('加载文件错误或不存在','提示','确认',function (e) {})
 			});
 		
 	    

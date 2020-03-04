@@ -57,7 +57,7 @@
 					</div>
 					<div class="mui-input-row input-disabled">
 						<label>规格</label>
-						<input type="text" class="mui-input-clear" v-model="item.specifications"  readonly  placeholder="规格">
+						<input type="text" class="mui-input-clear" v-model="item.specifications + '*' + item.conversion_ratio"  readonly  placeholder="规格">
 					</div>
 					
 					<div class="mui-input-row" :class="item.is_add?' input-disabled':'' ">

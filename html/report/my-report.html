@@ -408,14 +408,9 @@
 			searchData.companyid = accountInfo.userid;
 			
 			var url =API.REPORT_LIST,params = searchData;
-			if(!first){
-				plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			}
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
 			
-			if(first){
-				mui.currentWebview.show();
-			} 
 			vm.value = '';
 			res.then(res=>{
 				plus.nativeUI.closeWaiting();
@@ -735,7 +730,6 @@
 							//选中推送单位
 							mui('.list-box').on('tap','.list-item',function(){
 								let id = this.dataset.id;
-								//console.log(JSON.stringify(val))
 								let params = {
 									deptId : id,
 									roleId : vm.roleValue,

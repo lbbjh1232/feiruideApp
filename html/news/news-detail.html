@@ -44,7 +44,7 @@
 			}
 			.enclosure{
 				padding-bottom: 5px;
-				font-size: 1.2rem;
+				font-size: 1.5rem;
 				color: #0062CC;
 			}
 		</style>
@@ -123,6 +123,10 @@
 						
 						if(ext == 2){
 							// 预览pdf文件
+							if(mui.os.ios){
+								mui.thirdLink('文件预览',url);
+								return;
+							}
 							mui.openWindow({
 								url:'../pdf-view.html',
 								id: '../pdf-view.html',

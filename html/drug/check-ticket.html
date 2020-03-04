@@ -353,14 +353,8 @@
 			searchData.hospitalID = accountInfo.userid;
 			
 			var url =API.GET_HOS_TICKET,params = searchData;
-			if(!first){
-				plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			}
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
-			
-			if(first){
-				mui.currentWebview.show();
-			} 
 			vm.value = [];
 			
 			res.then(res=>{
@@ -673,7 +667,6 @@
 				// 查验票据
 				mui('.mui-scroll').on('tap','.checkTick',function(event){
 					var id = this.dataset.id;
-					console.log(id)
 					mui.openWindow({
 						url:'ticket-detail.html',
 						id:'ticket-detail.html',
@@ -770,7 +763,7 @@
 						// 监听驳回原因提交
 						mui('.reason-btn').on('tap','.mui-btn-success',function(){
 							var reason = vm.reason + ' ' + vm.fastReason;
-							if(reason == ''){
+							if(!vm.reason && !vm.fastReason){
 								mui.toast('请填写或选择驳回原因!');
 								return;
 							}
@@ -781,16 +774,19 @@
 								state:3
 							};
 							var res = mui.http_post(API.CHECK_TICKET,params);
-							if(res.code == 200){
-								mui.toast('驳回成功');
-								setTimeout(function(){
-									mui.trigger(document.getElementById('close-btn3'),'tap')
-									//重载数据
-									getNetDrug(false);
+							res.then(res=>{
+								if(res.code == 200){
+									mui.toast('驳回成功');
+									setTimeout(function(){
+										mui.trigger(document.getElementById('close-btn3'),'tap')
+										//重载数据
+										getNetDrug(false);
+										
+									},500);
 									
-								},500);
-								
-							}
+								}
+							})
+							
 						})
 						
 					})
@@ -863,7 +859,6 @@
 						state:0
 					}
 					mui.confirm('确认取消查验吗?','提示',['取消','确认'],function(e){
-						
 						if(e.index == 1){
 							mui.showLoading('提交')
 							var res = mui.http_post(API.CHECK_TICKET,params);

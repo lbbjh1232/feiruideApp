@@ -6510,7 +6510,7 @@ PDFNetworkStreamFullRequestReader.prototype = {
     }
     this._storedError = exception;
     this._headersReceivedCapability.reject(exception);
-    this._requests.forEach(function (requestCapability) {
+    this._requests.forEach(function (requestCapability) { 
       requestCapability.reject(exception);
     });
     this._requests = [];

@@ -444,7 +444,10 @@
 				// 查看pdf文件
 				mui('#scroll1').on('tap','.pdf-btn',function(){
 					var urls = this.dataset.url;
-					
+					if(mui.os.ios){
+						mui.thirdLink('文件预览',urls);
+						return;
+					}
 					mui.openWindow({
 						url:'../pdf-view.html',
 						id: '../pdf-view.html',

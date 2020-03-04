@@ -111,14 +111,10 @@
 			first = first == undefined || first == false ? false : true;
 
 			var url =API.GET_DRUG_DESCRIPTION,params = vm.searchData;
-			if(!first){
-				plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			}
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
+			
 			var res = mui.http_post(url,params);
 			
-			if(first){
-				mui.currentWebview.show();
-			} 
 			res.then(data=>{
 				plus.nativeUI.closeWaiting();
 				if(data.code == 200){

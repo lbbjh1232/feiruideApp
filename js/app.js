@@ -705,8 +705,9 @@
 			var res = $.http_post(API.CHECK_VERSION,{});
 			res.then(res=>{
 				var newVer = res.data.app_version;
+				var iosVer = res.data.ios_version;
 				var message = msg == undefined ? '发现了新的版本，为保障你的功能正常使用，请立即更新!' : msg + newVer;
-				if( compareVersion(wgtVer,newVer) ){
+				if( (compareVersion(wgtVer,newVer) && mui.os.android) || (compareVersion(wgtVer,iosVer) && mui.os.ios) ){
 					mui.confirm(message,'更新提示',['更新','取消'],function (e){
 					   if(e.index == 0){
 							// 开始下载

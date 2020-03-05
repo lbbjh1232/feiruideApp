@@ -201,15 +201,8 @@
 						</a>
 					</li>
 					
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'7'.indexOf(viewRoleId) != -1">
-						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/purchase/index.html">
-							<span class="mui-icon iconfont1 icon-jihuadan"></span>
-							<div class="mui-media-body">采购计划单</div>
-						</a>
-					</li>
-					
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'6'.indexOf(viewRoleId) != -1">
-						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/purchase/com-index.html">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
+						<a href="javascript:void(0)" data-roleid="6,7" id="purchase" data-limit="2" :data-href=" '7'.indexOf(viewRoleId) != -1 ?'html/purchase/index.html' :'html/purchase/com-index.html' ">
 							<span class="mui-icon iconfont1 icon-jihuadan"></span>
 							<div class="mui-media-body">采购计划单</div>
 						</a>
@@ -307,10 +300,10 @@
 				<div class="news-box news-1" :data-index="index">
 					<div class="news-left">
 						<div class="news-name">{{item.title}}</div>
-						<div class="news-date">{{item.create_time}}</div>
+						<div class="news-date">{{item.publish_time}}</div>
 					</div>
 					<div class="news-right">
-						<img :src="item.cover" onerror="this.src='./images/60x60.gif'"/>
+						<img :src="item.cover" onerror="this.src='./images/60x60.jpg'"/>
 					</div>
 				</div>
 			</template>
@@ -321,10 +314,10 @@
 				<div class="news-box news-2" :data-index="index">
 					<div class="news-left">
 						<div class="news-name">{{item.title}}</div>
-						<div class="news-date">{{item.create_time}}</div>
+						<div class="news-date">{{item.publish_time}}</div>
 					</div>
 					<div class="news-right">
-						<img :src="item.cover" onerror="this.src='./images/60x60.gif'"/>
+						<img :src="item.cover" onerror="this.src='./images/60x60.jpg'"/>
 					</div>
 				</div>
 			</template>
@@ -619,7 +612,7 @@
 								break;
 								
 							case 'purchase':
-							
+								
 								break;
 								
 							default:
@@ -936,17 +929,20 @@
 					
 					// 查看更多
 					document.getElementById('news-more').addEventListener('tap',function(){
-						mui.openWindow({
-							url : 'html/news/news-more.html',
-							id : 'html/news/news-more.html',
-							show : {
-								autoShow:true
-							},
-							extras:{
-								sid : vm.currentTab
-							}
-						})
+						// mui.openWindow({
+						// 	url : 'html/news/news-more.html',
+						// 	id : 'html/news/news-more.html',
+						// 	show : {
+						// 		autoShow:true
+						// 	},
+						// 	extras:{
+						// 		sid : vm.currentTab
+						// 	}
+						// })
+						mui.trigger(document.getElementById('purchase','tap'))
+						
 					})
+					
 					
 					//新闻详情页
 					 mui('#app').on('tap','.news-1',function(){
@@ -961,7 +957,7 @@
 							 extras : {
 								title : news.title,
 								conver : news.cover,
-								time : news.create_time,
+								time : news.publish_time,
 								content : news.content
 							 }
 						 })
@@ -979,7 +975,7 @@
 							 extras : {
 								title : news.title,
 								conver : news.cover,
-								time : news.create_time,
+								time : news.publish_time,
 								content : news.content,
 								file : news.file_url
 							 }

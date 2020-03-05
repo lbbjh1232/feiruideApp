@@ -38,10 +38,10 @@
 				<div class="news-box" :data-index="index">
 					<div class="news-left">
 						<div class="news-name">{{item.title}}</div>
-						<div class="news-date">{{item.create_time}}</div>
+						<div class="news-date">{{item.publish_time}}</div>
 					</div>
 					<div class="news-right">
-						<img :src="item.cover" onerror="this.src='../../images/60x60.gif'" />
+						<img :src="item.cover" onerror="this.src='../../images/60x60.jpg'" />
 					</div>
 				</div>
 			</template>
@@ -133,7 +133,7 @@
 					 extras : {
 						title : news.title,
 						conver : news.cover,
-						time : news.create_time,
+						time : news.publish_time,
 						content : news.content,
 						file : news.file_url
 					 }

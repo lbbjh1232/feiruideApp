@@ -449,8 +449,8 @@
 	}
 	
 	//加载用户聊天记录
-	$.messageLoad = function(fromid,toid){
-		return $.http_post(API.LOAD_MESSAGE_LIST,{fromid:fromid,toid:toid});
+	$.messageLoad = function(fromid,toid,temp){
+		return $.http_post(API.LOAD_MESSAGE_LIST,{fromid:fromid,toid:toid,temp:temp});
 	}
 	
 	//绘制底部菜单未读消息提示,消息列表页

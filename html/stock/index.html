@@ -78,8 +78,8 @@
 						<div class='text-clip'><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'><span class='red'>{{current.the_net_price?current.the_net_price:'自主定价'}}</span>{{current.the_net_price?'元':''}}</span></div>
 						<div class='text-clip'><span class='drug-list-title'>库存数量:</span> <span class='drug-list-name red'>{{current.surplus_amount}}</span></div>
 					</div>
-					<div class='text-clip'><span class='drug-list-title'>联系电话:</span> <span class='drug-list-name'>{{current.mobile_phone}}</span></div>
-					
+					<div class='text-clip'><span class='drug-list-title'>联系电话:</span> <span class='drug-list-name blue' id="dial-phone">{{current.mobile_phone?current.mobile_phone+' (拨打电话)':''}}</span></div>
+					<div style="font-size: 12px;color: orange;text-align: center;padding-top: 10px;" id="gochat" class="go-chat iconfont1 icon-message">发消息</div>
 				</div>
 			</div>
 		</div>
@@ -87,8 +87,7 @@
 		</template>
 		
 		<!-- 返回顶部 -->
-		<div id="backtop" v-if="scrollY" class="iconfont1 icon-fanhuidingbu">
-		</div>
+		<div id="backtop" v-if="scrollY" class="iconfont1 icon-fanhuidingbu"></div>
 		
 		
 		<!-- 筛选表单栏 -->
@@ -138,11 +137,6 @@
 				
 			</div>
 		</template>
-		
-		
-		
-		
-		
 		
 		
 		</div> 
@@ -222,6 +216,9 @@
 				// 查看详情
 				mui('#scroll-one').on('tap','.drug-list-box',function(){
 					vm.detailShow = true;
+					var index = this.dataset.index;
+					vm.current = vm.searchResult[index];
+					
 					// 渲染完成后初始化滚动组件
 					vm.$nextTick(function(){
 						mui('#scroll-two').scroll({deceleration: 0.001});
@@ -229,10 +226,35 @@
 						// 监听关闭
 						mui('.mask').on('tap','.close',function(){
 							vm.detailShow = false;
+						});
+						
+						// 监听拨打电话
+						document.getElementById('dial-phone').addEventListener('tap',function(){
+							if(!vm.current.mobile_phone){
+								return;
+							}
+							plus.device.dial(vm.current.mobile_phone,true);
+						});
+						
+						// 发送消息
+						document.getElementById('gochat').addEventListener('tap',function(){
+							var info = {
+								id : vm.current.uid,
+								name : vm.current.username,
+								avatar : vm.current.avatar,
+								temp:'1'
+							};
+							mui.openWindow({
+								url:"../my/customer-chat.html",
+								id:"../my/customer-chat.html",
+								extras:{ 
+									toInfo:info 
+								}
+							})
 						})
+						
 					})
-					var index = this.dataset.index;
-					vm.current = vm.searchResult[index];
+					
 					
 				});
 				

@@ -9,6 +9,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-message::before{
+	content: "\e7f3";
+	font-size: 22px;
+	color: orange;
+	text-align: center;
+}
 .icon-new::before{
 	display: inline-block;
 	content: "\e720";

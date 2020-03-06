@@ -468,7 +468,6 @@
 					
 					// 绑定用户数据,未登录的用户,以设备唯一标识来绑定通讯id
 					var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')),myid=mui.getMyId(),myAvatar,toInfo,toid,record = [],ws;
-					console.log(myid);
 					if( accountInfo != null ){
 						//已登录
 						//myid = accountInfo.id; //以系统用户id为唯一标识
@@ -496,9 +495,10 @@
 					toid = mui.currentWebview.toInfo.id;
 					toInfo = mui.currentWebview.toInfo;
 					vm.name = toInfo.name;
+					let temp = toInfo.temp == undefined ? 1 : 2;
 					
 					//加载历史记录
-					var record_init = mui.messageLoad(myid,toid);
+					var record_init = mui.messageLoad(myid,toid,temp);
 				
 					plus.webview.currentWebview().setStyle({
 						softinputMode: "adjustResize"

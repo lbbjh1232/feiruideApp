@@ -60,7 +60,7 @@
 				
 				<div class="plan-order" v-for="(item,index) in drug">
 					<div>药品名称: {{item.generic_name}}</div>
-					<div>药品规格: {{item.specifications + '*' + item.conversion_ratio}}</div>
+					<div>药品规格: {{item.specifications + '*' + (item.conversion_ratio?item.conversion_ratio:'')}}</div>
 					<div>采购数量: {{item.quantity}}</div>
 				</div>
 				

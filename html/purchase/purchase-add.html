@@ -28,6 +28,20 @@
 			.item-input-wrap textarea{
 				font-size: 1.2rem;
 			}
+			.method-box{
+				padding: 0 15px;
+			}
+			.method-box span{
+				display: inline-block;
+				padding:3px 8px;
+				font-size:1.3rem;
+				
+			}
+			.current-tab{
+				border-bottom: 2px solid rgba(0,191,255,1);
+				color: rgba(0,191,255,1);
+				font-size: 1.5rem;
+			}
 		</style>
 	</head>
 
@@ -39,17 +53,20 @@
 		
 		<div class="mui-content into-box" id="app">
 			
-			<div class="form-title">选择配送公司</div>
 			<div class="form-box">
 				<div class="mui-input-row choose">
-					<label>配送公司</label>
+					<label>选择配送公司</label>
 					<input type="text" class="mui-input-clear"  id="chooseDelivery" v-model="companyText" readonly placeholder="选择配送公司">
 				</div>
 
 			</div>
 			
-			<div class="form-title">填写采购清单(方式1)</div>
-			<div class="drug-box">
+			<div class="form-title">添加采购清单</div>
+			<div class="method-box">
+				<span :class="tab==1?'current-tab':''" data-index="1">方式一</span><span :class="tab==2?'current-tab':''" data-index="2">方式二</span>
+			</div>
+			
+			<div class="drug-box" v-show="tab==2">
 				<div class="form-box" v-for="(item,index) in drug">
 					<div  class="mui-input-row" :class="item.is_add?' input-disabled':' choose-drug' " :data-index="index">
 						<label>药品名称</label>
@@ -57,7 +74,7 @@
 					</div>
 					<div class="mui-input-row input-disabled">
 						<label>规格</label>
-						<input type="text" class="mui-input-clear" v-model="item.specifications + '*' + item.conversion_ratio"  readonly  placeholder="规格">
+						<input type="text" class="mui-input-clear" v-model="item.specifications"  readonly  placeholder="规格">
 					</div>
 					
 					<div class="mui-input-row" :class="item.is_add?' input-disabled':'' ">
@@ -79,15 +96,15 @@
 				 
 			</div>
 			
-				<div class="form-title">上传采购清单(方式2)</div>
-				<div class="form-box padding-9 ">
-					<!-- 上传说明 -->
-					<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">30</span>张</div>
-					<upload :file="billImage" :group="1" :formdata="formData1" :max="30" :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
-				</div>
-				<div class="item-input-wrap">
-					<textarea  rows="4" v-model="mark" placeholder="备注:"></textarea>
-				</div>
+			<div class="form-box padding-9 " v-show="tab==1">
+				<!-- 上传说明 -->
+				<div class="upload-tip">#支持上传JPG、JEPG、PNG格式，最多上传<span class="red">30</span>张</div>
+				<upload :file="billImage" :group="1" :formdata="formData1" :max="30" :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
+			</div>
+				
+			<div class="item-input-wrap">
+				<textarea  rows="4" v-model="mark" placeholder="备注:"></textarea>
+			</div>
 				
 			<!-- 提交 -->
 			<div class="into_submit">
@@ -227,7 +244,8 @@
 							companyText:'',
 							companyValue : '',
 							currentIndex : '',
-							mark: ''
+							mark: '',
+							tab : 1,
 							
 						},
 						components:{
@@ -354,6 +372,16 @@
 						})
 					})
 					
+					// 切换方式
+					mui('.method-box').on('tap','span',function(){
+						vm.tab = this.dataset.index;
+						if(this.dataset.index == 1){
+							vm.drug = [{}];
+						}else{
+							vm.billImage = [];
+						}
+					})
+					
 					// 选择药品
 					mui('.drug-box').on('tap','.choose-drug',function(){
 						vm.currentIndex = this.dataset.index;
@@ -387,11 +415,16 @@
 							return;
 						}
 						
-						if(vm.billImage.length == 0 && Object.keys(drugs[0]).length==0){
-							mui.toast('请选择任一方式上传采购清单');
+						if(vm.tab == 1 && vm.billImage.length == 0){
+							mui.toast('请上传采购清单');
+							return;
+						}
+						
+						if(vm.tab == 2 &&  Object.keys(drugs[0]).length ==0){
+							mui.toast('请添加采购清单');
 							return;
 							
-						}else if(Object.keys(drugs[0]).length > 0){
+						}else if(vm.tab == 2 && Object.keys(drugs[0]).length > 0){
 							//验证药品清单
 							for(var i=0,len=drugs.length;i<len;i++){
 								arr = Object.keys(drugs[i]);
@@ -422,9 +455,8 @@
 								}
 							}
 							methodOne = 1;
-						}else{
-							methodTwo = 1;
 						}
+						
 						// 提交数据
 						mui.confirm('现在推送到配送公司吗?','提示',['稍后','现在'],function (e) {
 							let state = 6;

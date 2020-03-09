@@ -612,7 +612,25 @@
 								break;
 								
 							case 'purchase':
-								
+								//登录提示
+								if(accountInfo==null){
+									mui.toast('请先登录','提示','确认',function(e){});
+									return;
+								}
+								let roleid = '6,7';
+								if(roleid.indexOf(vm.accountInfo.roleid.toString()) == -1 ){
+									mui.toast('登录角色受限','提示','确认',function(e){});
+									return;
+								}
+								let targetNav = vm.accountInfo.roleid == 6 ? 'html/purchase/com-index.html':'html/purchase/index.html';
+
+								 mui.openWindow({
+									 url:targetNav,
+									 id:targetNav,
+									 show:{
+										 autoShow:true,
+									 }
+								 });
 								break;
 								
 							default:
@@ -624,7 +642,6 @@
 					
 					//接收透传消息
 					plus.push.addEventListener('receive',function(msg){
-						// alert(JSON.stringify(msg));
 						var content = msg.content;
 						var payload = JSON.parse(msg.payload);
 						
@@ -670,12 +687,6 @@
 					
 					//网络错误监听
 					mui.networkError();
-					
-					
-					// 监听首页show事件
-					// self.addEventListener('show',function(){
-					// 	loadView();
-					// })
 					
 					//监听登录/退出后重载
 					window.addEventListener('loginLoad',function(){
@@ -929,17 +940,16 @@
 					
 					// 查看更多
 					document.getElementById('news-more').addEventListener('tap',function(){
-						// mui.openWindow({
-						// 	url : 'html/news/news-more.html',
-						// 	id : 'html/news/news-more.html',
-						// 	show : {
-						// 		autoShow:true
-						// 	},
-						// 	extras:{
-						// 		sid : vm.currentTab
-						// 	}
-						// })
-						mui.trigger(document.getElementById('purchase','tap'))
+						mui.openWindow({
+							url : 'html/news/news-more.html',
+							id : 'html/news/news-more.html',
+							show : {
+								autoShow:true
+							},
+							extras:{
+								sid : vm.currentTab
+							}
+						})
 						
 					})
 					

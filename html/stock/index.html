@@ -11,16 +11,26 @@
 		<script type="text/javascript">
 			link(['../../css/mui.min.css',,'../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/animate.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/drug/net-drug.css'],true);
 		</script>
+		<style type="text/css">
+			#data-from{
+				position: absolute;
+				right: 10px;
+				font-size: 12px;
+				color: white;
+				line-height: 44px;
+				z-index: 30;
+			}
+		</style>
 	</head>
 
 	<body >
-		<header class="mui-bar mui-bar-nav">
+		<div id="app">
+		<header class="mui-bar mui-bar-nav" v-cloak>
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">货源(库存)查询</h1>
-			<span style="float: right;line-height: 44px;font-size: 12px;">两票系统数据</span>
+			<span id="data-from">切换来源: {{currentText}}</span>
 		</header>
 		
-		<div id="app">
 		<!-- 顶部搜索栏 -->
 		<div class="search-box">
 			<div class="search-left">
@@ -171,7 +181,16 @@
 				scrollY:false,
 				searchValue:'',
 				filterShow:false,	//筛选框默认隐藏
-				
+				dataFrom:[{
+						text : '两票系统',
+						value : 0
+					},
+					{
+						text : '南充科伦',
+						value : 1
+					}],
+				currentText : '两票系统',
+				currentValue : 0
 			}
 		});
 		
@@ -182,6 +201,8 @@
 			first = first == undefined || first == false ? false : true;
 
 			var url =API.GET_STOCK_DRUG,params = vm.searchData;
+			params.origin = vm.currentValue;
+			
 			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
 			
@@ -202,6 +223,17 @@
 			mui.plusReady(function () {
 				// 网络错误监听
 				mui.networkError();
+				
+				// 切换数据来源
+				var picker = new mui.PopPicker();
+				document.getElementById('data-from').addEventListener('tap',function(){
+					picker.setData(vm.dataFrom);
+					picker.show(function(item){
+						vm.currentValue = item[0].value;
+						vm.currentText = item[0].text;
+						getNetDrug()
+					})
+				})
 				
 				// 失去焦点监听
 				var input = document.getElementsByTagName('input')[0];

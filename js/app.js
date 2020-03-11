@@ -593,7 +593,7 @@
 			cid = pinf.clientid;
 			token = pinf.token;
 			//存储到服务器
-			if(cid != 'null' && token != 'null' && !cid && !token ){
+			if(cid != 'null' && token != 'null' && cid && token ){
 				var res = $.http_post(API.SAVE_CLIENT_ID,{cid:cid,token:token,version:version,vendor:plus.device.vendor},false);
 				res.then(res=>{
 					plus.storage.setItem('clientid',res.data.info.toString());
@@ -601,7 +601,6 @@
 			}else{
 				$.getClientId();
 			}
-			
 		}, 2000);
 		
 	}

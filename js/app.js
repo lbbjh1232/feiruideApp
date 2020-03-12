@@ -589,7 +589,7 @@
 		var version = mui.os.android ? 1 : 2;
 		var token = pinf.token;
 		
-		setTimeout(function() {
+		setTimeout(function(){
 			cid = pinf.clientid;
 			token = pinf.token;
 			//存储到服务器

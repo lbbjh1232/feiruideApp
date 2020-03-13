@@ -59,6 +59,17 @@
 
 // https网络请求封装
 (function($){
+	//更新登录信息用户名、头像、电话
+	$.updateInfo =function(field,value){
+		let accountInfo = plus.storage.getItem('accountInfo');
+		if(accountInfo == null){
+			return;
+		}
+		accountInfo = JSON.parse(accountInfo);
+		accountInfo[field] = value;
+		plus.storage.setItem('accountInfo',JSON.stringify(accountInfo));
+		
+	}
 	
 	// 判断存储权限是否打开
 	$.judgeStoragePermisson = function(){
@@ -741,6 +752,20 @@
 		}, function(e){
 			console.log('获取分享服务列表失败：'+e.message);
 		});
+		
+		plus.oauth.getServices(function(service){
+			logins = {};
+			for(let i in service){
+				let t=service[i];
+				logins[t.id]=t;
+			}
+			
+			lweixin=logins['weixin'];
+			
+		},function(e){
+			//获取服务失败
+		})
+		
 	};
 	
 	// 微信分享
@@ -780,6 +805,44 @@
 		ws.show('pop-in');
 	}
 	
+	
+	// 微信登录
+	$.weLogin = function(auth,uid){
+		auth.login(function(){
+			auth.getUserInfo(function(){
+				var nickname=auth.userInfo.nickname||auth.userInfo.name||auth.userInfo.miliaoNick;
+				var openid = auth.userInfo.openid;
+				var avatar = auth.userInfo.headimgurl;
+				var unionid = auth.userInfo.unionid;
+				let params = {
+					uid : uid,
+					nickname,
+					openid,
+					avatar,
+					unionid
+				}
+				let res = $.http_post(API.BAND_WECHAT,params);
+				res.then(res=>{
+					if(res.code == 200){
+						$.toast('绑定成功');
+						$.updateInfo('nickname',nickname);
+						$.updateInfo('openid',openid);
+						$.updateInfo('avatar',avatar);
+						mui.fire(plus.webview.getWebviewById('html/my.html'),'loginLoad');
+						location.reload();
+					}else{
+						$.alert(res.message);
+					}
+				})
+				
+			},function(e){
+				plus.nativeUI.alert("获取用户信息失败！",null,"绑定");
+				
+			});
+		},function(e){
+			
+		});
+	}
 	
 })(mui)
 

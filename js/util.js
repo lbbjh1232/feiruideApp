@@ -190,7 +190,7 @@ var util = {
 					onclick : function(){
 						mui.openWindow({
 							url : 'html/my/setting.html',
-							id : 'html/my/setting.html',
+							id : 'setting',
 						})
 					},
 				})

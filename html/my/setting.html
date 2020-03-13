@@ -11,7 +11,7 @@
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
 		<script type="text/javascript">
-			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/my.css'],true);
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/my.css'],true);
 		</script>
 		<style type="text/css">
 			
@@ -23,9 +23,16 @@
 			}
 			.menu-item-box .beizhu{
 				padding-right: 20px;
-				font-size: 1.3rem;
+				font-size: 12px;
 				color: gray;
 			}
+			.setting-title{
+				padding: 8px 8px 8px 25px;
+				background-color: rgba(105,105,105,.1);
+				font-size: 14px;
+				color: gray;
+			}
+			
 			
 		</style>
 
@@ -38,8 +45,34 @@
 		</header>
 		
 		<div class="mui-content" id="app">
+			<div v-show="islogin">
+			<div class="setting-title">账号</div>
+			<ul class="mui-table-view" v-cloak>
+				<li class="mui-table-view-cell">
+					<a href="javascript:void(0)"   class="mui-navigate-right">
+						<div class="menu-item-box" id="edit-phone">
+							<div class="iconfont1 icon-shouji operate-text"> 绑定手机号</div>
+							<div class="operate-text beizhu" >{{accountInfo.phone? '+86'+accountInfo.phone.replace(/^(\d{3})\d{4}(\d{4})$/,"$1****$2"):'未绑定'}}</div>
+						</div>
+					</a>
+				</li>
+				
+				<li class="mui-table-view-cell">
+					<a href="javascript:void(0)"   class="mui-navigate-right">
+						<div class="menu-item-box" id="band-wechat">
+							<div class="iconfont1 icon-wechat operate-text"> 绑定微信</div>
+							<div class="operate-text beizhu" >{{accountInfo.openid?accountInfo.nickname:'未绑定'}}</div>
+						</div>
+					</a>
+				</li>
+				
+				
+				
+			</ul>
+			</div>
 			
-			<ul class="mui-table-view">
+			<div class="setting-title">关于</div>
+			<ul class="mui-table-view" v-cloak>
 				
 				<li class="mui-table-view-cell">
 					<a href="javascript:void(0)" id="help"  class="mui-navigate-right">
@@ -49,12 +82,6 @@
 						</div>
 					</a>
 				</li>
-			</ul>
-			
-			<div class="divided-line"></div>
-			
-			<!-- 操作菜单 -->
-			<ul class="mui-table-view">
 				
 				<li class="mui-table-view-cell">
 					<a href="javascript:void(0)" id="aboutUs" class="mui-navigate-right">
@@ -85,7 +112,7 @@
 			</ul>
 			 <div class="divided-line"></div>
 			 
-			 <template v-if="islogin">
+			 <div v-show="islogin">
 					 
 				 <ul class="mui-table-view">
 					
@@ -96,7 +123,7 @@
 					</li>
 				 </ul>
 				 <div class="divided-line"></div>
-			 </template>
+			 </div>
 			
 		</div>
 	</body>
@@ -110,6 +137,7 @@
 			data : {
 				version : '',
 				islogin:false,
+				accountInfo : {}
 			}
 		});
 		var shares=null;
@@ -121,11 +149,13 @@
 		];
 		
 		mui.plusReady(function () {
-			
-			if(plus.storage.getItem('accountInfo') != null){
+			var accountInfo = plus.storage.getItem('accountInfo');
+			if( accountInfo != null){
+				 accountInfo = JSON.parse(accountInfo);
+				 vm.accountInfo = accountInfo;
+				 
 				 vm.islogin = true;
 				 vm.$nextTick(function(){
-					let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 					document.getElementById("cancle").addEventListener('tap',function(){
 						mui.confirm("确认注销账号?","提示",['确认','取消'],function(e){
 							if(e.index === 0){
@@ -152,11 +182,43 @@
 					})
 				})
 			}
+				
 			
+			// 绑定手机号
+			document.getElementById('edit-phone').addEventListener('tap',function(){
+				if(!vm.accountInfo.phone){
+					mui.openWindow({
+						url : 'account-auth.html',
+						id : 'account-auth',
+						extras : {
+							uid : vm.accountInfo.id
+						}
+					})
+				}else{
+					mui.confirm("当前绑定的手机号为+86"+vm.accountInfo.phone.replace(/^(\d{3})\d{4}(\d{4})$/,"$1****$2"),'更换绑定的手机号?',['取消','更换'],function(e){
+						if(e.index == 1){
+							mui.openWindow({
+								url : 'account-auth.html',
+								id : 'account-auth',
+								extras : {
+									uid : vm.accountInfo.id,
+									phone : vm.accountInfo.phone,
+								}
+							})
+						}
+					})
+				}
+			})
 			
 			plus.runtime.getProperty(plus.runtime.appid,function(info){
 				vm.version = info.version;
 			});
+			
+			window.addEventListener('refresh',function(e){
+				let val = e.detail.phone;
+				mui.updateInfo('phone',val);
+				location.reload();
+			})
 			
 			//获取分享服务列表
 			mui.updateSerivces();
@@ -168,6 +230,39 @@
 				sweixin?plus.nativeUI.actionSheet({title:'选择分享平台',cancel:'取消',buttons:buttons}, function(e){
 					(e.index>0)&&mui.share(sweixin, msg, buttons[e.index-1]);
 				}):plus.nativeUI.alert('当前环境不支持微信分享操作!');
+			});
+			
+			// 微信绑定or解绑
+			document.getElementById('band-wechat').addEventListener('tap',function(){
+				if(accountInfo && !accountInfo.openid){
+					//未绑定
+					lweixin?mui.confirm('确认绑定微信?','绑定提示',['取消','绑定'],function(e){
+						(e.index==1)&&mui.weLogin(lweixin,accountInfo.id)
+					}):plus.nativeUI.alert('当前环境不支持微信绑定操作');
+				}else{
+					// 解绑
+					mui.confirm('确认解绑?','解绑提示',['取消','解绑'],function(e){
+						if(e.index == 1){
+							plus.nativeUI.showWaiting()
+							let res = mui.http_post(API.BAND_WECHAT,{uid:accountInfo.id,sign:1});
+							res.then(res=>{
+								plus.nativeUI.closeWaiting()
+								if(res.code == 200){
+									mui.toast('解绑成功');
+									mui.updateInfo('nickname','')
+									mui.updateInfo('openid','')
+									mui.updateInfo('avatar','')
+									mui.fire(plus.webview.getWebviewById('html/my.html'),'loginLoad');
+									location.reload();
+								}else{
+									mui.toast(res.message);
+								}
+							})
+						}
+					})
+					
+					
+				}
 			})
 			
 			// 帮助中心

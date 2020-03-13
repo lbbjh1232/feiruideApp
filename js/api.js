@@ -13,11 +13,15 @@ var API = {
 	// IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
 	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
 	
+	BAND_PHONE : '/user/bandPhone',
+	BAND_WECHAT : '/user/bandWechat',
+	
 	SMS_CODE : '/user/smsCode',
 	CHECK_VERSION : '/user/checkVersion',
 	SAVE_CLIENT_ID : '/user/saveClientId',
 	DOWNLOAD_APP : '/user/downloadApp',
 	LOGIN : "/user/login",
+	GET_USERINFO : "/user/getUserInfo",	
 	GET_NET_DRUG : "/drug/getNetDrug",
 	GET_HOS_DRUG : "/drug/getHosDrug",
 	GET_HOS_TICKET : "/drug/getHosTicket",

@@ -194,10 +194,11 @@
 			<div v-show=" '6,7'.indexOf(viewRoleId) != -1">
 				<div class="nav-title">药品采购</div>
 				<ul  class="mui-table-view mui-grid-view mui-grid-9" id="drugBuy">
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
-						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2"  id="short" data-href="html/short/index.html">
-							<span class="mui-icon iconfont icon-xuqiu"></span>
-							<div class="mui-media-body">短缺药品采购</div>
+					
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'7'.indexOf(viewRoleId) != -1">
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/stock/index.html">
+							<span class="mui-icon iconfont1 icon-huoyuan"></span>
+							<div class="mui-media-body">货源查询</div>
 						</a>
 					</li>
 					
@@ -208,12 +209,13 @@
 						</a>
 					</li>
 					
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'7'.indexOf(viewRoleId) != -1">
-						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/stock/index.html">
-							<span class="mui-icon iconfont1 icon-huoyuan"></span>
-							<div class="mui-media-body">货源查询</div>
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
+						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2"  id="short" data-href="html/short/index.html">
+							<span class="mui-icon iconfont icon-xuqiu"></span>
+							<div class="mui-media-body">短缺药品采购</div>
 						</a>
 					</li>
+					
 				</ul>
 			</div>
 			

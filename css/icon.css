@@ -9,6 +9,24 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-clear::before{
+	content: "\e653";
+	color: #828282;
+	font-size: 16px;
+	line-height: 30px;
+}
+.icon-suo::before{
+	content:"\e63b";
+	color: 	#00BFFF;
+	font-size: 25px;
+	line-height: 30px;
+}
+.icon-phone::before{
+	content:"\e639";
+	color: 	#00BFFF;
+	font-size: 25px;
+	line-height: 30px;
+}
 .icon-wechat::before{
 	content: "\e61a";
 	color: green;

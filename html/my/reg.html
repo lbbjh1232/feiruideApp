@@ -9,88 +9,55 @@
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
 		<script type="text/javascript">
-			link(['../../css/mui.min.css',,'../../css/common.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/my/login.css'],true);
+			link(['../../css/mui.min.css',"../../css/icon.css",'../../css/common.css','../../css/my/login.css'],true);
 		</script>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">用户注册</h1>
+			<h1 class="mui-title" style="color: gray;">注册</h1>
 		</header>
+		
 		<div class="mui-content" id="app">
-			<form id='login-form' class="mui-input-group">
-				<div class="mui-input-row">
-					<label>注册类型</label>
-					<input  id="choose-reg" type="text" v-model="regTypeText" class="mui-input" placeholder="选择注册类型">
-				</div>
-				<div class="mui-input-row" v-if="regTypeValue == 1">
-					<label>邀请码</label>
-					<input id='invitation' type="text" v-model="invitation" class="mui-input" placeholder="输入医院或企业邀请码">
-				</div>
-				<div class="mui-input-row">
-					<label>用户名</label>
-					<input id='account' type="text" v-model="account" class="mui-input" placeholder="2-16位,字母开头,字母 + 数字">
-				</div>
-				<div class="mui-input-row">
-					<label>昵 称</label>
-					<input id='nickname' type="text" v-model="nickname" class="mui-input" placeholder="请输入昵称">
-				</div>
-				<div class="mui-input-row">
-					<label>邮 箱</label>
-					<input id='email' type="text" v-model="email" class="mui-input" placeholder="请输入邮箱">
-				</div>
-				<div class="mui-input-row">
-					<label>密 码</label>
-					<input id='password' type="password" v-model="password" class="mui-input" placeholder="6-16,位字母 + 数字">
-				</div>
-				<div class="mui-input-row">
-					<label>手机号</label>
-					<input id='phone' type="number" v-model="phone" class="mui-input" placeholder="请输入手机号">
-				</div>
-				<div class="mui-input-row">
-					<label>图片验证</label>
-					<input id='code' type="text" v-model="picNumber" maxlength="4" class="code" placeholder="请输入图片验证码">
-					<canvas id="canvas" ></canvas>
-				</div>
-				<div class="mui-input-row">
-					<label>短信验证</label>
-					<input id='smsInput' type="text" v-model="smsNumber" class="code" placeholder="请输入短信验证码">
-					<div id="smsCode" v-if="!sending" >{{notice}}</div>
-					<div class="sms-sending" v-if="sending" >{{countDown}}s</div>
-				</div>
-			</form>
 			
-			<div class="private">
-				<div class="mui-input-row mui-checkbox mui-left">
-				  <label style="font-size: 1.4rem;">
-					  请认真阅读 <span id="agreement">《用户协议》</span>和 <span id="private">
-					  	《隐私政策》
-					  </span
-					  
-					  </label>
-				  <input name="checkbox1" type="checkbox" v-model="policy">
+			<div class="reg-box">
+				<div class="reg-input-item">
+					<div class="label-text text-clip">用户名</div>
+					<div class="input-box"><input type="text" v-model="account" placeholder="2-16位,字母开头,字母 + 数字" /></div>
+				</div>
+				
+				<div class="reg-input-item">
+					<div class="label-text text-clip">登录密码</div>
+					<div class="input-box"><input v-model="password" type="password" placeholder="6-16位,字母 + 数字" /></div>
+				</div>
+				
+				<div class="reg-input-item">
+					<div class="label-text text-clip">手机号码</div>
+					<div class="input-box"><input v-model="phone" type="number" placeholder="11位手机号码" /></div>
+				</div>
+				<div class="reg-input-item">
+					<div class="label-text text-clip">短信验证</div>
+					<div class="input-box" style="width: 40%;"><input v-model="smsNumber" type="number" placeholder="请输入验证码" /></div>
+					<div class="get-sms" id="smscode">{{notice}}</div>
+				</div>
+				
+				
+				<!-- login-button -->
+				<div class="login-btn" style="width: 100%;">
+					<div class="agreent-box">
+						<div @tap="read" class="check-box iconfont1 " :class="!isread ? 'icon-non-selected':'icon-selected'"><input type="checkbox" v-model="isread" style="display: none;" /></div>
+						<div class="agreenment-policy">请阅读<span id="agreenment" class="agreenment ">《用户协议》</span>和<span id="policy" class="policy">《隐私政策》</span></div>
+					</div>
+					<button type="button" id="reg-btn" class="mui-btn mui-btn-blue mui-btn-block">立 即 注 册</button>
 				</div>
 				
 			</div>
-			
-			
-			<div class="mui-content-padded">
-				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">注 册</button>
-				
-				<div id="notice">
-					 说明: 注册类型中，'子账号' 是指在两票系统中已经存在医院或企业账号的情况下，新增其他角色账号。'首账号' 是指在两票系统中不存在医院或企业账号的情况下，首次注册系统账号；'邀请码' 是在注册子账号的时候需要，可以在你所在单位的两票系统中获取邀请码。
-				</div>
-			</div>
-			
 		</div>
 		
 		
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/vue.js"></script>
-		<script src="../../js/lib/picker/mui.picker.min.js"></script>
-		<script src="../../js/lib/picker/mui.poppicker.js"></script>
-		<script src="../../js/my/code.js"></script>
 		<script src="../../js/api.js"></script> 
 		<script src="../../js/app.js"></script> 
 		<script type="text/javascript">
@@ -100,40 +67,24 @@
 			var vm = new Vue({
 				el:'#app',
 				data:{
+					isread: false,
 					policy:false,
 					sending:false,
 					countDown:90,
 					notice:"获取验证码",
 					code:'', 	//图片验证码
-					//注册类型
-					regType: [{
-						value: 1,
-						text: '子账号'
-					}, {
-						value: 2,
-						text: '首账号'
-					}],
-					regTypeValue: 0,
-					regTypeText: '',
-					invitation : '',
 					account:'',
-					nickname : '',
-					email : '',
 					password:'',
-					picNumber:'',
 					phone:'',
 					confirmPhone:'',
 					smsNumber:''
+				},
+				methods:{
+					read(){
+						this.isread = !this.isread;
+					},
 				}
 			});
-			
-			// 更新图片验证码
-			draw(); //首次执行
-			var canvas = document.getElementById('canvas');
-			canvas.addEventListener('tap',function(){
-				draw();
-			});  
-			
 			
 			mui.plusReady(function () {
 				//重写mui.back
@@ -153,40 +104,12 @@
 					
 				}
 				
-				// 跳转到用户协议和隐私政策
-				document.getElementById('agreement').addEventListener("tap",function(){
-					var win = '../search-tool/embed.html';
-					var title = "用户协议";
-					var href = "https://yxt.feiruide.cn/index.php/user/agreement"
-					// 创建窗口
-					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
-					ws.show('pop-in');
-				})
-				document.getElementById('private').addEventListener("tap",function(){
-					var win = '../search-tool/embed.html';
-					var title = "隐私政策";
-					var href = "https://yxt.feiruide.cn/index.php/user/private"
-					// 创建窗口
-					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
-					ws.show('pop-in');
-				})
-				
-				
-				// 选择注册类型
-				var picker = new mui.PopPicker(),setData = vm.regType;
-				document.getElementById('choose-reg').addEventListener('tap',function(){
-					picker.setData(setData);
-					picker.pickers[0].setSelectedIndex(0);
-					picker.show(function(item){
-						value = item[0];
-						vm.regTypeText = value.text;
-						vm.regTypeValue = value.value;
-					});
-				})
-				
 				// 获取短信验证码
-				var sms = document.getElementById('smsCode');
+				var sms = document.getElementById('smscode');
 				sms.addEventListener('tap',function(){
+					if(vm.sending){
+						return;
+					}
 					// 判断手机号是否正确
 					if( !vm.phone ){
 						mui.toast('请输入手机号');
@@ -198,10 +121,6 @@
 						return;
 					}
 					
-					if(!vm.picNumber){
-						mui.toast('请输入图片验证码');
-						return;
-					}
 					// 发送验证码
 					var res = mui.http_post(API.SMS_CODE,{mobile:vm.phone});
 					res.then(res=>{
@@ -215,7 +134,7 @@
 						}
 					})
 					
-		
+						
 					vm.confirmPhone = vm.phone;
 					vm.sending = true;
 					var time = vm.countDown; 
@@ -227,25 +146,36 @@
 							vm.countDown = 90;
 							clearInterval(setInt);
 						}else{
-							vm.countDown = --time;
+							vm.notice = --time+'秒后可重发';
 						}
 					},1000)
 				})
 				
 				
-			    // 提交登录
-			    var submit = document.getElementById('login');
-			    submit.addEventListener('tap',function(){
-					if(!vm.policy){
+				// 跳转到用户协议和隐私政策
+				document.getElementById('agreenment').addEventListener("tap",function(){
+					var win = '../search-tool/embed.html';
+					var title = "用户协议";
+					var href = "https://yxt.feiruide.cn/index.php/user/agreement"
+					// 创建窗口
+					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+					ws.show('pop-in');
+				})
+				document.getElementById('policy').addEventListener("tap",function(){
+					var win = '../search-tool/embed.html';
+					var title = "隐私政策";
+					var href = "https://yxt.feiruide.cn/index.php/user/private"
+					// 创建窗口
+					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+					ws.show('pop-in');
+				})
+				
+				// 注册提交
+				document.getElementById('reg-btn').addEventListener('tap',function(){
+					if(!vm.isread){
 						mui.toast('请阅读《用户协议》及《隐私政策》')
 						return;
 					}
-			    	// 判断输入值
-					if(!vm.regTypeValue){
-						mui.toast('请选择注册类型');
-						return;
-					}
-					
 					if( !vm.account ){
 						mui.toast('请输入用户名');
 						return;
@@ -256,18 +186,6 @@
 						mui.toast('用户名格式错误');
 						return;
 					}
-					
-					if( !vm.email ){
-						mui.toast('请输入邮箱');
-						return;
-					}
-					
-					let emailPatter = new RegExp(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/);
-					if (!emailPatter.test(vm.email)) {
-						mui.toast('邮箱格式错误');
-						return;
-					}
-					
 					if( !vm.password ){
 						mui.toast('请输入密码');
 						return;
@@ -285,28 +203,12 @@
 					}
 					
 					var reg = new RegExp(/^1\d{10}$/);
-				    if(!reg.test(vm.phone)) {
+					if(!reg.test(vm.phone)) {
 						mui.toast("手机号格式错误");
 						return;
-				    }
-					
-					if( !vm.code ){
-						mui.toast('请输入手机号');
-						return;
 					}
-					
-					if(!vm.picNumber){
-						mui.toast('请输入图片验证码');
-						return;
-					}
-					
-					if( vm.code != vm.picNumber.toLowerCase() ){
-						mui.toast('图片验证码错误');
-						return;
-					}
-					
 					if(!vm.smsNumber){
-						mui.toast('请输入短信验证码');
+						mui.toast('请输入验证码');
 						return;
 					}
 					if( !vm.confirmPhone){
@@ -317,22 +219,16 @@
 					if(vm.phone != vm.confirmPhone){
 						mui.alert('输入手机号与接收短信验证码手机号不一致，请用当前手机号重新获取短信验证码','提示','确认',function (e) {
 						   e.index
-						},'div');
+						});
 						return;
 					}
 					
-					var params = {
-						regType : vm.regTypeValue,
-						email : vm.email,
+					let params = {
 						account:vm.account,
 						password:vm.password,
-						invitationCode : vm.invitation,
 						phone:vm.phone,
 						smsCode:vm.smsNumber,
-						nickName : vm.nickname
-					};
-					
-					
+					}
 					plus.nativeUI.showWaiting();
 					var res = mui.http_post(API.REGISTER,params);
 					plus.nativeUI.closeWaiting();
@@ -350,11 +246,8 @@
 					
 				})
 				
-				
 			
 			})
-			
-			
 		</script>
 	</body>
 

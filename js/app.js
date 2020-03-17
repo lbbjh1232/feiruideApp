@@ -806,8 +806,8 @@
 	}
 	
 	
-	// 微信登录
-	$.weLogin = function(auth,uid){
+	// wechat bind
+	$.weBind = function(auth,uid){
 		auth.login(function(){
 			auth.getUserInfo(function(){
 				var nickname=auth.userInfo.nickname||auth.userInfo.name||auth.userInfo.miliaoNick;
@@ -843,6 +843,65 @@
 			
 		});
 	}
+	
+	// wechat fast login
+	$.weLogin = function(auth,fire){
+		auth.login(function(){
+			auth.getUserInfo(function(){
+				var openid = auth.userInfo.openid;
+				var unionid = auth.userInfo.unionid;
+				let params = {
+					openid,
+					unionid,
+					deviceId : $.getUuid(),
+					clientId : plus.storage.getItem('clientid') != null ? plus.storage.getItem('clientid') : ''
+				}
+				let res = $.http_post(API.LOGIN_WECHAT,params);
+				res.then(res=>{
+					if(res.code == 200){
+						$.toast('登录成功');
+						//设置本地数据缓存
+						plus.storage.setItem('accountInfo',JSON.stringify(res.data));
+						setTimeout(function(){
+							$.back(fire);
+						},800);
+					}else{
+						$.alert(res.message);
+					}
+				})
+				
+			},function(e){
+				plus.nativeUI.alert("获取用户信息失败！",null,"微信登录");
+				
+			});
+		},function(e){
+			plus.nativeUI.alert("认证失败",null,"认证提示");
+		});
+	}
+	
+	// change statusBar style
+	$.changeStatusBar = function(style,backgroundColor){
+		plus.navigator.setStatusBarBackground(backgroundColor ==undefined ? '#3383FC':backgroundColor);
+		plus.navigator.setStatusBarStyle(style == undefined ?'light':style);
+	}
+	
+	$.afterBack = null;
+	
+	//rewrite mui.back
+	$.back = function(callback){
+		// close current window 
+		let win = plus.webview.currentWebview();
+		win.close();
+		
+		// execute after function
+		($.afterBack != null && typeof $.afterBack ==='function' ) ? $.afterBack():null;
+		(callback != null && typeof callback ==='function' ) ? callback():null;
+		
+		// after $.after execute ,then assign it to null
+		$.afterBack = null;
+		
+	}
+	
 	
 })(mui)
 

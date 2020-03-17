@@ -1,4 +1,4 @@
- html,.mui-content{
+ html,body,.mui-content{
 	background: #FFFFFF ;
 }
 .area {
@@ -128,7 +128,7 @@
 label{
 	font-size: 1.4rem;
 }
-input[type=text],input[type=password]{
+input[type=text],input[type=password],input[type=number]{
 	font-size: 16px;
 	margin: 0;
 	padding: 0;
@@ -238,5 +238,59 @@ input::-webkit-input-placeholder{
 }
 .icon-wechat::before{
 	font-size: 30px;
+}
+.agreent-box{
+	width: 100%;
+	margin: 0px auto 10px;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.check-box{
+	line-height: 25px;
+}
+.agreenment-policy{
+	font-size: 14px;
+}
+.agreenment ,.policy{
+	color: #00BFFF;
+}
+
+/* 注册 */
+.reg-box{
+	width: 90%;
+	margin: 30px auto 0;
+}
+.reg-input-item{
+	width: 100%;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #E8E8E8;
+	align-items: center;
+	margin-bottom: 18px;
+	justify-content: space-between;
+}
+/* .reg-input-item > div{
+	flex-shrink: 0;
+} */
+.label-text{
+	width: 30%;
+	font-size: 16px;
+}
+.reg-input-item .input-box{
+	width: 70%;
+}
+.reg-input-item .input-box > input::-webkit-input-placeholder{
+	text-align: right;
+}
+.get-sms{
+	font-size: 16px;
+	width: 30%;
+	text-align: right;
+	color: #00BFFF;
 }
 

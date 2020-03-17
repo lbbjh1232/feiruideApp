@@ -9,6 +9,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-selected::before{
+	content: "\e626";
+	font-size: 20px;
+	color: #00BFFF;
+}
+.icon-non-selected::before{
+	content: "\e60c";
+	font-size: 20px;
+	color: #00BFFF;
+}
 .icon-clear::before{
 	content: "\e653";
 	color: #828282;

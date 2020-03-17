@@ -237,7 +237,7 @@
 				if(accountInfo && !accountInfo.openid){
 					//未绑定
 					lweixin?mui.confirm('确认绑定微信?','绑定提示',['取消','绑定'],function(e){
-						(e.index==1)&&mui.weLogin(lweixin,accountInfo.id)
+						(e.index==1)&&mui.weBind(lweixin,accountInfo.id)
 					}):plus.nativeUI.alert('当前环境不支持微信绑定操作');
 				}else{
 					// 解绑

@@ -104,12 +104,8 @@
 			
 		
 			mui.plusReady(function () {
-				mui.changeStatusBar('dark','#FFFFFF');
-				
-				//rewrite mui.afterBack
-				mui.afterBack = function(){
-					mui.changeStatusBar();
-				} 
+
+				mui.statusAndSetAfterBack('dark','#ffffff');
 				
 				let fire = function(){
 					var myview = plus.webview.getWebviewById('html/my.html');
@@ -131,7 +127,7 @@
 					var title = "用户协议";
 					var href = "https://yxt.feiruide.cn/index.php/user/agreement"
 					// 创建窗口
-					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+					var ws = plus.webview.create(win,'embed',{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href,status:1})
 					ws.show('pop-in');
 				})
 				document.getElementById('policy').addEventListener("tap",function(){
@@ -139,7 +135,7 @@
 					var title = "隐私政策";
 					var href = "https://yxt.feiruide.cn/index.php/user/private"
 					// create window
-					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+					var ws = plus.webview.create(win,'embed',{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href,status:1})
 					ws.show('pop-in');
 				})
 				

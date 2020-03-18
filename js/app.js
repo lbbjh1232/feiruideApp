@@ -791,7 +791,8 @@
 	// 发送分享
 	 $.doShare = function(srv, msg){
 		srv.send(msg, function(){
-			console.log('分享到"'+srv.description+'"成功！');
+			mui.toast('分享成功');
+			
 		}, function(e){
 			console.log('分享到"'+srv.description+'"失败: '+JSON.stringify(e));
 		});
@@ -808,6 +809,7 @@
 	
 	// wechat bind
 	$.weBind = function(auth,uid){
+		plus.nativeUI.showWaiting()
 		auth.login(function(){
 			auth.getUserInfo(function(){
 				var nickname=auth.userInfo.nickname||auth.userInfo.name||auth.userInfo.miliaoNick;
@@ -822,6 +824,7 @@
 					unionid
 				}
 				let res = $.http_post(API.BAND_WECHAT,params);
+				plus.nativeUI.closeWaiting();
 				res.then(res=>{
 					if(res.code == 200){
 						$.toast('绑定成功');
@@ -836,16 +839,18 @@
 				})
 				
 			},function(e){
+				plus.nativeUI.closeWaiting();
 				plus.nativeUI.alert("获取用户信息失败！",null,"绑定");
 				
 			});
 		},function(e){
-			
+			plus.nativeUI.closeWaiting();
 		});
 	}
 	
 	// wechat fast login
 	$.weLogin = function(auth,fire){
+		plus.nativeUI.showWaiting('登录中',{width:'20%'})
 		auth.login(function(){
 			auth.getUserInfo(function(){
 				var openid = auth.userInfo.openid;
@@ -857,6 +862,7 @@
 					clientId : plus.storage.getItem('clientid') != null ? plus.storage.getItem('clientid') : ''
 				}
 				let res = $.http_post(API.LOGIN_WECHAT,params);
+				plus.nativeUI.closeWaiting();
 				res.then(res=>{
 					if(res.code == 200){
 						$.toast('登录成功');
@@ -871,10 +877,11 @@
 				})
 				
 			},function(e){
+				plus.nativeUI.closeWaiting();
 				plus.nativeUI.alert("获取用户信息失败！",null,"微信登录");
-				
 			});
 		},function(e){
+			plus.nativeUI.closeWaiting();
 			plus.nativeUI.alert("认证失败",null,"认证提示");
 		});
 	}
@@ -885,8 +892,8 @@
 		plus.navigator.setStatusBarStyle(style == undefined ?'light':style);
 	}
 	
-	$.afterBack = null;
-	
+	//post operation of back function 
+	$.afterBack =null
 	//rewrite mui.back
 	$.back = function(callback){
 		// close current window 
@@ -894,11 +901,59 @@
 		win.close();
 		
 		// execute after function
-		($.afterBack != null && typeof $.afterBack ==='function' ) ? $.afterBack():null;
-		(callback != null && typeof callback ==='function' ) ? callback():null;
+		(  $.afterBack != null && typeof $.afterBack ==='function' ) ? $.afterBack():null;
+		
+		(callback != undefined && typeof callback ==='function' ) ? callback():null;
 		
 		// after $.after execute ,then assign it to null
 		$.afterBack = null;
+	}
+	
+	$.statusAndSetAfterBack = function(currentStyle,currentColor){
+		// judge pre-page statusStyle
+		let preStyle = plus.navigator.getStatusBarStyle(); //light or dark
+		let preColor = plus.navigator.getStatusBarBackground(); //color 
+		
+		if(currentStyle == undefined || currentColor == undefined){return;}
+		
+			//set after-back function
+			$.afterBack = function(){
+				$.changeStatusBar(preStyle,preColor);
+			} 
+		
+		// then change current-page statusStyle
+		$.changeStatusBar(currentStyle,currentColor);
+		
+	}
+	
+	
+	// rewrite mui.openWindow
+	let OLD_OPEN_WINDOW = $.openWindow;
+	
+	// proposition operation of openWindow function
+	$.beforeOpenWindow = null;
+	
+	$.openWindow = function(style){
+		($.beforeOpenWindow != null && typeof $.beforeOpenWindow ==='function' ) ? $.beforeOpenWindow():null;
+		
+		OLD_OPEN_WINDOW(style);
+	}
+	
+	// if off-line then display login page
+	$.loginPageShow = function(){
+		let accountInfo = plus.storage.getItem('accountInfo');
+		if(!accountInfo){
+			$.openWindow({
+				url : '/html/my/login.html',
+				id : 'login'
+			})
+			throw "error";
+		}
+		return;
+	}
+	let floatWin;
+	// create float window
+	$.floatWindow = function(url,style,extras){
 		
 	}
 	

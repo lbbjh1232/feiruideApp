@@ -16,27 +16,23 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">账号验证</h1>
+			<h1 class="mui-title" style="color: gray;">手机绑定</h1>
 		</header>
 		<div class="mui-content" id="app">
-			<form id='login-form' class="mui-input-group">
-				
-				<div class="mui-input-row">
-					<label>+86</label>
-					<input id='phone' type="number" v-model="phone" class="mui-input" placeholder="请输入手机号">
+	
+			<div class="reg-box">
+				<div class="reg-input-item">
+					<div class="label-text text-clip">+86</div>
+					<div class="input-box"><input v-model="phone" type="number" placeholder="11位手机号码" /></div>
 				</div>
-				
-				<div class="mui-input-row">
-					<label>验证码</label>
-					<input id='smsInput' type="text" v-model="smsNumber" class="code" placeholder="请输入短信验证码">
-					<div id="smsCode" v-show="!sending" >{{notice}}</div>
-					<div class="sms-sending" v-show="sending" >{{countDown}}s</div>
+				<div class="reg-input-item">
+					<div class="label-text text-clip">短信验证</div>
+					<div class="input-box" style="width: 40%;"><input v-model="smsNumber" type="number" placeholder="请输入验证码" /></div>
+					<div class="get-sms" id="smscode">{{notice}}</div>
 				</div>
-			</form>
-			
-			
-			<div class="mui-content-padded" style="padding-top: 15px;">
-				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">确 定</button>
+				<div class="login-btn" style="width: 100%;">
+					<button type="button" id="login" class="mui-btn mui-btn-blue mui-btn-block">绑 定</button>
+				</div>
 			</div>
 			
 		</div>
@@ -62,21 +58,22 @@
 					oldPhone : '',
 					uid : ''
 				}
-			});
+			}); 
 			mui.plusReady(function () {
-				//重写mui.back
-				var new_back = function(){
+				mui.statusAndSetAfterBack('dark','#ffffff');
+				
+				var new_back = function(){ 
 					var old_back = mui.back;
+					old_back();
 					var parent =plus.webview.getWebviewById('setting');
 					mui.fire(parent,'refresh',{phone:vm.phone});
-					old_back();
 				}
 				
 				vm.uid = mui.currentWebview.uid;
 				
 
 				// 获取短信验证码
-				var sms = document.getElementById('smsCode');
+				var sms = document.getElementById('smscode');
 				sms.addEventListener('tap',function(){
 					// 判断手机号是否正确
 					if( !vm.phone ){
@@ -112,7 +109,7 @@
 							vm.countDown = 90;
 							clearInterval(setInt);
 						}else{
-							vm.countDown = --time;
+							vm.notice = --time+'秒后可重发';
 						}
 					},1000)
 				})

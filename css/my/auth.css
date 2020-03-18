@@ -84,4 +84,17 @@
 	font-size: 1.6rem;
 	margin-top: 10px;
 }
-
+#login-form{
+	padding-top: 10px;
+}
+.reg-input-item .input-box > input::-webkit-input-placeholder{
+	text-align: left;
+}
+.mui-btn-blue{
+	border: 1px solid #007aff;
+	background-color: #007aff;
+}
+.reg-input-item{
+	margin-bottom: 5px;
+	margin-top: 5px;
+}

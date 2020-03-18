@@ -19,7 +19,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">身份认证</h1>
+			<h1 class="mui-title" style="color: black">身份认证</h1>
 		</header>
 		<div class="mui-content" id="app" v-cloak>
 			<!-- 步骤条 -->
@@ -74,16 +74,16 @@
 						<div class="notice-item">6、若是需要进行新药申报的个人用户，请选择医药代表。</div>
 						
 							
-						<form id='login-form' class="mui-input-group">
-							<div class="mui-input-row">
-								<label>认证角色</label>
-								<input id='choose-role' type="text"  readonly v-model="roleText"  class="mui-input" placeholder="选择认证角色">
+						<form id='login-form' >
+							<div class="reg-input-item">
+								<div class="label-text text-clip">认证角色</div>
+								<div class="input-box"><input id='choose-role' v-model="roleText" readonly type="text" placeholder="选择认证角色" /></div>
+							</div>
+							<div class="reg-input-item">
+								<div class="label-text text-clip">单位名称</div>
+								<div class="input-box"><input  type="text" v-model="company"  class="mui-input" placeholder="输入完整单位名称"></div>
 							</div>
 							
-							<div class="mui-input-row">
-								<label>单位名称</label>
-								<input  type="text" v-model="company"  class="mui-input" placeholder="输入完整单位名称">
-							</div>
 						</form>
 						
 						<button type="button" id="next-account" class="mui-btn mui-btn-blue">下一步，完善个人信息</button>
@@ -94,20 +94,20 @@
 						<div class="notice-title">个人信息</div>
 						<div class="account-title">身份证信息:</div>
 						<form  class="mui-input-group" style="margin-top: 3px;">
-							<div class="mui-input-row">
-								<label>真实姓名</label>
-								<input  type="text"  v-model="name"  class="mui-input" placeholder="输入身份证姓名">
+							
+							<div class="reg-input-item">
+								<div class="label-text text-clip">真实姓名</div>
+								<div class="input-box"><input  type="text" v-model="name"  class="mui-input" placeholder="输入身份证姓名"></div>
+							</div>
+							<div class="reg-input-item">
+								<div class="label-text text-clip">证件号码</div>
+								<div class="input-box"><input  type="text" v-model="code"  class="mui-input" placeholder="输入身份证号码"></div>
+							</div>
+							<div class="reg-input-item">
+								<div class="label-text text-clip">到期时间</div>
+								<div class="input-box"><input id='endTime' v-model="endTime" readonly type="text" placeholder="选择到期时间" /></div>
 							</div>
 							
-							<div class="mui-input-row">
-								<label>证件号码</label>
-								<input  type="text" v-model="code"  class="mui-input" placeholder="输入身份证号码">
-							</div>
-							
-							<div class="mui-input-row">
-								<label>到期时间</label>
-								<input id="endTime" type="text" v-model="endTime"  class="mui-input" placeholder="选择到期时间">
-							</div>
 						</form>
 						
 						<div class="account-title">身份证照片:</div>
@@ -121,7 +121,7 @@
 						
 						<div class="mui-row">
 							<div class="mui-col-sm-3 mui-col-xs-3">
-								<button style="width: 100%;" type="button" id="pre-role" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
+								<button style="width: 100%;color: #000000;" type="button" id="pre-role" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
 							</div>
 							<div class="mui-col-sm-9 mui-col-xs-9">
 								<button type="button" id="next-company" class="mui-btn mui-btn-blue">下一步，完善单位信息</button>
@@ -137,15 +137,15 @@
 						<div class="notice-title">单位信息</div>
 						<div class="account-title">营业执照信息:</div>
 						<form  class="mui-input-group" style="margin-top: 3px;">
-							<div class="mui-input-row input-disabled">
-								<label>单位名称</label>
-								<input  type="text"  v-model="company" readonly class="mui-input" placeholder="输入单位名称">
+							<div class="reg-input-item input-disabled">
+								<div class="label-text text-clip">单位名称</div>
+								<div class="input-box"><input  type="text" readonly v-model="company"  class="mui-input" placeholder="输入完整单位名称"></div>
+							</div>
+							<div class="reg-input-item ">
+								<div class="label-text text-clip">信用代码</div>
+								<div class="input-box"><input  type="text" v-model="creditCode"  class="mui-input" placeholder="输入营业代码"></div>
 							</div>
 							
-							<div class="mui-input-row">
-								<label>信用代码</label>
-								<input  type="text" v-model="creditCode"  class="mui-input" placeholder="输入营业代码">
-							</div>
 						</form>
 						
 						<div class="account-title">营业执照（副本）照片:</div>
@@ -157,7 +157,7 @@
 						
 						<div class="mui-row">
 							<div class="mui-col-sm-3 mui-col-xs-3">
-								<button style="width: 100%;" id="pre-account" type="button" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
+								<button style="width: 100%;color: #000000;" id="pre-account" type="button" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
 							</div>
 							<div class="mui-col-sm-9 mui-col-xs-9">
 								<button type="button" id="next-submit" class="mui-btn mui-btn-blue">提交审核</button>
@@ -496,6 +496,7 @@
 		mui.init();
 		
 		mui.plusReady(function () {
+			mui.statusAndSetAfterBack('dark','#ffffff');
 			
 			new_back = function(){
 				var old_back = mui.back;

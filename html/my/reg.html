@@ -87,22 +87,6 @@
 			});
 			
 			mui.plusReady(function () {
-				//重写mui.back
-
-				var new_back = function(){
-					var old_back = mui.back;
-					var myview = plus.webview.getWebviewById('html/my.html');
-					var messageview = plus.webview.getWebviewById('html/message.html');
-					var friendview = plus.webview.getWebviewById('html/friend.html');
-					var indexview = plus.webview.getLaunchWebview();
-					mui.fire(myview,'loginLoad',{id:1});	//重载个人中心
-					mui.fire(indexview,'loginLoad');	//重载消息总数
-					mui.fire(messageview,'loginLoad');	//重载
-					mui.fire(friendview,'loginLoad');	//重载好友
-					old_back();
-					// return true;
-					
-				}
 				
 				// 获取短信验证码
 				var sms = document.getElementById('smscode');
@@ -158,7 +142,7 @@
 					var title = "用户协议";
 					var href = "https://yxt.feiruide.cn/index.php/user/agreement"
 					// 创建窗口
-					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+					var ws = plus.webview.create(win,'embed',{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href,status:1})
 					ws.show('pop-in');
 				})
 				document.getElementById('policy').addEventListener("tap",function(){
@@ -166,7 +150,7 @@
 					var title = "隐私政策";
 					var href = "https://yxt.feiruide.cn/index.php/user/private"
 					// 创建窗口
-					var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+					var ws = plus.webview.create(win,'embed',{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href,status:1})
 					ws.show('pop-in');
 				})
 				
@@ -231,8 +215,8 @@
 					}
 					plus.nativeUI.showWaiting();
 					var res = mui.http_post(API.REGISTER,params);
-					plus.nativeUI.closeWaiting();
 					res.then(res=>{
+						plus.nativeUI.closeWaiting();
 						if(res.code == 200){
 							mui.toast('注册成功');
 							setTimeout(function(){

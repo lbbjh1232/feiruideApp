@@ -23,7 +23,7 @@
 			}
 			.menu-item-box .beizhu{
 				padding-right: 20px;
-				font-size: 12px;
+				font-size: 14px;
 				color: gray;
 			}
 			.setting-title{
@@ -32,7 +32,6 @@
 				font-size: 14px;
 				color: gray;
 			}
-			
 			
 		</style>
 
@@ -189,7 +188,7 @@
 				if(!vm.accountInfo.phone){
 					mui.openWindow({
 						url : 'account-auth.html',
-						id : 'account-auth',
+						id : 'accountauth',
 						extras : {
 							uid : vm.accountInfo.id
 						}
@@ -199,7 +198,7 @@
 						if(e.index == 1){
 							mui.openWindow({
 								url : 'account-auth.html',
-								id : 'account-auth',
+								id : 'accountauth',
 								extras : {
 									uid : vm.accountInfo.id,
 									phone : vm.accountInfo.phone,

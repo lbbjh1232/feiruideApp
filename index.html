@@ -45,7 +45,7 @@
 				</div>
 				
 					
-				<div v-show="more" class="catelog-item catelog-url" data-href="http://cdsylbz.chengdu.gov.cn/cdsi_wxgzh/html/threeCatalog/threeCatalog.html" data-title="医保目录查询">
+				<div v-show="more" class="catelog-item" id="yibao" data-title="医保目录查询">
 					<div class="catelog-log iconfont1 icon-jibao"></div>
 					<div class="catelog-name">医保目录</div>
 				</div>
@@ -116,7 +116,7 @@
 			
 			<div class="divided-module"></div>
 			
-			<div v-show="['6','7','11'].indexOf(viewRoleId) != -1">
+			<div v-show="['6','7','11','12'].indexOf(viewRoleId) != -1">
 				<div class="nav-title">药品两票</div>
 				<ul class="mui-table-view mui-grid-view mui-grid-9" id="drug">
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3">
@@ -179,7 +179,7 @@
 			</ul>
 			</div>
 			
-			<div v-show=" '6,7,9'.indexOf(viewRoleId) != -1">
+			<div v-show=" ['6','7','9','11','12'].indexOf(viewRoleId) != -1">
 				<div class="nav-title">检验报告</div>
 				<ul class="mui-table-view mui-grid-view mui-grid-9" id="checkReport">
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3"  >
@@ -191,11 +191,11 @@
 				</ul>
 			</div>
 			
-			<div v-show=" '6,7'.indexOf(viewRoleId) != -1">
+			<div v-show=" ['6','7','12'].indexOf(viewRoleId) != -1">
 				<div class="nav-title">药品采购</div>
 				<ul  class="mui-table-view mui-grid-view mui-grid-9" id="drugBuy">
 					
-					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" v-show="'7'.indexOf(viewRoleId) != -1">
+					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" >
 						<a href="javascript:void(0)" data-roleid="6,7" data-limit="2" data-href="html/stock/index.html">
 							<span class="mui-icon iconfont1 icon-huoyuan"></span>
 							<div class="mui-media-body">货源查询</div>
@@ -371,11 +371,11 @@
 				
 				var loadView = function(){
 					var accountInfo = plus.storage.getItem('accountInfo');
-					if(accountInfo != null){
+					if(accountInfo != null && (JSON.parse( accountInfo )).roleid != 12 ){
 						vm.accountInfo = JSON.parse( accountInfo );
 						vm.viewRoleId = (JSON.parse( accountInfo )).roleid.toString();
 					}else{
-						vm.accountInfo = '';
+						vm.accountInfo = accountInfo == null ? '':JSON.parse( accountInfo );
 						vm.viewRoleId =  plus.storage.getItem('role') || '6';
 					}
 				}
@@ -401,98 +401,110 @@
 				document.addEventListener("plusready",function() {
 					var self = plus.webview.currentWebview();
 					if(plus.storage.getItem("launchFlag") == null ){
-						// 显示遮罩层
-						self.setStyle({mask:"rgba(0,0,0,0.5)"});
 						
-						var view = new plus.nativeObj.View('agreement',
-							{top:'100px',left:'10%',height:'330px',width:'80%',backgroundColor:"rgb(255,255,255)"},
-							[{tag:"font",text:"用户协议及隐私政策",position:{top:"20px",height:"wrap_content",width:"100%"},textStyles:{size:"18px",align:"center",color:"rgba(0,0,0,.8)"}},
-							{tag:"font",text:"您在使用药械e家产品或服务前，请认真阅读并充分理解《用户协议》、《隐私政策》的相关说明:",position:{top:"50px",height:"wrap_content",left:"10%",width:"80%"},textStyles:{size:"14px",align:"left",color:"rgb(119,136,153)",whiteSpace:"normal",family:"微软雅黑"}},
-
-							{tag:"font",text:'说明：您点击"拒绝"，您将无法完成注册及无法使用药械e家的产品和服务；您点击"同意"，视为您同意《用户协议》和《隐私政策》的完整内容。',position:{top:"110px",height:"wrap_content",left:"10%",width:"80%"},textStyles:{size:"14px",align:"left",color:"rgb(119,136,153)",whiteSpace:"normal",family:"微软雅黑"}},
-							]);
-							view.show();
-							
-							// 添加用户协议
-							var view1 = new plus.nativeObj.View("agree",{top:"290px",left:"18%",height:"wrap_content",width:"50%"},[{tag:"font",text:"《用户协议》",position:{left:"0px",height:"30px"},textStyles:{size:"14px",align:"left",color:"rgb(30,144,255)",whiteSpace:"normal",family:"微软雅黑",decoration:"underline"}}
-							]);
-							view1.show();
-							
-							// 添加隐私政策
-							var view2 = new plus.nativeObj.View("private",{top:"320px",left:"18%",height:"wrap_content"},[{tag:"font",text:"《隐私政策》",position:{left:"0",height:"30px"},textStyles:{size:"14px",align:"left",color:"rgb(30,144,255)",whiteSpace:"normal",family:"微软雅黑",decoration:"underline"}}
-							]);
-							view2.show();
-							
-							// 添加拒绝按钮
-							var view3 = new plus.nativeObj.View("reject",{top:"370px",left:"18%",height:"wrap_content",width:"32%"});
-							view3.drawRect({borderColor:"rgb(119,136,153)",borderWidth:"1px",radius:"20px"},{left:"0",width:"100%",height:"35px"});
-							view3.drawText("拒 绝",{height:"35px",left:"0",width:"100%"},{size:"18px",align:"center",color:"rgb(119,136,153)"},"reject");
-							view3.show();
-							
-							//添加功用按钮
-							var view4 = new plus.nativeObj.View("recept",{top:"370px",left:"52%",height:"wrap_content",width:"32%"});
-							view4.drawRect({borderColor:"rgb(119,136,153)",borderWidth:"1px",radius:"20px"},{left:"0",width:"100%",height:"35px"});
-							view4.drawText("同 意",{height:"35px",left:"0",width:"100%"},{size:"18px",align:"center",color:"rgb(119,136,153)"},"reject");
-							view4.show();
-							
-							function hideInfo(){
-								view.hide()
-								view1.hide()
-								view2.hide()
-								view3.hide()
-								view4.hide()
-								self.setStyle({mask:"none"});
-							}
-							function showInfo(){
-								self.setStyle({mask:"rgba(0,0,0,0.5)"});
-								view.show()
-								view1.show()
-								view2.show()
-								view3.show()
-								view4.show()
-							}
-							
-							// 事件监听
-							var win = 'html/search-tool/embed.html';
-							view1.addEventListener("click",function(){
-								hideInfo()
-								var title = "用户协议";
-								var href = "https://yxt.feiruide.cn/index.php/user/agreement"
-								// 创建窗口
-								var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href,sign:1})
-								ws.show('pop-in');
-							},false);
-							
-							view2.addEventListener("click",function(){
-								hideInfo()
-								var title = "隐私政策";
-								var href = "https://yxt.feiruide.cn/index.php/user/private"
-								// 创建窗口
-								var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href,sign:1})
-								ws.show('pop-in');
-							},false);
-							
-							view3.addEventListener("click",function(){
-								mui.toast("必须同意之后才能继续使用该产品")
-							},false)
-							
-							view4.addEventListener("click",function(){
-								// 删除view
-								view.close()
-								view1.close()
-								view2.close()
-								view3.close()
-								view4.close()
-								self.setStyle({mask:"none"})
-								plus.storage.setItem("launchFlag","yes");
-								plus.navigator.closeSplashscreen();
-							},false)
-						
-						
-						// 用户协议或隐私政策返回后显示弹窗
-						window.addEventListener("showInfo",function(){
-							showInfo() 
+						// 创建用户协议弹窗
+						mui.floatWindow('/html/user/user-agreen.html',{
+							width: '75%',
+							height: '50%',
+							margin: 'auto',
+							background: 'rgba(0,0,0,0.8)',
+							scrollIndicator: 'none',
+							scalable: false,
+							popGesture: 'none',
 						})
+						
+						// 显示遮罩层
+						// self.setStyle({mask:"rgba(0,0,0,0.5)"});
+												
+						// var view = new plus.nativeObj.View('agreement',
+						// 	{top:'100px',left:'10%',height:'330px',width:'80%',backgroundColor:"rgb(255,255,255)"},
+						// 	[{tag:"font",text:"用户协议及隐私政策",position:{top:"20px",height:"wrap_content",width:"100%"},textStyles:{size:"18px",align:"center",color:"rgba(0,0,0,.8)"}},
+						// 	{tag:"font",text:"您在使用药械e家产品或服务前，请认真阅读并充分理解《用户协议》、《隐私政策》的相关说明:",position:{top:"50px",height:"wrap_content",left:"10%",width:"80%"},textStyles:{size:"14px",align:"left",color:"rgb(119,136,153)",whiteSpace:"normal",family:"微软雅黑"}},
+
+						// 	{tag:"font",text:'说明：您点击"拒绝"，您将无法完成注册及无法使用药械e家的产品和服务；您点击"同意"，视为您同意《用户协议》和《隐私政策》的完整内容。',position:{top:"110px",height:"wrap_content",left:"10%",width:"80%"},textStyles:{size:"14px",align:"left",color:"rgb(119,136,153)",whiteSpace:"normal",family:"微软雅黑"}},
+						// 	]);
+						// 	view.show();
+							
+						// 	// 添加用户协议
+						// 	var view1 = new plus.nativeObj.View("agree",{top:"290px",left:"18%",height:"wrap_content",width:"50%"},[{tag:"font",text:"《用户协议》",position:{left:"0px",height:"30px"},textStyles:{size:"14px",align:"left",color:"rgb(30,144,255)",whiteSpace:"normal",family:"微软雅黑",decoration:"underline"}}
+						// 	]);
+						// 	view1.show();
+							
+						// 	// 添加隐私政策
+						// 	var view2 = new plus.nativeObj.View("private",{top:"320px",left:"18%",height:"wrap_content"},[{tag:"font",text:"《隐私政策》",position:{left:"0",height:"30px"},textStyles:{size:"14px",align:"left",color:"rgb(30,144,255)",whiteSpace:"normal",family:"微软雅黑",decoration:"underline"}}
+						// 	]);
+						// 	view2.show();
+							
+						// 	// 添加拒绝按钮
+						// 	var view3 = new plus.nativeObj.View("reject",{top:"370px",left:"18%",height:"wrap_content",width:"32%"});
+						// 	view3.drawRect({borderColor:"rgb(119,136,153)",borderWidth:"1px",radius:"20px"},{left:"0",width:"100%",height:"35px"});
+						// 	view3.drawText("拒 绝",{height:"35px",left:"0",width:"100%"},{size:"18px",align:"center",color:"rgb(119,136,153)"},"reject");
+						// 	view3.show();
+							
+						// 	//添加功用按钮
+						// 	var view4 = new plus.nativeObj.View("recept",{top:"370px",left:"52%",height:"wrap_content",width:"32%"});
+						// 	view4.drawRect({borderColor:"rgb(119,136,153)",borderWidth:"1px",radius:"20px"},{left:"0",width:"100%",height:"35px"});
+						// 	view4.drawText("同 意",{height:"35px",left:"0",width:"100%"},{size:"18px",align:"center",color:"rgb(119,136,153)"},"reject");
+						// 	view4.show();
+							
+						// 	function hideInfo(){
+						// 		view.hide()
+						// 		view1.hide()
+						// 		view2.hide()
+						// 		view3.hide()
+						// 		view4.hide()
+						// 		self.setStyle({mask:"none"});
+						// 	}
+						// 	function showInfo(){
+						// 		self.setStyle({mask:"rgba(0,0,0,0.5)"});
+						// 		view.show()
+						// 		view1.show()
+						// 		view2.show()
+						// 		view3.show()
+						// 		view4.show()
+						// 	}
+							
+						// 	// 事件监听
+						// 	var win = 'html/search-tool/embed.html';
+						// 	view1.addEventListener("click",function(){
+						// 		hideInfo()
+						// 		var title = "用户协议";
+						// 		var href = "https://yxt.feiruide.cn/index.php/user/agreement"
+						// 		// 创建窗口
+						// 		var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href,sign:1})
+						// 		ws.show('pop-in');
+						// 	},false);
+							
+						// 	view2.addEventListener("click",function(){
+						// 		hideInfo()
+						// 		var title = "隐私政策";
+						// 		var href = "https://yxt.feiruide.cn/index.php/user/private"
+						// 		// 创建窗口
+						// 		var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href,sign:1})
+						// 		ws.show('pop-in');
+						// 	},false);
+							
+						// 	view3.addEventListener("click",function(){
+						// 		mui.toast("必须同意之后才能继续使用该产品")
+						// 	},false)
+							
+						// 	view4.addEventListener("click",function(){
+						// 		// 删除view
+						// 		view.close()
+						// 		view1.close()
+						// 		view2.close()
+						// 		view3.close()
+						// 		view4.close()
+						// 		self.setStyle({mask:"none"})
+						// 		plus.storage.setItem("launchFlag","yes");
+						// 		plus.navigator.closeSplashscreen();
+						// 	},false)
+						
+						
+						// // 用户协议或隐私政策返回后显示弹窗
+						// window.addEventListener("showInfo",function(){
+						// 	showInfo() 
+						// })
 					
 					}
 						
@@ -566,6 +578,15 @@
 								 autoShow:true,
 							 }
 						});
+					});
+					
+					// 医保目录查询
+					mui('.catelog-box').on('tap','#yibao',function(){
+						var title = "医保目录查询";
+						var win = '/html/drug/medical-insurance.html';
+						// 创建窗口
+						var ws = plus.webview.create(win,'medical-insurance',{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',})
+						ws.show('pop-in');
 					});
 					
 					
@@ -682,9 +703,9 @@
 							title.classList.add('slideInUp');
 							++index;
 						}else{
-							index = 0;
-						}
-						
+							index = 0;  
+						} 
+						 
 					},1200)
 					
 					//网络错误监听
@@ -695,6 +716,7 @@
 						mui.updateMessCount(true,false);
 						loadView();
 						mui.setMyId();
+						mui.paintStatus();
 					});
 					
 					//监听角色切换
@@ -777,7 +799,6 @@
 								mui.alert('登录角色受限','提示','确认',function(e){});
 								return;
 							}
-							
 						}
 						 targetNav = this.dataset.href;
 						
@@ -913,11 +934,11 @@
 						
 				// 	});
 				
-					// 使用查询
+					// 链接查询
 					mui('.catelog-box').on('tap','.catelog-url',function(){
 						var href = this.dataset.href;
 						var title = this.dataset.title;
-						var win = 'html/search-tool/embed.html';
+						var win = '/html/search-tool/embed.html';
 						// 创建窗口
 						var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
 						ws.show('pop-in');

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		
+		<script type="text/javascript">
+			link(['../../css/mui.min.css'],true);
+		</script>
+		<style type="text/css">
+			*{
+				background-color: rgb(255,255,255);
+			}
+			#app{
+				width: 100%;
+				padding: 15px;
+				box-sizing: border-box;
+			}
+			.title{
+				width: 100%;
+				text-align: center;
+				color:rgba(0,0,0,1);
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: 8px 0;
+				font-size: 18px;
+			}
+			.content{
+				margin: 20px 0;
+				font-size: 14px;
+				color:rgb(119,136,153);
+				text-align: justify;
+			}
+			.content .text{
+				padding-bottom: 8px;
+			}
+		</style> 
+		
+	</head>
+
+	<body >
+		<div id="app">
+			<div class="title">用户协议及隐私政策</div>
+			<div class="content">
+				<div class="text text1">您在使用药械e家产品或服务前，请认真阅读并充分理解《用户协议》、《隐私政策》的相关说明:</div>
+				<div class="text text2">说明：您点击"拒绝"，您将无法完成注册及无法使用药械e家的产品和服务；您点击"同意"，视为您同意《用户协议》和《隐私政策》的完整内容。</div>
+				<div class="text text3"><span>《用户协议》</span>、<span>《隐私政策》</span></div>
+			</div>
+			
+			<div class="button">
+				拒绝 同意
+			</div>
+			
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+			
+		</script>
+		
+		<script type="text/javascript">
+			// vue实例挂载
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					
+				}
+			});
+		
+			(function() {
+				
+				mui.init({
+					// swipeBack: true //启用右滑关闭功能
+				});
+				mui.plusReady(function () {
+					
+					
+				
+					
+				})
+				
+				
+			})();
+		</script>
+	</body>
+
+</html>

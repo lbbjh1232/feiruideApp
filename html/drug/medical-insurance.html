@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/iconfont.css','../../css/common.css','../../css/animate.css','../../css/picker/mui.picker.css','../../css/picker/mui.poppicker.css','../../css/drug/net-drug.css','../../css/index/index.css'],true);
+		</script>
+		<style type="text/css">
+			#data-from{
+				position: absolute;
+				right: 10px;
+				font-size: 12px;
+				color: white;
+				line-height: 44px;
+				z-index: 30;
+			}
+		</style>
+		
+	</head>
+
+	<body >
+		<div id="app">
+			<header class="mui-bar mui-bar-nav" v-cloak>
+				<a class="mui-icon mui-icon-left-nav mui-pull-left" id="go-back"></a>
+				<h1 class="mui-title" >医保目录查询</h1>
+				<span id="data-from">切换: {{currentText}}</span>
+			</header>
+		</div>
+		
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+			
+		</script>
+		
+		<script type="text/javascript">
+			// vue实例挂载
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					currentText : '成都市',
+					currentValue : 'http://cdsylbz.chengdu.gov.cn/cdsi_wxgzh/html/threeCatalog/threeCatalog.html'
+				}
+			});
+			var embed,ws;
+			
+			function createEmbed(href){
+				var topoffset='44px';
+				plus.nativeUI.showWaiting('',{style:'black',modal:false,background:'rgba(0,0,0,0)'});
+				embed=plus.webview.create(href,'embed',{top:topoffset,bottom:'0px',position:'dock',dock:'bottom',bounce:'vertical'});
+				ws.append(embed);
+				embed.addEventListener('loaded',function(){
+					plus.nativeUI.closeWaiting();
+				},false);
+				embed.addEventListener('loading',function(){
+					plus.nativeUI.showWaiting('',{style:'black',modal:false,background:'rgba(0,0,0,0)'});
+				},false);
+			}
+			
+			(function() {
+				
+				mui.init({
+					// swipeBack: true //启用右滑关闭功能
+				});
+				mui.plusReady(function () {
+				
+					mui.statusAndSetAfterBack('light','#3383FC');
+					
+					ws = plus.webview.currentWebview();
+					createEmbed(vm.currentValue);
+					
+					document.getElementById('data-from').addEventListener('tap',function(){
+						// 创建悬浮选择框
+						let url = "medical-insurance-area-select.html"
+						mui.floatWindow(url,{
+							width: '70%',
+							height: '40%',
+							margin: 'auto',
+							background: 'rgba(0,0,0,0.8)',
+							scrollIndicator: 'none',
+							scalable: false,
+							popGesture: 'none',
+						})
+					});
+					window.addEventListener('select',function(e){
+						vm.currentText = e.detail.text;
+						vm.currentValue = e.detail.value;
+						embed.loadURL(e.detail.value);
+					})
+					
+					// 重写mui.back
+					var old_back = mui.back;
+					mui.back = function(){
+						plus.nativeUI.closeWaiting();
+						old_back()
+					}
+					//控制页面回退
+					let time = 0;
+					document.getElementById('go-back').addEventListener('tap',function(){
+							embed.canBack(function(e){
+								if(e.canBack && time < 5 ){
+									time++;
+									embed.back();
+								}else{
+									mui.back();
+								}
+							})
+							
+					})
+					
+					
+					
+				})
+				
+				
+			})();
+		</script>
+	</body>
+
+</html>

@@ -5,7 +5,7 @@ var util = {
 		subpages: ["html/message.html","html/friend.html", "html/my.html"]
 	},
 	/**
-	 *  简单封装了绘制原生view控件的方法
+	 *  简单封装了绘制原生view控件的方法 
 	 *  绘制内容支持font（文本，字体图标）,图片img , 矩形区域rect
 	 */
 	drawNative: function(id, styles, tags) {
@@ -149,7 +149,7 @@ var util = {
 		switch(currIndex){
 			case 0:
 				text = '药械e家';
-				if(accountInfo == null ){
+				if(accountInfo == null || ( accountInfo != null && JSON.parse(accountInfo).roleid == 12)  ){
 					buttons.push({
 						text:'切换角色',
 						width:"80px",
@@ -189,7 +189,7 @@ var util = {
 					float : 'right',
 					onclick : function(){
 						mui.openWindow({
-							url : 'html/my/setting.html',
+							url : '/html/my/setting.html',
 							id : 'setting',
 						})
 					},

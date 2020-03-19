@@ -94,13 +94,13 @@
 					
 					mui.alert(msg,'提示','确认',function (e) {
 						plus.nativeUI.showWaiting();
-						
 						for(var i=0,len = allWebview.length;i<len;i++){
 							var current = allWebview[i];
 							if( navView.indexOf(current) == -1 ){
 								plus.webview.close(current);		//关闭当前页
 							}
 						}
+						
 						// 更改状态栏
 						mui.changeStatusBar();
 						

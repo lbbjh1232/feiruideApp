@@ -20,7 +20,7 @@
  
 	<body> 
 		<div class="mui-content" id="app">
-			<!-- 个人信息展示 --> 
+			<!-- 个人信息展示 -->  
 			
 			<div class="userinfo-box" v-cloak>
 				<div class="userinfo-left">
@@ -28,7 +28,7 @@
 				</div>
 				<div class="userinfo-right">
 					<div class="username">
-						{{accountInfo.username}}
+						{{ accountInfo.openid ? accountInfo.nickname : accountInfo.username}}
 					</div>
 					<div class="companyname">
 						{{accountInfo ? accountInfo.comp_name+' 【'+accountInfo.rolename+'】':""}}

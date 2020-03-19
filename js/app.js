@@ -939,6 +939,89 @@
 		OLD_OPEN_WINDOW(style);
 	}
 	
+	// paint status : only in index page
+	$.paintStatus = function(){
+		//获取titleNView对象
+		var self = plus.webview.currentWebview(),text,views = [plus.webview.getWebviewById('html/message.html').isVisible(),plus.webview.getWebviewById('html/friend.html').isVisible(),plus.webview.getWebviewById('html/my.html').isVisible()];
+		var index = views.indexOf(true);
+		var currIndex = index != -1 ?  parseInt(index)+1 : 0 ;
+		var titleView = self.getTitleNView();
+		var buttons = [];
+		var accountInfo = plus.storage.getItem('accountInfo');
+		
+		// 添加好友
+		var addFriend = function(){
+			$.loginPageShow();
+			
+			mui.openWindow({
+				url :'/html/user/user-add.html',
+				id : '/html/user/user-add.html'
+			})
+		}
+		
+		// 切换角色
+		var switchRole = function(){
+			mui.openWindow({
+				url : '/html/user/switch-role.html',
+				id : 'switch-role.html'
+			})
+		}
+		
+		switch(currIndex){
+			case 0:
+				text = '药械e家';
+				if(accountInfo == null || ( accountInfo != null && JSON.parse(accountInfo).roleid == 12)  ){
+					buttons.push({
+						text:'切换角色',
+						width:"80px",
+						// text:'\ue60f',
+						// fontSrc:'fonts/icon.ttf',
+						fontSize : '12px',
+						float:'right',
+						onclick: switchRole
+					});
+				}
+				
+				break;
+				
+			case 1: 
+				text = '消息';
+				break;
+				
+			case 2: 
+				text = '通讯录';
+				if(accountInfo != null && JSON.parse(accountInfo).roleid != 12 ){
+					buttons.push({
+						text:'\ue75c',
+						fontSrc:'fonts/icon.ttf',
+						fontSize : '25px',
+						float:'right',
+						onclick : addFriend,
+					})
+				}
+				break;
+				
+			case 3:
+				text = '我的';
+				buttons.push({
+					text : '\ue750',
+					fontSrc : 'fonts/icon.ttf',
+					fontSize : '25px',
+					float : 'right',
+					onclick : function(){
+						mui.openWindow({
+							url : '/html/my/setting.html',
+							id : 'setting',
+						})
+					},
+				})
+				break;
+		}
+		
+		// 设置文本
+		self.setStyle({titleNView:{titleText:text,buttons:buttons}});
+	}
+	
 	// if off-line then display login page
 	$.loginPageShow = function(){
 		let accountInfo = plus.storage.getItem('accountInfo');
@@ -946,14 +1029,24 @@
 			$.openWindow({
 				url : '/html/my/login.html',
 				id : 'login'
-			})
+			});
 			throw "error";
 		}
 		return;
 	}
+	
 	let floatWin;
 	// create float window
-	$.floatWindow = function(url,style,extras){
+	$.floatWindow = function(url='',style = {},extras = {}){
+		floatWin = floatWin || plus.webview.create(url, 'float',style,extras);
+		floatWin.addEventListener('loaded', function(){
+			floatWin.show('fade-in', 100);
+			floatWin = null;
+		}, false);
+		
+		floatWin.addEventListener('maskClick',function(){
+			floatWin.close()
+		})
 		
 	}
 	

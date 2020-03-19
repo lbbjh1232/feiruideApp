@@ -35,7 +35,7 @@
 		<div class="search-box">
 			<div class="search-left">
 				<form action="" method="">
-				<input type="search" id="search" v-model="searchValue" name="name" placeholder="药品通用名" /></form><button class="mui-icon iconfont icon-sousuo" id="searchBtn"></button>
+				<input type="search" id="search" v-model="searchValue" name="name" placeholder="通用名" /></form><button class="mui-icon iconfont icon-sousuo" id="searchBtn"></button>
 			</div>
 			<div class="search-right" >
 				<span class="filter">筛选</span> <span class="mui-icon iconfont icon-shaixuan"></span>
@@ -49,7 +49,7 @@
 				<template v-for="(item,index) in searchResult">
 					<div class='drug-list-box' v-bind:data-index="index" v-cloak>
 						<div class='drug-list-left-part' >
-							<div class='text-clip'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name font-drug-color'>{{item.generic_name}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>通用名称:</span> <span class='drug-list-name font-drug-color'>{{item.generic_name}}</span></div>
 							<div class='text-clip'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>{{item.specifications}}*{{item.conversion_ratio}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>来源企业:</span> <span class='drug-list-name'>{{item.company_name}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>库存数量:</span> <span class='drug-list-name'><span class='red'>{{item.surplus_amount}}</span></span></div>
@@ -79,7 +79,7 @@
 				<div class="mui-scroll">
 					
 					<div class=''><span class='drug-list-title'>来源企业:</span> <span class='drug-list-name'>{{current.company_name}}</span></div>
-					<div class=''><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{current.generic_name}}</span></div>
+					<div class=''><span class='drug-list-title'>通用名称:</span> <span class='drug-list-name'>{{current.generic_name}}</span></div>
 					<div class=''><span class='drug-list-title'>规格:</span> <span class='drug-list-name'>{{current.specifications}}*{{current.conversion_ratio}}</span></div>
 					<div class=''><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{current.production_enterprise}}</span></div>
 					<div class=''><span class='drug-list-title'>包装:</span> <span class='drug-list-name'>{{current.packaging}}</span></div>
@@ -90,7 +90,7 @@
 						<div class='text-clip'><span class='drug-list-title'>库存数量:</span> <span class='drug-list-name red'>{{current.surplus_amount}}</span></div>
 					</div>
 					<div class='text-clip'><span class='drug-list-title'>联系电话:</span> <span class='drug-list-name blue' id="dial-phone">{{current.mobile_phone?current.mobile_phone+' (拨打电话)':''}}</span></div>
-					<div style="font-size: 12px;color: orange;text-align: center;padding-top: 10px;" id="gochat" class="go-chat iconfont1 icon-message">发消息</div>
+					<div v-show ="!(roleid==6 && cid ==current.company_id)" style="font-size: 12px;color: orange;text-align: center;padding-top: 10px;" id="gochat" class="go-chat iconfont1 icon-message">发消息</div>
 				</div>
 			</div>
 		</div>
@@ -202,6 +202,8 @@
 
 			var url =API.GET_STOCK_DRUG,params = vm.searchData;
 			params.origin = vm.currentValue;
+			params.roleid = vm.roleid;
+			params.cid = vm.cid;
 			
 			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
@@ -225,6 +227,19 @@
 				mui.networkError();
 				
 				// 切换数据来源
+				// 经营企业能看本公司的，其他经营企业不能看
+				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+				vm.roleid = accountInfo.roleid;
+				vm.cid = accountInfo.userid;
+				if(accountInfo.roleid == 6){
+					// 不是南充科伦
+					if(accountInfo.userid != 4){
+						vm.dataFrom.splice(1,1);
+					}
+					
+					
+				}
+				
 				var picker = new mui.PopPicker();
 				document.getElementById('data-from').addEventListener('tap',function(){
 					picker.setData(vm.dataFrom);

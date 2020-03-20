@@ -98,3 +98,11 @@
 	margin-bottom: 5px;
 	margin-top: 5px;
 }
+.invitation-code{
+	padding: 30px;
+}
+.invitation-code .label-text{
+	text-align: center;
+}
+
+

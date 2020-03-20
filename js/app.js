@@ -691,7 +691,6 @@
 			var number = (Math.round(percent * 100) / 100) * 100;
 			mui('#update').progressbar().setProgress(number);
 		},1000)
-		
 	}
 	
 	// app版本比较
@@ -809,8 +808,8 @@
 	
 	// wechat bind
 	$.weBind = function(auth,uid){
-		plus.nativeUI.showWaiting()
 		auth.login(function(){
+			plus.nativeUI.showWaiting()
 			auth.getUserInfo(function(){
 				var nickname=auth.userInfo.nickname||auth.userInfo.name||auth.userInfo.miliaoNick;
 				var openid = auth.userInfo.openid;
@@ -850,8 +849,8 @@
 	
 	// wechat fast login
 	$.weLogin = function(auth,fire){
-		plus.nativeUI.showWaiting('登录中',{width:'20%'})
 		auth.login(function(){
+			plus.nativeUI.showWaiting('登录中',{width:'20%'})
 			auth.getUserInfo(function(){
 				var openid = auth.userInfo.openid;
 				var unionid = auth.userInfo.unionid;
@@ -862,8 +861,8 @@
 					clientId : plus.storage.getItem('clientid') != null ? plus.storage.getItem('clientid') : ''
 				}
 				let res = $.http_post(API.LOGIN_WECHAT,params);
-				plus.nativeUI.closeWaiting();
 				res.then(res=>{
+					plus.nativeUI.closeWaiting();
 					if(res.code == 200){
 						$.toast('登录成功');
 						//设置本地数据缓存
@@ -893,9 +892,12 @@
 	}
 	
 	//post operation of back function 
-	$.afterBack =null
+	$.afterBack = null;
+	// $.beforeBack = null;
 	//rewrite mui.back
 	$.back = function(callback){
+		// (  $.beforeBack != null && typeof $.beforeBack ==='function' ) ? $.beforeBack():null;
+		
 		// close current window 
 		let win = plus.webview.currentWebview();
 		win.close();
@@ -916,10 +918,10 @@
 		
 		if(currentStyle == undefined || currentColor == undefined){return;}
 		
-			//set after-back function
-			$.afterBack = function(){
-				$.changeStatusBar(preStyle,preColor);
-			} 
+		//set after-back function
+		$.afterBack = function(){
+			$.changeStatusBar(preStyle,preColor);
+		} 
 		
 		// then change current-page statusStyle
 		$.changeStatusBar(currentStyle,currentColor);
@@ -1023,14 +1025,17 @@
 	}
 	
 	// if off-line then display login page
-	$.loginPageShow = function(){
+	$.loginPageShow = function(error){
 		let accountInfo = plus.storage.getItem('accountInfo');
 		if(!accountInfo){
 			$.openWindow({
 				url : '/html/my/login.html',
 				id : 'login'
 			});
-			throw "error";
+			
+			if(error == undefined ){
+				throw "error";
+			} 
 		}
 		return;
 	}

@@ -19,26 +19,50 @@
 			#app{
 				width: 100%;
 				padding: 15px;
-				box-sizing: border-box;
+				box-sizing: border-box; 
 			}
 			.title{
 				width: 100%;
 				text-align: center;
 				color:rgba(0,0,0,1);
-				position: absolute;
+				position: fixed;
 				top: 0;
 				left: 0;
-				padding: 8px 0;
+				padding: 15px 0;
 				font-size: 18px;
 			}
 			.content{
-				margin: 20px 0;
+				margin: 35px 0 50px;
 				font-size: 14px;
 				color:rgb(119,136,153);
 				text-align: justify;
 			}
 			.content .text{
 				padding-bottom: 8px;
+			}
+			.text3 span{
+				color: #007AFF;
+				text-decoration: underline;
+				
+			}
+			.button{
+				width: 100%;
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				padding: 20px;
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				justify-content: space-between;
+				font-size: 16px;
+			}
+			.button div{
+				width: 45%;
+				text-align: center;
+				border: 1px solid rgba(0,0,0,.2);
+				padding: 5px;
+				border-radius: 20px;
 			}
 		</style> 
 		
@@ -50,11 +74,12 @@
 			<div class="content">
 				<div class="text text1">您在使用药械e家产品或服务前，请认真阅读并充分理解《用户协议》、《隐私政策》的相关说明:</div>
 				<div class="text text2">说明：您点击"拒绝"，您将无法完成注册及无法使用药械e家的产品和服务；您点击"同意"，视为您同意《用户协议》和《隐私政策》的完整内容。</div>
-				<div class="text text3"><span>《用户协议》</span>、<span>《隐私政策》</span></div>
+				<div class="text text3">请您阅读<span id="agreement">《用户协议》</span>、<span id="policy">《隐私政策》</span></div>
 			</div>
 			
 			<div class="button">
-				拒绝 同意
+				<div id="reject">拒 绝</div>
+				<div id="sure">同 意</div>
 			</div>
 			
 		</div>
@@ -64,23 +89,47 @@
 		</script>
 		
 		<script type="text/javascript">
-			// vue实例挂载
-			var vm = new Vue({
-				el:'#app',
-				data:{
-					
-				}
-			});
-		
+			
 			(function() {
 				
-				mui.init({
-					// swipeBack: true //启用右滑关闭功能
-				});
+				mui.init();
 				mui.plusReady(function () {
+					// 禁止使用返回键关闭弹窗
+					mui.back = function(){return;}
+					
+					// 阅读协议
+					var win = '/html/search-tool/embed.html';
+					document.getElementById('agreement').addEventListener('tap',function(){
+						var title = "用户协议";
+						var href = "https://yxt.feiruide.cn/index.php/user/agreement"
+						// 创建窗口
+						var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href});
+						ws.show('pop-in');
+					});
+					
+					document.getElementById('policy').addEventListener('tap',function(){
+						var title = "隐私政策";
+						var href = "https://yxt.feiruide.cn/index.php/user/private"
+						// 创建窗口
+						var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href});
+						ws.show('pop-in');
+					});
+					
+					// 拒绝
+					document.getElementById('reject').addEventListener('tap',function(){
+						mui.alert("必须同意之后才能继续使用该产品");
+					});
+					
+					//同意
+					document.getElementById('sure').addEventListener('tap',function(){
+						plus.storage.setItem("launchFlag","yes");
+						mui.fire(plus.webview.getLaunchWebview(),'login');
+						// 关闭弹窗
+						plus.webview.currentWebview().close();
+						
+					});
 					
 					
-				
 					
 				})
 				

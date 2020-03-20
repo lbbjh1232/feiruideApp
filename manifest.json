@@ -3,8 +3,8 @@
     "id" : "H5537E55C", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.2.6", /*应用版本名称*/
-        "code" : 120
+        "name" : "1.2.7", /*应用版本名称*/
+        "code" : 130
     },
     "description" : "医疗行业互联互通+票据管理平台", /*应用描述信息*/
     "icons" : {
@@ -93,11 +93,12 @@
         "iBeacon" : {},
         "Share" : {},
         "OAuth" : {},
-        "Statistic" : {}
+        "Statistic" : {},
+        "UIWebview" : {}
     },
     "plus" : {
         "kernel" : {
-            "ios" : "WKWebview" //或者 "WKWebview"  "UIWebview"
+            "ios" : "WKWebview" // "WKWebview"  "UIWebview"
         },
         "launchwebview" : {
             "bottom" : "0px",
@@ -253,7 +254,7 @@
         },
         "statusbar" : {
             "background" : "#3383FC",
-			"style":"light"
+            "style" : "light"
         },
         "popGesture" : "close", /*设置应用默认侧滑返回关闭Webview窗口，"none"为无侧滑返回功能，"hide"为侧滑隐藏Webview窗口。参考http://ask.dcloud.net.cn/article/102*/
         "runmode" : "normal", /*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/

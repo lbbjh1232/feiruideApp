@@ -2,7 +2,7 @@
 <html>
 
 	<head>
-		<meta charset="utf-8">
+		<meta charset="utf-8"> 
 		<title>个人中心</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,196 +22,212 @@
 			<h1 class="mui-title" style="color: black">身份认证</h1>
 		</header>
 		<div class="mui-content" id="app" v-cloak>
-			<!-- 步骤条 -->
-			<div class="steps-box">
-				<div class="steps-item steps-active">
-					<div class="steps-ico steps-ico-1">1</div>
-					<div class="steps-title">认证须知</div>
+				<!-- 新用户认证 -->
+				<!-- 步骤条 -->
+				<div v-show="false || isNew" class="steps-box">
+					<div class="steps-item steps-active">
+						<div class="steps-ico steps-ico-1">1</div>
+						<div class="steps-title">认证须知</div>
+					</div>
+					
+					<div class="steps-item " :class="step_two || step_three || step_four ? 'steps-active':''">
+						<div class="steps-ico steps-ico-1">2</div>
+						<div class="steps-title">资料提交</div>
+						<div class="steps-line"></div>
+					</div>
+					
+					<div class="steps-item" :class="step_three || step_four ? 'steps-active':''">
+						<div class="steps-ico steps-ico-1">3</div>
+						<div class="steps-title">等待审核</div>
+						<div class="steps-line"></div>
+					</div>
+					
+					<div class="steps-item " :class="step_four ? 'steps-active':''">
+						<div class="steps-ico steps-ico-1">4</div>
+						<div class="steps-title">认证完成</div>
+						<div class="steps-line"></div>
+					</div>
+				</div>
+			
+				<!-- 内容 -->
+				<div v-show="false || isNew" class="auth-box">
+					
+					<!-- 认证须知 -->
+					<div class="notice" v-if="step_one">
+						<div class="notice-title">认证须知</div>
+						<div class="notice-mark">为了平台的安全，需要您提供如下的认证资料：</div>
+						<div class="notice-item">1、个人身份证信息；</div>
+						<div class="notice-item">2、个人身份证正反面照片；</div>
+						<div class="notice-item">3、个人所在单位营业执照副本或者医疗机构执业许可证的照片。</div>
+						
+						<button type="button" id="notice1" class="mui-btn mui-btn-blue">同 意</button>
+					</div>
+					
+					<!-- 认证角色 -->
+					<template v-if="step_two">
+						<div class="role notice" v-if="isRole">
+							<div class="notice-title">认证角色</div>
+							<div class="notice-mark">角色选择相关提示：</div>
+							<div class="notice-item">1、若是卫生计生委用户，请选择卫生计生委；</div>
+							<div class="notice-item">2、若是医院用户，请选择医院；</div>
+							<div class="notice-item">4、若是药品经营企业（配送公司）用户，请选择药品经营企业；</div>
+							<div class="notice-item">5、若是药品生产企业用户，请选择药品生产企业；</div>
+							<div class="notice-item">6、若是需要进行新药申报的个人用户，请选择医药代表。</div>
+							
+								
+							<form id='login-form' >
+								<div class="reg-input-item">
+									<div class="label-text text-clip">认证角色</div>
+									<div class="input-box"><input id='choose-role' v-model="roleText" readonly type="text" placeholder="选择认证角色" /></div>
+								</div>
+								<div class="reg-input-item">
+									<div class="label-text text-clip">单位名称</div>
+									<div class="input-box"><input  type="text" v-model="company"  class="mui-input" placeholder="输入完整单位名称"></div>
+								</div>
+								
+							</form>
+							
+							<button type="button" id="next-account" class="mui-btn mui-btn-blue">下一步，完善个人信息</button>
+						</div>
+						
+						
+						<div class="account notice" v-if="isAccount">
+							<div class="notice-title">个人信息</div>
+							<div class="account-title">身份证信息:</div>
+							<form  class="mui-input-group" style="margin-top: 3px;">
+								
+								<div class="reg-input-item">
+									<div class="label-text text-clip">真实姓名</div>
+									<div class="input-box"><input  type="text" v-model="name"  class="mui-input" placeholder="输入身份证姓名"></div>
+								</div>
+								<div class="reg-input-item">
+									<div class="label-text text-clip">证件号码</div>
+									<div class="input-box"><input  type="text" v-model="code"  class="mui-input" placeholder="输入身份证号码"></div>
+								</div>
+								<div class="reg-input-item">
+									<div class="label-text text-clip">到期时间</div>
+									<div class="input-box"><input id='endTime' v-model="endTime" readonly type="text" placeholder="选择到期时间" /></div>
+								</div>
+								
+							</form>
+							
+							<div class="account-title">身份证照片:</div>
+							<div class="form-box padding-9 ">
+								<div class="upload-tip">#身份证正面，支持上传JPG、JEPG、PNG格式</div>
+								<upload :file="frontImage" :group="2" :formdata="formData1" :max="1"  :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
+								
+								<div class="upload-tip">#身份证反面，支持上传JPG、JEPG、PNG格式</div>
+								<upload :file="reverseImage" :group="2" :formdata="formData2" :max="1"  :url="url" @oncomplete="complete2" @ondelete="delete2" ></upload>
+							</div>
+							
+							<div class="mui-row">
+								<div class="mui-col-sm-3 mui-col-xs-3">
+									<button style="width: 100%;color: #000000;" type="button" id="pre-role" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
+								</div>
+								<div class="mui-col-sm-9 mui-col-xs-9">
+									<button type="button" id="next-company" class="mui-btn mui-btn-blue">下一步，完善单位信息</button>
+								</div>
+							</div>
+							
+							
+							
+						</div>
+						
+						
+						<div class="company notice" v-if="isCompany">
+							<div class="notice-title">单位信息</div>
+							<div class="account-title">营业执照信息:</div>
+							<form  class="mui-input-group" style="margin-top: 3px;">
+								<div class="reg-input-item input-disabled">
+									<div class="label-text text-clip">单位名称</div>
+									<div class="input-box"><input  type="text" readonly v-model="company"  class="mui-input" placeholder="输入完整单位名称"></div>
+								</div>
+								<div class="reg-input-item ">
+									<div class="label-text text-clip">信用代码</div>
+									<div class="input-box"><input  type="text" v-model="creditCode"  class="mui-input" placeholder="输入营业代码"></div>
+								</div>
+								
+							</form>
+							
+							<div class="account-title">营业执照（副本）照片:</div>
+							<div class="form-box padding-9 ">
+								<div class="upload-tip">#支持上传JPG、JEPG、PNG格式</div>
+								<upload :file="licenseImage" :group="3" :formdata="formData3" :max="1"  :url="url" @oncomplete="complete3" @ondelete="delete3" ></upload>
+								
+							</div>
+							
+							<div class="mui-row">
+								<div class="mui-col-sm-3 mui-col-xs-3">
+									<button style="width: 100%;color: #000000;" id="pre-account" type="button" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
+								</div>
+								<div class="mui-col-sm-9 mui-col-xs-9">
+									<button type="button" id="next-submit" class="mui-btn mui-btn-blue">提交审核</button>
+								</div>
+							</div>
+							
+							
+							
+						</div>
+						
+					</template>
+					
+					<!-- 等待审核页面 -->
+					<template v-if="step_three">
+						
+						<!-- 提交等待 -->
+						<div class="waiting notice" v-if="status == 0">
+							<div class="notice-title">等待审核</div>
+							<div class="wait-content"> 认证资料提交成功，我们会很快进行审核，审核过程中可能会拨打您所留手机号。请及时登录系统查看审核进度。</div>
+						</div>
+						
+						<!-- 审核失败 -->
+						<div class="waiting notice" v-if="status == 2">
+							<div class="notice-title">审核失败</div>
+							<div class="wait-content red">失败原因: {{reason}}</div>
+							
+							<button type="button" id="rewrite" class="mui-btn mui-btn-blue">返回修改认证资料</button>
+						</div>
+						
+						<!-- 审核成功 -->
+						<div class="waiting notice" v-if="status == 1">
+							<div class="notice-title">审核成功</div>
+							<div class="wait-content " style="text-align: center;">您提交的认证资料已通过审核！</div>
+							
+							<button type="button" id="confirm" class="mui-btn mui-btn-blue">下一步，认证完成</button>
+						</div>
+						
+					</template>
+					
+					<!-- 认证完成 -->
+					<template v-if="step_four">
+						
+						<!-- 审核成功 -->
+						<div class="notice auth-ok">
+							<div class="notice-title">认证完成</div>
+							<div class="wait-content " style="text-align: center;">您的认证已通过，退出系统后重新登录，即可正常使用，如果您在使用中遇到什么困难和问题，请及时联系我们解决。</div>
+							
+							<button type="button" id="relogin" class="mui-btn mui-btn-blue">重新登录</button>
+						</div>
+						
+					</template>
+					
 				</div>
 				
-				<div class="steps-item " :class="step_two || step_three || step_four ? 'steps-active':''">
-					<div class="steps-ico steps-ico-1">2</div>
-					<div class="steps-title">资料提交</div>
-					<div class="steps-line"></div>
+				
+				<!-- 邀请码认证 -->
+				<div class="invitation-code" v-show="false || isCode">
+						<div class="reg-input-item">
+							<div class="label-text text-clip">邀请码</div>
+							<div class="input-box"><input  type="text" v-model="code"  class="mui-input" placeholder="输入7-9位邀请码"></div>
+						</div>
+						
+						<button type="button" id="code-auth" style="margin-top: 30px;font-size: 16px;" class="mui-btn mui-btn-blue mui-btn-block">立即认证</button>
+						
 				</div>
 				
-				<div class="steps-item" :class="step_three || step_four ? 'steps-active':''">
-					<div class="steps-ico steps-ico-1">3</div>
-					<div class="steps-title">等待审核</div>
-					<div class="steps-line"></div>
-				</div>
 				
-				<div class="steps-item " :class="step_four ? 'steps-active':''">
-					<div class="steps-ico steps-ico-1">4</div>
-					<div class="steps-title">认证完成</div>
-					<div class="steps-line"></div>
-				</div>
 			</div>
 			
-			<!-- 内容 -->
-			<div class="auth-box">
-				
-				<!-- 认证须知 -->
-				<div class="notice" v-if="step_one">
-					<div class="notice-title">认证须知</div>
-					<div class="notice-mark">为了平台的安全，需要您提供如下的认证资料：</div>
-					<div class="notice-item">1、个人身份证信息；</div>
-					<div class="notice-item">2、个人身份证正反面照片；</div>
-					<div class="notice-item">3、个人所在单位营业执照副本或者医疗机构执业许可证的照片。</div>
-					
-					<button type="button" id="notice1" class="mui-btn mui-btn-blue">同 意</button>
-				</div>
-				
-				<!-- 认证角色 -->
-				<template v-if="step_two">
-					<div class="role notice" v-if="isRole">
-						<div class="notice-title">认证角色</div>
-						<div class="notice-mark">角色选择相关提示：</div>
-						<div class="notice-item">1、若是卫生计生委用户，请选择卫生计生委；</div>
-						<div class="notice-item">2、若是医院用户，请选择医院；</div>
-						<div class="notice-item">4、若是药品经营企业（配送公司）用户，请选择药品经营企业；</div>
-						<div class="notice-item">5、若是药品生产企业用户，请选择药品生产企业；</div>
-						<div class="notice-item">6、若是需要进行新药申报的个人用户，请选择医药代表。</div>
-						
-							
-						<form id='login-form' >
-							<div class="reg-input-item">
-								<div class="label-text text-clip">认证角色</div>
-								<div class="input-box"><input id='choose-role' v-model="roleText" readonly type="text" placeholder="选择认证角色" /></div>
-							</div>
-							<div class="reg-input-item">
-								<div class="label-text text-clip">单位名称</div>
-								<div class="input-box"><input  type="text" v-model="company"  class="mui-input" placeholder="输入完整单位名称"></div>
-							</div>
-							
-						</form>
-						
-						<button type="button" id="next-account" class="mui-btn mui-btn-blue">下一步，完善个人信息</button>
-					</div>
-					
-					
-					<div class="account notice" v-if="isAccount">
-						<div class="notice-title">个人信息</div>
-						<div class="account-title">身份证信息:</div>
-						<form  class="mui-input-group" style="margin-top: 3px;">
-							
-							<div class="reg-input-item">
-								<div class="label-text text-clip">真实姓名</div>
-								<div class="input-box"><input  type="text" v-model="name"  class="mui-input" placeholder="输入身份证姓名"></div>
-							</div>
-							<div class="reg-input-item">
-								<div class="label-text text-clip">证件号码</div>
-								<div class="input-box"><input  type="text" v-model="code"  class="mui-input" placeholder="输入身份证号码"></div>
-							</div>
-							<div class="reg-input-item">
-								<div class="label-text text-clip">到期时间</div>
-								<div class="input-box"><input id='endTime' v-model="endTime" readonly type="text" placeholder="选择到期时间" /></div>
-							</div>
-							
-						</form>
-						
-						<div class="account-title">身份证照片:</div>
-						<div class="form-box padding-9 ">
-							<div class="upload-tip">#身份证正面，支持上传JPG、JEPG、PNG格式</div>
-							<upload :file="frontImage" :group="2" :formdata="formData1" :max="1"  :url="url" @oncomplete="complete1" @ondelete="delete1" ></upload>
-							
-							<div class="upload-tip">#身份证反面，支持上传JPG、JEPG、PNG格式</div>
-							<upload :file="reverseImage" :group="2" :formdata="formData2" :max="1"  :url="url" @oncomplete="complete2" @ondelete="delete2" ></upload>
-						</div>
-						
-						<div class="mui-row">
-							<div class="mui-col-sm-3 mui-col-xs-3">
-								<button style="width: 100%;color: #000000;" type="button" id="pre-role" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
-							</div>
-							<div class="mui-col-sm-9 mui-col-xs-9">
-								<button type="button" id="next-company" class="mui-btn mui-btn-blue">下一步，完善单位信息</button>
-							</div>
-						</div>
-						
-						
-						
-					</div>
-					
-					
-					<div class="company notice" v-if="isCompany">
-						<div class="notice-title">单位信息</div>
-						<div class="account-title">营业执照信息:</div>
-						<form  class="mui-input-group" style="margin-top: 3px;">
-							<div class="reg-input-item input-disabled">
-								<div class="label-text text-clip">单位名称</div>
-								<div class="input-box"><input  type="text" readonly v-model="company"  class="mui-input" placeholder="输入完整单位名称"></div>
-							</div>
-							<div class="reg-input-item ">
-								<div class="label-text text-clip">信用代码</div>
-								<div class="input-box"><input  type="text" v-model="creditCode"  class="mui-input" placeholder="输入营业代码"></div>
-							</div>
-							
-						</form>
-						
-						<div class="account-title">营业执照（副本）照片:</div>
-						<div class="form-box padding-9 ">
-							<div class="upload-tip">#支持上传JPG、JEPG、PNG格式</div>
-							<upload :file="licenseImage" :group="3" :formdata="formData3" :max="1"  :url="url" @oncomplete="complete3" @ondelete="delete3" ></upload>
-							
-						</div>
-						
-						<div class="mui-row">
-							<div class="mui-col-sm-3 mui-col-xs-3">
-								<button style="width: 100%;color: #000000;" id="pre-account" type="button" class="mui-btn mui-btn-blue mui-btn-outlined">上一步</button>
-							</div>
-							<div class="mui-col-sm-9 mui-col-xs-9">
-								<button type="button" id="next-submit" class="mui-btn mui-btn-blue">提交审核</button>
-							</div>
-						</div>
-						
-						
-						
-					</div>
-					
-				</template>
-				
-				<!-- 等待审核页面 -->
-				<template v-if="step_three">
-					
-					<!-- 提交等待 -->
-					<div class="waiting notice" v-if="status == 0">
-						<div class="notice-title">等待审核</div>
-						<div class="wait-content"> 认证资料提交成功，我们会很快进行审核，审核过程中可能会拨打您所留手机号。请及时登录系统查看审核进度。</div>
-					</div>
-					
-					<!-- 审核失败 -->
-					<div class="waiting notice" v-if="status == 2">
-						<div class="notice-title">审核失败</div>
-						<div class="wait-content red">失败原因: {{reason}}</div>
-						
-						<button type="button" id="rewrite" class="mui-btn mui-btn-blue">返回修改认证资料</button>
-					</div>
-					
-					<!-- 审核成功 -->
-					<div class="waiting notice" v-if="status == 1">
-						<div class="notice-title">审核成功</div>
-						<div class="wait-content " style="text-align: center;">您提交的认证资料已通过审核！</div>
-						
-						<button type="button" id="confirm" class="mui-btn mui-btn-blue">下一步，认证完成</button>
-					</div>
-					
-				</template>
-				
-				<!-- 认证完成 -->
-				<template v-if="step_four">
-					
-					<!-- 审核成功 -->
-					<div class="notice auth-ok">
-						<div class="notice-title">认证完成</div>
-						<div class="wait-content " style="text-align: center;">您的认证已通过，退出系统后重新登录，即可正常使用，如果您在使用中遇到什么困难和问题，请及时联系我们解决。</div>
-						
-						<button type="button" id="relogin" class="mui-btn mui-btn-blue">重新登录</button>
-					</div>
-					
-				</template>
-				
-			</div>
-		
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
@@ -242,6 +258,7 @@
 	<script type="text/javascript">
 		var accountInfo,new_back;
 		function loadAuth(){
+			plus.nativeUI.showWaiting()
 			let auth = mui.http_post(API.GET_AUTH,{id : accountInfo.id});
 			auth.then(auth=>{
 				if(auth.code == 200){
@@ -302,9 +319,18 @@
 					})
 					
 				}else{
+					vm.isNew = false;
 					plus.nativeUI.closeWaiting();
 					mui.currentWebview.show();
 				}
+				plus.nativeUI.closeWaiting();
+				// 提示认证方式
+				if( !vm.isNew ){
+					mui.confirm('1、新用户认证（新企业或新医疗机构入驻药械电子化系统）\r\n 2、邀请码认证（限系统已存在的企业或医疗机构,邀请码可在PC端获取）','选择认证方式',['新用户','邀请码'],function(e){
+						(e.index==1)?vm.isCode = true:vm.isNew=true;
+					},'div')
+				}
+				
 			})
 		}
 		
@@ -402,6 +428,10 @@
 				upload : upload
 			},
 			data : {
+				code :'',
+				isCode: false,
+				isNew:false,
+				method:1,			//认证方式 1、新企业用户认证 2、邀请码方式
 				step_one : true,
 				step_two : false,
 				isRole : true,
@@ -469,7 +499,7 @@
 							plus.nativeUI.closeWaiting();
 						}
 						
-					},'div')
+					})
 				},
 				
 				complete1 : function(e){
@@ -504,8 +534,9 @@
 				var messageview = plus.webview.getWebviewById('html/message.html');
 				var friendview = plus.webview.getWebviewById('html/friend.html');
 				var indexview = plus.webview.getLaunchWebview();
-				mui.fire(myview,'loginLoad');	//重载个人中心
+				mui.fire(myview,'loginLoad');		//重载个人中心
 				mui.fire(indexview,'loginLoad');	//重载消息总数					
+				mui.fire(indexview,'login');	//重载消息总数					
 				mui.fire(messageview,'loginLoad');	//重载
 				mui.fire(friendview,'loginLoad');	//重载好友
 				old_back();
@@ -520,6 +551,8 @@
 			vm.formData3.cid = accountInfo.id;
 			// 加载审核记录
 			loadAuth();
+			
+		
 			
 			var calendar = new LCalendar();
 			
@@ -657,7 +690,32 @@
 				})
 			})
 			
-			
+			// 邀请码提交
+			document.getElementById('code-auth').addEventListener('tap',function(){
+				if(!vm.code){
+					mui.toast('请输入邀请码');
+					return;
+				}
+				let patter = new RegExp(/^\d{1}((?!\D+$)|(?![^a-zA-Z]+$)).{5}(\d{1,2})$/);
+				if(!patter.test(vm.code)){
+					mui.toast('格式不正确');
+					return;
+				};
+				plus.nativeUI.showWaiting()
+				let res = mui.http_post(API.AUTH_SUBMIT,{code:vm.code,uid:accountInfo.id});
+				res.then(res=>{
+					plus.nativeUI.closeWaiting();
+					if(res.code == 200){
+						mui.toast('认证成功,请重新登录');
+						plus.storage.removeItem('accountInfo');
+						new_back();
+					}else{
+						mui.alert(res.message);
+					}
+				})
+				
+				
+			})
 			
 			
 			

@@ -276,4 +276,7 @@ input::-webkit-input-placeholder{
 	text-align: right;
 	color: #00BFFF;
 }
+#notice{
+	font-size: 14px;
+}
 

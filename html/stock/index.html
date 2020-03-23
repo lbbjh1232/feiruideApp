@@ -28,7 +28,7 @@
 		<header class="mui-bar mui-bar-nav" v-cloak>
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">货源(库存)查询</h1>
-			<span id="data-from">切换来源: {{currentText}}</span>
+			<!-- <span id="data-from">切换来源: {{currentText}}</span> -->
 		</header>
 		
 		<!-- 顶部搜索栏 -->
@@ -240,15 +240,15 @@
 					
 				}
 				
-				var picker = new mui.PopPicker();
-				document.getElementById('data-from').addEventListener('tap',function(){
-					picker.setData(vm.dataFrom);
-					picker.show(function(item){
-						vm.currentValue = item[0].value;
-						vm.currentText = item[0].text;
-						getNetDrug()
-					})
-				})
+				// var picker = new mui.PopPicker();
+				// document.getElementById('data-from').addEventListener('tap',function(){
+				// 	picker.setData(vm.dataFrom);
+				// 	picker.show(function(item){
+				// 		vm.currentValue = item[0].value;
+				// 		vm.currentText = item[0].text;
+				// 		getNetDrug()
+				// 	})
+				// })
 				
 				// 失去焦点监听
 				var input = document.getElementsByTagName('input')[0];
@@ -256,7 +256,7 @@
 				
 				// 初始化滚动组件
 				var scorll_one = mui('#scroll-one').scroll({deceleration: 0.001});
-				var scorll_three = mui('#scroll-three').scroll({deceleration: 0.001});
+				var scorll_three = mui('#scroll-three').scroll({deceleration: 0.001}); 
 				
 				// ajax获取数据后关闭等待窗口
 				getNetDrug(true);

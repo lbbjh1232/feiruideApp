@@ -87,10 +87,10 @@
 			mui.init();
 			
 			var searchUser = function(){
-				if(!vm.searchValue){
-					mui.toast('输入字段不能为空');
-					return;
-				}
+				// if(!vm.searchValue){  
+				// 	mui.toast('输入字段不能为空');
+				// 	return;
+				// } 
 				
 				plus.nativeUI.showWaiting();
 				var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
@@ -123,6 +123,7 @@
 			})
 			
 			mui.plusReady(function () {
+				searchUser();
 				//点击搜索好友
 				document.getElementById('searchBtn').addEventListener('tap',function(){
 					searchUser();

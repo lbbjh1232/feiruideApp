@@ -69,3 +69,8 @@
 	line-height: 6.6rem;
 	text-align: center;
 }
+.empty{
+	text-align: center;
+	color: gray;
+	padding-top: 20px;
+}

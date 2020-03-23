@@ -279,4 +279,11 @@ input::-webkit-input-placeholder{
 #notice{
 	font-size: 14px;
 }
+#forget{
+	width: 70%;
+	margin: 0 auto;
+	color:#828282;
+	font-size: 12px;
+	padding-top: 5px;
+}
 

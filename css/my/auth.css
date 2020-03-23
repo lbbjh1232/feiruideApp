@@ -104,5 +104,9 @@
 .invitation-code .label-text{
 	text-align: center;
 }
+.howToGet{
+	font-size: 12px;
+	color: gray;
+}
 
 

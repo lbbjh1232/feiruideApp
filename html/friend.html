@@ -56,12 +56,12 @@
 					<div class="mui-indexed-list-alert"></div>
 					<div class="mui-indexed-list-inner">
 						<div class="mui-indexed-list-empty-alert">没有数据</div> 
-			 			<ul class="mui-table-view"> 
+			 			<ul class="mui-table-view">  
 							
 							<li id="new-friend" class="mui-table-view-cell mui-indexed-list-item">
 								<div class="img-box">
 									<img src="../images/111.png" >
-									<div v-if="count" class="count-notice">{{count > 9 ?'9+':count}}</div>
+									<div v-show="count" class="count-notice">{{count > 9 ?'9+':count}}</div>
 								</div>
 								<div class="nickname">
 									 新的朋友

@@ -3,7 +3,7 @@
 
 	<head> 
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" /> 
 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
 		<meta http-equiv="content-security-policy">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,14 +12,14 @@
 		<script type="text/javascript">
 			document.write('<script src="js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
-		
+		   
 		<script type="text/javascript">
 			link(['css/mui.min.css','css/iconfont.css','css/icon.css','css/common.css','css/animate.css','css/index/index.css'],true);
 		</script>
 	 
-	</head>
+	</head> 
  
-	<body>
+	<body> 
 		<div class="mui-content" id="app"> 
 			<!-- 实用查询 -->
 			<div class="catelog-box">
@@ -106,7 +106,7 @@
 					  </div>
 				</div>
 			</div>
-			<!-- 通知栏 -->
+			<!-- 通知栏 --> 
 			<div class="notice-box">
 				<div class="notice-content">
 					<span class="iconfont icon-tongzhi"></span>&nbsp;<span id="notice" class="notice-title animated"></span>
@@ -280,8 +280,8 @@
 			</div>
 			 -->
 			<div class="divided-module"></div>
-			
-			<!-- 新闻版块 -->
+			 
+			<!-- 新闻版块 --> 
 			<div class="title-box">
 				<div class="news-tabs">
 					<a class="mui-control-item" :class="currentTab==1?'active':''" data-id="1">
@@ -535,8 +535,7 @@
 								
 							case 'short':
 								if( accountInfo == null ){
-									mui.toast('请先登录');
-									return;
+									mui.loginPageShow()
 								}
 								mui.trigger(document.getElementById('short'),'tap');
 								break;
@@ -546,8 +545,10 @@
 								mui.loginPageShow();
 								let roleid = '6,7';
 								if(roleid.indexOf(vm.accountInfo.roleid.toString()) == -1 ){
-									mui.toast('角色受限','提示','确认',function(e){});
-									return;
+									mui.alert('权限受限,前往认证','提示','确认',function(e){
+										mui.authPageShow()
+									});
+									return
 								}
 								let targetNav = vm.accountInfo.roleid == 6 ? 'html/purchase/com-index.html':'html/purchase/index.html';
 
@@ -705,10 +706,13 @@
 							
 							let roleid = (this.dataset.roleid).split(',');
 							if(roleid.indexOf(vm.accountInfo.roleid.toString()) == -1 ){
-								mui.alert('角色受限','提示','确认',function(e){});
+								mui.alert('权限受限,前往认证','提示','确认',function(e){
+									mui.authPageShow()
+								});
 								return;
 							}
 						}
+						
 						 targetNav = this.dataset.href;
 						
 						// 判断网络情况
@@ -740,7 +744,9 @@
 							
 							let roleid = (this.dataset.roleid).split(',');
 							if(roleid.indexOf(vm.accountInfo.roleid.toString()) ==-1 ){
-								mui.alert('角色受限','提示','确认',function(e){});
+								mui.alert('权限受限，前往认证','提示','确认',function(e){
+									mui.authPageShow()
+								});
 								return;
 							}
 							
@@ -778,7 +784,9 @@
 							let roleid = (this.dataset.roleid).split(',');
 							
 							if(roleid.indexOf( vm.accountInfo.roleid.toString() ) == -1 ){
-								mui.alert('角色受限','提示','确认',function(e){});
+								mui.alert('权限受限，前往认证','提示','确认',function(e){
+									mui.authPageShow()
+								});
 								return;
 							}
 							
@@ -815,8 +823,10 @@
 				// 			let roleid = (this.dataset.roleid).split(',');
 							
 				// 			if(roleid.indexOf( vm.accountInfo.roleid.toString() ) == -1 ){
-				// 				mui.alert('角色受限','提示','确认',function(e){});
-				// 				return;
+				// 				mui.alert('权限受限，前往认证','提示','确认',function(e){
+								// 	mui.authPageShow()
+								// });
+								// return;
 				// 			}
 				// 		} 
 				// 		 campView = this.dataset.href;

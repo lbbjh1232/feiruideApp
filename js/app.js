@@ -978,7 +978,7 @@
 						width:"80px",
 						// text:'\ue60f',
 						// fontSrc:'fonts/icon.ttf',
-						fontSize : '12px',
+						fontSize : '14px',
 						float:'right',
 						onclick: switchRole
 					});
@@ -1038,10 +1038,20 @@
 			} 
 		}
 		return;
+	};
+	
+	// ordinary user should complete identity authentication
+	$.authPageShow = function(error){
+		$.openWindow({
+			url : '/html/my/auth.html',
+			id : 'auth'
+		});
+		
 	}
 	
-	let floatWin;
+	
 	// create float window
+	let floatWin;
 	$.floatWindow = function(url='',style = {},extras = {}){
 		floatWin = floatWin || plus.webview.create(url, 'float',style,extras);
 		floatWin.addEventListener('loaded', function(){

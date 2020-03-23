@@ -15,7 +15,7 @@
 			link(['../../css/mui.min.css','../../css/common.css','../../css/user/new-friend.css'],true); 
 		</script>  
 	</head>
-
+  
 	<body>  
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -39,8 +39,9 @@
 					<div v-else class="status">已过期</div>
 					
 					<div class="delete" v-bind:data-id="item.rid">删除</div>
-				</div> 
+				</div>
 			</template>
+			<div class="empty">暂无消息</div>
 			
 			 
 		</div>

@@ -40,6 +40,9 @@
 					</div>
 				</div>
 				
+				<!-- forget password -->
+				<div id="forget">忘记密码?</div>
+				
 				<!-- read user-agreenment and private-policy -->
 				<!-- login-button -->
 				<div class="login-btn">
@@ -196,6 +199,14 @@
 				// wechat login
 				document.getElementById('login-wechat').addEventListener('tap',function(){
 					lweixin?mui.weLogin(lweixin,fire):plus.nativeUI.alert('当前环境不支持微信绑定操作');
+				});
+				
+				// forget password
+				document.getElementById('forget').addEventListener('tap',function(){
+					mui.openWindow({
+						url : 'forget-password.html',
+						id : 'forget'
+					})
 				})
 				
 			})

@@ -155,7 +155,7 @@ var util = {
 						width:"80px",
 						// text:'\ue60f',
 						// fontSrc:'fonts/icon.ttf',
-						fontSize : '12px',
+						fontSize : '14px',
 						float:'right',
 						onclick: switchRole
 					});

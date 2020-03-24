@@ -9,6 +9,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-anquan::before{
+	content: "\e635";
+	font-size:20px ;
+	color: gray;
+}
 .icon-selected::before{
 	content: "\e626";
 	font-size: 20px;

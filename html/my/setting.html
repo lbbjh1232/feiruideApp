@@ -54,13 +54,21 @@
 							<div class="operate-text beizhu" >{{accountInfo.phone? '+86'+accountInfo.phone.replace(/^(\d{3})\d{4}(\d{4})$/,"$1****$2"):'未绑定'}}</div>
 						</div>
 					</a>
-				</li>
+				</li>  
 				
 				<li class="mui-table-view-cell">
 					<a href="javascript:void(0)"   class="mui-navigate-right">
 						<div class="menu-item-box" id="band-wechat">
 							<div class="iconfont1 icon-wechat operate-text"> 绑定微信</div>
 							<div class="operate-text beizhu" >{{accountInfo.openid?accountInfo.nickname:'未绑定'}}</div>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="javascript:void(0)"   class="mui-navigate-right">
+						<div class="menu-item-box" id="toSafe">
+							<div class="iconfont1 icon-anquan operate-text"> 账号与安全</div>
+							<div class="operate-text beizhu" ></div>
 						</div>
 					</a>
 				</li>
@@ -109,21 +117,8 @@
 					</a>
 				</li>
 			</ul>
-			 <div class="divided-line"></div>
-			 
-			 <div v-show="islogin">
-					 
-				 <ul class="mui-table-view">
-					
-					<li class="mui-table-view-cell">
-						<a href="javascript:void(0)" id="cancle" style="text-align: center; color: red;" >
-								注销账号
-						</a>
-					</li>
-				 </ul>
-				 <div class="divided-line"></div>
-			 </div>
-			
+			<div class="divided-line"></div>
+
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
@@ -152,35 +147,12 @@
 			if( accountInfo != null){
 				 accountInfo = JSON.parse(accountInfo);
 				 vm.accountInfo = accountInfo;
-				 
 				 vm.islogin = true;
-				 vm.$nextTick(function(){
-					document.getElementById("cancle").addEventListener('tap',function(){
-						mui.confirm("确认注销账号?","提示",['确认','取消'],function(e){
-							if(e.index === 0){
-								// 发出请求
-								let res = mui.http_post(API.CANCLE,{uid : accountInfo.id})
-								res.then(res=>{
-									if(res.code == 200){
-										mui.toast('注销成功');
-										// 跳出页面
-										plus.storage.removeItem('accountInfo'); //删除用户登录缓存
-										var messageview = plus.webview.getWebviewById('html/message.html');
-										var myview = plus.webview.getWebviewById('html/my.html');
-										var indexview = plus.webview.getLaunchWebview();
-										mui.fire(indexview,'loginLoad');	//重载首页
-										mui.fire(myview,'loginLoad');	//重载首页
-										mui.fire(messageview,'loginLoad');	//重载消息列表页
-										vm.islogin = false;
-									}else{
-										mui.toast('注销失败');
-									}
-								})
-							}
-						})
-					})
-				})
 			}
+			
+			window.addEventListener('refresh',function(){
+				location.reload();
+			})
 				
 			
 			// 绑定手机号
@@ -239,6 +211,13 @@
 						(e.index==1)&&mui.weBind(lweixin,accountInfo.id)
 					}):plus.nativeUI.alert('当前环境不支持微信绑定操作');
 				}else{
+					
+					// 没有设置账号和密码不能解绑
+					if(!accountInfo.account){
+						mui.alert('未设置账号和密码,暂时无法解绑');
+						return;
+					}
+					
 					// 解绑
 					mui.confirm('确认解绑?','解绑提示',['取消','解绑'],function(e){
 						if(e.index == 1){
@@ -264,6 +243,14 @@
 				}
 			})
 			
+			//账号与安全
+			document.getElementById('toSafe').addEventListener('tap',function(){
+				mui.openWindow({
+					url : 'safety.html',
+					id : 'safety'
+				})
+			})
+			
 			// 帮助中心
 			document.getElementById('help').addEventListener('tap',function(){
 				mui.openWindow({
@@ -283,7 +270,8 @@
 					id : 'about-us.html',
 					url : 'about-us.html',
 				})
-			})
+			});
+			
 			
 		})
 		

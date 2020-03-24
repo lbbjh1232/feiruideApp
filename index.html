@@ -403,14 +403,18 @@
 					if(plus.storage.getItem("launchFlag") == null ){
 						
 						// 创建用户协议弹窗
-						mui.floatWindow('/html/user/user-agreen.html',{
-							width: '75%',
-							height: '50%',
-							margin: 'auto',
-							background: 'rgba(0,0,0,0.8)',
-							scrollIndicator: 'none',
-							scalable: false,
-							popGesture: 'none',
+						mui.openWindow({
+							url : '/html/user/user-agreen.html',
+							id : 'user-agreen',
+							styles :{
+								width: '100%',
+								height: '100%',
+								margin: 'auto',
+								background: 'rgba(0,0,0,0.8)',
+								scrollIndicator: 'none',
+								scalable: false,
+								popGesture: 'none',
+							}
 						})
 					
 					}

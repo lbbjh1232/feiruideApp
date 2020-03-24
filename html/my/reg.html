@@ -31,14 +31,14 @@
 					<div class="label-text text-clip">登录密码</div>
 					<div class="input-box"><input v-model="password" type="password" placeholder="6-16位,字母 + 数字" /></div>
 				</div>
-				
+				 
 				<div class="reg-input-item">
 					<div class="label-text text-clip">手机号码</div>
 					<div class="input-box"><input v-model="phone" type="number" placeholder="11位手机号码" /></div>
 				</div>
 				<div class="reg-input-item">
 					<div class="label-text text-clip">短信验证</div>
-					<div class="input-box" style="width: 40%;"><input v-model="smsNumber" type="number" placeholder="请输入验证码" /></div>
+					<div class="input-box" style="width: 30%;"><input v-model="smsNumber" type="number" placeholder="请输入验证码" /></div>
 					<div class="get-sms" id="smscode">{{notice}}</div>
 				</div>
 				
@@ -50,6 +50,12 @@
 						<div class="agreenment-policy">请阅读<span id="agreenment" class="agreenment ">《用户协议》</span>和<span id="policy" class="policy">《隐私政策》</span></div>
 					</div>
 					<button type="button" id="reg-btn" class="mui-btn mui-btn-blue mui-btn-block">立 即 注 册</button>
+				</div>
+				
+				<!-- third login -->
+				<div class="third-login">
+					<div class="third-text">快速注册</div>
+					<div id="login-wechat" class="iconfont1 icon-wechat"></div>
 				</div>
 				
 			</div>
@@ -230,7 +236,12 @@
 					
 				})
 				
-			
+				// 快速注册
+				//获取微信服务列表
+				mui.updateSerivces();
+				document.getElementById('login-wechat').addEventListener('tap',function(){
+					lweixin?mui.weReg(lweixin):plus.nativeUI.alert('当前环境不支持微信注册操作');
+				});
 			})
 		</script>
 	</body>

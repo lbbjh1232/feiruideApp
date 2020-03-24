@@ -885,6 +885,46 @@
 		});
 	}
 	
+	// fast register by wechat
+	$.weReg = function(auth){
+		auth.login(function(){
+			plus.nativeUI.showWaiting()
+			auth.getUserInfo(function(){
+				var nickname=auth.userInfo.nickname||auth.userInfo.name||auth.userInfo.miliaoNick;
+				var openid = auth.userInfo.openid;
+				var avatar = auth.userInfo.headimgurl;
+				var unionid = auth.userInfo.unionid;
+				let params = {
+					nickname,
+					openid,
+					avatar,
+					unionid
+				}
+				let res = $.http_post(API.REG_WECHAT,params);
+				res.then(res=>{
+					plus.nativeUI.closeWaiting();
+					if(res.code == 200){
+						$.toast('注册成功');
+						//设置本地数据缓存
+						plus.storage.setItem('accountInfo',JSON.stringify(res.data));
+						setTimeout(function(){
+							$.back();
+						},800);
+					}else{
+						$.alert(res.message);
+					}
+				})
+				
+			},function(e){
+				plus.nativeUI.closeWaiting();
+				plus.nativeUI.alert("获取用户信息失败！",null,"微信登录");
+			});
+		},function(e){
+			plus.nativeUI.closeWaiting();
+			plus.nativeUI.alert("认证失败",null,"认证提示");
+		});
+	}
+	
 	// change statusBar style
 	$.changeStatusBar = function(style,backgroundColor){
 		plus.navigator.setStatusBarBackground(backgroundColor ==undefined ? '#3383FC':backgroundColor);

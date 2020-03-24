@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/my.css'],true);
+		</script>
+		<style type="text/css">
+			
+			.mui-table-view::after,.mui-table-view::before{
+				height: 0;
+			}
+			.menu-item-box{
+				justify-content: space-between;
+			}
+			.menu-item-box .beizhu{
+				padding-right: 20px;
+				font-size: 14px;
+				color: gray;
+			}
+			.setting-title{
+				padding: 8px 8px 8px 25px;
+				background-color: rgba(105,105,105,.1);
+				font-size: 14px;
+				color: gray;
+			}
+			
+		</style>
+
+	</head>
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">账号与安全</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<div class="divided-line"></div>
+			<ul class="mui-table-view" v-cloak>
+				
+				<li class="mui-table-view-cell">
+					<a href="javascript:void(0)" id="set-account"  class="mui-navigate-right">
+						<div class="menu-item-box" >
+							<div class="operate-text">设置账号密码</div>
+							<div class="operate-text beizhu"></div>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="javascript:void(0)" id="account-cancle"  class="mui-navigate-right">
+						<div class="menu-item-box" >
+							<div class="operate-text">账号注销</div>
+							<div class="operate-text beizhu"></div>
+						</div>
+					</a>
+				</li>
+				
+				
+			</ul>
+			 <div class="divided-line"></div>
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	<script type="text/javascript">
+		var vm =new Vue({
+			el : '#app',
+			data : {
+				islogin:false,
+				accountInfo : {}
+			}
+		});
+		
+		mui.plusReady(function () {
+			var accountInfo =JSON.parse(plus.storage.getItem('accountInfo'));
+			 
+			// 设置账号密码
+			document.getElementById('set-account').addEventListener('tap',function(){
+				mui.openWindow({
+					url : 'set-account.html',
+					id: 'setaccount'
+				})
+			})
+			
+			document.getElementById('account-cancle').addEventListener('tap',function(){
+				mui.confirm("确认注销账号?","提示",['确认','取消'],function(e){
+					if(e.index === 0){
+						// 发出请求
+						plus.nativeUI.showWaiting()
+						let res = mui.http_post(API.CANCLE,{uid : accountInfo.id})
+						res.then(res=>{
+							plus.nativeUI.closeWaiting()
+							if(res.code == 200){
+								mui.toast('注销成功');
+								// 跳出页面
+								plus.storage.removeItem('accountInfo'); //删除用户登录缓存
+								var messageview = plus.webview.getWebviewById('html/message.html');
+								var myview = plus.webview.getWebviewById('html/my.html');
+								var indexview = plus.webview.getLaunchWebview();
+								var setting = plus.webview.getWebviewById('setting');
+								mui.fire(indexview,'loginLoad');	//重载首页
+								mui.fire(myview,'loginLoad');	//重载我的
+								mui.fire(messageview,'loginLoad');	//重载消息列表页
+								mui.fire(setting,'refresh');	//重载设置页
+								mui.back()
+							}else{
+								mui.toast('注销失败');
+							}
+						})
+					}
+				})
+			})
+			
+		})
+		
+	</script>
+	
+</html>

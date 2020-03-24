@@ -129,9 +129,10 @@
 				var title = "用户协议";
 				var href = "https://yxt.feiruide.cn/index.php/user/agreement"
 				// 创建窗口
-				var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
+				var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close'},{title,href});
 				ws.show('pop-in');
-			})
+			});
+			
 			document.getElementById('private').addEventListener("tap",function(){
 				var win = '../search-tool/embed.html';
 				var title = "隐私政策";
@@ -139,7 +140,8 @@
 				// 创建窗口
 				var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
 				ws.show('pop-in');
-			})
+			});
+			
 			plus.runtime.getProperty(plus.runtime.appid,function(info){
 				vm.version = info.version;
 			});

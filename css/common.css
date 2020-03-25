@@ -381,7 +381,7 @@ body {
 }
 .news-box .news-left .news-name{
 	width: 100%;
-	font-size: 14px;
+	font-size: 16px;
 	-webkit-line-clamp: 2;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;

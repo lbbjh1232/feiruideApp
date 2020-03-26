@@ -21,47 +21,37 @@
 	<body> 
 		<div class="mui-content" id="app">
 			<!-- 个人信息展示 -->  
-			
 			<div class="userinfo-box" v-cloak>
 				<div class="userinfo-left">
 					<img id="avatar" :src="accountInfo ? accountInfo.avatar : '../images/60x60.gif'" onerror="this.src='../images/logo.png'">
 				</div>
 				<div class="userinfo-right">
-					<div class="username">
+					<div v-show="accountInfo" class="username">
 						{{ accountInfo.openid ? accountInfo.nickname : accountInfo.username}}
+					</div>  
+					
+					<div v-show="!accountInfo" id="toLogin" class="username">
+						点击登录
+						<div style="font-size: 14px;">欢迎来到药械e家</div>
 					</div>
+					
 					<div class="companyname">
 						{{accountInfo ? accountInfo.comp_name+' 【'+accountInfo.rolename+'】':""}}
 					</div>
-				</div>
+				</div>  
 			</div>
-			
+			  
+			<!-- 签单按钮 -->
+			<div class="sign-in">
+				<div class="sign-icon iconfont1 icon-qiandao"></div>
+				<div class="sign-text">签到</div>
+			</div> 
+			 
 			<!-- 操作菜单 -->
 			<ul class="mui-table-view" v-cloak>
-				<template v-if="!accountInfo">
-					<li class="mui-table-view-cell">
-						<a href="javascript:void(0)" id="toLogin" class="mui-navigate-right">
-							<div class="menu-item-box">
-								<div class="mui-icon iconfont icon-dengluyonghu icon-left"></div>
-								<div class="operate-text"> 登录</div>
-							</div>
-						</a>
-					</li>
+				<template v-if="accountInfo">
 					
-					
-					<!-- <li class="mui-table-view-cell">
-						<a href="javascript:void(0)" id="toReg"  class="mui-navigate-right">
-							<div class="menu-item-box">
-								<div class="mui-icon iconfont icon-zhuce icon-left"></div>
-								<div class="operate-text"> 注册</div>
-							</div>
-						</a>
-					</li> -->
-				</template>
-				
-				<template v-else>
-					
-					<li class="mui-table-view-cell" v-if="accountInfo.roleid == 12 ">
+					<li class="mui-table-view-cell" v-show="accountInfo.roleid == 12 ">
 						<a href="javascript:void(0)" id="auth" class="mui-navigate-right" >
 							<div class="menu-item-box">
 								<div class="mui-icon iconfont icon-auth icon-left"></div>
@@ -80,7 +70,7 @@
 					</li>
 				</template>
 				
-				<template v-if="accountInfo.roleid != 1 ">
+				<template v-if=" accountInfo.roleid != 1 ">
 					<li class="mui-table-view-cell">
 						<a href="javascript:void(0)" id="custmer" class="mui-navigate-right" >
 							<div class="menu-item-box">

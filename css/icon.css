@@ -9,6 +9,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-qiandao::before{
+	content:"\e62d";
+	color: white;
+	font-size: 15px;
+}
 .icon-anquan::before{
 	content: "\e635";
 	font-size:20px ;

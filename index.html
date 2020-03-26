@@ -376,7 +376,7 @@
 						vm.viewRoleId = (JSON.parse( accountInfo )).roleid.toString();
 					}else{
 						vm.accountInfo = accountInfo == null ? '':JSON.parse( accountInfo );
-						vm.viewRoleId =  plus.storage.getItem('role') || '6';
+						vm.viewRoleId =  plus.storage.getItem('role') || '7';
 					}
 				}
 				
@@ -665,8 +665,7 @@
 							currIndex = 2;
 						}else if(clientX > parseInt(pageW * 0.75) && clientX <= parseInt(pageW *1)){
 							currIndex = 3;
-
-						}
+						} 
 						// 匹配对应tab窗口	
 						if(currIndex > 0) {
 							targetPage = plus.webview.getWebviewById(subpages[currIndex - 1]);
@@ -675,7 +674,7 @@
 							//mui.fire(targetPage,'show');
 						}
 
-						if(targetPage == activePage) { 
+						if(targetPage == activePage) {
 							return;
 						}
 						
@@ -690,6 +689,7 @@
 							util.updateTitleNView(currIndex);
 							
 					});
+					
 					util.updateTitleNView(currIndex);
 					
 					mui.appUpdate();

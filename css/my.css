@@ -5,8 +5,9 @@
 	display: -webkit-flex;
 	flex-direction: row;
 	padding: 1.8rem 5%;
-	background: linear-gradient(rgba(51,131,252,1),rgba(51,131,252,.6));
-	background: -webkit-linear-gradient(rgba(51,131,252,1),rgba(51,131,252,.6));
+	background-color:rgba(51,131,252,1);
+	/* background: linear-gradient(rgba(51,131,252,1),rgba(51,131,252,.6));
+	background: -webkit-linear-gradient(rgba(51,131,252,1),rgba(51,131,252,.6)); */
 	align-items: center;
 }
 .userinfo-left img{
@@ -55,3 +56,22 @@
 	width: 100%;
 	background: rgba(105,105,105,.1);
 }
+.sign-in{
+	background-color: #FF8C00;
+	padding: 3px 10px;
+	position: fixed;
+	right: 0;
+	top: 50px;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	align-items: center;
+	border-top-left-radius:5px ;
+	border-bottom-left-radius:5px ;
+}
+.sign-text{
+	font-size: 16px;
+	color: white;
+	padding-left: 5px;
+}
+

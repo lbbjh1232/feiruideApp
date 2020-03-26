@@ -153,8 +153,6 @@ var util = {
 					buttons.push({
 						text:'切换角色',
 						width:"80px",
-						// text:'\ue60f',
-						// fontSrc:'fonts/icon.ttf',
 						fontSize : '14px',
 						float:'right',
 						onclick: switchRole
@@ -165,6 +163,12 @@ var util = {
 				
 			case 1: 
 				text = '消息';
+				buttons.push({
+					text:'',
+					width:"80px",
+					fontSize : '14px',
+					float:'right',
+				});
 				break;
 				
 			case 2: 

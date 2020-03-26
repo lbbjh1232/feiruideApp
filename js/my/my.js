@@ -36,8 +36,6 @@ mui.plusReady(function () {
 			adminInfo = ''
 		}
 	})
-	//初始化微信服务
-	//mui.updateSerivces();
 	
 	var currentView = plus.webview.currentWebview();
 	// 页面show监听
@@ -71,19 +69,12 @@ mui.plusReady(function () {
 	})
 	
     // 跳转至登录页
-	mui('.mui-table-view').on('tap','#toLogin',function(){
+	document.getElementById('toLogin').addEventListener('tap',function(){
 		mui.openWindow({
 			url:"my/login.html",
 			id : 'login'
 		})
 	})
-	
-	 // 跳转至小程序注册
-	// mui('.mui-table-view').on('tap','#toReg',function(){
-	// 	mui.openWindow({
-	// 		url:"my/reg.html"
-	// 	})
-	// });
 	
 	// 身份认证
 	mui('.mui-table-view').on('tap','#auth',function(){

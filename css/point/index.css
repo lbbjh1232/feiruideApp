@@ -1,0 +1,74 @@
+html,body{
+	background-color:#F0F8FF;
+}
+.mui-bar {
+    background: #FF7F24;
+}
+.top-background{
+	background-color:#FF7F24;
+	height: 80px;
+	position: relative;
+}
+.point-count{
+	position: absolute;
+	top: 20px;
+	left: 0;
+	width: 90%;
+	margin: 0 5%;
+	padding: 25px 15px;
+	background-color: white;
+	border-radius: 5px;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	align-items: center;
+	
+}
+.count-left{
+	width: 40%;
+}
+.count-middle{
+	width: 30%;
+	padding-left:8px;
+}
+.count-right{
+	width:30%;
+	padding-left:8px;
+}
+.my-point-text{
+	font-size: 14px;
+	color: gray;
+	padding-bottom: 5px;
+}
+.my-point-count{
+	font-size: 30px;
+	color: #0000FF;
+}
+.mui-btn-block-orange{
+	font-size: 16px;
+	padding: 5px;
+	box-sizing:border-box;
+	margin: 0;
+	border-radius: 20px;
+	background: linear-gradient(to right,rgba(255, 165, 0,1),rgba(255,140,0,1));
+	background: -webkit-linear-gradient(to right,rgba(255, 165, 0,1),rgba(255,140,0,1));
+	border: none;
+}
+.mui-btn-block-exchange{
+	font-size: 16px;
+	padding: 5px;
+	box-sizing:border-box;
+	margin: 0;
+	border-radius: 20px;
+	background: linear-gradient(to right,rgba(67, 110, 238,1),rgba(125, 38,205,1));
+	background: -webkit-linear-gradient(to right,rgba(67, 110, 238,1),rgba(125, 38,205,1));
+	border: none;
+}
+
+.sign-box{
+	width: 90%;
+	margin: 45px auto;
+	background-color: white;
+	border-radius: 5px;
+	padding: 8px 15px;
+}

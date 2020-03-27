@@ -19,9 +19,6 @@ var loadView = function(){
 		vm.accountInfo = false;
 	}
 };
-var sweixin = '';
-
-
 
 mui.plusReady(function () {
 	
@@ -77,7 +74,7 @@ mui.plusReady(function () {
 	})
 	
 	// 身份认证
-	mui('.mui-table-view').on('tap','#auth',function(){
+	mui('#business').on('tap','#auth',function(){
 		mui.openWindow({
 			url:"my/auth.html",
 			id : 'auth',
@@ -85,28 +82,20 @@ mui.plusReady(function () {
 				autoShow : true,
 			}
 		})
-	})
-	
-	// 退出登录
-	mui('.mui-table-view').on('tap','#quit',function(){
-		mui.confirm('是否确认退出登录','提示',['取消','确认'],function (e) {
-			if(e.index == 1){
-				plus.nativeUI.showWaiting();
-				plus.storage.removeItem('accountInfo'); //删除用户缓存
-				var messageview = plus.webview.getWebviewById('html/message.html');
-				var indexview = plus.webview.getLaunchWebview();
-				mui.fire(indexview,'loginLoad');	//重载首页
-				mui.fire(messageview,'loginLoad');	//重载消息列表页
-				loadView(); //重载个人页面
-				plus.nativeUI.closeWaiting();
-
+	});
+	//积分管理
+	mui('#business').on('tap','#point',function(){
+		mui.openWindow({
+			url:"points/index.html",
+			id : 'points',
+			show : {
+				autoShow : true,
 			}
-		});
-		
+		})
 	});
 	
 	// 联系客服,随机分配在线客服(默认超级管理员为客服)
-	mui('.mui-table-view').on('tap','#custmer',function(){
+	mui('#service').on('tap','#custmer',function(){
 		if(!adminInfo){
 			mui.alert('客服未连接成功,请重新连接','提示','确认',function(){
 				admin = mui.getAdminId();

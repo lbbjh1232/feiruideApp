@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html>
-
+<html>     
+ 
 	<head>
 		<meta charset="utf-8">
-		<title>个人中心</title>
+		<title>个人中心</title> 
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
 		<meta http-equiv="content-security-policy">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<script type="text/javascript">
-			document.write('<script src="../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+			document.write('<script src="../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>'); 
 		</script>
 		<script type="text/javascript">
-			link(['../css/mui.min.css','../css/common.css','../css/icon.css','../css/iconfont.css','../css/my.css'],true);
-		</script>
-
+			link(['../css/mui.min.css','../css/common.css','../css/iconfont.css','../css/icon.css','../css/my.css'],true);
+		</script> 
 	</head> 
  
 	<body> 
@@ -26,63 +25,110 @@
 					<img id="avatar" :src="accountInfo ? accountInfo.avatar : '../images/60x60.gif'" onerror="this.src='../images/logo.png'">
 				</div>
 				<div class="userinfo-right">
-					<div v-show="accountInfo" class="username">
+					<div v-show="accountInfo" class="username" v-cloak>
 						{{ accountInfo.openid ? accountInfo.nickname : accountInfo.username}}
-					</div>  
+					</div>   
 					
 					<div v-show="!accountInfo" id="toLogin" class="username">
 						点击登录
 						<div style="font-size: 14px;">欢迎来到药械e家</div>
 					</div>
 					
-					<div class="companyname">
+					<div class="companyname" v-cloak>
 						{{accountInfo ? accountInfo.comp_name+' 【'+accountInfo.rolename+'】':""}}
 					</div>
 				</div>  
-			</div>
+			</div> 
 			  
 			<!-- 签单按钮 -->
-			<div class="sign-in">
+			<div class="sign-in" id="sign-in">
 				<div class="sign-icon iconfont1 icon-qiandao"></div>
 				<div class="sign-text">签到</div>
 			</div> 
 			 
 			<!-- 操作菜单 -->
-			<ul class="mui-table-view" v-cloak>
-				<template v-if="accountInfo">
-					
-					<li class="mui-table-view-cell" v-show="accountInfo.roleid == 12 ">
-						<a href="javascript:void(0)" id="auth" class="mui-navigate-right" >
+			<ul class="mui-table-view" id="business" v-cloak> 
+				<li class="mui-table-view-cell" v-show="accountInfo.roleid == 12 ">
+					<a href="javascript:void(0)" id="auth" class="mui-navigate-right" >
+						<div class="menu-item-box">
+							<div class="mui-icon iconfont1 icon-auth icon-left"></div>
+							<div class="operate-text"> 身份认证</div>
+						</div>
+					</a>
+				</li> 
+				
+				<li class="mui-table-view-cell">
+					<a href="javascript:void(0)" id="point" class="mui-navigate-right" >
+						<div class="menu-item-box">
+							<div class="mui-icon iconfont1 icon-point icon-left"></div>
+							<div class="operate-text"> 积分管理</div>
+						</div>
+					</a> 
+				</li>
+			</ul>
+			
+			<div class="divided-line"></div>
+			
+			<ul class="mui-table-view" id="my-manage">
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="" class="mui-navigate-right" >
 							<div class="menu-item-box">
-								<div class="mui-icon iconfont icon-auth icon-left"></div>
-								<div class="operate-text"> 身份认证</div>
+								<div class="mui-icon iconfont1 icon-taochan icon-left"></div>
+								<div class="operate-text"> 我的套餐</div>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="" class="mui-navigate-right" >
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont1 icon-tiezi icon-left"></div>
+								<div class="operate-text"> 我的帖子</div>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="" class="mui-navigate-right" >
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont1 icon-address icon-left"></div>
+								<div class="operate-text"> 我的地址</div>
 							</div>
 						</a>
 					</li>
 					
 					<li class="mui-table-view-cell">
-						<a href="javascript:void(0)"  id="quit" class="mui-navigate-right">
+						<a href="javascript:void(0)" id="" class="mui-navigate-right" >
 							<div class="menu-item-box">
-								<div class="mui-icon iconfont icon-tuichu icon-left"></div>
-								<div class="operate-text"> 退出</div>
+								<div class="mui-icon iconfont1 icon-saosao icon-left"></div>
+								<div class="operate-text"> 扫一扫</div>
 							</div>
 						</a>
 					</li>
-				</template>
-				
-				<template v-if=" accountInfo.roleid != 1 ">
+			</ul>
+			
+			<div class="divided-line"></div>
+			
+			<ul class="mui-table-view" id="service">
+
+					<li class="mui-table-view-cell">
+						<a href="javascript:void(0)" id="feedback" class="mui-navigate-right" >
+							<div class="menu-item-box">
+								<div class="mui-icon iconfont1 icon-yijian icon-left"></div>
+								<div class="operate-text"> 意见反馈</div>
+							</div>
+						</a>
+					</li>
+					
 					<li class="mui-table-view-cell">
 						<a href="javascript:void(0)" id="custmer" class="mui-navigate-right" >
 							<div class="menu-item-box">
-								<div class="mui-icon iconfont icon-kefu-tianchong icon-left"></div>
+								<div class="mui-icon iconfont1 icon-kefu icon-left"></div>
 								<div class="operate-text"> 联系客服</div>
 							</div>
 						</a>
 					</li>
-				</template>
-				
+				    
 			</ul>
-			
+			<!-- <div class="divided-line"></div> -->
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>

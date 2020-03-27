@@ -32,7 +32,15 @@
 				font-size: 14px;
 				color: gray;
 			}
-			
+			#quit{
+				width: 60%;
+				background-color: rgba(207 ,207 ,207,.2);
+				text-align: center;
+				padding: 10px 0;
+				margin: 10px auto 0;
+				border-radius: 5px;
+				color: #9C9C9C;
+			}
 		</style>
 
 	</head>
@@ -42,7 +50,7 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">设置</h1>
 		</header>
-		
+		 
 		<div class="mui-content" id="app">
 			<div v-show="islogin">
 			<div class="setting-title">账号</div>
@@ -118,7 +126,10 @@
 				</li>
 			</ul>
 			<div class="divided-line"></div>
-
+			
+			<!-- 退出登录 -->
+			<div v-show="islogin" id="quit">退出登录</div>
+			
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
@@ -271,6 +282,24 @@
 					url : 'about-us.html',
 				})
 			});
+			
+			// 退出登录
+			document.getElementById('quit').addEventListener('tap',function(){
+				mui.confirm('是否退出登录','提示',['取消','确认'],function (e) {
+					if(e.index == 1){
+						plus.nativeUI.showWaiting();
+						plus.storage.removeItem('accountInfo'); //删除用户缓存
+						var messageview = plus.webview.getWebviewById('html/message.html');
+						var indexview = plus.webview.getLaunchWebview();
+						var myview = plus.webview.getWebviewById('html/my.html');
+						mui.fire(indexview,'loginLoad');	//重载首页
+						mui.fire(messageview,'loginLoad');	//重载消息列表页
+						mui.fire(myview,'loginLoad');	//重载消息列表页
+						plus.nativeUI.closeWaiting();
+						vm.islogin = false;
+					}
+				});
+			})
 			
 			
 		})

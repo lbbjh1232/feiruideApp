@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/point/index.css'],true);
+		</script>
+	</head>
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav no-shadow">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">积分管理</h1>
+		</header>
+		 
+		<div class="mui-content" id="app">
+			<div class="top-background">
+					<div class="point-count">
+						<div class="count-left">
+							<div class="my-point-text">我的积分</div>
+							<div class="my-point-count">2000</div>
+						</div>
+						<div class="count-middle"><button type="button" class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-orange">立即签到</button></div>
+						<div class="count-right"><button type="button" class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-exchange">积分兑换</button></div></div>
+					</div>
+			</div>
+			
+			<div class="sign-box">
+				asdfasdf
+			</div>
+			
+			
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	<script type="text/javascript">
+		mui.init()
+		var vm =new Vue({
+			el : '#app',
+			data : {
+				islogin:false,
+				accountInfo : {}
+			}
+		});
+		
+		mui.plusReady(function () {
+			mui.statusAndSetAfterBack('light','#FF7F24');
+			var accountInfo = plus.storage.getItem('accountInfo');
+			
+			
+			
+			
+		})
+		
+	</script>
+	
+</html>

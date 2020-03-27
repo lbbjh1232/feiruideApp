@@ -9,6 +9,35 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-yijian::before{
+	content: "\e618";
+	color:#4F4F4F;
+}
+.icon-saosao::before{
+	content: "\e617";
+	color:#4F4F4F;
+}
+.icon-tiezi::before{
+	content: "\e604";
+	color: #4F4F4F;
+}
+.icon-address::before{
+	content: "\e698";
+	color: #4F4F4F;
+}
+.icon-taochan::before{
+	content: "\e68c";
+	color: #4F4F4F;
+}
+.icon-point::before{
+	content: "\e658";
+	color: #4F4F4F;
+}
+.icon-kefu::before{
+	content:"\e64f";
+	color: #4F4F4F;
+	/* font-size:15px; */
+}
 .icon-qiandao::before{
 	content:"\e62d";
 	color: white;
@@ -95,10 +124,9 @@
 	font-size: 3rem;
 }
 
-.icon-auth:before{
-	content: "\e635";
-	color: gray;
-	/* font-size: ; */
+.icon-auth::before{
+	content: "\e609";
+	color: #4F4F4F;
 }
 .icon-guawang:before{
 	content: "\e610";

@@ -52,9 +52,18 @@
 	font-size: 16px;
 }
 .divided-line{
-	height: 0.7rem;
+	height: 12px;
 	width: 100%;
-	background: rgba(105,105,105,.1);
+	background: rgba(156, 156, 156,.1);
+}
+.mui-table-view-cell:after{
+	background-color:rgba(156, 156, 156,.1) ;
+}
+.mui-table-view:after{
+	background-color:rgba(156, 156, 156,.1) ;
+}
+.mui-table-view:before{
+	background-color:rgba(156, 156, 156,.1) ;
 }
 .sign-in{
 	background-color: #FF8C00;

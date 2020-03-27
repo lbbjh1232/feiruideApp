@@ -406,7 +406,10 @@ body {
 #agreement,#private{
 	color: #0062CC;
 }
-
+.no-shadow{
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
 
 
 

@@ -9,6 +9,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-sign-selected::before{
+	content: "\e626";
+	color: rgba(125, 38,205,1);
+	font-size: 3rem;
+}
+.icon-sign-none-select::before{
+	content: "\e626";
+	color: rgba(181, 181, 181,.4);
+	font-size: 3rem;
+}
 .icon-yijian::before{
 	content: "\e618";
 	color:#4F4F4F;

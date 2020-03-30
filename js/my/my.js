@@ -83,6 +83,7 @@ mui.plusReady(function () {
 			}
 		})
 	});
+	
 	//积分管理
 	mui('#business').on('tap','#point',function(){
 		mui.openWindow({
@@ -120,6 +121,19 @@ mui.plusReady(function () {
 		
 	})
 	
+	// 点击签到
+	document.getElementById('sign-in').addEventListener('tap',function(){
+		mui.loginPageShow();
+		
+		//签到积分
+		let res = mui.http_post(API.SIGN_IN,{uid : vm.accountInfo.id,sign:1});
+		res.then(res=>{
+			if(res.code==200){
+				
+			}
+		})
+		
+	})
 	
 	
 })

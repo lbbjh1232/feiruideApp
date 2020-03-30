@@ -21,37 +21,124 @@
 			<h1 class="mui-title">积分管理</h1>
 		</header>
 		 
-		<div class="mui-content" id="app">
-			<div class="top-background">
+		<div class="mui-content"  id="app">
+			<div class="top-background" v-cloak> 
 					<div class="point-count">
 						<div class="count-left">
 							<div class="my-point-text">我的积分</div>
 							<div class="my-point-count">2000</div>
 						</div>
-						<div class="count-middle"><button type="button" class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-orange">立即签到</button></div>
-						<div class="count-right"><button type="button" class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-exchange">积分兑换</button></div></div>
+						
+						<div class="count-middle"><button type="button" class="mui-btn mui-btn-block mui-btn-block-orange">立即签到</button></div>
+						
+						<div class="count-right"><button type="button" class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-exchange">积分兑换</button></div>
+						
 					</div>
 			</div>
 			
 			<div class="sign-box">
-				asdfasdf
+				<div class="continous">已连续签到 <span>4天</span></div>
+				<div class="yesterday">明日签到可获得积分 <span>3积分</span></div>
+				<div class="continous-chart">
+					<div class="perday">
+						<div class="iconfont1 icon-sign-selected"></div>
+						<div class="sign-date">今天</div>
+					</div>
+					<div class="perday">
+						<div class="iconfont1 icon-sign-selected"></div>
+						<div class="sign-date">明天</div>
+					</div>
+					<div class="perday"> 
+						<div class="iconfont1 icon-sign-selected"></div>
+						<div class="sign-date">后天</div>
+					</div>
+					<div class="perday">
+						<div class="iconfont1 icon-sign-selected"></div>
+						<div class="sign-date">03-30</div>
+					</div>
+					<div class="perday">
+						<div class="iconfont1 icon-sign-none-select"></div>
+						<div class="sign-date">03-31</div>
+					</div>
+					<div class="perday">
+						<div class="iconfont1 icon-sign-none-select"></div>
+						<div class="sign-date">04-01</div>
+					</div>
+					<div class="perday">
+						<div class="iconfont1 icon-sign-none-select"></div>
+						<div class="sign-date">04-02</div>
+					</div>
+					<div class="perday">
+						<div class="iconfont1 icon-sign-none-select"></div>
+						<div class="sign-date">04-03</div>
+					</div>
+				</div>
 			</div>
 			
-			
-			
+			<!-- points detail and exchange detail -->
+			<div class="sign-exchange" >
+				
+				<div class="detail-title">
+					<div class="sign-detail" :class="currentTab==1?'active':''" data-id="1" >积分明细</div>
+					<div  class="sign-detail" :class="currentTab==2?'active':''" data-id="2">兑换明细</div>
+				</div>
+				
+				<div class="history-detail" v-cloak>
+					
+					<div class="detail-item">
+						<div class="detail-head">
+							<div class="head-title">签到奖励</div>
+							<div class="head-date">2020-03-20</div>
+						</div>
+						<div class="detail-count red">+3积分</div>
+					</div>
+					<div class="detail-item">
+						<div class="detail-head">
+							<div class="head-title">分享奖励</div>
+							<div class="head-date">2020-03-20</div>
+						</div>
+						<div class="detail-count red">+3积分</div>
+					</div>
+					<div class="detail-item">
+						<div class="detail-head">
+							<div class="head-title">续费奖励</div>
+							<div class="head-date">2020-03-20</div>
+						</div>
+						<div class="detail-count red">+3积分</div>
+					</div>
+					<div class="detail-item">
+						<div class="detail-head">
+							<div class="head-title">发帖奖励</div>
+							<div class="head-date">2020-03-20</div>
+						</div>
+						<div class="detail-count red">+3积分</div>
+					</div>
+					<div class="detail-item">
+						<div class="detail-head">
+							<div class="head-title">邀请新用户奖励</div>
+							<div class="head-date">2020-03-20</div>
+						</div>
+						<div class="detail-count red">+3积分</div>
+					</div>
+					
+					<div class="mark">仅显示最近7天的明细</div>
+					
+				</div>
+				
+			</div>
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
-	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-dev.js"></script>
 	<script src="../../js/api.js"></script>
 	<script src="../../js/app.js"></script>
+	
 	<script type="text/javascript">
-		mui.init()
-		var vm =new Vue({
-			el : '#app',
-			data : {
-				islogin:false,
-				accountInfo : {}
+		mui.init();
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				currentTab : 1,
 			}
 		});
 		
@@ -59,7 +146,10 @@
 			mui.statusAndSetAfterBack('light','#FF7F24');
 			var accountInfo = plus.storage.getItem('accountInfo');
 			
-			
+			// 切换明细
+			mui('.detail-title').on('tap','.sign-detail',function(){
+				vm.currentTab = this.dataset.id;
+			})
 			
 			
 		})

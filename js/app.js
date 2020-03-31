@@ -1109,6 +1109,18 @@
 		
 	}
 	
+	// judge is sign?
+	$.judgeIsSign = function(uid){
+		let res = $.http_post(API.IS_SIGN,{uid});
+		res.then(res=>{
+			if(res.code == 200){
+				vm.isSign = true;
+			}else{
+				vm.isSign = false;
+			}
+		})
+	}
+	
 	
 })(mui)
 

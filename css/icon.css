@@ -9,6 +9,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-what::before{
+	content: "\e60a";
+	color: white;
+	font-size: 20px;
+}
 .icon-sign-selected::before{
 	content: "\e626";
 	color: rgba(125, 38,205,1);

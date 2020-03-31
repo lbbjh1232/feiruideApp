@@ -6,7 +6,8 @@ mui.init({
 var vm = new Vue({
 	el:'#app',
 	data:{
-		accountInfo:false
+		accountInfo:false,
+		isSign : false
 	}
 })
 
@@ -15,6 +16,9 @@ var loadView = function(){
 	
 	if( accountInfo != null){
 		vm.accountInfo = JSON.parse(accountInfo);
+		
+		mui.judgeIsSign(vm.accountInfo.id);
+		
 	}else{
 		vm.accountInfo = false;
 	}
@@ -32,7 +36,7 @@ mui.plusReady(function () {
 		}else{
 			adminInfo = ''
 		}
-	})
+	});
 	
 	var currentView = plus.webview.currentWebview();
 	// 页面show监听
@@ -86,6 +90,8 @@ mui.plusReady(function () {
 	
 	//积分管理
 	mui('#business').on('tap','#point',function(){
+		mui.loginPageShow();
+		
 		mui.openWindow({
 			url:"points/index.html",
 			id : 'points',
@@ -126,10 +132,23 @@ mui.plusReady(function () {
 		mui.loginPageShow();
 		
 		//签到积分
-		let res = mui.http_post(API.SIGN_IN,{uid : vm.accountInfo.id,sign:1});
+		let res = mui.http_post(API.SIGN_IN,{uid : vm.accountInfo.id});
 		res.then(res=>{
 			if(res.code==200){
-				
+				mui.toast('获得+'+res.message+'积分');
+				vm.isSign = true;
+				return;
+			}
+			
+			if(res.code == 201){
+				mui.toast(res.message);
+				vm.isSign = true;
+				return;
+			}
+			
+			if(res.code == 202){
+				mui.toast(res.message);
+				return;
 			}
 		})
 		

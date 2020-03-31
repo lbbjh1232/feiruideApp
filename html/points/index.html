@@ -19,6 +19,7 @@
 		<header class="mui-bar mui-bar-nav no-shadow">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">积分管理</h1>
+			<div id="data-from">积分规则</div>
 		</header>
 		 
 		<div class="mui-content"  id="app">
@@ -26,10 +27,10 @@
 					<div class="point-count">
 						<div class="count-left">
 							<div class="my-point-text">我的积分</div>
-							<div class="my-point-count">2000</div>
+							<div class="my-point-count">{{totle}}</div>
 						</div>
 						
-						<div class="count-middle"><button type="button" class="mui-btn mui-btn-block mui-btn-block-orange">立即签到</button></div>
+						<div class="count-middle"><button id="sign-in" type="button" :disabled="isSign" class="mui-btn mui-btn-block mui-btn-block-orange">{{isSign?'已签到':'立即签到'}}</button></div>
 						
 						<div class="count-right"><button type="button" class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-exchange">积分兑换</button></div>
 						
@@ -37,41 +38,15 @@
 			</div>
 			
 			<div class="sign-box">
-				<div class="continous">已连续签到 <span>4天</span></div>
-				<div class="yesterday">明日签到可获得积分 <span>3积分</span></div>
+				<div class="continous">已连续签到 <span>{{last_day}}天</span></div>
+				<div class="yesterday">明日签到可获得积分 <span>{{tomorrow}}积分</span></div>
 				<div class="continous-chart">
-					<div class="perday">
-						<div class="iconfont1 icon-sign-selected"></div>
-						<div class="sign-date">今天</div>
+					
+					<div class="perday" v-for="(item,index) in sign_in">
+						<div class="iconfont1 " :class="item.sign?'icon-sign-selected':'icon-sign-none-select'"></div>
+						<div class="sign-date">{{item.date}}</div>
 					</div>
-					<div class="perday">
-						<div class="iconfont1 icon-sign-selected"></div>
-						<div class="sign-date">明天</div>
-					</div>
-					<div class="perday"> 
-						<div class="iconfont1 icon-sign-selected"></div>
-						<div class="sign-date">后天</div>
-					</div>
-					<div class="perday">
-						<div class="iconfont1 icon-sign-selected"></div>
-						<div class="sign-date">03-30</div>
-					</div>
-					<div class="perday">
-						<div class="iconfont1 icon-sign-none-select"></div>
-						<div class="sign-date">03-31</div>
-					</div>
-					<div class="perday">
-						<div class="iconfont1 icon-sign-none-select"></div>
-						<div class="sign-date">04-01</div>
-					</div>
-					<div class="perday">
-						<div class="iconfont1 icon-sign-none-select"></div>
-						<div class="sign-date">04-02</div>
-					</div>
-					<div class="perday">
-						<div class="iconfont1 icon-sign-none-select"></div>
-						<div class="sign-date">04-03</div>
-					</div>
+					
 				</div>
 			</div>
 			
@@ -81,44 +56,16 @@
 				<div class="detail-title">
 					<div class="sign-detail" :class="currentTab==1?'active':''" data-id="1" >积分明细</div>
 					<div  class="sign-detail" :class="currentTab==2?'active':''" data-id="2">兑换明细</div>
-				</div>
+				</div> 
 				
 				<div class="history-detail" v-cloak>
 					
-					<div class="detail-item">
+					<div class="detail-item" v-for="(item,index) in current_detail">
 						<div class="detail-head">
-							<div class="head-title">签到奖励</div>
-							<div class="head-date">2020-03-20</div>
+							<div class="head-title">{{item.title}}</div>
+							<div class="head-date">{{item.create_time}}</div>
 						</div>
-						<div class="detail-count red">+3积分</div>
-					</div>
-					<div class="detail-item">
-						<div class="detail-head">
-							<div class="head-title">分享奖励</div>
-							<div class="head-date">2020-03-20</div>
-						</div>
-						<div class="detail-count red">+3积分</div>
-					</div>
-					<div class="detail-item">
-						<div class="detail-head">
-							<div class="head-title">续费奖励</div>
-							<div class="head-date">2020-03-20</div>
-						</div>
-						<div class="detail-count red">+3积分</div>
-					</div>
-					<div class="detail-item">
-						<div class="detail-head">
-							<div class="head-title">发帖奖励</div>
-							<div class="head-date">2020-03-20</div>
-						</div>
-						<div class="detail-count red">+3积分</div>
-					</div>
-					<div class="detail-item">
-						<div class="detail-head">
-							<div class="head-title">邀请新用户奖励</div>
-							<div class="head-date">2020-03-20</div>
-						</div>
-						<div class="detail-count red">+3积分</div>
+						<div class="detail-count red">{{item.number}}</div>
 					</div>
 					
 					<div class="mark">仅显示最近7天的明细</div>
@@ -129,7 +76,7 @@
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
-	<script src="../../js/vue-dev.js"></script>
+	<script src="../../js/vue.js"></script>
 	<script src="../../js/api.js"></script>
 	<script src="../../js/app.js"></script>
 	
@@ -139,18 +86,80 @@
 			el: '#app',
 			data: {
 				currentTab : 1,
+				isSign : true,
+				totle : 0,
+				last_day:0,
+				tomorrow : 0,
+				sign_in : [{},{},{},{},{},{},{}],
+				point_detail:[],
+				exchange_detail:[],
+				current_detail:[],
 			}
 		});
 		
+		function load(uid){
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
+			let res = mui.http_post(API.LOAD_POINT,{uid});
+			res.then(res=>{
+				plus.nativeUI.closeWaiting();
+				if(res.code == 200){
+					vm.totle = res.data.totle;
+					vm.last_day = res.data.last_day;
+					vm.tomorrow = res.data.tomorrow;
+					vm.sign_in = res.data.sign_in;
+					vm.point_detail = res.data.point_detail;
+					vm.current_detail = res.data.point_detail;
+				}
+			})
+			
+		}
+		
 		mui.plusReady(function () {
 			mui.statusAndSetAfterBack('light','#FF7F24');
-			var accountInfo = plus.storage.getItem('accountInfo');
+			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+			
+			//初始加载
+			load(accountInfo.id);
+			
+			mui.judgeIsSign(accountInfo.id)
 			
 			// 切换明细
 			mui('.detail-title').on('tap','.sign-detail',function(){
 				vm.currentTab = this.dataset.id;
 			})
 			
+			// 点击签到
+			document.getElementById('sign-in').addEventListener('tap',function(){
+				mui.loginPageShow();
+				
+				//签到积分
+				let res = mui.http_post(API.SIGN_IN,{uid : vm.accountInfo.id});
+				res.then(res=>{
+					if(res.code==200){
+						mui.toast('获得+'+res.message+'积分');
+						vm.isSign = true;
+						return;
+					}
+					
+					if(res.code == 201){
+						mui.toast(res.message);
+						vm.isSign = true;
+						return;
+					}
+					
+					if(res.code == 202){
+						mui.toast(res.message);
+						return;
+					}
+				})
+				
+			})
+			
+			//查看规则
+			document.getElementById('data-from').addEventListener('tap',function(){
+				mui.thirdLink('积分规则','https://test.yxt.feiruide.cn/index.php/point/rule');
+				
+			})
 			
 		})
 		

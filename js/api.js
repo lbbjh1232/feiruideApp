@@ -123,7 +123,8 @@ var API = {
 	
 	// 积分
 	SIGN_IN : '/point/signIn',
-	
+	IS_SIGN : '/point/isSign',
+	LOAD_POINT : '/point/loadPoint',
 	
 
 	//客服

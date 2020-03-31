@@ -37,15 +37,15 @@
 					<div class="companyname" v-cloak>
 						{{accountInfo ? accountInfo.comp_name+' 【'+accountInfo.rolename+'】':""}}
 					</div>
-				</div>
+				</div> 
 			</div> 
 			   
 			<!-- 签单按钮 -->
 			<div class="sign-in" id="sign-in">
 				<div class="sign-icon iconfont1 icon-qiandao"></div>
-				<div class="sign-text">签到</div>
-			</div> 
-			 
+				<div class="sign-text">{{isSign?'已签到':'签到'}}</div>
+			</div>
+			  
 			<!-- 操作菜单 -->
 			<ul class="mui-table-view" id="business" v-cloak> 
 				<li class="mui-table-view-cell" v-show="accountInfo.roleid == 12 ">

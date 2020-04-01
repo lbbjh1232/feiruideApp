@@ -1,5 +1,5 @@
 .mui-bar-nav~.mui-content{
-	padding-top: 44px;
+	padding-top: 64px;
 }
 .mui-scroll-wrapper{
 	top: 0;
@@ -7,7 +7,7 @@
 }
 .mui-control-content {
 	background-color: white;
-	min-height: calc(100vh - 90px);
+	min-height: calc(100vh - 100px);
 }
 .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar{
 	background-color: #33cd5f;

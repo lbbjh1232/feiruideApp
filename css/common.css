@@ -56,6 +56,31 @@ body {
 	color: #FFFFFF;
 }
 
+/* 设置沉浸式状态栏 */
+.mui-bar-nav {
+    height: 64px;
+    padding-top: 20px;
+}
+
+.mui-bar-nav ~ .mui-content
+{
+    padding-top: 64px;
+}
+
+.mui-bar-nav ~ .mui-content .mui-pull-top-pocket
+{
+    top: 64px;
+}
+
+.mui-bar-nav ~ .mui-content.mui-scroll-wrapper .mui-scrollbar-vertical
+{
+    top: 64px;
+}
+
+.mui-bar-nav ~ .mui-content .mui-slider.mui-fullscreen
+{
+    top: 64px;
+}
 
 
 /*----------------mui.showLoading---------------*/  
@@ -219,6 +244,7 @@ body {
 	width: 100%;
 }
 .close-box{
+	padding-top: 30px;
 	border-bottom: 1px solid rgba(105,105,105,.1);
 }
 .choosed{

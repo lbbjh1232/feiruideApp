@@ -16,10 +16,6 @@
 .search-box{
 	height:auto;
 }
-.mui-scroll-wrapper{
-	top: calc(44px + 5rem);
-    height: calc(99% - 44px - 5rem);
-}
 .drug-list-left-part{
 	width: 75%;
 }

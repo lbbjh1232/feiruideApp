@@ -39,7 +39,8 @@
 			var embed,ws;
 			
 			function createEmbed(href){
-				var topoffset='44px';
+				var topoffset= isIPhoneX() ? '88px' : '64px';
+				
 				plus.nativeUI.showWaiting('',{style:'black',modal:false,background:'rgba(0,0,0,0)'});
 				embed=plus.webview.create(href,'embed',{top:topoffset,bottom:'0px',position:'dock',dock:'bottom',bounce:'vertical'});
 				ws.append(embed);

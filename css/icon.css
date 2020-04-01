@@ -10,7 +10,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 .icon-what::before{
-	content: "\e60a";
+	content: "\e6b8";
 	color: white;
 	font-size: 20px;
 }

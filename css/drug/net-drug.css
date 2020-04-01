@@ -3,11 +3,11 @@ html,body{
 	background-color: #efeff4;
 }
 .mui-bar-nav~.mui-content{
-	padding-top:calc(44px + 6rem);
+	padding-top:calc(64px + 6rem);
 }
 .mui-scroll-wrapper{
-	top: calc(44px + 5rem);
-	height: calc(99% - 44px - 5rem);
+	top: calc(64px + 5rem);
+	height: calc(99% - 64px - 5rem);
 }
 	
 .mui-content{
@@ -17,7 +17,7 @@ html,body{
 	width: 100%;
 	height: 5rem;
 	position: fixed;
-	top: 44px;
+	top: 64px;
 	background-color: #efeff4;
 	padding: 0 1rem;
 	display: flex;

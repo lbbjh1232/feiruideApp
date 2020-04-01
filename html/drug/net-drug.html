@@ -111,8 +111,7 @@
 		
 		
 		<!-- 筛选表单栏 -->
-		<template v-if="filterShow">
-			<div class="mask" id="filter-close">
+			<div v-show="filterShow" class="mask" id="filter-close">
 				
 				<div class="input-box animated slideInRight" id="scroll-box">
 					<div id="close-btn" class="close-box"><span class="iconfont icon-guanbi"></span></div>
@@ -186,7 +185,6 @@
 				</div>
 				
 			</div>
-		</template>
 		
 		
 		
@@ -199,6 +197,7 @@
 	
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/vue.js"></script>
+	<script src="../../js/drug.js"></script>
 	<script src="../../js/lib/picker/mui.picker.min.js"></script>
 	<script src="../../js/lib/picker/mui.poppicker.js"></script>
 	<script src="../../js/api.js"></script> 

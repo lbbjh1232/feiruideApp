@@ -133,11 +133,12 @@
 				mui.loginPageShow();
 				
 				//签到积分
-				let res = mui.http_post(API.SIGN_IN,{uid : vm.accountInfo.id});
+				let res = mui.http_post(API.SIGN_IN,{uid : accountInfo.id});
 				res.then(res=>{
 					if(res.code==200){
 						mui.toast('获得+'+res.message+'积分');
 						vm.isSign = true;
+						load(accountInfo.id)
 						return;
 					}
 					

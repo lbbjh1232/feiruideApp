@@ -978,7 +978,15 @@
 	$.openWindow = function(style){
 		($.beforeOpenWindow != null && typeof $.beforeOpenWindow ==='function' ) ? $.beforeOpenWindow():null;
 		
-		OLD_OPEN_WINDOW(style);
+		//default params
+		let defaultStyle = {
+			waiting : {
+				autoShow : false
+			}
+		}
+		let newStyle = $.extend('deep',defaultStyle,style)
+		
+		OLD_OPEN_WINDOW(newStyle);
 	}
 	
 	// paint status : only in index page

@@ -204,6 +204,7 @@
 	<script src="../../js/app.js"></script> 
 		
 	<script type="text/javascript">
+
 		var vm = new Vue({
 			el:'#app',
 			data:{
@@ -475,6 +476,7 @@
 						
 						// 确认筛选数据操作
 						mui('.filter-btn-box').on('tap','.sure',function(){
+							console.log('asdfasdf')
 							var searchData = {
 								pageIndex : 1,
 								drugNumber : vm.drugNumber,

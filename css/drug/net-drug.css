@@ -116,7 +116,7 @@ html,body{
 .scroll-box{
 	position: relative;
 	width: 100%;
-	height: calc(100% - 7rem);
+	height: calc(100% - 50px - 4rem);
 }
 #scroll-three{
 	top: 0.5rem;

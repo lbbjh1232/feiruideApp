@@ -9,6 +9,32 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-copy-url::before{
+	content: "\e683";
+	font-size: 3.5rem;
+	text-align: center;
+	line-height: 3.5rem;
+}
+.icon-wechat-circle::before{
+	content: "\e630";
+	color: 	#66CD00;
+	font-size: 3.5rem;
+	text-align: center;
+	line-height: 3.5rem;
+}
+.icon-wechat-user::before{
+	content: "\e88d";
+	color: #008000;
+	font-size: 3.5rem;
+	text-align: center;
+	line-height: 3.5rem;
+}
+.icon-share:before{
+	content: "\e86d";
+	color: white;
+	font-size: 2.5rem;
+}
+
 .icon-what::before{
 	content: "\e6b8";
 	color: white;
@@ -140,7 +166,7 @@
 }
 
 .icon-auth::before{
-	content: "\e609";
+	content: "\e669";
 	color: #4F4F4F;
 }
 .icon-guawang:before{

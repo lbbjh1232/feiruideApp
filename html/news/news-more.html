@@ -112,7 +112,6 @@
 			}
 		});
 		
-		
 		mui.plusReady(function () {
 			plus.nativeUI.closeWaiting();
 			vm.sign = mui.currentWebview.sid;
@@ -131,6 +130,7 @@
 						 autoShow : true
 					 },
 					 extras : {
+						nid : news.id,
 						title : news.title,
 						conver : news.cover,
 						time : news.publish_time,

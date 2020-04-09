@@ -13,7 +13,7 @@
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
 		<script type="text/javascript">
-			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/mui.imageviewer.css','../../css/news/index.css'],true);
+			link(['../../css/mui.min.css','../../css/common.css','../../css/animate.css','../../css/icon.css','../../css/mui.imageviewer.css','../../css/news/index.css'],true);
 		</script>
 		<style type="text/css">
 			body{
@@ -56,6 +56,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">新闻详情</h1>
+			<div id="data-from" class="iconfont1 icon-share"></div>
 		</header>
 		
 		<div class="mui-content" id="app">
@@ -77,10 +78,12 @@
 			<!-- 附件 -->
 			<div class="enclosure-box" v-cloak>
 				<div class="enclosure" v-for="item in enclosure" :data-ext="item.ext" :data-url="item.url">
-					{{item.title}}
+					{{item.title}} 
 				</div>
 			</div>
-		</div>
+		
+			
+		</div> 
 		
 	</body>
 	<script src="../../js/mui.min.js"></script>
@@ -103,14 +106,16 @@
 		})
 		window.onload = function(){
 			mui.plusReady(function () {
-			    // var id = mui.currentWebview.nid;
+			    var id = mui.currentWebview.nid;
 				vm.title = mui.currentWebview.title;
-				// vm.cover = mui.currentWebview.cover;
+				vm.cover = mui.currentWebview.cover;
 				vm.time = mui.currentWebview.time;
 				vm.content = mui.currentWebview.content;
 				vm.enclosure = mui.currentWebview.file;
+				
 				mui.currentWebview.show();
 				plus.nativeUI.closeWaiting();
+				
 				vm.$nextTick(function(){
 					var imageViewer = new mui.ImageViewer('img', {
 						dbl: false
@@ -150,6 +155,20 @@
 					})
 					
 				});
+				
+				mui.updateSerivces('share');
+				
+				document.getElementById('data-from').addEventListener('tap',function(){
+					let msg={
+							type:'web',
+							thumbs:['_www/images/logo1.png'],
+							href:'http://test.share.feiruide.cn:9095/news/index/index/9',
+							title : vm.title,
+							content : vm.title,
+						};
+						
+					mui.sharePop(sweixin,msg,mui.pointByShareNews);
+				})
 				
 				
 			})

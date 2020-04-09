@@ -111,7 +111,8 @@
 		
 		
 		<!-- 筛选表单栏 -->
-			<div v-show="filterShow" class="mask" id="filter-close">
+		<template v-if="filterShow" >
+			<div class="mask" id="filter-close">
 				
 				<div class="input-box animated slideInRight" id="scroll-box">
 					<div id="close-btn" class="close-box"><span class="iconfont icon-guanbi"></span></div>
@@ -186,7 +187,7 @@
 				
 			</div>
 		
-		
+		</template>
 		
 		
 		

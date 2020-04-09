@@ -740,7 +740,7 @@
 	 * 更新分享服务
 	 */
 	
-	 $.updateSerivces = function(){
+	 $.updateSerivces = function(share){
 		plus.share.getServices(function(s){
 			shares={};
 			for(var i in s){
@@ -752,7 +752,7 @@
 			console.log('获取分享服务列表失败：'+e.message);
 		});
 		
-		plus.oauth.getServices(function(service){
+		share == undefined ? plus.oauth.getServices(function(service){
 			logins = {};
 			for(let i in service){
 				let t=service[i];
@@ -763,7 +763,7 @@
 			
 		},function(e){
 			//获取服务失败
-		})
+		}):null
 		
 	};
 	
@@ -1127,6 +1127,125 @@
 				vm.isSign = false;
 			}
 		})
+	}
+	
+	$.shareNews = function(srv, msg, button,callback){
+	  if(!srv){
+	    // outLine('无效的分享服务！');
+	    return;
+	  }
+	  button&&(msg.extra=button.extra);
+		// 发送分享
+		if(srv.authenticated){
+			// outLine('---已授权---');
+			$.doShareNews(srv, msg,callback);
+			
+		}else{
+			// outLine('---未授权---');
+			srv.authorize(function(){
+				$.doShareNews(srv, msg,callback);
+				
+			}, function(e){
+				// outLine('认证授权失败：'+JSON.stringify(e));
+			});
+		}  
+	}
+	
+	 $.doShareNews = function(srv, msg,callback){
+		srv.send(msg, function(){
+			callback();
+			
+		}, function(e){
+			$.toast('分享失败');
+			
+		});
+	};
+	
+	// get points by share news
+	$.pointByShareNews = function(){
+		let accountInfo = plus.storage.getItem('accountInfo');
+		if( accountInfo != null ){
+			accountInfo = JSON.parse( accountInfo );
+			let res = $.http_post(API.SHARE_NEWS,{uid:accountInfo.id});
+			res.then(res=>{
+				if(res.code == 200){
+					$.toast(res.message);
+					$.trigger(document.getElementById('share-mask'),'tap');
+				}
+			});
+			
+		}else{
+			$.toast('分享成功');
+		}
+	}
+	
+	// create  the popup of share 
+	$.sharePop = function(weixin,msg,pointByShare){
+		// create mask
+		let mask;
+		mask = document.getElementById('share-mask');
+		if(mask){
+			mask.classList.remove('none'); 
+			
+		}else{
+			
+			let html = `
+				<div class="share-box">
+					<div class="share-title">分享到</div> 
+					<div class="share-item-box">
+						<div class="share-item toUser">
+							<div class="share-icon iconfont1 icon-wechat-user"></div>
+							<div class="share-text">微信好友</div>
+						</div>
+						
+						<div class="share-item toCircle">
+							<div class="share-icon iconfont1 icon-wechat-circle"></div>
+							<div class="share-text">微信朋友圈</div>
+						</div>
+						
+					</div>
+					
+					<div class="share-item-box">
+						<div class="share-item toCopy">
+							<div class="share-icon iconfont1 icon-copy-url"></div>
+							<div class="share-text">复制链接</div>
+						</div>
+					</div>
+				</div>
+			`;
+			mask = document.createElement('div');
+			mask.classList.add('share-mask');
+			mask.setAttribute('id','share-mask');
+			
+			mask.innerHTML = html;
+			document.body.appendChild(mask);
+			
+			mask.addEventListener('touchmove',function(e){e.stopPropagation();e.preventDefault();});
+			mask.addEventListener('tap',function(){
+				mask.classList.add('none');
+			});
+			
+			document.getElementsByClassName('share-box')[0].addEventListener('tap',function(e){e.stopPropagation();e.preventDefault();});
+			
+			// 分享到朋友圈
+			document.getElementsByClassName('toUser')[0].addEventListener('tap',function(){
+				
+				weixin?$.shareNews(weixin,msg,{title:'微信好友',extra:{scene:'WXSceneSession'}},pointByShare):plus.nativeUI.alert('当前环境不支持微信分享操作!');
+				
+			});
+			
+			document.getElementsByClassName('toCircle')[0].addEventListener('tap',function(){
+				weixin?$.shareNews(weixin,msg, {title:'微信朋友圈',extra:{scene:'WXSceneTimeline'}},pointByShare):plus.nativeUI.alert('当前环境不支持微信分享操作!');
+				
+			})
+			
+			document.getElementsByClassName('toCopy')[0].addEventListener('tap',function(){
+				alert('复制链接')
+			})
+			
+		}
+		
+		
 	}
 	
 	

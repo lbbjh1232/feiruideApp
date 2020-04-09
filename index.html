@@ -902,10 +902,12 @@
 								 autoShow : true
 							 },
 							 extras : {
+								nid : news.id,
 								title : news.title,
 								conver : news.cover,
 								time : news.publish_time,
-								content : news.content
+								content : news.content,
+								file : news.file_url
 							 }
 						 })
 					 })
@@ -920,6 +922,7 @@
 								 autoShow : true
 							 },
 							 extras : {
+								nid : news.id,
 								title : news.title,
 								conver : news.cover,
 								time : news.publish_time,

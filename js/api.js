@@ -9,10 +9,12 @@ var API = {
 	HOST : "https://test.yxt.feiruide.cn/index.php",
 	TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
 	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
+	SHARE_HOST : 'http://test.share.feiruide.cn',
 	
 	// HOST : "https://yxt.feiruide.cn/index.php",
 	// TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
 	// IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
+	// SHARE_HOST : 'http://share.feiruide.cn'
 	
 	BAND_PHONE : '/user/bandPhone',
 	BAND_WECHAT : '/user/bandWechat',
@@ -125,6 +127,7 @@ var API = {
 	SIGN_IN : '/point/signIn',
 	IS_SIGN : '/point/isSign',
 	LOAD_POINT : '/point/loadPoint',
+	SHARE_NEWS :'/point/shareNews',
 	
 
 	//客服

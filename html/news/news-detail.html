@@ -162,12 +162,14 @@
 					let msg={
 							type:'web',
 							thumbs:['_www/images/logo1.png'],
-							href:'http://test.share.feiruide.cn:9095/news/index/index/9',
+							href:API.SHARE_HOST+'/news/index/index/'+id,
 							title : vm.title,
 							content : vm.title,
 						};
 						
-					mui.sharePop(sweixin,msg,mui.pointByShareNews);
+					mui.sharePop(sweixin,msg,function(){
+						mui.toast('分享成功');
+					});
 				})
 				
 				

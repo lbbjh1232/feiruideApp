@@ -35,7 +35,7 @@
 		<div class="search-box">
 			<div class="search-left">
 				<form action="" method="">
-				<input type="search" id="search" v-model="searchValue" name="name" placeholder="通用名" /></form><button class="mui-icon iconfont icon-sousuo" id="searchBtn"></button>
+				<input type="search" id="search" v-model="searchValue" name="name" placeholder="通用名 / 首字母" /></form><button class="mui-icon iconfont icon-sousuo" id="searchBtn"></button>
 			</div>
 			<div class="search-right" >
 				<span class="filter">筛选</span> <span class="mui-icon iconfont icon-shaixuan"></span>
@@ -51,6 +51,7 @@
 						<div class='drug-list-left-part' >
 							<div class='text-clip'><span class='drug-list-title'>通用名称:</span> <span class='drug-list-name font-drug-color'>{{item.generic_name}}</span></div>
 							<div class='text-clip'><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>{{item.specifications}}*{{item.conversion_ratio}}</span></div>
+							<div class='text-clip'><span class='drug-list-title '>生产企业:</span> <span class='drug-list-name'>{{item.production_enterprise}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>来源企业:</span> <span class='drug-list-name'>{{item.company_name}}</span></div>
 							<div class='text-clip'><span class='drug-list-title'>库存数量:</span> <span class='drug-list-name'><span class='red'>{{item.surplus_amount}}</span></span></div>
 						</div>

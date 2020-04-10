@@ -1154,6 +1154,8 @@
 	 $.doShareNews = function(srv, msg,callback){
 		srv.send(msg, function(){
 			callback();
+			let mask = document.getElementById('share-mask');
+			$.trigger(mask,'tap');
 			
 		}, function(e){
 			$.toast('分享失败');

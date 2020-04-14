@@ -1181,6 +1181,32 @@
 		}
 	}
 	
+	// parste to board
+	$.pasteBoard = function(copy){
+		if(mui.os.ios){
+			//ios
+			var UIPasteboard = plus.ios.importClass("UIPasteboard");
+			var generalPasteboard = UIPasteboard.generalPasteboard();
+			//设置/获取文本内容:
+			generalPasteboard.plusCallMethod({
+				setValue:copy,
+				forPasteboardType: "public.utf8-plain-text"
+			});
+			generalPasteboard.plusCallMethod({
+				valueForPasteboardType: "public.utf8-plain-text"
+			});
+			$.toast("复制成功");
+			
+		}else{
+			//安卓
+			var context = plus.android.importClass("android.content.Context");
+			var main = plus.android.runtimeMainActivity();
+			var clip = main.getSystemService(context.CLIPBOARD_SERVICE);
+			plus.android.invoke(clip,"setText",copy);
+			$.toast("复制成功");
+		}
+	}
+	
 	// create  the popup of share 
 	$.sharePop = function(weixin,msg,pointByShare){
 		// create mask
@@ -1242,7 +1268,7 @@
 			})
 			
 			document.getElementsByClassName('toCopy')[0].addEventListener('tap',function(){
-				alert('复制链接')
+				$.pasteBoard(msg.href);
 			})
 			
 		}

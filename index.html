@@ -492,11 +492,18 @@
 					
 					// 医保目录查询
 					mui('.catelog-box').on('tap','#yibao',function(){
-						var title = "医保目录查询";
-						var win = '/html/drug/medical-insurance.html';
-						// 创建窗口
-						var ws = plus.webview.create(win,'medical-insurance',{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',})
-						ws.show('pop-in');
+						// var title = "医保目录查询";
+						// var win = '/html/drug/medical-insurance.html';
+						// // 创建窗口
+						// var ws = plus.webview.create(win,'medical-insurance',{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',})
+						// ws.show('pop-in');
+						mui.openWindow({
+							url:'html/drug/medical-insurance-drug-catalog.html',
+							id:'medical-insurance',
+							show:{
+								autoShow:true
+							}
+						})
 					});
 					
 					

@@ -111,6 +111,9 @@ var API = {
 	// 货源查询
 	GET_STOCK_DRUG : '/drug/getStockDrug',
 	
+	//医保目录查询
+	GET_ENSURANCE_DRUG : '/drug/getEnsuranceDrug',
+	
 	// 账号注册 身份认证
 	REGISTER : '/user/register',
 	UPLOAD_AUTH : '/user/uploadAuth',

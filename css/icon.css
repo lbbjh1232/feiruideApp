@@ -9,6 +9,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-material::before{
+	content: "\e640";
+	color:rgba(255,255,255,.9);
+	font-size: 2.5rem;
+}
 .icon-copy-url::before{
 	content: "\e683";
 	font-size: 3.5rem;

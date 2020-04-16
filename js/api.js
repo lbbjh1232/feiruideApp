@@ -114,6 +114,9 @@ var API = {
 	//医保目录查询
 	GET_ENSURANCE_DRUG : '/drug/getEnsuranceDrug',
 	
+	//挂网耗材查询
+	GET_APPLIANCE : '/drug/getAppliance',
+	
 	// 账号注册 身份认证
 	REGISTER : '/user/register',
 	UPLOAD_AUTH : '/user/uploadAuth',

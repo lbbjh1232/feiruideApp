@@ -64,9 +64,17 @@
 					<div class="catelog-log iconfont1 icon-jiyao"></div>
 					<div class="catelog-name">基药目录</div>
 				</div>
+				
 				<div v-show="more" class="catelog-item more1">
 					<div class="catelog-log iconfont1 icon-shouqi" ></div>
 				</div>
+				
+				<div v-show="more" class="catelog-item" data-title="挂网耗材" id="material">
+					<div class="iconfont1 icon-new"></div>
+					<div class="catelog-log iconfont1 icon-material"></div>
+					<div class="catelog-name">挂网耗材</div>
+				</div>
+				
 				
 			</div>
 			
@@ -504,6 +512,17 @@
 								autoShow:true
 							}
 						})
+					});
+					
+					// 挂网耗材
+					mui('.catelog-box').on('tap','#material',function(){
+						mui.openWindow({
+							 url:'html/drug/material.html',
+							 id:'html/drug/material.html',
+							 show:{
+								 autoShow:true,
+							 }
+						});
 					});
 					
 					

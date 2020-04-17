@@ -125,6 +125,8 @@ var API = {
 	GET_AUTH : '/user/getAuth',
 	CANCLE : '/user/cancle',
 	
+	FEED_BACK : '/user/feedBack',
+	
 	// 新闻资讯
 	GET_NEWS : '/news/getNews',
 	NEWS_DETAIL : '/news/newsDetail',

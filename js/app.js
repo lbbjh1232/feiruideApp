@@ -470,10 +470,10 @@
 		nviewEvent = plus.nativeObj.View.getViewById("icon"),myid = $.getMyId(),count = 0;
 		var countLoad = function(count){
 					var num = count >= 10 ? "9+" : count;
-					var leftPos = Math.ceil(window.innerWidth / 8); 
+					var leftPos = Math.ceil(window.innerWidth / 10); 
 					var drawIcon = new plus.nativeObj.View('icon',{
 						bottom : '33px',
-						left : (leftPos*3 +8).toString()+'px',
+						left : (leftPos*5 +8).toString()+'px',
 						width : '18px',
 						height : '18px'
 					},[
@@ -536,7 +536,6 @@
 						if(nviewEvent != null){
 							nviewEvent.close();
 						}
-						
 						if(count > 0){
 							countLoad(count);
 						
@@ -992,7 +991,7 @@
 	// paint status : only in index page
 	$.paintStatus = function(){
 		//获取titleNView对象
-		var self = plus.webview.currentWebview(),text,views = [plus.webview.getWebviewById('html/message.html').isVisible(),plus.webview.getWebviewById('html/friend.html').isVisible(),plus.webview.getWebviewById('html/my.html').isVisible()];
+		var self = plus.webview.currentWebview(),text,views = [plus.webview.getWebviewById('html/community.html').isVisible(),plus.webview.getWebviewById('html/message.html').isVisible(),plus.webview.getWebviewById('html/friend.html').isVisible(),plus.webview.getWebviewById('html/my.html').isVisible()];
 		var index = views.indexOf(true);
 		var currIndex = index != -1 ?  parseInt(index)+1 : 0 ;
 		var titleView = self.getTitleNView();
@@ -1017,6 +1016,11 @@
 			})
 		}
 		
+		//发布帖子
+		var addCommunity = function(){
+			$.loginPageShow();
+		}
+		
 		switch(currIndex){
 			case 0:
 				text = '药械e家';
@@ -1032,7 +1036,20 @@
 				
 				break;
 				
-			case 1: 
+			case 1:
+				text = '社区';
+				buttons.push({
+					text:'\ue61e',
+					width:"80px",
+					fontSrc:'fonts/icon.ttf',
+					fontSize : '20px',
+					float:'right',
+					onclick: addCommunity
+				});
+				break;
+				
+			
+			case 2:
 				text = '消息';
 				buttons.push({
 					text:'',
@@ -1042,7 +1059,7 @@
 				});
 				break;
 				
-			case 2: 
+			case 3: 
 				text = '通讯录';
 				if(accountInfo != null && JSON.parse(accountInfo).roleid != 12 ){
 					buttons.push({
@@ -1055,7 +1072,7 @@
 				}
 				break;
 				
-			case 3:
+			case 4:
 				text = '我的';
 				buttons.push({
 					text : '\ue750',
@@ -1068,7 +1085,7 @@
 							id : 'setting',
 						})
 					},
-				})
+				});
 				break;
 		}
 		

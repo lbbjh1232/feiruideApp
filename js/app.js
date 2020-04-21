@@ -1016,8 +1016,8 @@
 			})
 		}
 		
-		//发布帖子
-		var addCommunity = function(){
+		//搜索帖子
+		var searchCommunity = function(){
 			$.loginPageShow();
 		}
 		
@@ -1039,12 +1039,12 @@
 			case 1:
 				text = '社区';
 				buttons.push({
-					text:'\ue61e',
+					text:'\ue60d',
 					width:"80px",
 					fontSrc:'fonts/icon.ttf',
-					fontSize : '20px',
+					fontSize : '25px',
 					float:'right',
-					onclick: addCommunity
+					onclick: searchCommunity
 				});
 				break;
 				

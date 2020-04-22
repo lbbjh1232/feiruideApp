@@ -168,7 +168,6 @@ var util = {
 						onclick: switchRole
 					});
 				}
-				
 				break;
 			
 			case 1:
@@ -176,7 +175,7 @@ var util = {
 				buttons.push({
 					text:'\ue60d',
 					fontSrc:'fonts/icon.ttf',
-					fontSize : '25px',
+					fontSize : '22px',
 					float:'right',
 					onclick : searchCommunity
 				});

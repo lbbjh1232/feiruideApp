@@ -1,5 +1,6 @@
 html ,body{
 	background-color: white;
+	color: rgba(0,0,0,.8);
 }
 #nav-box{
 	position: fixed;
@@ -59,7 +60,7 @@ html ,body{
 	height: 100%;
 }
 .community-item-box .bottom-info{
-	padding: 5px 0;
+	padding: 10px 0 8px 0;
 	width: 100%;
 	display: flex;
 	display: -webkit-flex;

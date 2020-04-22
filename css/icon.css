@@ -2,6 +2,7 @@
 	src:url('../fonts/icon.ttf?t=155857asdfasdfa') format('truetype');
 }
 
+
 .iconfont1 {
   font-family: "iconfont" !important;
   font-size: 16px;
@@ -9,10 +10,29 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-keysoft-hidden::before{
+	content:"\e83c";
+	font-size: 2.5rem;
+	line-height: 2.5rem;
+	color:#696969;
+}
+.icon-add-text-img::before{
+	content: "\e620";
+	font-size: 2.5rem;
+	line-height: 2.5rem;
+	color:#696969;
+}
+
+.icon-community-delete::before{
+	content: "\e61b";
+	font-size: 1.8rem;
+	color:	black;
+}
 .icon-community-edit::before{
 	content:"\e729" ;
 	color: red;
 	font-size: 5rem;
+	
 }
 .icon-material::before{
 	content: "\e640";

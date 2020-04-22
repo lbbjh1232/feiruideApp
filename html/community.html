@@ -51,27 +51,27 @@
 			 
 			</div>     
 			    
-			<!-- 添加按钮 --> 
-			<a class="com-edit iconfont1 icon-community-edit"></a>
+			<!-- 添加按钮 -->
+			<div id="addCommunity" class="com-edit iconfont1 icon-community-edit"></div>
 			
-			<div class="community-content"> 
-			 
-			   
-				<!-- 热门动态 -->   
+			<div class="community-content">
+			    
+				<!-- 热门动态 -->    
 				<div class="hot-topic"> 
 					<div class="hot-title-box">  
 						<div class="left-hot-title">热门话题</div>  
 						<div class="left-hot-more">查看全部 &gt;</div>
 					</div>   
 					  
-					<div class="hot-list-box">  
+					<div class="hot-list-box">
 						
 						<div class="hot-item-box">
 							<div class="hot-cover"><img src="../images/banner1.png" ></div>
 							<div class="hot-topic-title">#医保政策#</div>
 							<div class="hot-topic-level"><span class="orange">14.5w</span> 讨论</div>
 						</div>
-						<div class="hot-item-box">
+						
+						<div class="hot-item-box"> 
 							<div class="hot-cover"><img src="../images/banner2.png" ></div>
 							<div class="hot-topic-title">#临床医学#</div>
 							<div class="hot-topic-level"><span class="orange">14.5w</span> 讨论</div>
@@ -89,10 +89,8 @@
 						
 					</div>
 					
-					
 				</div>
 				<div class="divided-line"></div>
-			 
 				
 				<div class="community-item-box">
 					<div class="left-title">全球疫情观察：德国放宽防控措施 部分商户恢复营业</div>
@@ -182,7 +180,6 @@
 					</div> 
 				</div>
 				
-				
 				<div class="community-item-box">
 					<div class="left-title">马云联合阿里公益基金会向WHO捐赠超1亿件抗疫物资</div>
 					 
@@ -217,13 +214,21 @@
 			});
 			   
 			mui.plusReady(function () {
-				// 导航滑动初始化
-				mui('#nav-tab').scroll({
-					deceleration: 0.0005 ,
-					scrollY: false, 
-					 scrollX: true, 
-				});
+				//添加动态
+				document.getElementById('addCommunity').addEventListener('tap',function(){
+					//登录提示
+					mui.loginPageShow();
+					
+					mui.openWindow({
+						url:'community/add-community.html',
+						id:'add-community',
+						show:{
+							aniShow:'slide-in-bottom'
+						}
+					})
+				})
 				
+				 
 				
 				
 				

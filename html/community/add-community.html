@@ -30,11 +30,11 @@
 			<div class="mui-content" >
 				<div class="add-community-box">
 					<div class="community-title-box">
-						<input type="text"  placeholder="标题" >
+						<input type="text" v-model="title"  placeholder="标题" >
 					</div>
 					
 					<!-- content -->
-					<content-upload ></content-upload>
+					<content-upload @ongetcontent="getContent" :url="url" :formdata="formdata" :max="max" ></content-upload>
 					
 				</div>
 			</div>
@@ -47,32 +47,36 @@
 		
 		<script type="text/x-template" id="content-template">
 			<div>
-				<template v-for="(item,index) in [{},{},{},{}]">
+				<template v-for="(item,index) in content">
 					<div class="community-content-box">
 						<div class="community-content-text">
-							<textarea rows="4" placeholder="输入内容"></textarea>
-						</div> 
+							<textarea v-model="item.text" :data-index="index" @input="textInput" rows="4" placeholder="输入内容"></textarea>
+						</div>
 						
 						<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="height:8rem;padding: 0;">
 							<div class="mui-scroll" style="position:absolute;height:8rem;">
 								
-									<div class="mui-control-item">
-										<img src="../../images/111.png" >
-										<span class="delete iconfont1 icon-community-delete"></span>
+									<div class="mui-control-item" v-for="(items,indexs) in item.url">
+										<img :src="items" data-preview-src="" :data-preview-group="index"/>
+										<span @tap="onDelete(index,indexs)" class="delete iconfont1 icon-community-delete"></span>
 									</div>
 									
 									<!-- 选择上传按钮 -->
-									<div class="mui-control-item">
-										<div class="weui-uploader__input-box" ></div>
+									<div v-show="item.url.length < max " class="mui-control-item" @tap="onSelect(index)">
+										<div class="weui-uploader__input-box"></div>
 									</div>
 								
 							</div>
 						</div>
+						
+						<!-- 删除按钮 -->
+						<span @tap="deleteImgText(index)" v-show="index!==0" class="delete-img-text iconfont1 icon-delete-img-text"></span>
+						
 					</div>
 				</template>
 				
 				<!-- 添加图文按钮 --> 
-				<div id="add-img-text">
+				<div id="add-img-text" @tap="addImgText">
 					<div class="iconfont1 icon-add-text-img"></div>
 					<div class="icon-text-btn">
 						添加图文
@@ -89,10 +93,122 @@
 			var content= {
 				template : "#content-template",
 				data : function(){
-					return {};
+					return {
+						content:[{text:'',url:[]}]
+					};
 				},
-				props:{},
-				methods:{}
+				props:{
+					url:String,
+					max:{type : Number,default:8},
+					formdata: {type : Object,default : function(){ return {}}},
+				},
+				methods:{
+					addImgText(){
+						this.content.push({text:'',url:[]});
+						this.$emit('ongetcontent',{content:this.content});
+						this.$nextTick(function(){
+							mui('.mui-scroll-wrapper').scroll({
+							          deceleration: 0.0005,
+									  scroll_x:true,
+									  scroll_y:false
+							});
+						})
+						
+						if(this.content.length >= 6){
+							document.getElementById('add-img-text').style.display = 'none';
+						}
+					},
+					
+					deleteImgText(e){
+						this.content.splice(e,1);
+						
+						this.$emit('ongetcontent',{content:this.content});
+						
+						if(this.content.length < 6){
+							document.getElementById('add-img-text').style.display = 'flex';
+						}
+					},
+					textInput(e){
+						let index = e.target.dataset.index;
+						let value = e.target.value;
+						
+						this.$set(this.content[index],'text',value);
+						
+						this.$emit('ongetcontent',{content:this.content})
+					},
+					// 上传方法
+					imgUpload(path,url){
+						var that = this;
+						plus.nativeUI.showWaiting()
+						var task = plus.uploader.createUpload(url,{method:"POST",blocksize:204800,priority:100},function(t,status){
+							plus.nativeUI.closeWaiting();
+							
+							// 上传完成,成功或失败
+							var datas = JSON.parse(t.responseText); //返回图片存储地址
+							if( status == 200 ){
+								// 上传成功
+								that.$emit("oncomplete",{url:datas});
+								
+							}else{
+								
+								mui.alert(datas.err,'提示','确认',function (e) {
+								});
+								
+							}
+							
+						});
+						task.addFile(path,{key:'upload'});
+						// 添加参数
+						for(var key in that.formdata){
+							task.addData(key,that.formdata[key].toString());
+						}
+						task.start();
+					},
+					// 选择图片
+					onSelect(index){
+						this.content[index].url.push('');
+						return;
+						
+						var btnArray = [{
+							title: "拍照"
+						}, {
+							title: "从相册选择"
+						}],that = this;
+						
+						plus.nativeUI.actionSheet({
+							title: "选择照片",
+							cancel: "取消",
+							buttons: btnArray
+						}, function(e) {
+							var index = e.index;
+							switch (index) {
+								case 0:
+									break;
+								case 1:
+								// 拍照
+									var cmr = plus.camera.getCamera();
+									cmr.captureImage(function(path) {
+										var localUrl = "file://" + plus.io.convertLocalFileSystemURL(path);
+										that.imgUpload(localUrl,that.url);
+									});
+									break;
+									
+								case 2:
+								//选择相册
+									plus.gallery.pick(function(path) {
+										that.imgUpload(path,that.url);
+									}, function(err) {}, {maximum:1});
+									break;
+							}
+						});
+						
+					},
+					// 删除
+					onDelete(outIndex,inIndex){
+						this.content[outIndex].url.splice(inIndex,1);
+						this.$emit('ongetcontent',{content:this.content});
+					}
+				}
 			};
 			
 			var vm = new Vue({
@@ -100,7 +216,19 @@
 				components:{
 					'content-upload':content
 				},
-				data : {},
+				data : {
+					content:[],
+					title:'',
+					url:'',
+					max:6,
+					formdata:{}
+				},
+				methods:{
+					getContent(e){
+						this.content = e.content;
+						console.log(JSON.stringify(e.content))
+					}
+				}
 			});
 			
 			mui.init();

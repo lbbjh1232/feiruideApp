@@ -10,6 +10,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-delete-img-text::before{
+	content: "\e61d";
+	font-size: 1.8rem;
+}
 .icon-keysoft-hidden::before{
 	content:"\e83c";
 	font-size: 2.5rem;

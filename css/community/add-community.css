@@ -1,3 +1,6 @@
+html,body{
+	background-color: white;
+}
 .mui-bar{
 	background-color: white;
 	color: black;
@@ -37,6 +40,7 @@
 .community-content-box {
 	margin: 10px 0;
 	border-bottom: 1px solid rgba(181,181,181,.2);
+	position: relative;
 }
 .community-content-box .community-content-text {
 	
@@ -73,12 +77,12 @@
 }
 .mui-segmented-control .mui-control-item {
 	line-height: normal;
-    /* display: table-cell; */
-   /* overflow: hidden;
+    display: table-cell;
+   overflow: hidden;
     -webkit-transition: background-color .1s linear;
     transition: background-color .1s linear;
     white-space: nowrap;
-    text-overflow: ellipsis; */
+    text-overflow: ellipsis;
 }
 .mui-segmented-control.mui-scroll-wrapper .mui-control-item{
 	padding: 0;
@@ -109,11 +113,19 @@
 	display: -webkit-flex;
 	flex-direction: row;
 	align-items: center;
-	z-index: 4000;
+	z-index: 1000;
+}
+#add-img-text:active{
+	background-color:#CFCFCF;
 }
 
 #add-img-text .icon-text-btn{
 	padding-left: 10px;
 	font-size: 1.5rem;
 	color: #696969;
+}
+.delete-img-text{
+	position: absolute;
+	right: 1.5rem;
+	top: 0;
 }

@@ -1292,6 +1292,23 @@
 		
 		
 	}
+	 $.showKeyboard = function() {
+		if ($.os.ios) {
+			var webView = plus.webview.currentWebview().nativeInstanceObject();
+			webView.plusCallMethod({
+				"setKeyboardDisplayRequiresUserAction": false
+			});
+			console.log(333)
+		} else {
+			var Context = plus.android.importClass("android.content.Context");
+			var InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");
+			var main = plus.android.runtimeMainActivity();
+			var imm = main.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+			//var view = ((ViewGroup)main.findViewById(android.R.id.content)).getChildAt(0);
+			//imm.showSoftInput(main.getWindow().getDecorView(), InputMethodManager.SHOW_IMPLICIT);
+		}
+	};
 	
 	
 })(mui)

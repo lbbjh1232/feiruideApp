@@ -14,43 +14,51 @@
 		</script>   
 		  
 		<script type="text/javascript">
-			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/community/add-community.css'],true);   
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/community/add-community-copy.css'],true);   
 		</script>  
 		
-	</head>   
+	</head>    
    
-	<body>
+	<body contextmenu="return false;">
 		<div id="app">
-			<header class="mui-bar mui-bar-nav no-shadow">
-				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-				<h1 class=" iconfont1 mui-title">医保政策&nbsp;</h1>
-				<div id="data-from">发布</div>
-			</header>
+		<header class="mui-bar mui-bar-nav no-shadow">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class=" iconfont1 mui-title">医保政策&nbsp;</h1>
+			<div id="data-from">发布</div>
+		</header>
+		
+		<div class="mui-content"> 
+			<div id="content-box">
+				<div class="community-title-box">
+					<input id="title" type="text" v-model="title"  placeholder="标题" >
+				</div>
+				
+				<content-upload @ongetcontent="getContent" :content="content"></content-upload> 
 			
-			<div class="mui-content" >
-				<div class="add-community-box">
-					<div class="community-title-box">
-						<input type="text" v-model="title"  placeholder="标题" >
-					</div>
-					
-					<!-- content -->
-					<content-upload @ongetcontent="getContent" :url="url" :formdata="formdata" :max="max" ></content-upload>
-					
+				 
+			</div>
+			
+			<!-- 添加图文按钮 --> 
+			<div @tap.stop="addImgText"  id="add-img-text">
+				<div class="iconfont1 icon-add-text-img"></div>
+				<div class="icon-text-btn">
+					添加图文
 				</div>
 			</div>
+			
+		</div>
 		</div>
 		
 		
 		<script type="text/javascript">
 			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
 		</script>
-		
 		<script type="text/x-template" id="content-template">
 			<div>
-				<template v-for="(item,index) in content">
+				<template v-for="(item,index) in contentCopy">
 					<div class="community-content-box">
 						<div class="community-content-text">
-							<textarea v-model="item.text" :data-index="index" @input="textInput" rows="4" placeholder="输入内容"></textarea>
+							<textarea @focusin="textFocusIn" @focusout="textFocusOut" v-model="item.text" :data-index="index" rows="4" placeholder="输入内容"></textarea>
 						</div>
 						
 						<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="height:8rem;padding: 0;">
@@ -58,186 +66,151 @@
 								
 									<div class="mui-control-item" v-for="(items,indexs) in item.url">
 										<img :src="items" data-preview-src="" :data-preview-group="index"/>
-										<span @tap="onDelete(index,indexs)" class="delete iconfont1 icon-community-delete"></span>
+										<span @tap.stop.prevent="onDelete(index,indexs)" class="delete iconfont1 icon-community-delete"></span>
 									</div>
 									
 									<!-- 选择上传按钮 -->
-									<div v-show="item.url.length < max " class="mui-control-item" @tap="onSelect(index)">
+									<div @tap.stop="onSelect(index)" v-show="item.url.length < max " class="mui-control-item">
 										<div class="weui-uploader__input-box"></div>
 									</div>
-								
+								 
 							</div>
 						</div>
 						
 						<!-- 删除按钮 -->
-						<span @tap="deleteImgText(index)" v-show="index!==0" class="delete-img-text iconfont1 icon-delete-img-text"></span>
+						<span @tap.stop.prevent="deleteImgText(index)"  v-show="index!==0" class="delete-img-text iconfont1 icon-delete-img-text"></span>
 						
 					</div>
 				</template>
-				
-				<!-- 添加图文按钮 --> 
-				<div id="add-img-text" @tap="addImgText">
-					<div class="iconfont1 icon-add-text-img"></div>
-					<div class="icon-text-btn">
-						添加图文
-					</div>
-				</div>
-					
-				
 			</div>
 		</script>
-		
-		
 		<script type="text/javascript">
+		mui.init({
+			gestureConfig: {
+				tap: true,
+				doubletap: true,
+				longtap: true,
+				swipe: true,
+				drag: true, 
+			}
+		});
+		if(mui.os.ios){
+			// 解决在ios上fixed元素focusin时位置出现错误的问题 
+			document.addEventListener('DOMContentLoaded',function(){
+				var footerDom = document.querySelector('#add-img-text');
+				
+				document.addEventListener('focusin', function() {
+					footerDom.style.position = 'absolute';
+				});
+				document.addEventListener('focusout', function() {
+					footerDom.style.position = 'fixed';
+				});
+			});
+		}
+		
 			
-			var content= {
-				template : "#content-template",
-				data : function(){
-					return {
-						content:[{text:'',url:[]}]
-					};
+		mui.plusReady(function () {
+			let maxHeight = window.innerHeight;
+			let minHeight = null;
+			var contents= {
+					template : "#content-template",
+					data : function(){
+						return {
+							contentCopy:[{text:'',url:[]}],
+						};
+					},
+					props:{
+						content:Array,
+						url:String,
+						max:{type : Number,default:8},
+						formdata: {type : Object,default : function(){ return {}}},
+					},
+					watch:{
+						content(val){
+							this.contentCopy = val
+						},
+					},
+					
+					methods:{
+						textFocusIn(e){
+							document.activeElement.scrollIntoView({
+								block: 'start',
+								behavior: 'smooth' 
+							});
+						},
+						textFocusOut(){
+							plus.webview.currentWebview().setStyle({
+								height:minHeight
+							})
+						},
+						onSelect(index){
+							this.contentCopy[index].url.push('');
+							this.$emit('ongetcontent',{content:this.contentCopy});
+						},
+						onDelete(outIndex,inIndex){
+							this.content[outIndex].url.splice(inIndex,1);
+							this.$emit('ongetcontent',{content:this.contentCopy});
+						},
+						deleteImgText(index){
+							this.contentCopy.splice(index,1);
+							this.$emit('ongetcontent',{content:this.contentCopy});
+						}
+					},
+				};
+			var vm = new Vue({
+				el : '#app',
+				components:{
+					'content-upload':contents
 				},
-				props:{
-					url:String,
-					max:{type : Number,default:8},
-					formdata: {type : Object,default : function(){ return {}}},
+				data:{
+					content:[{text:'',url:[]}],
+					title:'',
+					url:'',
+					formdata:{}
 				},
 				methods:{
+					 
+					getContent(e){
+						this.content = e.content;
+					},
 					addImgText(){
+						if(this.content.length == 6){
+							mui.toast('不能再添加了');
+							return;
+						}
 						this.content.push({text:'',url:[]});
-						this.$emit('ongetcontent',{content:this.content});
+						let that = this;
 						this.$nextTick(function(){
 							mui('.mui-scroll-wrapper').scroll({
 							          deceleration: 0.0005,
 									  scroll_x:true,
 									  scroll_y:false
 							});
-						})
-						
-						if(this.content.length >= 6){
-							document.getElementById('add-img-text').style.display = 'none';
-						}
-					},
-					
-					deleteImgText(e){
-						this.content.splice(e,1);
-						
-						this.$emit('ongetcontent',{content:this.content});
-						
-						if(this.content.length < 6){
-							document.getElementById('add-img-text').style.display = 'flex';
-						}
-					},
-					textInput(e){
-						let index = e.target.dataset.index;
-						let value = e.target.value;
-						
-						this.$set(this.content[index],'text',value);
-						
-						this.$emit('ongetcontent',{content:this.content})
-					},
-					// 上传方法
-					imgUpload(path,url){
-						var that = this;
-						plus.nativeUI.showWaiting()
-						var task = plus.uploader.createUpload(url,{method:"POST",blocksize:204800,priority:100},function(t,status){
-							plus.nativeUI.closeWaiting();
-							
-							// 上传完成,成功或失败
-							var datas = JSON.parse(t.responseText); //返回图片存储地址
-							if( status == 200 ){
-								// 上传成功
-								that.$emit("oncomplete",{url:datas});
-								
-							}else{
-								
-								mui.alert(datas.err,'提示','确认',function (e) {
-								});
-								
-							}
+							// mui.showKeyboard();
+							document.getElementsByTagName('textarea')[that.content.length-1].focus();
 							
 						});
-						task.addFile(path,{key:'upload'});
-						// 添加参数
-						for(var key in that.formdata){
-							task.addData(key,that.formdata[key].toString());
-						}
-						task.start();
-					},
-					// 选择图片
-					onSelect(index){
-						this.content[index].url.push('');
-						return;
 						
-						var btnArray = [{
-							title: "拍照"
-						}, {
-							title: "从相册选择"
-						}],that = this;
-						
-						plus.nativeUI.actionSheet({
-							title: "选择照片",
-							cancel: "取消",
-							buttons: btnArray
-						}, function(e) {
-							var index = e.index;
-							switch (index) {
-								case 0:
-									break;
-								case 1:
-								// 拍照
-									var cmr = plus.camera.getCamera();
-									cmr.captureImage(function(path) {
-										var localUrl = "file://" + plus.io.convertLocalFileSystemURL(path);
-										that.imgUpload(localUrl,that.url);
-									});
-									break;
-									
-								case 2:
-								//选择相册
-									plus.gallery.pick(function(path) {
-										that.imgUpload(path,that.url);
-									}, function(err) {}, {maximum:1});
-									break;
-							}
-						});
-						
-					},
-					// 删除
-					onDelete(outIndex,inIndex){
-						this.content[outIndex].url.splice(inIndex,1);
-						this.$emit('ongetcontent',{content:this.content});
-					}
-				}
-			};
-			
-			var vm = new Vue({
-				el : '#app',
-				components:{
-					'content-upload':content
-				},
-				data : {
-					content:[],
-					title:'',
-					url:'',
-					max:6,
-					formdata:{}
-				},
-				methods:{
-					getContent(e){
-						this.content = e.content;
-						console.log(JSON.stringify(e.content))
 					}
 				}
 			});
 			
-			mui.init();
+			mui.statusAndSetAfterBack('dark','#ffffff');
 			
-			mui.plusReady(function () {
-				mui.statusAndSetAfterBack('dark','#ffffff');
-				
-				
+			plus.webview.currentWebview().setStyle({
+				softinputMode: "adjustResize"
 			});
+			window.addEventListener('resize',function(){
+				console.log(minHeight)
+				if(minHeight == null){
+					minHeight = window.innerHeight;
+					plus.webview.currentWebview().setStyle({
+						height:minHeight
+					})
+				}
+			});
+				
+		});
 		</script>
 	</body>
 </html>

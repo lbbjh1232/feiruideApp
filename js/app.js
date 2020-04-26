@@ -1298,7 +1298,6 @@
 			webView.plusCallMethod({
 				"setKeyboardDisplayRequiresUserAction": false
 			});
-			console.log(333)
 		} else {
 			var Context = plus.android.importClass("android.content.Context");
 			var InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");

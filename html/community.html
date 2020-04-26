@@ -219,6 +219,13 @@
 					//登录提示
 					mui.loginPageShow();
 					
+					let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+					(accountInfo.roleid == 12)?(function(){
+						alert('nihao');
+						throw error;
+						
+					})():null;
+					
 					mui.openWindow({
 						url:'community/add-community.html',
 						id:'add-community',

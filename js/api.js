@@ -137,6 +137,11 @@ var API = {
 	LOAD_POINT : '/point/loadPoint',
 	SHARE_NEWS :'/point/shareNews',
 	
+	// 论坛
+	COMMUNITY_IMG_UPLOAD : '/community/uploadImg',
+	COMMUNITY_IMG_DELETE : '/community/deleteImg',
+	COMMUNITY_RELEASE : '/community/release',
+	
 
 	//客服
 	CHAT_IMG_UPLOAD : '/chat/chatImgUpload',

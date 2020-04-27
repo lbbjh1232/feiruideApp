@@ -84,6 +84,10 @@
 	color: rgba(181, 181, 181,.4);
 	font-size: 3rem;
 }
+.icon-add-topic::before{
+	content: "\e612";
+	color:#4F4F4F;
+}
 .icon-yijian::before{
 	content: "\e618";
 	color:#4F4F4F;

@@ -27,7 +27,7 @@
 			    <div class="mui-scroll" style="position: absolute;">
 			        <a class="mui-control-item mui-active">
 			            最新
-			        </a>  
+			        </a>
 			        <a class="mui-control-item">
 			            医保政策
 			        </a>
@@ -47,7 +47,7 @@
 			            其他话题
 			        </a>
 			    </div>
-			</div>
+			</div> 
 			 
 			</div>     
 			    
@@ -92,109 +92,42 @@
 				</div>
 				<div class="divided-line"></div>
 				
-				<div class="community-item-box">
-					<div class="left-title">全球疫情观察：德国放宽防控措施 部分商户恢复营业</div>
-					 
-					<div class="right-img"> 
-						<img src="../images/banner1.png"/>  
-					</div> 
-					<div class="bottom-info">
-						<div class="username">
-							<span>药械e家</span>&nbsp;&nbsp;&nbsp;<span>199阅读</span>
-						</div>
-						<div class="creat-time">  
-							 3小时前
-						</div>
-					</div> 
-				</div>
-					 
-				<div class="community-item-box">
-					<div class="left-title-1">境外输入和本土新增确诊病例连续3日在10例以下</div> 
-					 
-					<div class="right-img-1"> 
-						<img src="../images/banner1.png"/>
-						<img src="../images/banner2.png"/>
-						<img src="../images/banner3.png"/> 
-					</div>
+				<tempalte v-for="(item,index) in result">
 					
-					<div class="bottom-info">
-						<div class="username">
-							<span>药械e家</span>&nbsp;&nbsp;&nbsp;<span>199阅读</span>
+					<div v-if="item.content.length==1" class="community-item-box">
+						<div class="left-title">{{item.title}}</div>
+						 
+						<div class="right-img"> 
+							<img :src="item.content[0].url"/>   
+						</div> 
+						<div class="bottom-info">
+							<div class="username">
+								<span>{{item.username}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.scan_number}}阅读</span>
+							</div>  
+							<div class="creat-time">
+								 {{item.show_time}}
+							</div> 
 						</div>
-						<div class="creat-time"> 
-							 3小时前
+					</div>  
+						  
+					<div v-else class="community-item-box">
+						<div class="left-title-1">{{item.title}}</div> 
+						 
+						<div v-show="item.content.length !== 0" class="right-img-1"> 
+							<img v-for="items in item.content" :src="items.url"/>
+						</div>
+						
+						<div class="bottom-info">
+							<div class="username">
+								<span>{{item.username}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.scan_number}}阅读</span>
+							</div>
+							<div class="creat-time"> 
+								{{item.show_time}}
+							</div> 
 						</div>
 					</div>
-				</div>   
+				</tempalte>
 				
-				<div class="community-item-box">
-					<div class="left-title-1">中央指导组防控组社区防控专家组组长：对出院外国人采取一视同仁</div> 
-					 
-					<div class="bottom-info">
-						<div class="username">
-							<span>药械e家</span>&nbsp;&nbsp;&nbsp;<span>199阅读</span>
-						</div>
-						<div class="creat-time"> 
-							 3小时前
-						</div>
-					</div>
-				</div>  
-				<div class="community-item-box">
-					<div class="left-title-1">特朗普：将签署行政命令暂停移民进入美国</div> 
-					 
-					<div class="bottom-info">
-						<div class="username">
-							<span>药械e家</span>&nbsp;&nbsp;&nbsp;<span>199阅读</span>
-						</div>
-						<div class="creat-time"> 
-							 3小时前
-						</div>
-					</div>
-				</div>  
-				<div class="community-item-box">
-					<div class="left-title-1">默克尔要求中方尽可能在新冠问题上保持“透明”，耿爽回应</div>
-					 
-					<div class="bottom-info">
-						<div class="username">
-							<span>药械e家</span>&nbsp;&nbsp;&nbsp;<span>199阅读</span>
-						</div>
-						<div class="creat-time"> 
-							 3小时前
-						</div>
-					</div>
-				</div>  
-				
-				<div class="community-item-box">
-					<div class="left-title">马云联合阿里公益基金会向WHO捐赠超1亿件抗疫物资</div>
-					 
-					<div class="right-img"> 
-						<img src="../images/banner3.png"/> 
-					</div> 
-					<div class="bottom-info">
-						<div class="username">
-							<span>药械e家</span>&nbsp;&nbsp;&nbsp;<span>199阅读</span>
-						</div>
-						<div class="creat-time">  
-							 3小时前
-						</div>
-					</div> 
-				</div>
-				
-				<div class="community-item-box">
-					<div class="left-title">马云联合阿里公益基金会向WHO捐赠超1亿件抗疫物资</div>
-					 
-					<div class="right-img"> 
-						<img src="../images/banner2.png"/> 
-					</div> 
-					<div class="bottom-info">
-						<div class="username">
-							<span>药械e家</span>&nbsp;&nbsp;&nbsp;<span>199阅读</span>
-						</div>
-						<div class="creat-time">  
-							 3小时前
-						</div>
-					</div> 
-				</div>
 				
 			</div> 
 		</div>
@@ -208,12 +141,27 @@
 			var vm = new Vue({
 				el : '#app',
 				data : {
-					
+					result:[],
+					topic:[],
+					currentTopic:0, 	//0:最新动态
+					pageIndex :1,
 					
 				}
 			});
+			
+			function load(){
+				let res = mui.http_post(API.COMMUNITY_LOAD,{topic:vm.currentTopic,pageIndex:vm.pageIndex});
+				res.then(res=>{
+					if(res.code == 200){
+						vm.result = res.data;
+					}
+				})
+			}
 			   
 			mui.plusReady(function () {
+				
+				load();
+				
 				//添加动态
 				document.getElementById('addCommunity').addEventListener('tap',function(){
 					//登录提示
@@ -221,7 +169,11 @@
 					
 					let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 					(accountInfo.roleid == 12)?(function(){
-						alert('nihao');
+						
+						mui.openWindow({
+							url : '/html/my/auth.html',
+							id : 'auth'
+						});
 						throw error;
 						
 					})():null;
@@ -232,12 +184,8 @@
 						show:{
 							aniShow:'slide-in-bottom'
 						}
-					})
+					});
 				})
-				
-				 
-				
-				
 				
 			});
 			

@@ -141,7 +141,7 @@ var API = {
 	COMMUNITY_IMG_UPLOAD : '/community/uploadImg',
 	COMMUNITY_IMG_DELETE : '/community/deleteImg',
 	COMMUNITY_RELEASE : '/community/release',
-	
+	COMMUNITY_LOAD :'/community/load',
 
 	//客服
 	CHAT_IMG_UPLOAD : '/chat/chatImgUpload',

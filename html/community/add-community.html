@@ -238,16 +238,7 @@
 					title:'',
 					url: API.HOST + API.COMMUNITY_IMG_UPLOAD,
 					formdata:{},
-					topic:[{
-						text:'医保政策',
-						value:'1'
-					},{
-						text:'行业动态',
-						value:'2'
-					},{
-						text:'短缺求助',
-						value:'3'
-					}],
+					topic:[],
 					currentTopicText:'医保政策',
 					currentTopicValue:'1'
 				},
@@ -293,6 +284,14 @@
 				softinputMode: "adjustResize"
 			});
 			
+			//获取话题
+			let topic = mui.http_post(API.COMMUNITY_TAB);
+			topic.then(res=>{
+				vm.topic = res.data;
+				vm.currentTopicText = res.data[0].text;
+				vm.currentTopicValue = res.data[0].value;
+			})
+			
 			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
 			vm.formdata.uid = accountInfo.id;
 			
@@ -324,9 +323,9 @@
 				}
 				
 				let params = {
-					title:vm.title,
+					title:vm.title, 
 					content:vm.content,
-					topicId:vm.currentTopicValue,
+					topicId:vm.currentTopicValue, 
 					userId:accountInfo.id,
 				};
 				
@@ -335,7 +334,9 @@
 				res.then(res=>{
 					plus.nativeUI.closeWaiting();
 					if(res.code ==200){
+						mui.fire(plus.webview.currentWebview().opener(),'refresh');
 						mui.back();
+						
 					}else{
 						mui.toast(res.message);
 					}

@@ -25,30 +25,15 @@
 			
 				<div id="nav-tab" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 			    <div class="mui-scroll" style="position: absolute;">
-			        <a class="mui-control-item mui-active">
+			        <a class="mui-control-item mui-active" data-tid="0">
 			            最新
 			        </a>
-			        <a class="mui-control-item">
-			            医保政策
+			        <a class="mui-control-item" :data-tid="item.value" v-for="item in tabs">
+			           {{item.text}}
 			        </a>
-			        <a class="mui-control-item">
-			            临床医学
-			        </a>
-			        <a class="mui-control-item">
-			            新药新产品
-			        </a>
-					<a class="mui-control-item">
-						短缺求助
-					</a>
-			        <a class="mui-control-item">
-			            行业动态
-			        </a>
-			        <a class="mui-control-item">
-			            其他话题
-			        </a>
+			       
 			    </div>
-			</div> 
-			 
+			</div>
 			</div>     
 			    
 			<!-- 添加按钮 -->
@@ -60,35 +45,19 @@
 				<div class="hot-topic"> 
 					<div class="hot-title-box">  
 						<div class="left-hot-title">热门话题</div>  
-						<div class="left-hot-more">查看全部 &gt;</div>
+						<div class="left-hot-more" id="hot-more">查看全部 &gt;</div> 
 					</div>   
 					  
 					<div class="hot-list-box">
 						
-						<div class="hot-item-box">
-							<div class="hot-cover"><img src="../images/banner1.png" ></div>
-							<div class="hot-topic-title">#医保政策#</div>
-							<div class="hot-topic-level"><span class="orange">14.5w</span> 讨论</div>
-						</div>
-						
-						<div class="hot-item-box"> 
-							<div class="hot-cover"><img src="../images/banner2.png" ></div>
-							<div class="hot-topic-title">#临床医学#</div>
-							<div class="hot-topic-level"><span class="orange">14.5w</span> 讨论</div>
-						</div>
-						<div class="hot-item-box">
-							<div class="hot-cover"><img src="../images/banner3.png" ></div>
-							<div class="hot-topic-title">#短缺求助#</div>
-							<div class="hot-topic-level"><span class="orange">14.5w</span> 讨论</div>
-						</div>
-						<div class="hot-item-box">
-							<div class="hot-cover"><img src="../images/banner3.png" ></div>
-							<div class="hot-topic-title">#行业动态#</div>
-							<div class="hot-topic-level"><span class="orange">14.5w</span> 讨论</div>
+						<div class="hot-item-box" v-for="item in hotTopic">
+							<div class="hot-cover"><img :src="item.cover" onerror="this.src='../images/60x60.jpg'" ></div>
+							<div class="hot-topic-title">#{{item.title}}#</div>
+							<div class="hot-topic-level"><span class="orange">{{item.activity_level}}</span> 讨论</div>
 						</div>
 						
 					</div>
-					
+					 
 				</div>
 				<div class="divided-line"></div>
 				
@@ -98,7 +67,7 @@
 						<div class="left-title">{{item.title}}</div>
 						 
 						<div class="right-img"> 
-							<img :src="item.content[0].url"/>   
+							<img :src="item.content[0].url" onerror="this.src='../images/60x60.jpg'"/>   
 						</div> 
 						<div class="bottom-info">
 							<div class="username">
@@ -114,16 +83,17 @@
 						<div class="left-title-1">{{item.title}}</div> 
 						 
 						<div v-show="item.content.length !== 0" class="right-img-1"> 
-							<img v-for="items in item.content" :src="items.url"/>
+							<img v-for="items in item.content" :src="items.url" onerror="this.src='../images/60x60.jpg'"/>
 						</div>
 						
 						<div class="bottom-info">
 							<div class="username">
 								<span>{{item.username}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.scan_number}}阅读</span>
 							</div>
-							<div class="creat-time"> 
+							
+							<div class="creat-time">
 								{{item.show_time}}
-							</div> 
+							</div>  
 						</div>
 					</div>
 				</tempalte>
@@ -136,31 +106,83 @@
 		</script>
 		
 		<script>
-			mui.init();
+			function load(){
+				let res = mui.http_post(API.COMMUNITY_LOAD,{topicId:vm.currentTopic,pageIndex:vm.pageIndex});
+				res.then(res=>{
+					
+					if(res.code == 200){
+						vm.result = res.data.list;
+						vm.hotTopic = res.data.hot;
+						if(res.message == 1){
+							vm.more = false;
+						}else{
+							vm.more = true;
+						}
+					}
+				})
+			}
+			
+			function getTab(){
+				let res = mui.http_post(API.COMMUNITY_TAB);
+				res.then(res=>{
+					if(res.code == 200){
+						vm.tabs = res.data;
+					}
+				})
+			}
+			mui.init({
+				pullRefresh : {
+					container:"#app",
+					down : {
+						style:'circle',
+						color:'#3383FC', 
+						height:'50px',
+						range:'100px', 
+						offset:'0px', 
+						auto: false,
+						callback :function(){
+							vm.pageIndex = 1;
+							load();
+							mui('#app').pullRefresh().endPulldown();
+							mui('#app').pullRefresh().enablePullupToRefresh();
+						}
+				    },
+					up:{
+					      contentrefresh : "正在加载...",
+					      contentnomore:'亲,到底了哟',
+					      callback :function(){
+							  vm.pageIndex += 1;
+							  load();
+							  if(vm.more){
+								  this.endPullupToRefresh(false);
+							  }else{
+								  this.endPullupToRefresh(true);
+							  }
+						  }
+					    }
+				}
+			});
 			 
 			var vm = new Vue({
 				el : '#app',
 				data : {
 					result:[],
 					topic:[],
-					currentTopic:0, 	//0:最新动态
-					pageIndex :1,
-					
-				}
+					currentTopic:1, 	//0:最新动态
+					pageIndex :1,   
+					tabs:[], 
+					hotTopic:[],
+					more:true
+				} 
 			});
-			
-			function load(){
-				let res = mui.http_post(API.COMMUNITY_LOAD,{topic:vm.currentTopic,pageIndex:vm.pageIndex});
-				res.then(res=>{
-					if(res.code == 200){
-						vm.result = res.data;
-					}
-				})
-			}
-			   
+			     
 			mui.plusReady(function () {
-				
+				getTab();
 				load();
+				
+				window.addEventListener('refresh',function(){
+					load();
+				})
 				
 				//添加动态
 				document.getElementById('addCommunity').addEventListener('tap',function(){
@@ -185,6 +207,26 @@
 							aniShow:'slide-in-bottom'
 						}
 					});
+				})
+				
+				// 切换栏目
+				mui('#nav-tab').on('tap','.mui-control-item',function(){
+					let tid = this.dataset.tid;
+					if(tid == vm.currentTopic){
+						return;
+					}
+					vm.currentTopic = tid;
+					load();
+					mui('#app').pullRefresh().endPulldown();
+					mui('#app').pullRefresh().enablePullupToRefresh();
+				});
+				
+				//查看更多热门话题
+				document.getElementById('hot-more').addEventListener('tap',function(){
+					mui.openWindow({
+						url : 'community/hot-more.html',
+						id : 'hot-more',
+					})
 				})
 				
 			});

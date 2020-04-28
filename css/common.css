@@ -46,6 +46,18 @@ body {
 .red{
 	color:red;
 }
+.bgred{
+	background-color: red;
+}
+.bgyellow{
+	background-color: #FF7F00;
+}
+.bglightyellow{
+	background-color: #FFA500;
+}
+.bglightgray{
+	background-color: lightgray;
+}
 .mui-content{
 	background: #FFFFFF;
 }

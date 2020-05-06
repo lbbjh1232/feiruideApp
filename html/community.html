@@ -42,18 +42,18 @@
 			<div class="community-content">
 			    
 				<!-- 热门动态 -->    
-				<div class="hot-topic"> 
+				<div class="hot-topic">
 					<div class="hot-title-box">  
-						<div class="left-hot-title">热门话题</div>  
+						<div class="left-hot-title">热门动态</div>  
 						<div class="left-hot-more" id="hot-more">查看全部 &gt;</div> 
-					</div>   
+					</div>
 					  
 					<div class="hot-list-box">
 						
-						<div class="hot-item-box" v-for="item in hotTopic">
-							<div class="hot-cover"><img :src="item.cover" onerror="this.src='../images/60x60.jpg'" ></div>
-							<div class="hot-topic-title">#{{item.title}}#</div>
-							<div class="hot-topic-level"><span class="orange">{{item.activity_level}}</span> 讨论</div>
+						<div class="hot-item-box detail" v-for="item in hotTopic" :data-cid="item.id">
+							<div class="hot-cover"><img :src="item.avatar" onerror="this.src='../images/60x60.jpg'" ></div>
+							<div class="hot-topic-title">#{{item.topic}}#</div>
+							<div class="hot-topic-level"><span class="orange">{{item.comment_number}}</span> 讨论</div>
 						</div>
 						
 					</div>
@@ -63,7 +63,7 @@
 				
 				<tempalte v-for="(item,index) in result">
 					
-					<div v-if="item.content.length==1" class="community-item-box">
+					<div v-if="item.content.length==1" class="community-item-box detail" :data-cid="item.id">
 						<div class="left-title">{{item.title}}</div>
 						 
 						<div class="right-img"> 
@@ -79,7 +79,7 @@
 						</div>
 					</div>  
 						  
-					<div v-else class="community-item-box">
+					<div v-else class="community-item-box detail" :data-cid="item.id">
 						<div class="left-title-1">{{item.title}}</div> 
 						 
 						<div v-show="item.content.length !== 0" class="right-img-1"> 
@@ -90,7 +90,6 @@
 							<div class="username">
 								<span>{{item.username}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.scan_number}}阅读</span>
 							</div>
-							
 							<div class="creat-time">
 								{{item.show_time}}
 							</div>  
@@ -109,7 +108,6 @@
 			function load(){
 				let res = mui.http_post(API.COMMUNITY_LOAD,{topicId:vm.currentTopic,pageIndex:vm.pageIndex});
 				res.then(res=>{
-					
 					if(res.code == 200){
 						vm.result = res.data.list;
 						vm.hotTopic = res.data.hot;
@@ -168,7 +166,7 @@
 				data : {
 					result:[],
 					topic:[],
-					currentTopic:1, 	//0:最新动态
+					currentTopic:0, 	//0:最新动态
 					pageIndex :1,   
 					tabs:[], 
 					hotTopic:[],
@@ -229,6 +227,21 @@
 					})
 				})
 				
+				//查看详情
+				mui('#app').on('tap','.detail',function(){
+					let cid = this.dataset.cid;
+
+					mui.openWindow({
+						url : 'community/detail.html',
+						id : 'community-detail',
+						extras : {
+							cid
+						},
+						show : {
+							autoShow : true
+						}
+					})
+				})
 			});
 			
 		</script>

@@ -11,10 +11,10 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<script type="text/javascript">
 			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
-		</script>   
+		</script>
 		  
 		<script type="text/javascript">
-			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/animate.css','../../css/community/hot-more.css'],true);   
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/animate.css','../../css/community/hot-more.css'],true);
 		</script>
 		
 	</head>  
@@ -23,52 +23,21 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">热门动态</h1>
-		</header> 
+		</header>
 		
 		<div class="mui-content" id="app">
-			
-			<div class="hot-item">
-				<div class="item-left"> 
-					<img src="../../images/banner1.png" >
+			<template v-for="(item,index) in result">
+				<div class="hot-item">
+					<div class="item-left">  
+						<img :src="item.avatar" onerror="this.src='../../images/60x60.jpg'">
+					</div>
+					<div class="item-right">
+						<div class="hot-title-ranking"><span class="ranking" :class="index==0?'bgred':(index==1?'bgyellow':(index==2?'bglightyellow':'bglightgray'))">{{index+1}}</span><span class="topic">#{{item.topic}}#</span></div>
+						<div class="hot-dymanic">{{item.title}}</div>
+						<div class="scan-comment"><span class="scan">{{item.scan_number}} &nbsp;浏览</span>&nbsp;&nbsp;·&nbsp;&nbsp;<span class="comment">{{item.comment_number}}&nbsp;讨论</span></div>
+					</div>
 				</div>
-				<div class="item-right">
-					<div class="hot-title-ranking"><span class="ranking bgred">1</span><span class="topic">标题大师傅</span></div>
-					<div class="hot-dymanic">阿道夫阿道夫asdf asd fasdf 发多少阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬大师傅阿斯蒂芬阿斯蒂芬阿斯蒂芬阿萨德</div>
-					<div class="scan-comment"><span class="scan">13423 &nbsp;浏览</span>&nbsp;&nbsp;·&nbsp;&nbsp;<span class="comment">343&nbsp;讨论</span></div>
-				</div>
-			</div>
-			
-			<div class="hot-item">
-				<div class="item-left"> 
-					<img src="../../images/banner2.png" >
-				</div>
-				<div class="item-right">
-					<div class="hot-title-ranking"><span class="ranking bgyellow">2</span><span class="topic">标题大师傅</span></div>
-					<div class="hot-dymanic">阿道夫阿道夫asdf asd fasdf 发多少阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬大师傅阿斯蒂芬阿斯蒂芬阿斯蒂芬阿萨德</div>
-					<div class="scan-comment"><span class="scan">13423 &nbsp;浏览</span>&nbsp;&nbsp;·&nbsp;&nbsp;<span class="comment">343&nbsp;讨论</span></div>
-				</div>
-			</div>
-			
-			<div class="hot-item">
-				<div class="item-left"> 
-					<img src="../../images/banner3.png" >
-				</div>
-				<div class="item-right">
-					<div class="hot-title-ranking"><span class="ranking bglightyellow">3</span><span class="topic">标题大师傅</span></div>
-					<div class="hot-dymanic">阿道夫阿道夫asdf asd fasdf 发多少阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬大师傅阿斯蒂芬阿斯蒂芬阿斯蒂芬阿萨德</div>
-					<div class="scan-comment"><span class="scan">13423 &nbsp;浏览</span>&nbsp;&nbsp;·&nbsp;&nbsp;<span class="comment">343&nbsp;讨论</span></div>
-				</div>
-			</div>
-			<div class="hot-item">
-				<div class="item-left"> 
-					<img src="../../images/banner3.png" >
-				</div>
-				<div class="item-right">
-					<div class="hot-title-ranking"><span class="ranking bglightgray">4</span><span class="topic">标题大师傅</span></div>
-					<div class="hot-dymanic">阿道夫阿道夫asdf </div>
-					<div class="scan-comment"><span class="scan">13423 &nbsp;浏览</span>&nbsp;&nbsp;·&nbsp;&nbsp;<span class="comment">343&nbsp;讨论</span></div>
-				</div>
-			</div>
+			</template>
 			
 		</div>
 		
@@ -78,16 +47,22 @@
 		
 		<script>
 			mui.init();
-			 
 			var vm = new Vue({
 				el : '#app',
 				data : {
+					result:[],
 					
 				} 
 			});
 			     
-			mui.plusReady(function () {
-				
+			mui.plusReady(function () { 
+				// 查询热门动态
+				plus.nativeUI.showWaiting()
+				let res = mui.http_post(API.COMMUNITY_ALL_HOT);
+				res.then(res=>{
+					plus.nativeUI.closeWaiting()
+					vm.result = res.data;
+				}) 
 				
 				
 			});

@@ -143,6 +143,7 @@ var API = {
 	COMMUNITY_RELEASE : '/community/release',
 	COMMUNITY_LOAD :'/community/load',
 	COMMUNITY_TAB : '/community/tab',
+	COMMUNITY_ALL_HOT : '/community/allHot',
 
 	//客服
 	CHAT_IMG_UPLOAD : '/chat/chatImgUpload',

@@ -10,8 +10,8 @@
 	left: 0;
 	z-index: 10;
 }
-.mui-preview-header {
-	height: 44px;
+.mui-preview-header { 
+	height: 64px;
 	top: 0;
 }
 .mui-preview-footer {
@@ -20,7 +20,7 @@
 }
 .mui-preview-header .mui-preview-indicator {
 	display: block;
-	line-height: 25px;
+	line-height: 64px;
 	color: #fff;
 	text-align: center;
 	margin: 15px auto 4;

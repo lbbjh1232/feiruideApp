@@ -10,6 +10,21 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-comment-count::before{
+	content: "\e629";
+	font-size:2rem;
+	line-height: 5rem;
+}
+.icon-dian-zan::before{
+	content: "\e611";
+	font-size:2rem;
+	line-height: 5rem;
+}
+.icon-comment-share::before{
+	content: "\e607";
+	font-size:2rem;
+	line-height: 5rem;
+}
 .icon-delete-img-text::before{
 	content: "\e61d";
 	font-size: 1.8rem;

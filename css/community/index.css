@@ -73,6 +73,12 @@ html ,body{
 	width: 100%;
 	font-size: 16px;
 	text-align: justify;
+	-webkit-line-clamp: 3;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	line-height: 1.5;
 }
 .community-item-box .right-img-1{
 	padding-top: 5px;

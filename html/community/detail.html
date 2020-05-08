@@ -15,15 +15,6 @@
 		<script type="text/javascript">
 			link(['../../css/mui.min.css','../../css/common.css','../../css/imageview.css','../../css/animate.css','../../css/icon.css','../../css/news/index.css','../../css/community/detail.css'],true);
 		</script>
-		<style type="text/css">
-			body{
-				background-color: #FFFFFF;
-			}
-			.mui-content{
-				margin: 1rem 1rem 0 1rem;
-			}
-		</style>
-
 	</head>
  
 	<body>
@@ -34,97 +25,71 @@
 		</header>
 		
 		<div class="mui-content" id="app">
-			<div v-cloak>
-				<div class="news-title">
-					{{title}}
+				<div class="news-title" v-cloak>
+					{{content.title}}
 				</div>
 				
 				<div class="publisher">
-					<div class="scan">433阅读</div>
-					<div class="comment">5评论</div>
-					<div class="topic">行业动态</div>
+					<div class="scan" v-cloak>{{content.scan_number}}阅读</div>
+					<div class="comment" v-cloak>{{comment.length}}评论</div>
+					<div class="topic" v-cloak>{{content.topic}}</div>
 				</div>
 				
-			</div>
-			
 			<div class="writer-info">
-				<div class="avatar"><img src="../../images/111.png" ></div>
+				<div class="avatar"><img :src="content.avatar" ></div>
 				<div class="writer-time">
-					<div class="writer-name">测试经营企业</div>
-					<div class="publish_time">1小时前</div>
-				</div>
+					<div class="writer-name" v-cloak>{{content.username}}</div>
+					<div class="publish_time" v-cloak>{{content.show_time}}</div>
+				</div> 
 			</div>
 			
 			<div class="content-detail">
-				<div class="content-item">
-					<div class="item-text">阿道夫阿斯蒂芬阿斯蒂芬大师傅阿斯蒂芬阿斯蒂芬爱迪生</div>
+				
+				<div v-show="content.delete_flag == 0" class="content-item" v-for="(item,index) in content.content">
+					<div class="item-text" v-html="item.text"></div>
 					<div class="item-img">
-						<img src="../../images/banner.png" data-preview-group="1" data-preview-src=""/>
-						<img src="../../images/banner1.png" data-preview-group="1" data-preview-src=""/>
-						<img src="../../images/banner2.png" data-preview-group="1" data-preview-src=""/>
+						<img v-for="(items,indexs) in item.url" :src="items.url" data-preview-group="1" data-preview-src=""/>
 					</div>
 					
 				</div>
 				
-				<div class="content-item">
-					<div class="item-text">阿道夫阿斯蒂芬阿斯蒂芬大师傅阿斯蒂芬阿斯蒂芬爱迪生</div>
-					<div class="item-img">
-						<img src="../../images/banner.png" data-preview-group="1" data-preview-src=""/>
-						<img src="../../images/banner1.png" data-preview-group="1" data-preview-src=""/>
-						<img src="../../images/banner2.png" data-preview-group="1" data-preview-src=""/>
-					</div>
-					 
+				<div v-show="content.delete_flag == 1" class="community-delete">
+					该帖子已删除
 				</div>
+				
+				
+				
 			</div>
 			
 			<!-- 评论 -->
-			<div class="comment-box">
+			<div v-show="content.delete_flag == 0" class="comment-box">
 				<div id="all-comment" class="all-comment">全部评论</div>
 				
-				<div class="comment-list-item">
+				<div class="comment-list-item" v-for="(item,index) in comment">
 					<div class="item-avatar-username">
-						<img class="avatar" src="../../images/111.png" >
-						<div class="username">傻叉叉</div>
-						<div class="landlord">楼主</div>
+						<img class="avatar" :src="item.avatar" >
+						<div class="username">{{item.username}}</div>
+						<div v-show="item.is_lord" class="landlord">楼主</div>
 					</div>
 					
 					<div class="item-at-info-time">
-						<div class="at">
-							傻叉叉发布与阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿萨德某某时间
+						<div class="at" v-show="item.parent_id != 0">
+							@{{item.at_username}}&nbsp;发表于&nbsp;{{item.at_time}}&nbsp;{{item.at_content}}
 						</div>
 						<div class="info">
-							双方各双方各双阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿萨德阿斯蒂芬阿斯蒂芬方各双方都是
+							{{item.content}}
 						</div>
 						<div class="time-box">
-							<div class="time">昨天 17:09</div>
+							<div class="time">{{item.create_time}}</div>
 							<div class="reply">回复</div>
 						</div>
 						
 					</div>
 				</div>
 				
-				<div class="comment-list-item">
-					<div class="item-avatar-username">
-						<img class="avatar" src="../../images/banner.png" >
-						<div class="username">傻叉叉</div>
-						<div class="landlord">楼主</div>
-					</div>
-					
-					<div class="item-at-info-time">
-						
-						<div class="info">
-							对方过后积分规划局的规范化电饭锅好？
-						</div>
-						<div class="time-box">
-							<div class="time">昨天 17:09</div>
-							<div class="reply">回复</div>
-						</div>
-						
-					</div>
-				</div>
 				
 				<!-- 无评论提示 -->
-				<div class="comment-list-item no-comment">
+				<div v-show="comment.length == 0" class="comment-list-item no-comment">
 					暂无评论 抢沙发
 				</div>
 				
@@ -133,8 +98,8 @@
 			<!-- 评论按钮 -->
 			<div class="comment-btn-box">
 				<div id="add-comment" class="comment-btn">我也说两句...</div>
-				<div id="scrollToComment" class="relative iconfont1 icon-comment-count" data-comment="2"></div>
-				<div class="relative iconfont1 icon-dian-zan" data-zan=""></div>
+				<div id="scrollToComment" class="relative iconfont1 icon-comment-count" :data-comment="comment.length"></div>
+				<div class="relative iconfont1 icon-dian-zan" :class="is_zan?'yes-zan':''" :data-zan="zan_count"></div>
 				<div id="comment-share" class="iconfont1 icon-comment-share"></div>
 			</div>
 			
@@ -148,32 +113,77 @@
 	<script src="../../js/api.js"></script>
 	<script src="../../js/app.js"></script>
 	<script type="text/javascript">
-		mui.init();
+		// 查询内容
+		function getContent(){
+			let res = mui.http_post(API.COMMUNITY_DETAIL,{cid:vm.cid});
+			res.then(res=>{
+				if(res.code == 200){
+					vm.content= res.data;
+				}
+			})
+		}
+		
+		// 查询评论
+		function getComment(){
+			let res = mui.http_post(API.COMMUNITY_COMMENT,{cid:vm.cid,uid:vm.user_id});
+			res.then(res=>{
+				if(res.code == 200){
+					vm.comment = res.data.comment;
+					vm.zan_count = res.data.count;
+					vm.is_zan = res.data.iszan;
+				} 
+			})
+		}
+		
+		mui.init({
+				pullRefresh : {
+					container:"#app",
+					down : {
+						style:'circle',
+						color:'#3383FC', 
+						height:'50px',
+						range:'100px', 
+						offset:'0px', 
+						auto: false,
+						callback :function(){
+							mui('#app').pullRefresh().endPulldown();
+						}
+				    }
+				}
+			});
 		
 		var vm = new Vue({  
 			el : '#app',
 			data : {
-				title : '阿道夫阿道夫大师傅阿道 夫阿道夫爱迪生阿道夫阿斯蒂芬阿道夫阿斯蒂芬大方啊阿斯蒂芬',
-				cover : '',
-				time : '',
+				content:{},
+				comment:[],
+				user_id:0,
+				zan_count:0,
+				is_zan: false,
 			}
 		})
 		window.onload = function(){
 			mui.plusReady(function () {
-			    var id = mui.currentWebview.cid;
+				let cid = mui.currentWebview.cid;
+			    vm.cid = cid ;
 				
-				mui.currentWebview.show();
-				plus.nativeUI.closeWaiting();
+				let accountInfo = plus.storage.getItem('accountInfo');
+				if(!accountInfo){
+					vm.user_id = JSON.parse(accountInfo).id;
+				}
+				
+				
+				getContent();
+				getComment();
 				
 				mui.previewImage();
-					
 				mui.updateSerivces('share');
 				let msg={
 						type:'web',
 						thumbs:['_www/images/logo1.png'],
-						href:API.SHARE_HOST+'/news/index/index/'+id,
-					    title : vm.title,
-						content : vm.title,
+						href:API.SHARE_HOST+'/community/index/index/'+cid,
+					    title : vm.content.title,
+						content : vm.content.title,
 					};
 					 
 				document.getElementById('data-from').addEventListener('tap',function(){

@@ -144,6 +144,8 @@ var API = {
 	COMMUNITY_LOAD :'/community/load',
 	COMMUNITY_TAB : '/community/tab',
 	COMMUNITY_ALL_HOT : '/community/allHot',
+	COMMUNITY_DETAIL : '/community/detail',
+	COMMUNITY_COMMENT : '/community/comment',
 
 	//客服
 	CHAT_IMG_UPLOAD : '/chat/chatImgUpload',

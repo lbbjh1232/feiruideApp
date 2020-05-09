@@ -149,10 +149,15 @@
 				
 				// link to register page
 				document.getElementById('toReg').addEventListener('tap',function(){
-					mui.openWindow({
-						url : 'reg.html',
-						id : 'reg'
+					mui.confirm('是否已存在药械电子化管理系统账号?','特别提示',['否 - 注册','是 - 登录'],function(e){
+						if(e.index == 0){
+							mui.openWindow({
+								url : 'reg.html',
+								id : 'reg'
+							})
+						}
 					})
+					
 				});
 				
 				// login now

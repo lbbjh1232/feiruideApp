@@ -17,7 +17,7 @@ var loadView = function(){
 	if( accountInfo != null){
 		vm.accountInfo = JSON.parse(accountInfo);
 		
-		mui.judgeIsSign(vm.accountInfo.id);
+		// mui.judgeIsSign(vm.accountInfo.id);
 		
 	}else{
 		vm.accountInfo = false;

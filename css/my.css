@@ -54,7 +54,7 @@
 .divided-line{
 	height: 12px;
 	width: 100%;
-	background: rgba(156, 156, 156,.1);
+	background-color: rgba(105,105,105,.1);
 }
 .mui-table-view-cell:after{
 	background-color:rgba(156, 156, 156,.1) ;

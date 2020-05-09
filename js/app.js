@@ -991,7 +991,8 @@
 	// paint status : only in index page
 	$.paintStatus = function(){
 		//获取titleNView对象
-		var self = plus.webview.currentWebview(),text,views = [plus.webview.getWebviewById('html/community.html').isVisible(),plus.webview.getWebviewById('html/message.html').isVisible(),plus.webview.getWebviewById('html/friend.html').isVisible(),plus.webview.getWebviewById('html/my.html').isVisible()];
+		// plus.webview.getWebviewById('html/community.html').isVisible(),
+		var self = plus.webview.currentWebview(),text,views = [plus.webview.getWebviewById('html/message.html').isVisible(),plus.webview.getWebviewById('html/friend.html').isVisible(),plus.webview.getWebviewById('html/my.html').isVisible()];
 		var index = views.indexOf(true);
 		var currIndex = index != -1 ?  parseInt(index)+1 : 0 ;
 		var titleView = self.getTitleNView();
@@ -1017,9 +1018,9 @@
 		}
 		
 		//搜索帖子
-		var searchCommunity = function(){
-			$.loginPageShow();
-		}
+		// var searchCommunity = function(){
+		// 	$.loginPageShow();
+		// }
 		
 		switch(currIndex){
 			case 0:
@@ -1036,20 +1037,20 @@
 				
 				break;
 				
-			case 1:
-				text = '社区';
-				buttons.push({
-					text:'\ue60d',
-					width:"80px",
-					fontSrc:'fonts/icon.ttf',
-					fontSize : '25px',
-					float:'right',
-					onclick: searchCommunity
-				});
-				break;
+			// case 1:
+			// 	text = '社区';
+			// 	buttons.push({
+			// 		text:'\ue60d',
+			// 		width:"80px",
+			// 		fontSrc:'fonts/icon.ttf',
+			// 		fontSize : '25px',
+			// 		float:'right',
+			// 		onclick: searchCommunity
+			// 	});
+			// 	break;
 				
 			
-			case 2:
+			case 1:
 				text = '消息';
 				buttons.push({
 					text:'',
@@ -1059,7 +1060,7 @@
 				});
 				break;
 				
-			case 3: 
+			case 2: 
 				text = '通讯录';
 				if(accountInfo != null && JSON.parse(accountInfo).roleid != 12 ){
 					buttons.push({
@@ -1072,7 +1073,7 @@
 				}
 				break;
 				
-			case 4:
+			case 3:
 				text = '我的';
 				buttons.push({
 					text : '\ue750',

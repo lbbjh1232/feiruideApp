@@ -684,17 +684,28 @@
 					 */
 					nview.addEventListener('click', function(e) {
 						var clientX = e.clientX;
-						if(clientX > 0 && clientX <= parseInt(pageW * 0.2)) {
+						// if(clientX > 0 && clientX <= parseInt(pageW * 0.2)) {
+						// 	currIndex = 0;
+						// } else if(clientX > parseInt(pageW * 0.2) && clientX <= parseInt(pageW * 0.4)) {
+						// 	currIndex = 1;
+						// } else if(clientX > parseInt(pageW * 0.4) && clientX <= parseInt(pageW * 0.6)) {
+						// 	currIndex = 2;
+						// }else if(clientX > parseInt(pageW * 0.6) && clientX <= parseInt(pageW *0.8)){
+						// 	currIndex = 3;
+						// } else if(clientX > parseInt(pageW * 0.8) && clientX <= parseInt(pageW *1)){
+						// 	currIndex = 4;
+						// }
+						
+						if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
 							currIndex = 0;
-						} else if(clientX > parseInt(pageW * 0.2) && clientX <= parseInt(pageW * 0.4)) {
+						} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.5)) {
 							currIndex = 1;
-						} else if(clientX > parseInt(pageW * 0.4) && clientX <= parseInt(pageW * 0.6)) {
+						} else if(clientX > parseInt(pageW * 0.5) && clientX <= parseInt(pageW * 0.75)) {
 							currIndex = 2;
-						}else if(clientX > parseInt(pageW * 0.6) && clientX <= parseInt(pageW *0.8)){
+						}else if(clientX > parseInt(pageW * 0.75) && clientX <= parseInt(pageW *1)){
 							currIndex = 3;
-						} else if(clientX > parseInt(pageW * 0.8) && clientX <= parseInt(pageW *1)){
-							currIndex = 4;
-						} 
+						}
+						
 						// 匹配对应tab窗口	
 						if(currIndex > 0) {
 							targetPage = plus.webview.getWebviewById(subpages[currIndex - 1]);

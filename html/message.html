@@ -86,8 +86,9 @@
 				var ws;
 				// 账号踢出函数
 				var kickOut = function(msg){
-					var index = plus.webview.getLaunchWebview(),message = plus.webview.currentWebview(),friend = plus.webview.getWebviewById('html/friend.html'),my = plus.webview.getWebviewById('html/my.html'),community = plus.webview.getWebviewById('html/community.html');
-					var navView = [index,message,friend,my,community],allWebview = plus.webview.all();
+					var index = plus.webview.getLaunchWebview(),message = plus.webview.currentWebview(),friend = plus.webview.getWebviewById('html/friend.html'),my = plus.webview.getWebviewById('html/my.html');
+					// ,community = plus.webview.getWebviewById('html/community.html')
+					var navView = [index,message,friend,my],allWebview = plus.webview.all();
 					
 					//删除当前登录状态,并关闭子窗口页面(除菜单页面)
 					plus.storage.removeItem('accountInfo');
@@ -259,14 +260,6 @@
 				mui('#app').on('swiperight','.msg-item',function(e){
 					this.style.transform = "translateX(0rem)";
 				})
-				
-				
-				
-				
-				
-				
-				
-				
 				
 				
 			})

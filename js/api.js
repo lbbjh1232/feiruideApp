@@ -6,15 +6,15 @@ var ENVIRONMENT = PRO;
 
 // 接口地址
 var API = {
-	// HOST : "https://test.yxt.feiruide.cn/index.php",
-	// TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
-	// IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
-	// SHARE_HOST : 'http://test.share.feiruide.cn:9095',
+	HOST : "https://test.yxt.feiruide.cn/index.php",
+	TICKET_HOST : 'https://ticket.yp.feiruide.cn/test/upload',
+	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/test',
+	SHARE_HOST : 'http://test.share.feiruide.cn:9095',
 	
-	HOST : "https://yxt.feiruide.cn/index.php",
-	TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
-	IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
-	SHARE_HOST : 'http://share.feiruide.cn:9094',
+	// HOST : "https://yxt.feiruide.cn/index.php",
+	// TICKET_HOST : 'https://ticket.yp.feiruide.cn/upload',
+	// IMAGE_HOST : 'https://ticket.yp.feiruide.cn/',
+	// SHARE_HOST : 'http://share.feiruide.cn:9094',
 	
 	BAND_PHONE : '/user/bandPhone',
 	BAND_WECHAT : '/user/bandWechat',

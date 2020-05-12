@@ -9,10 +9,10 @@
             });  
         } else {  
             var html = '';  
-            html += '<i class="mui-spinner mui-spinner-white"></i>';  
-            html += '<p class="text">' + (message || "数据加载中") + '</p>';  
+            html += '<i class="mui-spinner mui-spinner-white"></i>';
+            html += '<p class="text">' + (message || "数据加载中") + '</p>';
  
-            //遮罩层  
+            //遮罩层
             var mask=document.getElementsByClassName("mui-show-loading-mask");
             if(mask.length==0){  
                 mask = document.createElement('div');  
@@ -988,11 +988,11 @@
 		OLD_OPEN_WINDOW(newStyle);
 	}
 	
-	// paint status : only in index page
+	// paint status : only in home page
 	$.paintStatus = function(){
 		//获取titleNView对象
-		// plus.webview.getWebviewById('html/community.html').isVisible(),
-		var self = plus.webview.currentWebview(),text,views = [plus.webview.getWebviewById('html/message.html').isVisible(),plus.webview.getWebviewById('html/friend.html').isVisible(),plus.webview.getWebviewById('html/my.html').isVisible()];
+		// 
+		var self = plus.webview.currentWebview(),text,views = [plus.webview.getWebviewById('html/community.html').isVisible(),plus.webview.getWebviewById('html/message.html').isVisible(),plus.webview.getWebviewById('html/friend.html').isVisible(),plus.webview.getWebviewById('html/my.html').isVisible()]; //顺序不能乱
 		var index = views.indexOf(true);
 		var currIndex = index != -1 ?  parseInt(index)+1 : 0 ;
 		var titleView = self.getTitleNView();
@@ -1002,7 +1002,6 @@
 		// 添加好友
 		var addFriend = function(){
 			$.loginPageShow();
-			
 			mui.openWindow({
 				url :'/html/user/user-add.html',
 				id : '/html/user/user-add.html'
@@ -1018,9 +1017,9 @@
 		}
 		
 		//搜索帖子
-		// var searchCommunity = function(){
-		// 	$.loginPageShow();
-		// }
+		var searchCommunity = function(){
+			$.loginPageShow();
+		}
 		
 		switch(currIndex){
 			case 0:
@@ -1037,20 +1036,20 @@
 				
 				break;
 				
-			// case 1:
-			// 	text = '社区';
-			// 	buttons.push({
-			// 		text:'\ue60d',
-			// 		width:"80px",
-			// 		fontSrc:'fonts/icon.ttf',
-			// 		fontSize : '25px',
-			// 		float:'right',
-			// 		onclick: searchCommunity
-			// 	});
-			// 	break;
+			case 1:
+				text = '社区';
+				buttons.push({
+					text:'\ue60d',
+					width:"80px",
+					fontSrc:'fonts/icon.ttf',
+					fontSize : '25px',
+					float:'right',
+					onclick: searchCommunity
+				});
+				break;
 				
 			
-			case 1:
+			case 2:
 				text = '消息';
 				buttons.push({
 					text:'',
@@ -1060,7 +1059,7 @@
 				});
 				break;
 				
-			case 2: 
+			case 3: 
 				text = '通讯录';
 				if(accountInfo != null && JSON.parse(accountInfo).roleid != 12 ){
 					buttons.push({
@@ -1073,7 +1072,7 @@
 				}
 				break;
 				
-			case 3:
+			case 4:
 				text = '我的';
 				buttons.push({
 					text : '\ue750',

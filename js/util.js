@@ -2,8 +2,8 @@ var util = {
 	options: {
 		ACTIVE_COLOR: "#3383FC",
 		NORMAL_COLOR: "#000",
-		subpages: ["html/message.html","html/friend.html", "html/my.html"],
-		// subpages: ["html/community.html","html/message.html","html/friend.html", "html/my.html"],
+		// subpages: ["html/message.html","html/friend.html", "html/my.html"],
+		subpages: ["html/community.html","html/message.html","html/friend.html", "html/my.html"],
 	},
 	/**
 	 *  简单封装了绘制原生view控件的方法 
@@ -95,8 +95,7 @@ var util = {
 		util.updateSubNView(currIndex, util.options.ACTIVE_COLOR);
 		util.updateSubNView(currIndex + 1, util.options.ACTIVE_COLOR);
 		// 重绘兄弟tag 反之排除当前点击的icon和text
-		// for(var i = 0; i < 10; i++) {
-		for(var i = 0; i < 8; i++) {
+		for(var i = 0; i < 10; i++) {
 			if(i !== currIndex && i !== currIndex + 1) {
 				util.updateSubNView(i, util.options.NORMAL_COLOR);
 			}
@@ -153,9 +152,9 @@ var util = {
 			})
 		}
 		//搜索
-		// var searchCommunity = function(){
-		// 	mui.loginPageShow();
-		// }
+		var searchCommunity = function(){
+			mui.loginPageShow();
+		}
 		
 		switch(currIndex){
 			case 0:
@@ -171,19 +170,19 @@ var util = {
 				}
 				break;
 			
-			// case 1:
-			// 	text = '社区';
-			// 	buttons.push({
-			// 		text:'\ue60d',
-			// 		fontSrc:'fonts/icon.ttf',
-			// 		fontSize : '22px',
-			// 		float:'right',
-			// 		onclick : searchCommunity
-			// 	});
-			// 	break;
+			case 1:
+				text = '社区';
+				buttons.push({
+					text:'\ue60d',
+					fontSrc:'fonts/icon.ttf',
+					fontSize : '22px',
+					float:'right',
+					onclick : searchCommunity
+				});
+				break;
 				
 				
-			case 1: 
+			case 2: 
 				text = '消息';
 				buttons.push({
 					text:'',
@@ -193,7 +192,7 @@ var util = {
 				});
 				break;
 				
-			case 2: 
+			case 3: 
 				text = '通讯录';
 				if(accountInfo != null && JSON.parse(accountInfo).roleid != 12 ){
 					buttons.push({
@@ -206,7 +205,7 @@ var util = {
 				}
 				break;
 				
-			case 3:
+			case 4:
 				text = '我的';
 				buttons.push({
 					text : '\ue750',

@@ -70,7 +70,7 @@ body{
 	font-size: 1.8rem;
 	text-align: justify;
 	line-height: 1.6;
-	color: 	#1C1C1C;
+	color:	#4F4F4F;
 }
 .item-img img{
 	width: 100%;
@@ -134,7 +134,7 @@ body{
 	font-size: 1.8rem;
 	text-align: justify;
 	line-height: 1.5;
-	color: 	#1C1C1C;
+	color:	#4F4F4F;
 }
 .comment-list-item .item-at-info-time .time-box{
 	display: flex;

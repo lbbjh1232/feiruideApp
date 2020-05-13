@@ -81,12 +81,11 @@
 						</div>
 						<div class="time-box">
 							<div class="time">{{item.create_time}}</div>
-							<div class="reply">回复</div>
+							<div :data-index="index" class="reply">回复</div>
 						</div>
 						
 					</div>
 				</div>
-				
 				
 				<!-- 无评论提示 -->
 				<div v-show="comment.length == 0" class="comment-list-item no-comment">
@@ -99,7 +98,7 @@
 			<div class="comment-btn-box">
 				<div id="add-comment" class="comment-btn">我也说两句...</div>
 				<div id="scrollToComment" class="relative iconfont1 icon-comment-count" :data-comment="comment.length"></div>
-				<div class="relative iconfont1 icon-dian-zan" :class="is_zan?'yes-zan':''" :data-zan="zan_count"></div>
+				<div id="zan" class="relative iconfont1 icon-dian-zan" :class="is_zan?'yes-zan':''" :data-zan="zan_count"></div>
 				<div id="comment-share" class="iconfont1 icon-comment-share"></div>
 			</div>
 			
@@ -127,6 +126,7 @@
 		function getComment(){
 			let res = mui.http_post(API.COMMUNITY_COMMENT,{cid:vm.cid,uid:vm.user_id});
 			res.then(res=>{
+				mui('#app').pullRefresh().endPulldown();
 				if(res.code == 200){
 					vm.comment = res.data.comment;
 					vm.zan_count = res.data.count;
@@ -146,7 +146,8 @@
 						offset:'0px', 
 						auto: false,
 						callback :function(){
-							mui('#app').pullRefresh().endPulldown();
+							getComment();
+							
 						}
 				    }
 				}
@@ -176,42 +177,95 @@
 				getContent();
 				getComment();
 				
-				mui.previewImage();
+				mui.previewImage();  
 				mui.updateSerivces('share');
-				let msg={
-						type:'web',
-						thumbs:['_www/images/logo1.png'],
-						href:API.SHARE_HOST+'/community/index/index/'+cid,
-					    title : vm.content.title,
-						content : vm.content.title,
-					};
 					 
 				document.getElementById('data-from').addEventListener('tap',function(){
-					
+					let msg={
+							type:'web',
+							thumbs:['_www/images/logo1.png'],
+							href:API.SHARE_HOST+'/community/index/index/'+cid,
+						    title : vm.content.title,
+							content : vm.content.title,
+						};
 					mui.sharePop(sweixin,msg,function(){
-						mui.toast('分享成功');
+						mui.toast('分享成功'); 
 					});
 				})
 				
 				// 添加评论
 				document.getElementById('add-comment').addEventListener('tap',function(){
-					alert('添加评论')
+					mui.loginPageShow();
+					mui.openWindow({
+						url:'add-comment.html',
+						id:'add-comment',
+						extras:{
+							title:'输入内容',
+							cid,
+						},
+						show:{
+							aniShow:'slide-in-bottom'
+						}
+					});
+				});
+				
+				//添加回复
+				mui('.comment-box').on('tap','.reply',function(){
+					mui.loginPageShow();
+					let item = vm.comment[this.dataset.index];
+					mui.openWindow({
+						url:'add-comment.html',
+						id:'add-comment',
+						extras:{
+							title:'@'+item.username,
+							cid,
+							toid:item.user_id,
+							pid:item.id
+						},
+						show:{
+							aniShow:'slide-in-bottom'
+						}
+					});
+				})
+				
+				//点赞
+				document.getElementById('zan').addEventListener('tap',function(){
+					mui.loginPageShow();
+					let zan = mui.http_post(API.COMMUNITY_ZAN,{cid,uid:vm.user_id});
+					zan.then(res=>{
+						if(res.code == 200){
+							getComment();
+						}
+					}) 
 				});
 				
 				//滚动至评论区
 				document.getElementById('scrollToComment').addEventListener('tap',function(){
-					let offsetTop = document.getElementById('all-comment').offsetTop;
-					window.scrollTo(0,offsetTop);
+					let y = mui.getElePos(document.getElementById('all-comment')).y ;
+					window.scrollTo(0,y-70);
 				});
+				
+				// 点赞
+				
 				
 				// 底部分享
 				document.getElementById('comment-share').addEventListener('tap',function(){
-					
+					let msg={
+							type:'web',
+							thumbs:['_www/images/logo1.png'],
+							href:API.SHARE_HOST+'/community/index/index/'+cid,
+						    title : vm.content.title,
+							content : vm.content.title,
+						};
 					mui.sharePop(sweixin,msg,function(){
 						mui.toast('分享成功');
 					});
 				})
 				
+				// 监听评论发布
+				window.addEventListener('loadComment',function(){
+					getComment();
+				});
 		});
 	}
 		

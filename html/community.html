@@ -183,7 +183,7 @@
 				})
 				
 				//添加动态
-				document.getElementById('addCommunity').addEventListener('tap',function(){
+				document.getElementById('addCommunity').addEventListener('tap',function(e){
 					//登录提示
 					mui.loginPageShow();
 					
@@ -205,6 +205,7 @@
 							aniShow:'slide-in-bottom'
 						}
 					});
+					e.stopPropagation();
 				})
 				
 				// 切换栏目

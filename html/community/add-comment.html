@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<meta charset="utf-8"> 
+		<title>通讯录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>   
+		  
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/community/add-community.css'],true);   
+		</script>
+		
+	</head>    
+   
+	<body contextmenu="return false;">
+		<div id="app">
+		<header class="mui-bar mui-bar-nav no-shadow" v-cloak>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" >发布评论</h1>
+			<div id="data-from">发布</div>
+		</header>
+		
+		<div class="mui-content">
+			<div id="content-box">
+				<content-upload @ongetcontent="getContent" :title="title" :content="content" ></content-upload> 
+			</div>
+			
+			
+		</div>
+		</div>
+		
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<script type="text/x-template" id="content-template">
+			<div>
+					<div class="community-content-box">
+						<div class="community-content-text">
+							<textarea @input="textInput" autofocus="true" v-model="contentCopy" rows="8" :placeholder="title"></textarea>
+						</div>
+						
+					</div>
+			</div>
+		</script>
+		<script type="text/javascript">
+		mui.init();
+		
+		mui.plusReady(function () {
+			
+			plus.webview.currentWebview().setStyle({
+				softinputMode: "adjustResize"
+			});
+			
+			let title = mui.currentWebview.title;
+			let cid = mui.currentWebview.cid;
+			let toUserId = mui.currentWebview.toid != undefined ? mui.currentWebview.toid : 0;
+			let pid = mui.currentWebview.pid != undefined ? mui.currentWebview.pid : 0;
+			
+			var contents= {
+					template : "#content-template",
+					data : function(){
+						return {
+							contentCopy:'',
+						};
+					},
+					props:{
+						content:String,
+						title:String,
+					},
+					watch:{
+						content(val){
+							this.contentCopy = val
+						},
+					},
+					
+					methods:{
+						textInput(){
+							this.$emit('ongetcontent',{content:this.contentCopy});
+						}
+					},
+				};
+			var vm = new Vue({
+				el : '#app',
+				components:{
+					'content-upload':contents
+				},
+				data:{
+					content:'',
+					title
+				},
+				methods:{
+					getContent(e){
+						this.content = e.content;
+					},
+				}
+			});
+			
+			mui.statusAndSetAfterBack('dark','#ffffff');
+			
+			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+			
+			// 发布
+			document.getElementById('data-from').addEventListener('tap',function(){
+				let content = vm.content;
+				if(!content){
+					mui.toast('必须输入评论内容');
+					return;
+				}
+				
+				let params = {
+					userid:accountInfo.id,
+					touserid:toUserId,
+					content:vm.content,
+					pid,
+					cid
+				};
+				
+				plus.nativeUI.showWaiting();
+				let res = mui.http_post(API.COMMUNITY_ADD_COMMENT,params);
+				res.then(res=>{
+					plus.nativeUI.closeWaiting();
+					if(res.code ==200){
+						mui.fire(plus.webview.currentWebview().opener(),'loadComment');
+						mui.back();
+						
+					}else{
+						mui.toast(res.message);
+					}
+				});
+				
+			})
+			
+				
+		});
+		</script>
+	</body>
+</html>

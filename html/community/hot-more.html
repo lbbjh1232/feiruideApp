@@ -4,7 +4,7 @@
 	<head> 
 		<meta charset="utf-8"> 
 		<title>通讯录</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
 		<meta http-equiv="content-security-policy">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,7 +27,7 @@
 		
 		<div class="mui-content" id="app">
 			<template v-for="(item,index) in result">
-				<div class="hot-item">
+				<div class="hot-item" :data-cid="item.id">
 					<div class="item-left">  
 						<img :src="item.avatar" onerror="this.src='../../images/60x60.jpg'">
 					</div>
@@ -62,7 +62,22 @@
 				res.then(res=>{
 					plus.nativeUI.closeWaiting()
 					vm.result = res.data;
-				}) 
+				});
+				
+				//查看详情
+				mui('#app').on('tap','.hot-item',function(){
+					let cid = this.dataset.cid;
+					mui.openWindow({
+						url : 'detail.html',
+						id : 'community-detail',
+						extras : {
+							cid
+						},
+						show : {
+							autoShow : true
+						}
+					})
+				})
 				
 				
 			});

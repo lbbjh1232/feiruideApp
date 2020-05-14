@@ -4,7 +4,7 @@
 	<head> 
 		<meta charset="utf-8"> 
 		<title>通讯录</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
 		<meta http-equiv="content-security-policy">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,62 +19,88 @@
 		 
 	</head>  
      
-	<body>     
-		<header class="mui-bar mui-bar-nav">
+	<body contextmenu="return false;">
+		<div id="app">
+			
+		<header id="add-img-text" class="mui-bar mui-bar-nav"> 
 			<div class="search-box">
 				<div class="search-input-box">
 					<div class="iconfont1 icon-search-tie"></div>
 					<div class="input">
-						<input type="text" autofocus />
+						<form action="javascript:void(0)" method="">
+							<input id="input" v-model="value" type="search" placeholder="搜索帖子" />
+						</form>
 					</div>
 				</div>
-				<div class="close">取消</div>
+				<div onclick="mui.back()" class="close">取消</div>
 			</div>
 		</header>
 		
-		<div class="mui-content" id="app">
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
-			<p>阿道夫大师傅阿道夫大师傅</p>
+		<div class="mui-content" >
+			<div id="content-box">
+				<!-- 搜索结果展示 -->
+				<div v-for="(item,index) in result" class="community-item-box detail" >
+					<div class="left-title-1" v-html="item.n_title"></div>
+					<div class="bottom-info">
+						<div class="username">
+							<span>{{item.writer}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.scan_number}}阅读</span>
+						</div>
+						<div class="creat-time">
+							{{item.show_time}}
+						</div>  
+					</div> 
+				</div>
+				 
+				<!-- 数据为空提示 --> 
+				<div class="empty" v-show="result.length == 0">
+					<img src="../../images/empty.png" >
+				</div>
+				
+			</div>
 		</div>
-		
+		</div>
 		<script type="text/javascript">
 			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
 		</script>
 		
 		<script>
+			function load(){
+				plus.nativeUI.showWaiting()
+				let res = mui.http_post(API.COMMUNITY_SEARCH,{value:vm.value});
+				res.then(res=>{
+					plus.nativeUI.closeWaiting();
+					if(res.code == 200){
+						vm.result = res.data;
+					}
+				}) 
+			}
+			
 			mui.init();
 			var vm = new Vue({
 				el : '#app',
 				data : {
 					result:[],
-					
-				} 
+					value:''
+				}
 			});
-			     
+			
 			mui.plusReady(function () { 
 				mui.statusAndSetAfterBack('dark','#ffffff');
+				let input = document.getElementById('input');
+				
+				//延时聚焦，解决表单自动聚焦时，产生顶部header错位
+				setTimeout(function(){
+					input.focus();
+				},100);
+				
+				input.addEventListener('keypress',function(){
+					if(!vm.value){
+						mui.toast('输入搜索关键字');
+						return;
+					} 
+					load();
+					input.blur();
+				})
 				
 			});
 			

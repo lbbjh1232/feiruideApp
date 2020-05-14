@@ -153,7 +153,6 @@ var util = {
 		}
 		//搜索
 		var searchCommunity = function(){
-			mui.loginPageShow();
 			mui.openWindow({
 				url : 'html/community/search.html',
 				id : 'community-search',

@@ -1018,7 +1018,6 @@
 		
 		//搜索帖子
 		var searchCommunity = function(){
-			$.loginPageShow();
 			mui.openWindow({
 				url : 'html/community/search.html',
 				id : 'community-search',
@@ -1373,7 +1372,75 @@
             x: pos[0],
             y: pos[1]
         };
-    }
+    };
+	
+	//判断元素是否可滚动
+	$.isCanScroll = function(ele){
+		 if (!ele instanceof HTMLElement) {
+		    console.log("fuck off");
+		    return;
+		  }
+		  console.log(ele.scrollTop);
+		  if (ele.scrollTop > 0) {
+		    return true;
+		  } else {
+		    ele.scrollTop++;
+		    // 元素不能滚动的话，scrollTop 设置不会生效，还会置为 0
+		    const top = ele.scrollTop;
+		    // 重置滚动位置
+		    top && (ele.scrollTop = 0);
+		    return top > 0;
+		  }
+	};
+	
+	// 模拟元素回弹
+	$.huitan = function(d) {
+			var ht = {};
+			ht.init = function() {
+			  if (!support_touch_event()) return;
+			  
+			  var startX, startY, endX, endY, cou,
+			   container = d || document.querySelector(".mui-content");
+			  container.addEventListener('touchstart', function(e) {
+			   e.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+			   var touch = e.touches[0]; //获取第一个触点
+			   var x = touch.pageX; //页面触点X坐标
+			   var y = touch.pageY; //页面触点Y坐标
+			   //记录触点初始位置
+			   startX = x;
+			   startY = y;
+			   cou = 0;
+			  });
+			  container.addEventListener('touchmove', function(e) {
+			   e.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+			   var touch = e.touches[0]; //获取第一个触点
+			   var x = touch.pageX; //页面触点X坐标
+			   var y = touch.pageY; //页面触点Y坐标
+			   endX = x;
+			   endY = y;
+			   var abs = Math.abs(y - startY)
+			   if (abs > 10 && abs < 180) {
+				//低版本安卓机拉伸有抖动现象，通过减少动画次数来规避
+				if ( /*mui.os.android &&*/ ++cou % 10 == 0) {
+				 container.style.cssText = "transition:1s cubic-bezier(.1, .57, .1, 1); -webkit-transition:1s cubic-bezier(.1, .57, .1, 1); -webkit-transform: translate(0px, " + (y - startY) + "px) translateZ(0px);";
+				}
+			   }
+			  });
+			  container.addEventListener('touchend', touchend);
+			  container.addEventListener('touchcancel', touchend);
+
+			  function touchend(e) {
+			   e.preventDefault();
+			   container.style.cssText = "transition:300ms cubic-bezier(.1, .57, .1, 1); -webkit-transition: 300ms cubic-bezier(.1, .57, .1, 1);  -webkit-transform: translate(0px,0px) translateZ(0px);";
+			  }
+
+			  function support_touch_event() {
+			   return !!(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch);
+			  }
+			}
+			
+			return ht;
+		};
 
 	
 	

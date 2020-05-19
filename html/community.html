@@ -215,7 +215,10 @@
 						return;
 					}
 					vm.currentTopic = tid;
+					vm.more= true;
+					vm.pageIndex = 1;
 					load();
+					
 					mui('#app').pullRefresh().endPulldown();
 					mui('#app').pullRefresh().enablePullupToRefresh();
 				});
@@ -231,7 +234,6 @@
 				//查看详情
 				mui('#app').on('tap','.detail',function(){
 					let cid = this.dataset.cid;
-
 					mui.openWindow({
 						url : 'community/detail.html',
 						id : 'community-detail',

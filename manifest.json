@@ -96,10 +96,6 @@
         "Statistic" : {}
     },
     "plus" : {
-		"softinput": {  
-		     "navBar": "auto"   ,// 是否显示软键盘上的导航条，"auto"表示系统默认值（显示），"none"表示不显示，默认值为"auto"  
-			 "mode": "adjustResize"
-		   },
         "kernel" : {
             "ios" : "WKWebview" // "WKWebview"  "UIWebview"
         },

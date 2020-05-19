@@ -528,14 +528,26 @@
 					});
 					
 					
-					//监听系统通知栏消息点击事件  
+					//监听系统通知栏消息点击事件
 					plus.push.addEventListener('click', function(msg){
 						var payload = typeof(msg.payload) != 'string' ? msg.payload : JSON.parse(msg.payload);
 						var type = payload.type;
 						// 判断是否登录
 						var accountInfo = plus.storage.getItem('accountInfo');
-						
 						switch(type){
+							case 'community':
+								mui.openWindow({
+									url:'html/community/detail.html',
+									id : 'community-detail',
+									extras:{
+										cid:payload.cid
+									},
+									show : {
+										autoShow : true
+									}
+								});
+								break;
+								
 							case 'chat':
 								mui.openWindow({
 									url:"html/my/customer-chat.html",
@@ -551,10 +563,7 @@
 								break;
 							
 							case 'useradd':
-								if( accountInfo == null ){
-									mui.toast('请先登录');
-									return;
-								}
+								mui.loginPageShow();
 								mui.openWindow({
 									url : 'html/user/new-friend.html',
 									id : 'html/user/new-friend.html',
@@ -565,9 +574,7 @@
 								break;
 								
 							case 'short':
-								if( accountInfo == null ){
-									mui.loginPageShow()
-								}
+								mui.loginPageShow();
 								mui.trigger(document.getElementById('short'),'tap');
 								break;
 								
@@ -678,7 +685,6 @@
 						subpages = util.options.subpages,
 						pageW = window.innerWidth,
 						currIndex = 0;
-						
 					/**
 					 * 根据判断view控件点击位置判断切换的tab
 					 */

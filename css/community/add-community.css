@@ -16,7 +16,7 @@ html,body,#app{
 	color: #000000;
 	font-size: 18px;
 }
-.mui-title::after{
+.down-arrow::after{
 	content: "\e83c";
 }
 .mui-icon-left-nav:before{

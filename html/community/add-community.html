@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head> 
 		<meta charset="utf-8"> 
 		<title>通讯录</title>
@@ -23,7 +22,7 @@
 		<div id="app">
 		<header class="mui-bar mui-bar-nav no-shadow" v-cloak>
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class=" iconfont1 mui-title" id="selectTopic"  >{{currentTopicText}}&nbsp;</h1>
+			<h1 class=" iconfont1 mui-title down-arrow" id="selectTopic"  >{{currentTopicText}}&nbsp;</h1>
 			<div id="data-from">发布</div>
 		</header>
 		
@@ -335,6 +334,7 @@
 					plus.nativeUI.closeWaiting();
 					if(res.code ==200){
 						mui.fire(plus.webview.currentWebview().opener(),'refresh');
+						mui.toast(res.message);
 						mui.back();
 						
 					}else{

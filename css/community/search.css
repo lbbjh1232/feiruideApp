@@ -1,4 +1,4 @@
-html,body{
+html,body,#app{
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -12,9 +12,7 @@ html,body{
 }
 .mui-content{
 	height: 100%;
-	/* overflow: auto; */
-	overflow: hidden;
-	
+	overflow: auto;
 }
 #content-box{
 	padding: 1rem;
@@ -82,7 +80,7 @@ html,body{
 	width: 100%;
 	font-size: 16px;
 	text-align: justify;
-	-webkit-line-clamp: 2;
+	-webkit-line-clamp: 3;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	text-overflow: ellipsis;
@@ -109,5 +107,10 @@ html,body{
 }
 .keyword{
 	color: #007AFF;
+}
+.no-more-tips{
+	text-align: center;
+	font-size: 12px;
+	color: rgba(181,181,181,.6);
 }
 

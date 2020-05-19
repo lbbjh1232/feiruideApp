@@ -91,7 +91,6 @@ mui.plusReady(function () {
 	//积分管理
 	mui('#business').on('tap','#point',function(){
 		mui.loginPageShow();
-		
 		mui.openWindow({
 			url:"points/index.html",
 			id : 'points',
@@ -100,6 +99,18 @@ mui.plusReady(function () {
 			}
 		})
 	});
+	
+	// 我的帖子
+	mui('#my-manage').on('tap','#tiezi',function(){
+		mui.loginPageShow();
+		mui.openWindow({
+			url:"community/my-community.html",
+			id : 'my-community',
+			show : {
+				autoShow : true,
+			}
+		})
+	})
 	
 	// 联系客服,随机分配在线客服(默认超级管理员为客服)
 	mui('#service').on('tap','#custmer',function(){

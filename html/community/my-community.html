@@ -15,44 +15,33 @@
 		<script type="text/javascript">
 			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/community/search.css'],true);
 		</script>
+		<style type="text/css">
+			.mui-bar-nav{
+				background-color: #3383FC;
+			}
+		</style>
 	</head>  
      
 	<body contextmenu="return false;">
 		<div id="app">
-			
-		<header id="add-img-text" class="mui-bar mui-bar-nav"> 
-			<div class="search-box">
-				<div class="search-input-box">
-					<div class="iconfont1 icon-search-tie"></div>
-					<div class="input">
-						<form action="javascript:void(0)" method="">
-							<input id="input" v-model="value" type="search" placeholder="搜索帖子" />
-						</form>
-					</div>
-				</div>
-				<div onclick="mui.back()" class="close">取消</div>
-			</div>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的帖子</h1>
 		</header>
 		
 		<div class="mui-content" >
 			<div id="content-box">
 				<!-- 搜索结果展示 --> 
 				<div v-for="(item,index) in result" class="community-item-box detail" :data-cid="item.id">
-					<div class="left-title-1" v-html="item.n_title"></div>
+					<div class="left-title-1">{{item.title}}</div>
 					<div class="bottom-info">
 						<div class="username">
-							<span>{{item.writer}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.scan_number}}阅读</span>
+							<span>{{item.username}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.scan_number}}阅读</span>
 						</div>
 						<div class="creat-time">
 							{{item.show_time}}
 						</div> 
 					</div> 
-				</div>
-				 
-				 
-				<!-- 数据为空提示 --> 
-				<div class="empty" v-show="result.length == 0">
-					<img src="../../images/empty.png" >
 				</div>
 				
 				<!-- 数据到底提示 -->
@@ -68,11 +57,11 @@
 		
 		<script type="text/javascript">
 			function load(){
-				if(vm.more == 1 || !vm.value){
+				if(vm.more == 1){
 					return;
 				}
 				plus.nativeUI.showWaiting()
-				let res = mui.http_post(API.COMMUNITY_SEARCH,{value:vm.value,pageIndex:vm.pageIndex});
+				let res = mui.http_post(API.COMMUNITY_MY,{uid:vm.uid,pageIndex:vm.pageIndex});
 				res.then(res=>{
 					plus.nativeUI.closeWaiting();
 					if(res.code == 200){
@@ -87,35 +76,15 @@
 				el : '#app',
 				data : {
 					result:[],
-					value:'',
 					pageIndex:1,
-					more : 2
+					more : 2,
+					uid : 0,
 				}
 			});
 			mui.plusReady(function () {
-				mui.statusAndSetAfterBack('dark','#ffffff');
-				let input = document.getElementById('input');
-				
-				//延时聚焦，解决表单自动聚焦时，产生顶部header错位
-				setTimeout(function(){
-					input.focus();
-				},100);
-				
-				input.addEventListener('keypress',function(e){
-					if(e.keyCode == "13"){
-						vm.more = 2;
-						vm.pageIndex =1;
-						if(!vm.value){
-							mui.toast('输入搜索关键字');
-							return ;
-						}
-						document.getElementById('content-box').scrollTo(0,0);
-						this.blur();
-						load();
-						e.preventDefault();
-						e.stopPropagation();
-					}
-				});
+				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				vm.uid = accountInfo.id;
+				load()
 				
 				// 滑动监听
 				document.getElementById('content-box').addEventListener('scroll',function(e){
@@ -140,8 +109,7 @@
 							autoShow : true
 						}
 					})
-				})
-				
+				});
 			});
 			
 		</script>

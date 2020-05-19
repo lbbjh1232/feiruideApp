@@ -125,7 +125,6 @@
 					mui('.enclosure-box').on('tap','.enclosure',function(e){
 						let ext = this.dataset.ext;
 						let url = this.dataset.url;
-						
 						if(ext == 2){
 							// 预览pdf文件
 							if(mui.os.ios){
@@ -166,10 +165,7 @@
 							title : vm.title,
 							content : vm.title,
 						};
-						
-					mui.sharePop(sweixin,msg,function(){
-						mui.toast('分享成功');
-					});
+					mui.sharePop(sweixin,msg,mui.pointByShareNews);
 				})
 				
 				

@@ -23,7 +23,7 @@
 		<div id="app">
 		<header class="mui-bar mui-bar-nav no-shadow" v-cloak>
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title" >发布评论</h1>
+			<h1 class="mui-title">发布评论</h1>
 			<div id="data-from">发布</div>
 		</header>
 		
@@ -129,6 +129,7 @@
 					plus.nativeUI.closeWaiting();
 					if(res.code ==200){
 						mui.fire(plus.webview.currentWebview().opener(),'loadComment');
+						mui.toast(res.message)
 						mui.back();
 						
 					}else{

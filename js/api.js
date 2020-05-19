@@ -149,6 +149,7 @@ var API = {
 	COMMUNITY_ADD_COMMENT : '/community/addComment',
 	COMMUNITY_ZAN : '/community/zan',
 	COMMUNITY_SEARCH : '/community/search',
+	COMMUNITY_MY : '/community/my',
 
 	//客服
 	CHAT_IMG_UPLOAD : '/chat/chatImgUpload',

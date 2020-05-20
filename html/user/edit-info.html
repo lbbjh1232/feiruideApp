@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head> 
+		<meta charset="utf-8"> 
+		<title>通讯录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		  
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/community/search.css'],true);
+		</script>
+		<style type="text/css">
+			.mui-bar-nav{
+				background-color: #3383FC;
+			}
+			.item-info{display:flex;display: -webkit-flex;flex-direction: row;align-items: center;justify-content: space-between;border-bottom: 1px solid rgba(181,181,181,.1);padding:1rem 1rem 0.5rem 1rem;}
+			.item-info .lable-left{font-size: 1.8rem;}
+			.item-info .content-right{display:flex;display: -webkit-flex;flex-direction: row;align-items: center;justify-content: space-between;}
+			.item-info .content-right img{width: 6rem;height: 6rem;}
+			.info-right{padding-right: 0.4rem;font-size: 1.5rem;color: gray;}
+			.arrow-right::after{content: "\e633";font-size: 1.8rem;}
+		</style>
+	</head>
+     
+	<body contextmenu="return false;">
+		<div id="app">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人信息</h1>
+		</header>
+		
+		<div class="mui-content" >
+			<div id="content-box">
+				<div class="item-info">
+					<div class="lable-left">头像</div>
+					<div class="content-right">
+						<div class="info-right"><img src="../../images/111.png" ></div>
+						<div class="iconfont1 arrow-right"></div>
+					</div>
+				</div>
+				
+				<div class="item-info">
+					<div class="lable-left">昵称</div>
+					<div class="content-right">
+						<div class="info-right">你好啊！</div>
+						<div class="iconfont1 arrow-right"></div>
+					</div>
+				</div>
+				
+				
+				
+				
+			</div>
+		</div>
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<script type="text/javascript">
+			mui.init();
+			var vm = new Vue({
+				el : '#app',
+				data : {
+					
+				}
+			});
+			mui.plusReady(function () {
+				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				vm.uid = accountInfo.id;
+				
+			});
+			
+		</script>
+	</body>
+</html>

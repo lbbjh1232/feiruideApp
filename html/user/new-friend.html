@@ -41,7 +41,7 @@
 					<div class="delete" v-bind:data-id="item.rid">删除</div>
 				</div>
 			</template>
-			<div class="empty">暂无消息</div>
+			<div v-show="result.length==0" class="empty">暂无消息</div>
 			
 			 
 		</div>

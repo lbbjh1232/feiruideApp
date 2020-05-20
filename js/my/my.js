@@ -13,12 +13,9 @@ var vm = new Vue({
 
 var loadView = function(){
 	var accountInfo = plus.storage.getItem('accountInfo');
-	
 	if( accountInfo != null){
 		vm.accountInfo = JSON.parse(accountInfo);
-		
 		mui.judgeIsSign(vm.accountInfo.id);
-		
 	}else{
 		vm.accountInfo = false;
 	}
@@ -138,14 +135,13 @@ mui.plusReady(function () {
 		
 	});
 	
-	// 发布意见反馈
+	// 意见反馈
 	mui('#service').on('tap','#feedback',function(){
 		mui.openWindow({
 			url:"my/feedback.html",
 			id:"feedback"
 		})
-	})
-	
+	});
 	
 	// 点击签到
 	document.getElementById('sign-in').addEventListener('tap',function(){
@@ -174,6 +170,13 @@ mui.plusReady(function () {
 		
 	})
 	
+	// 个人信息
+	document.getElementById('edit-info').addEventListener('tap',function(){
+		mui.openWindow({
+			url:'user/edit-info.html',
+			id:'edit-info',
+		});
+	})
 	
 	
 })

@@ -40,13 +40,12 @@
 						</div>
 						<div class="creat-time">
 							{{item.show_time}}
-						</div> 
-					</div> 
+						</div>
+					</div>
 				</div>
 				
 				<!-- 数据到底提示 -->
 				<div class="no-more-tips" v-show="more == 1 && result.length != 0">(O(∩_∩)O)&nbsp;没有更多内容了</div>
-				
 				
 			</div>
 		</div>
@@ -68,7 +67,7 @@
 						vm.result = res.data;
 						vm.more = res.message;
 					}
-				}) 
+				});
 			}
 			
 			mui.init();

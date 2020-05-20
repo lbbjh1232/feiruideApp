@@ -218,7 +218,6 @@
 					vm.more= true;
 					vm.pageIndex = 1;
 					load();
-					
 					mui('#app').pullRefresh().endPulldown();
 					mui('#app').pullRefresh().enablePullupToRefresh();
 				});
@@ -229,7 +228,7 @@
 						url : 'community/hot-more.html',
 						id : 'hot-more',
 					})
-				})
+				});
 				
 				//查看详情
 				mui('#app').on('tap','.detail',function(){

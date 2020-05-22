@@ -32,7 +32,7 @@
 						
 						<div class="count-middle"><button id="sign-in" type="button" :disabled="isSign" class="mui-btn mui-btn-block mui-btn-block-orange">{{isSign?'已签到':'立即签到'}}</button></div>
 						
-						<div class="count-right"><button type="button" class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-exchange">积分兑换</button></div>
+						<div class="count-right"><button type="button" id="point-exchange"  class="mui-btn mui-btn-blue mui-btn-block mui-btn-block-exchange">积分兑换</button></div>
 						
 					</div>
 			</div>
@@ -55,7 +55,7 @@
 				
 				<div class="detail-title">
 					<div class="sign-detail" :class="currentTab==1?'active':''" data-id="1" >积分明细</div>
-					<div  class="sign-detail" :class="currentTab==2?'active':''" data-id="2">兑换明细</div>
+					<!-- <div  class="sign-detail" :class="currentTab==2?'active':''" data-id="2">兑换明细</div> -->
 				</div> 
 				
 				<div class="history-detail" v-cloak>
@@ -159,7 +159,11 @@
 			//查看规则
 			document.getElementById('data-from').addEventListener('tap',function(){
 				mui.thirdLink('积分规则','https://test.yxt.feiruide.cn/index.php/point/rule');
-				
+			});
+			
+			//积分兑换
+			document.getElementById('point-exchange').addEventListener('tap',function(){
+				mui.alert("该功能正加紧开发中,敬请期待!");
 			})
 			
 		})

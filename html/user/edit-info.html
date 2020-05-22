@@ -34,13 +34,13 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">个人信息</h1>
 		</header>
-		
+
 		<div class="mui-content" >
 			<div id="content-box">
 				<div class="item-info">
 					<div class="lable-left">头像</div>
 					<div class="content-right">
-						<div class="info-right"><img src="../../images/111.png" ></div>
+						<div class="info-right"><img :src="avatar" ></div>
 						<div class="iconfont1 arrow-right"></div>
 					</div>
 				</div>
@@ -48,7 +48,7 @@
 				<div class="item-info">
 					<div class="lable-left">昵称</div>
 					<div class="content-right">
-						<div class="info-right">你好啊！</div>
+						<div class="info-right">{{username}}</div>
 						<div class="iconfont1 arrow-right"></div>
 					</div>
 				</div>
@@ -65,12 +65,14 @@
 			var vm = new Vue({
 				el : '#app',
 				data : {
-					
+					avatar:'',
+					username:'阿道夫爱迪生',
 				}
 			});
 			mui.plusReady(function () {
 				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
-				vm.uid = accountInfo.id;
+				vm.avatar = accountInfo.avatar;
+				vm.username = accountInfo.username;
 				
 			});
 			

@@ -3,8 +3,8 @@
     "id" : "H5537E55C", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "药械e家", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.3.0", /*应用版本名称*/
-        "code" : 150
+        "name" : "1.3.2", /*应用版本名称*/
+        "code" : 160
     },
     "description" : "医疗行业互联互通+票据管理平台", /*应用描述信息*/
     "icons" : {
@@ -117,166 +117,166 @@
                         "width" : "100%",
                         "backgroundColor" : "#fff"
                     },
-				"tags" : [
-					{
-						"tag" : "font",
-						"id" : "indexIcons",
-						"text" : "\ue637",
-						"position" : {
-							"top" : "5px",
-							"left" : "0",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"fontSrc" : "_www/fonts/icon.ttf",
-							"align" : "center",
-							"size" : "24px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "indexText",
-						"text" : "首页",
-						"position" : {
-							"top" : "25px",
-							"left" : "0",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"align" : "center",
-							"size" : "10px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "comIcons",
-						"text" : "\ue603",
-						"position": {
-							"top" : "5px",
-							"left" :"20%",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"fontSrc" : "_www/fonts/icon.ttf",
-							"align" : "center",
-							"size" : "24px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "comText",
-						"text" : "社区",
-						"position" : {
-							"top" : "25px",
-							"left" : "20%",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"align" : "center",
-							"size" : "10px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "messageIcons",
-						"text" : "",
-						"position" : {
-							"top" : "5px",
-							"left" : "40%",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"fontSrc" : "_www/fonts/icon.ttf",
-							"align" : "center",
-							"size" : "24px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "messageText",
-						"text" : "消息",
-						"position" : {
-							"top" : "25px",
-							"left" : "40%",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"align" : "center",
-							"size" : "10px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "newsIcons",
-						"text" : "",
-						"position" : {
-							"top" : "5px",
-							"left" : "60%",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"fontSrc" : "_www/fonts/icon.ttf",
-							"align" : "center",
-							"size" : "25px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "newsText",
-						"text" : "通讯录",
-						"position" : {
-							"top" : "25px",
-							"left" : "60%",
-							"width" : "20%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"align" : "center",
-							"size" : "10px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "contactIcons",
-						"text" : "",
-						"position" : {
-							"top" : "5px",
-							"left" : "80%",
-							"width" : "25%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"fontSrc" : "_www/fonts/icon.ttf",
-							"align" : "center",
-							"size" : "24px"
-						}
-					},
-					{
-						"tag" : "font",
-						"id" : "contactText",
-						"text" : "我的",
-						"position" : {
-							"top" : "25px",
-							"left" : "80%",
-							"width" : "25%",
-							"height" : "24px"
-						},
-						"textStyles" : {
-							"align" : "center",
-							"size" : "10px"
-						}
-					}
-				]
-				}
-		    ]
-		},
+                    "tags" : [
+                        {
+                            "tag" : "font",
+                            "id" : "indexIcons",
+                            "text" : "",
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "0",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/icon.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "indexText",
+                            "text" : "首页",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "0",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "10px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "comIcons",
+                            "text" : "",
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "20%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/icon.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "comText",
+                            "text" : "社区",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "20%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "10px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "messageIcons",
+                            "text" : "",
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "40%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/icon.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "messageText",
+                            "text" : "消息",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "40%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "10px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "newsIcons",
+                            "text" : "",
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "60%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/icon.ttf",
+                                "align" : "center",
+                                "size" : "25px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "newsText",
+                            "text" : "通讯录",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "60%",
+                                "width" : "20%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "10px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "contactIcons",
+                            "text" : "",
+                            "position" : {
+                                "top" : "5px",
+                                "left" : "80%",
+                                "width" : "25%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "fontSrc" : "_www/fonts/icon.ttf",
+                                "align" : "center",
+                                "size" : "24px"
+                            }
+                        },
+                        {
+                            "tag" : "font",
+                            "id" : "contactText",
+                            "text" : "我的",
+                            "position" : {
+                                "top" : "25px",
+                                "left" : "80%",
+                                "width" : "25%",
+                                "height" : "24px"
+                            },
+                            "textStyles" : {
+                                "align" : "center",
+                                "size" : "10px"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
         "splashscreen" : {
             "autoclose" : true, /*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
             "waiting" : false,

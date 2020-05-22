@@ -407,8 +407,6 @@
 				
 				document.addEventListener("plusready",function() {
 					var self = plus.webview.currentWebview();
-					
-					
 					if(plus.storage.getItem("launchFlag") == null ){
 						
 						// 创建用户协议弹窗
@@ -428,7 +426,6 @@
 					
 					}
 						
-					
 					// 实用查询-更多
 					mui('.catelog-box').on('tap','.more1',function(){
 						let more = vm.more;
@@ -466,7 +463,7 @@
 						 		 autoShow:true,
 						 	 }
 						 });
-					 })
+					 });
 					
 					//查询用药指南
 					mui('.catelog-box').on('tap','#medication-guide',function(){
@@ -713,7 +710,6 @@
 						if(targetPage == activePage) {
 							return;
 						}
-						
 							//底部选项卡切换
 							util.toggleNview(currIndex);
 							// 子页面切换
@@ -743,7 +739,6 @@
 						if(this.dataset.limit == 2){
 							//登录提示
 							mui.loginPageShow();
-							
 							let roleid = (this.dataset.roleid).split(',');
 							if(roleid.indexOf(vm.accountInfo.roleid.toString()) == -1 ){
 								mui.alert('权限受限,前往认证','提示','确认',function(e){
@@ -908,9 +903,8 @@
 						let id = this.dataset.id;
 						vm.currentTab = id;
 					})
-					
 					// 获取最新3条新闻
-					getNews()
+					getNews();
 					
 					// 查看更多
 					document.getElementById('news-more').addEventListener('tap',function(){
@@ -920,7 +914,7 @@
 							show : {
 								autoShow:true
 							},
-							extras:{
+							extras:{ 
 								sid : vm.currentTab
 							}
 						})

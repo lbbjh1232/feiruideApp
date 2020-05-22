@@ -36,7 +36,7 @@
 				</div>
 				
 			<div class="writer-info">
-				<div class="avatar"><img :src="content.avatar" ></div>
+				<div class="avatar"><img :src="content.avatar" onerror="this.src='../../images/logo.png'"></div>
 				<div class="writer-time">
 					<div class="writer-name" v-cloak>{{content.username}}</div>
 					<div class="publish_time" v-cloak>{{content.show_time}}</div>
@@ -63,7 +63,7 @@
 				<div id="all-comment" class="all-comment">全部评论</div>
 				<div class="comment-list-item" v-for="(item,index) in comment">
 					<div class="item-avatar-username">
-						<img class="avatar" :src="item.avatar" >
+						<img class="avatar" :src="item.avatar" onerror="this.src='../../images/logo.png'" >
 						<div class="username">{{item.username}}</div>
 						<div v-show="item.is_lord" class="landlord">楼主</div>
 					</div>
@@ -180,9 +180,7 @@
 						    title : vm.content.title,
 							content : vm.content.title,
 						};
-					mui.sharePop(sweixin,msg,function(){
-						mui.toast('分享成功'); 
-					});
+					mui.sharePop(sweixin,msg,mui.pointByShareNews);
 				})
 				
 				// 添加评论
@@ -250,9 +248,7 @@
 						    title : vm.content.title,
 							content : vm.content.title,
 						};
-					mui.sharePop(sweixin,msg,function(){
-						mui.toast('分享成功');
-					});
+					mui.sharePop(sweixin,msg,mui.pointByShareNews);
 				})
 				
 				// 监听评论发布

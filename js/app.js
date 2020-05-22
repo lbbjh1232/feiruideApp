@@ -979,6 +979,9 @@
 		
 		//default params
 		let defaultStyle = {
+			show:{
+				duration: 250
+			},
 			waiting : {
 				autoShow : false
 			}
@@ -1005,7 +1008,7 @@
 			mui.openWindow({
 				url :'/html/user/user-add.html',
 				id : '/html/user/user-add.html'
-			})
+			});
 		}
 		
 		// 切换角色
@@ -1013,7 +1016,7 @@
 			mui.openWindow({
 				url : '/html/user/switch-role.html',
 				id : 'switch-role.html'
-			})
+			});
 		}
 		
 		//搜索帖子
@@ -1039,9 +1042,7 @@
 						onclick: switchRole
 					});
 				}
-				
 				break;
-				
 			case 1:
 				text = '社区';
 				buttons.push({
@@ -1053,8 +1054,6 @@
 					onclick: searchCommunity
 				});
 				break;
-				
-			
 			case 2:
 				text = '消息';
 				buttons.push({

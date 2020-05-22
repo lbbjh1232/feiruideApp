@@ -238,8 +238,8 @@
 					url: API.HOST + API.COMMUNITY_IMG_UPLOAD,
 					formdata:{},
 					topic:[],
-					currentTopicText:'医保政策',
-					currentTopicValue:'1'
+					currentTopicText:'选择话题', 
+					currentTopicValue:0
 				},
 				methods:{
 					getContent(e){
@@ -309,6 +309,10 @@
 			
 			// 发布
 			document.getElementById('data-from').addEventListener('tap',function(){
+				if(!vm.currentTopicValue){
+					mui.toast('必须选择话题类目');
+					return;
+				}
 				if(!vm.title){
 					mui.toast('必须填写标题');
 					return;

@@ -116,7 +116,6 @@ var util = {
 			nviewEvent = plus.nativeObj.View.getViewById("tabBar"), // 获取nview控件对象
 			nviewObj = self.getStyle().subNViews[0], // 获取nview对象的属性
 			currTag = nviewObj.tags[currIndex]; // 获取当前需重绘的tag
-
 		nviewEvent.drawText(currTag.text, currTag.position, util.changeColor(currTag.textStyles, color), currTag.id);
 	},
 	
@@ -149,7 +148,7 @@ var util = {
 			mui.openWindow({
 				url : 'html/user/switch-role.html',
 				id : 'switch-role.html'
-			})
+			});
 		}
 		//搜索
 		var searchCommunity = function(){
@@ -222,7 +221,7 @@ var util = {
 						mui.openWindow({
 							url : '/html/my/setting.html',
 							id : 'setting',
-						})
+						});
 					},
 				})
 				break;

@@ -37,7 +37,7 @@
 		<div class="mui-content" >
 			<div id="content-box">
 				<!-- 搜索结果展示 --> 
-				<div v-for="(item,index) in result" class="community-item-box detail" :data-cid="item.id">
+				<div v-cloak v-for="(item,index) in result" class="community-item-box detail" :data-cid="item.id">
 					<div class="left-title-1" v-html="item.n_title"></div>
 					<div class="bottom-info">
 						<div class="username">

@@ -41,7 +41,7 @@
 			
 			<div class="community-content">
 			    
-				<!-- 热门动态 -->    
+				<!-- 热门动态 -->
 				<div class="hot-topic">
 					<div class="hot-title-box">  
 						<div class="left-hot-title">热门动态</div>  
@@ -52,7 +52,7 @@
 						
 						<div class="hot-item-box detail" v-for="item in hotTopic" :data-cid="item.id">
 							<div class="hot-cover"><img :src="item.avatar" onerror="this.src='../images/60x60.jpg'" ></div>
-							<div class="hot-topic-title">#{{item.topic}}#</div>
+							<div class="hot-topic-title text-clip">{{item.topic}}</div>
 							<div class="hot-topic-level"><span class="orange">{{item.comment_number}}</span> 讨论</div>
 						</div>
 						
@@ -136,11 +136,12 @@
 						color:'#3383FC', 
 						height:'50px',
 						range:'100px', 
-						offset:'0px', 
+						offset:'0px',  
 						auto: false,
 						callback :function(){
 							vm.pageIndex = 1;
 							load();
+							getTab();
 							mui('#app').pullRefresh().endPulldown();
 							mui('#app').pullRefresh().enablePullupToRefresh();
 						}
@@ -180,7 +181,7 @@
 				
 				window.addEventListener('refresh',function(){
 					load();
-				})
+				});
 				
 				//添加动态
 				document.getElementById('addCommunity').addEventListener('tap',function(e){
@@ -189,7 +190,6 @@
 					
 					let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 					(accountInfo.roleid == 12)?(function(){
-						
 						mui.openWindow({
 							url : '/html/my/auth.html',
 							id : 'auth'

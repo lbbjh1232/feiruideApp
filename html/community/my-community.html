@@ -32,7 +32,7 @@
 		<div class="mui-content" >
 			<div id="content-box">
 				<!-- 搜索结果展示 --> 
-				<div v-for="(item,index) in result" class="community-item-box detail" :data-cid="item.id">
+				<div v-cloak v-for="(item,index) in result" class="community-item-box detail" :data-cid="item.id">
 					<div class="left-title-1">{{item.title}}</div>
 					<div class="bottom-info">
 						<div class="username">
@@ -46,6 +46,7 @@
 				
 				<!-- 数据到底提示 -->
 				<div class="no-more-tips" v-show="more == 1 && result.length != 0">(O(∩_∩)O)&nbsp;没有更多内容了</div>
+				<div class="no-more-tips" v-show="result.length == 0">(O(∩_∩)O)&nbsp;没有内容</div>
 				
 			</div>
 		</div>

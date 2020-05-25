@@ -129,7 +129,7 @@
 				})
 			}
 			mui.init({
-				pullRefresh : {
+				pullRefresh:{
 					container:"#app",
 					down : {
 						style:'circle',
@@ -175,7 +175,7 @@
 				} 
 			});
 			     
-			mui.plusReady(function () {
+			mui.plusReady(function (){
 				getTab();
 				load();
 				
@@ -187,7 +187,6 @@
 				document.getElementById('addCommunity').addEventListener('tap',function(e){
 					//登录提示
 					mui.loginPageShow();
-					
 					let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 					(accountInfo.roleid == 12)?(function(){
 						mui.openWindow({
@@ -195,7 +194,6 @@
 							id : 'auth'
 						});
 						throw error;
-						
 					})():null;
 					
 					mui.openWindow({
@@ -227,7 +225,7 @@
 					mui.openWindow({
 						url : 'community/hot-more.html',
 						id : 'hot-more',
-					})
+					});
 				});
 				
 				//查看详情
@@ -242,10 +240,9 @@
 						show : {
 							autoShow : true
 						}
-					})
-				})
+					});
+				});
 			});
-			
 		</script>
 	</body>
 </html>

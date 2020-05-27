@@ -121,6 +121,7 @@ html ,body{
 	flex-wrap: wrap;
 	/* justify-content: space-between; */
 }
+
 .hot-list-box .hot-item-box{
 	width: 23%;
 }

@@ -606,21 +606,48 @@
 					plus.push.addEventListener('receive',function(msg){
 						var content = msg.content;
 						var payload = JSON.parse(msg.payload);
-						
 						if(mui.os.ios && payload.mark == undefined){
 							//苹果系统,服务器推送过来的 则创建本地消息
 							payload.mark = true;
 							plus.push.createMessage(content, JSON.stringify(payload),{title : msg.title});
 						}
-						
-					},false)
+					},false);
 					
+					// 第三方程序调用
+					let onNewIntent = function(){
+						let lancher = plus.runtime.launcher,args = plus.runtime.arguments,url={},path,params;
+						if(args && lancher == 'scheme'){
+							url = mui.parseUrl(args);
+							path = url.path;
+							params = url.params;
+							
+							switch(params.origin){
+								case 'communtiy':
+									mui.openWindow({
+										url:'html/community/detail.html',
+										id : 'community-detail',
+										extras:{
+											cid:params.cid
+										},
+										show:{
+											autoShow : true
+										}
+									});
+									break;
+								case 'news':
+									
+									break;
+							}
+						}
+					}
+					document.addEventListener('newintent',onNewIntent,false);
+					onNewIntent();
+			
 					// 直接将app后台运行
 					mui.back = function(){
 						var main = plus.android.runtimeMainActivity();
 						main.moveTaskToBack(false); 
 					}
-				
 					
 					loadView();
 					

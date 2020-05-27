@@ -43,19 +43,17 @@
 			    
 				<!-- 热门动态 -->
 				<div class="hot-topic">
-					<div class="hot-title-box">  
-						<div class="left-hot-title">热门动态</div>  
+					<div class="hot-title-box">
+						<div class="left-hot-title">热门动态</div>
 						<div class="left-hot-more" id="hot-more">查看全部 &gt;</div> 
 					</div>
 					  
 					<div class="hot-list-box">
-						
 						<div class="hot-item-box detail" v-for="item in hotTopic" :data-cid="item.id">
 							<div class="hot-cover"><img :src="item.avatar" onerror="this.src='../images/60x60.jpg'" ></div>
 							<div class="hot-topic-title text-clip">{{item.topic}}</div>
 							<div class="hot-topic-level"><span class="orange">{{item.comment_number}}</span> 讨论</div>
 						</div>
-						
 					</div>
 					 
 				</div>

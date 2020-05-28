@@ -9,8 +9,8 @@
 	border-bottom: 1px solid rgba(181,181,181,.1);
 }
 .hot-item .item-left{
-	width: 80px;
-	height: 80px;
+	width: 7rem;
+	height: 7rem;
 	flex-shrink: 0;
 }
 .hot-item .item-left img{

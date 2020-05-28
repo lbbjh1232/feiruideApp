@@ -140,7 +140,7 @@ mui.plusReady(function () {
 		mui.openWindow({
 			url:"my/feedback.html",
 			id:"feedback"
-		})
+		});
 	});
 	
 	// 点击签到
@@ -171,13 +171,13 @@ mui.plusReady(function () {
 	});
 	
 	// 个人信息
-	// document.getElementById('edit-info').addEventListener('tap',function(){
-	// 	mui.loginPageShow();
-	// 	mui.openWindow({
-	// 		url:'user/edit-info.html',
-	// 		id:'edit-info',
-	// 	});
-	// })
+	document.getElementById('edit-info').addEventListener('tap',function(){
+		mui.loginPageShow();
+		mui.openWindow({
+			url:'user/edit-info.html',
+			id:'edit-info',
+		});
+	})
 	
 	
 })

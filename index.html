@@ -314,7 +314,7 @@
 						<img :src="item.cover" onerror="this.src='./images/60x60.jpg'"/>
 					</div>
 				</div>
-			</template>
+				</template>
 			</div>
 			
 			<div v-show="currentTab == 2">
@@ -328,7 +328,7 @@
 						<img :src="item.cover" onerror="this.src='./images/60x60.jpg'"/>
 					</div>
 				</div>
-			</template>
+				</template>
 			</div>
 			 
 			
@@ -613,16 +613,15 @@
 						}
 					},false);
 					
-					// 第三方程序调用
+					// app唤醒
 					let onNewIntent = function(){
 						let lancher = plus.runtime.launcher,args = plus.runtime.arguments,url={},path,params;
 						if(args && lancher == 'scheme'){
 							url = mui.parseUrl(args);
-							path = url.path;
 							params = url.params;
-							
+
 							switch(params.origin){
-								case 'communtiy':
+								case 'community':
 									mui.openWindow({
 										url:'html/community/detail.html',
 										id : 'community-detail',
@@ -635,22 +634,31 @@
 									});
 									break;
 								case 'news':
-									
+									mui.openWindow({
+										url : 'html/news/news-detail.html',
+										id : 'html/news/news-detail.html',
+										show:{
+											autoShow : true
+										},
+										extras:{
+											nid : params.nid,
+										}
+									});
 									break;
+								default:
 							}
 						}
 					}
 					document.addEventListener('newintent',onNewIntent,false);
+					//新启动
 					onNewIntent();
 			
 					// 直接将app后台运行
 					mui.back = function(){
 						var main = plus.android.runtimeMainActivity();
-						main.moveTaskToBack(false); 
+						main.moveTaskToBack(false);
 					}
-					
 					loadView();
-					
 					// 自动banner轮播
 					 var slider = mui("#slider");
 					 slider.slider({
@@ -669,14 +677,12 @@
 							title.classList.add('slideInUp');
 							++index;
 						}else{
-							index = 0;  
-						} 
-						 
+							index = 0;
+						}
 					},1200)
 					
 					//网络错误监听
 					mui.networkError();
-					
 					//监听登录/退出后重载
 					window.addEventListener('loginLoad',function(){
 						mui.updateMessCount(true,false);
@@ -684,18 +690,14 @@
 						mui.setMyId();
 						mui.paintStatus();
 					});
-					
 					//监听角色切换
 					window.addEventListener('switch',function(){
 						loadView();
 					});
-					 
 					// 监听首次打开并登录 
 					window.addEventListener('login',function(){ 
 						mui.loginPageShow(true)
 					});
-					 
-					
 					// 创建子webview窗口 并初始化 
 					var aniShow = {};
 					util.initSubpage(aniShow);
@@ -773,9 +775,7 @@
 								return;
 							}
 						}
-						
-						 targetNav = this.dataset.href;
-						
+						targetNav = this.dataset.href;
 						// 判断网络情况
 						var type = plus.networkinfo.getCurrentType();
 						if( [0,1].indexOf(type) != -1 ){
@@ -784,7 +784,6 @@
 							});
 							return;
 						}
-						 
 						 mui.openWindow({
 							 url:targetNav,
 							 id:targetNav,
@@ -792,7 +791,6 @@
 								 autoShow:true,
 							 }
 						 });
-						
 					});
 					
 					// 药品采购
@@ -958,17 +956,11 @@
 							 show:{
 								 autoShow : true
 							 },
-							 extras : {
+							 extras:{
 								nid : news.id,
-								title : news.title,
-								conver : news.cover,
-								time : news.publish_time,
-								content : news.content,
-								file : news.file_url
 							 }
-						 })
-					 })
-					 
+						 });
+					 });
 					 mui('#app').on('tap','.news-2',function(){
 						 let index = this.dataset.index;
 						 let news = vm.policyData[index];
@@ -978,16 +970,11 @@
 							 show:{
 								 autoShow : true
 							 },
-							 extras : {
+							 extras:{
 								nid : news.id,
-								title : news.title,
-								conver : news.cover,
-								time : news.publish_time,
-								content : news.content,
-								file : news.file_url
 							 }
 						 })
-					 })
+					 });
 					
 				},false);
 			})();

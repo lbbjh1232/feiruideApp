@@ -20,11 +20,12 @@
 				background-color: #3383FC;
 			}
 			.item-info{display:flex;display: -webkit-flex;flex-direction: row;align-items: center;justify-content: space-between;border-bottom: 1px solid rgba(181,181,181,.1);padding:1rem 1rem 0.5rem 1rem;}
+			.padding-item{padding-top:1.4rem;padding-bottom:1.4rem;}
 			.item-info .lable-left{font-size: 1.8rem;}
 			.item-info .content-right{display:flex;display: -webkit-flex;flex-direction: row;align-items: center;justify-content: space-between;}
 			.item-info .content-right img{width: 6rem;height: 6rem;border-radius: 50%;}
 			.info-right{padding-right: 0.4rem;font-size: 1.5rem;color: gray;}
-			.arrow-right::after{content: "\e633";font-size: 1.8rem;color: gray;}
+			.arrow-right::after{content: "\e633";font-size: 1.5rem;color: gray;}
 		</style>
 	</head>
      
@@ -37,7 +38,7 @@
 
 		<div class="mui-content" >
 			<div id="content-box">
-				<div class="item-info">
+				<div class="item-info" id="edit-avatar">
 					<div class="lable-left">头像</div>
 					<div class="content-right">
 						<div class="info-right"><img :src="avatar" ></div>
@@ -45,11 +46,18 @@
 					</div>
 				</div>
 				
-				<div class="item-info">
+				<div class="item-info padding-item" id="edit-nickname">
 					<div class="lable-left">昵称</div>
 					<div class="content-right">
 						<div class="info-right">{{username}}</div>
 						<div class="iconfont1 arrow-right"></div>
+					</div>
+				</div> 
+				
+				<div class="item-info padding-item">
+					<div class="lable-left">登录账号</div>
+					<div class="content-right">
+						<div class="info-right">{{account}}</div>
 					</div>
 				</div>
 				
@@ -66,13 +74,21 @@
 				el : '#app',
 				data : {
 					avatar:'',
-					username:'阿道夫爱迪生',
+					username:'',
+					account:'',
 				}
 			});
 			mui.plusReady(function () {
 				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 				vm.avatar = accountInfo.avatar;
+				vm.account = accountInfo.account;
 				vm.username = accountInfo.username;
+				
+				//更换头像
+				document.getElementById('edit-avatar').addEventListener('tap',function(){
+					
+				})
+				
 				
 			});
 			

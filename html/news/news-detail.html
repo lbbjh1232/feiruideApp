@@ -78,10 +78,9 @@
 			<!-- 附件 -->
 			<div class="enclosure-box" v-cloak>
 				<div class="enclosure" v-for="item in enclosure" :data-ext="item.ext" :data-url="item.url">
-					{{item.title}} 
+					{{item.title}}
 				</div>
 			</div>
-		
 			
 		</div> 
 		
@@ -103,60 +102,60 @@
 				content : '',
 				enclosure : [],		//为空不显示
 			}
-		})
+		});
 		window.onload = function(){
-			mui.plusReady(function () {
+			mui.plusReady(function(){
 			    var id = mui.currentWebview.nid;
-				vm.title = mui.currentWebview.title;
-				vm.cover = mui.currentWebview.cover;
-				vm.time = mui.currentWebview.time;
-				vm.content = mui.currentWebview.content;
-				vm.enclosure = mui.currentWebview.file;
 				
-				mui.currentWebview.show();
-				plus.nativeUI.closeWaiting();
-				
-				vm.$nextTick(function(){
-					var imageViewer = new mui.ImageViewer('img', {
-						dbl: false
-					});
+				plus.nativeUI.showWaiting();
+				let res = mui.http_post(API.NEWS_DETAIL,{nid:id});
+				res.then(res=>{
+					plus.nativeUI.closeWaiting();
 					
-					// 预览附件
-					mui('.enclosure-box').on('tap','.enclosure',function(e){
-						let ext = this.dataset.ext;
-						let url = this.dataset.url;
-						if(ext == 2){
-							// 预览pdf文件
-							if(mui.os.ios){
-								mui.thirdLink('文件预览',url);
-								return;
-							}
-							mui.openWindow({
-								url:'../pdf-view.html',
-								id: '../pdf-view.html',
-								extras:{
-									name: url
-								},
-								show:{
-									autoShow:true,
-								}
-								
-							})
-						}else{
-							var href = 'https://view.officeapps.live.com/op/view.aspx?src='+url;
-							var title = '附件预览';
-							var win = '../office-view.html';
-							// 创建窗口
-							var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href})
-							ws.show('pop-in');
-						}
+					vm.title = res.data.title;
+					vm.cover = res.data.cover;
+					vm.time = res.data.publish_time;
+					vm.content = res.data.content;
+					vm.enclosure = res.data.file_url;
+					vm.$nextTick(function(){
+						var imageViewer = new mui.ImageViewer('img', {
+							dbl: false
+						});
 						
-					})
-					
-				});
+						// 预览附件
+						mui('.enclosure-box').on('tap','.enclosure',function(e){
+							let ext = this.dataset.ext;
+							let url = this.dataset.url;
+							if(ext == 2){
+								// 预览pdf文件
+								if(mui.os.ios){
+									mui.thirdLink('文件预览',url);
+									return;
+								}
+								mui.openWindow({
+									url:'../pdf-view.html',
+									id: '../pdf-view.html',
+									extras:{
+										name: url
+									},
+									show:{
+										autoShow:true,
+									}
+									
+								})
+							}else{
+								var href = 'https://view.officeapps.live.com/op/view.aspx?src='+url;
+								var title = '附件预览';
+								var win = '../office-view.html';
+								// 创建窗口
+								var ws = plus.webview.create(win,win,{scrollIndicator :'none',scalable : false,backButtonAutoControl : 'close',},{title,href});
+								ws.show('pop-in');
+							}
+						});
+					});
+				})
 				
 				mui.updateSerivces('share');
-				
 				document.getElementById('data-from').addEventListener('tap',function(){
 					let msg={
 							type:'web',
@@ -166,9 +165,7 @@
 							content : vm.title,
 						};
 					mui.sharePop(sweixin,msg,mui.pointByShareNews);
-				})
-				
-				
+				});
 			})
 		}
 		

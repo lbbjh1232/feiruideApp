@@ -1377,9 +1377,8 @@
 	$.isCanScroll = function(ele){
 		 if (!ele instanceof HTMLElement) {
 		    console.log("fuck off");
-		    return;
+		    return; 
 		  }
-		  console.log(ele.scrollTop);
 		  if (ele.scrollTop > 0) {
 		    return true;
 		  } else {
@@ -1441,113 +1440,38 @@
 			return ht;
 		};
 		
-   $.parseUrl = function(string){
-	       let url =string.toString();
-	       let a = document.createElement('a');
-	       a.href = url;
-	       return {
-	           source: url,
-	           protocol: a.protocol.replace(':', ''),
-	           host: a.hostname,
-	           port: a.port,
-	           query: a.search,
-	           file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
-	           hash: a.hash.replace('#', ''),
-	           path: a.pathname.replace(/^([^\/])/, '/$1'),
-	           relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
-	           segments: a.pathname.replace(/^\//, '').split('/'),
-	           params: (function() {
-	               var ret = {};
-	               var seg = a.search.replace(/^\?/, '').split('&').filter(function(v,i){
-	                   if (v!==''&&v.indexOf('=')) {
-	                       return true;
-	                   }
-	               });
-	               seg.forEach( function(element, index) {
-	                   var idx = element.indexOf('=');
-	                   var key = element.substring(0, idx);
-	                   var val = element.substring(idx+1);
-	                   ret[key] = val;
-	               });
-	               return ret;
-	           })()
-	       };
-	   };
-	   
-	   // 上传图片
-	   $.upload = function(){
-		   
-		   {
-		   	// 上传方法
-		   	imgUpload : function(path,url){
-		   		var that = this;
-		   		plus.nativeUI.showWaiting()
-		   		var task = plus.uploader.createUpload(url,{method:"POST",blocksize:204800,priority:100},function(t,status){
-		   			plus.nativeUI.closeWaiting();
-		   			
-		   			// 上传完成,成功或失败
-		   			var datas = JSON.parse(t.responseText); //返回图片存储地址
-		   			if( status == 200 ){
-		   				// 上传成功
-		   				that.$emit("oncomplete",{url:datas});
-		   				
-		   			}else{
-		   				
-		   				mui.alert(datas.err,'提示','确认',function (e) {
-		   				});
-		   				
-		   			}
-		   			
-		   		});
-		   		task.addFile(path,{key:'upload'});
-		   		// 添加参数
-		   		for(var key in that.formdata){
-		   			task.addData(key,that.formdata[key].toString());
-		   		}
-		   		task.start();
-		   	},
-		   	// 选择图片
-		   	onSelect : function(){ 
-		   		var btnArray = [{
-		   			title: "拍照"
-		   		}, {
-		   			title: "从相册选择"
-		   		}],that = this;
-		   		
-		   		plus.nativeUI.actionSheet({
-		   			title: "选择照片",
-		   			cancel: "取消",
-		   			buttons: btnArray
-		   		}, function(e) {
-		   			var index = e.index;
-		   			switch (index) {
-		   				case 0:
-		   					break;
-		   				case 1:
-		   				// 拍照
-		   					var cmr = plus.camera.getCamera();
-		   					cmr.captureImage(function(path) {
-		   						var localUrl = "file://" + plus.io.convertLocalFileSystemURL(path);
-		   						that.imgUpload(localUrl,that.url);
-		   					});
-		   					break;
-		   					
-		   				case 2:
-		   				//选择相册
-		   					plus.gallery.pick(function(path) {
-		   						that.imgUpload(path,that.url);
-		   					}, function(err) {}, {maximum:1});
-		   					break;
-		   			}
-		   		});
-		   		
-		   	},
-		   	// 删除
-		   	onDelete : function(e){
-		   		this.$emit("ondelete",{index:e})
-		   	},
-		}
-	}
-	
+	$.parseUrl = function(string){
+			let url =string.toString();
+			let a = document.createElement('a');
+			a.href = url;
+			return {
+			   source: url,
+			   protocol: a.protocol.replace(':', ''),
+			   host: a.hostname,
+			   port: a.port,
+			   query: a.search,
+			   file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
+			   hash: a.hash.replace('#', ''),
+			   path: a.pathname.replace(/^([^\/])/, '/$1'),
+			   relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
+			   segments: a.pathname.replace(/^\//, '').split('/'),
+			   params: (function() {
+				   var ret = {};
+				   var seg = a.search.replace(/^\?/, '').split('&').filter(function(v,i){
+					   if (v!==''&&v.indexOf('=')) {
+						   return true;
+					   }
+				   });
+				   seg.forEach( function(element, index) {
+					   var idx = element.indexOf('=');
+					   var key = element.substring(0, idx);
+					   var val = element.substring(idx+1);
+					   ret[key] = val;
+				   });
+				   return ret;
+			   })()
+			};
+	    };
+	  
 })(mui)
 

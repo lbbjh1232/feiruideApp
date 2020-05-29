@@ -11,12 +11,11 @@
 		<script type="text/javascript">
 			document.write('<script src="js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
 		</script>
-		   
+
 		<script type="text/javascript">
 			link(['css/mui.min.css','css/iconfont.css','css/icon.css','css/common.css','css/animate.css','css/index/index.css'],true);
 		</script>
-	 
-	</head> 
+	</head>
  
 	<body> 
 		<div class="mui-content" id="app"> 
@@ -534,7 +533,7 @@
 							case 'community':
 								mui.openWindow({
 									url:'html/community/detail.html',
-									id : 'community-detail',
+									id : Math.random().toString(),
 									extras:{
 										cid:payload.cid
 									},
@@ -547,7 +546,7 @@
 							case 'chat':
 								mui.openWindow({
 									url:"html/my/customer-chat.html",
-									id:"html/my/customer-chat.html",
+									id:Math.random().toString(),
 									extras:{
 										toInfo:{
 											id : payload.fromid,
@@ -562,7 +561,7 @@
 								mui.loginPageShow();
 								mui.openWindow({
 									url : 'html/user/new-friend.html',
-									id : 'html/user/new-friend.html',
+									id : Math.random().toString(),
 									show:{
 										autoShow:false,
 									}
@@ -598,8 +597,6 @@
 							default:
 								break;
 						}
-						
-						
 					}, false);
 					
 					//接收透传消息
@@ -619,12 +616,11 @@
 						if(args && lancher == 'scheme'){
 							url = mui.parseUrl(args);
 							params = url.params;
-
 							switch(params.origin){
 								case 'community':
 									mui.openWindow({
 										url:'html/community/detail.html',
-										id : 'community-detail',
+										id : Math.random().toString(),
 										extras:{
 											cid:params.cid
 										},
@@ -633,10 +629,10 @@
 										}
 									});
 									break;
-								case 'news':
+								case 'news': 
 									mui.openWindow({
 										url : 'html/news/news-detail.html',
-										id : 'html/news/news-detail.html',
+									    id : Math.random().toString(),
 										show:{
 											autoShow : true
 										},
@@ -650,7 +646,7 @@
 						}
 					}
 					document.addEventListener('newintent',onNewIntent,false);
-					//新启动
+					//第一次启动
 					onNewIntent();
 			
 					// 直接将app后台运行

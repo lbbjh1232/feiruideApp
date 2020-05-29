@@ -166,8 +166,7 @@ mui.plusReady(function () {
 				mui.toast(res.message);
 				return;
 			}
-		})
-		
+		});
 	});
 	
 	// 个人信息
@@ -177,7 +176,7 @@ mui.plusReady(function () {
 			url:'user/edit-info.html',
 			id:'edit-info',
 		});
-	})
+	});
 	
 	
 })

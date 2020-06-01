@@ -46,20 +46,16 @@
 						<div class="iconfont1 " :class="item.sign?'icon-sign-selected':'icon-sign-none-select'"></div>
 						<div class="sign-date">{{item.date}}</div>
 					</div>
-					
 				</div>
 			</div>
 			
 			<!-- points detail and exchange detail -->
 			<div class="sign-exchange" >
-				
 				<div class="detail-title">
 					<div class="sign-detail" :class="currentTab==1?'active':''" data-id="1" >积分明细</div>
 					<!-- <div  class="sign-detail" :class="currentTab==2?'active':''" data-id="2">兑换明细</div> -->
-				</div> 
-				
+				</div>
 				<div class="history-detail" v-cloak>
-					
 					<div class="detail-item" v-for="(item,index) in current_detail">
 						<div class="detail-head">
 							<div class="head-title">{{item.title}}</div>
@@ -67,11 +63,8 @@
 						</div>
 						<div class="detail-count red">{{item.number}}</div>
 					</div>
-					
 					<div class="mark">仅显示最近7天的明细</div>
-					
 				</div>
-				
 			</div>
 		</div>
 	</body>
@@ -116,7 +109,7 @@
 		
 		mui.plusReady(function () {
 			mui.statusAndSetAfterBack('light','#FF7F24');
-			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
+			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
 			
 			//初始加载
 			load(accountInfo.id);
@@ -158,16 +151,20 @@
 			
 			//查看规则
 			document.getElementById('data-from').addEventListener('tap',function(){
-				mui.thirdLink('积分规则','https://test.yxt.feiruide.cn/index.php/point/rule');
+				mui.thirdLink('积分规则','https://yxt.feiruide.cn/index.php/point/rule');
 			});
 			
 			//积分兑换
 			document.getElementById('point-exchange').addEventListener('tap',function(){
-				mui.alert("该功能正加紧开发中,敬请期待!");
+				// mui.alert("该功能正加紧开发中,敬请期待!");
+				mui.openWindow({
+					url : 'exchange.html',
+					id : 'exchange'
+				});
 			})
 			
+			
 		})
-		
 	</script>
 	
 </html>

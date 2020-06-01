@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/point/index.css'],true);
+		</script>
+	</head> 
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav no-shadow">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">兑换出库条数</h1>
+		</header>
+		   
+		<div class="mui-content"  id="app">
+			<div class="content">
+				<div class="totle-point">当前积分总数:&nbsp;<span class="red">22</span></div>
+				<div class="exchange-input">
+					<div class="actiton-text">兑换出库</div>
+					<div class="input-box">
+						<input type="number" min="10" v-model="number" readonly />
+						<div class="up-down">
+							<div @tap="inc" id="up" class="up iconfont1 icon-out-up"></div>
+							<div @tap="dec" class="down iconfont1 icon-out-down"></div>
+						</div>
+					</div>
+					<div class="unit">条</div>
+				</div>
+				
+				<div class="exchange-sure" id="sure">确认兑换</div>
+				
+				<!-- 兑换说明 -->
+				<div class="explain">
+					兑换说明&nbsp;:&nbsp;每满100积分可兑换两票出库条数10条;兑换的出库条数的有效期限为当前月份，超过当前月份即为无效。
+				</div>
+				
+			</div>
+			
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	
+	<script type="text/javascript">
+		mui.init();
+		// 获取积分规则
+		function getRule(){
+			let res = mui.http_post(API.GET_POINT_RULE,{});
+			res.then(res=>{
+				
+			})
+		}
+		let vm = new Vue({
+			el : '#app',
+			data : {
+				number:10,
+				step:10
+			},
+			methods:{
+				inc(){
+					this.number += this.step;
+				},
+				dec(){
+					if(this.number <= 10){
+						return;
+					}
+					this.number -= this.step;
+				}
+			}
+		});
+		mui.plusReady(function () {
+			let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			
+			document.getElementById('sure').addEventListener('tap',function(){
+				
+			})
+			
+		})
+	</script>
+	
+</html>

@@ -168,5 +168,101 @@ html,body,.mui-content{
 	color:rgba(0,0,0,.5);
 }
 
+/* 兑换列表 */
+.exchange-item{
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.5rem 1.2rem;
+	border-bottom: 1px solid rgba(181,181,181,.1);
+}
+.exchange-item:active{
+	background-color: rgba(181,181,181,.2);
+}
+.exchange-icon{
+	line-height: 1.2;
+}
+.exchange-text{
+	padding-left: 0.6rem;
+	font-size: 1.8rem;
+	color: #363636;
+}
+.arrow-right::after{content: "\e633";font-size: 1.5rem;color: gray;}
+
+/* 兑换出库条数 */
+.content{
+	padding:1rem;
+}
+.content .red{
+	font-size: 2rem;
+}
+.totle-point{
+	font-size: 1.6rem;
+}
+.exchange-input{
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	align-items: flex-end;
+	margin-top: 1rem;
+}
+.actiton-text{
+	font-size: 1.6rem;
+	padding-right: 0.5rem;
+}
+.unit{
+	font-size: 1.6rem;
+	padding-left: 0.5rem;
+}
+.input-box{
+	width: 60%;
+	position: relative;
+}
+.up-down{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	padding-right: 0.4rem;
+	z-index: 100;
+}
+.up-down .up,.up-down .down{
+	height: 50%;
+}
+.input-box input{
+	margin-bottom: 0;
+	font-size: 1.6rem;
+	line-height: 1;
+	padding: 1rem;
+	height: auto;
+	border: 1px solid rgba(181,181,181,.3);
+	/* text-align: right; */
+}
+.exchange-sure{
+	background-color:#FF7F24;
+	color: white;
+	border-radius: 5px;
+	padding: 0.5rem 0;
+	text-align: center;
+	font-size: 1.7rem;
+	margin-top: 2rem;
+}
+.exchange-sure:active{
+	background-color: rgba(255,127,36,.4);
+}
+.explain{
+	font-size: 1.4rem;
+	text-align: justify;
+	margin-top: 1.2rem;
+	color: gray;
+}
+
+
+
 
 

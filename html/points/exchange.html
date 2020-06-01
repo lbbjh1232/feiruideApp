@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/point/index.css'],true);
+		</script>
+	</head> 
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav no-shadow">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">积分兑换</h1>
+		</header>
+		  
+		<div class="mui-content"  id="app">
+			<div class="exchange-item" id="exchange-ticket">
+				<div class="exchange-text">兑换两票出库数量</div>
+				<div class="iconfont1 arrow-right"></div>
+			</div>
+			<div class="exchange-item" id="exchange-cash">
+				<div class="exchange-text">兑换现金</div>
+				<div class="iconfont1 arrow-right"></div>
+			</div>
+			<div class="exchange-item" id="exchange-gift">
+				<div class="exchange-text">兑换礼品</div>
+				<div class="iconfont1 arrow-right"></div>
+			</div>
+			
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	
+	<script type="text/javascript">
+		mui.init();
+		mui.plusReady(function () {
+			let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			
+			// 兑换出库条数
+			document.getElementById('exchange-ticket').addEventListener('tap',function(){
+				if(accountInfo.roleid != 6){
+					mui.toast('当前角色受限,仅支持【药品经营企业】');
+					return;
+				}
+				mui.openWindow({
+					url : 'out-number.html'
+				});
+			})
+		
+			
+		})
+	</script>
+	
+</html>

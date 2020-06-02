@@ -136,6 +136,8 @@ var API = {
 	IS_SIGN : '/point/isSign',
 	LOAD_POINT : '/point/loadPoint',
 	SHARE_NEWS :'/point/shareNews',
+	GET_POINT_RULE : '/point/getPointRule',
+	EXCHANGE_OUT : '/point/exchangeOut',
 	
 	// 论坛
 	COMMUNITY_IMG_UPLOAD : '/community/uploadImg',

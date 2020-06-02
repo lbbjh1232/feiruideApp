@@ -53,7 +53,7 @@
 			<div class="sign-exchange" >
 				<div class="detail-title">
 					<div class="sign-detail" :class="currentTab==1?'active':''" data-id="1" >积分明细</div>
-					<!-- <div  class="sign-detail" :class="currentTab==2?'active':''" data-id="2">兑换明细</div> -->
+					<div  class="sign-detail" :class="currentTab==2?'active':''" data-id="2">兑换明细</div>
 				</div>
 				<div class="history-detail" v-cloak>
 					<div class="detail-item" v-for="(item,index) in current_detail">
@@ -74,7 +74,28 @@
 	<script src="../../js/app.js"></script>
 	
 	<script type="text/javascript">
-		mui.init();
+		
+		function load(uid){
+			plus.nativeUI.showWaiting('加载中',{width:'20%'});
+			let res = mui.http_post(API.LOAD_POINT,{uid});
+			res.then(res=>{
+				plus.nativeUI.closeWaiting();
+				if(res.code == 200){
+					vm.totle = res.data.totle;
+					vm.last_day = res.data.last_day;
+					vm.tomorrow = res.data.tomorrow;
+					vm.sign_in = res.data.sign_in;
+					vm.point_detail = res.data.point_detail;
+					vm.exchange_detail = res.data.exchange_detail;
+					
+					if(vm.currentTab == 1){
+						vm.current_detail = res.data.point_detail;
+					}else{
+						vm.current_detail = res.data.exchange_detail;
+					}
+				}
+			})
+		}
 		var vm = new Vue({
 			el: '#app',
 			data: {
@@ -90,35 +111,42 @@
 			}
 		});
 		
-		function load(uid){
-			plus.nativeUI.showWaiting('加载中',{width:'20%'});
-			let res = mui.http_post(API.LOAD_POINT,{uid});
-			res.then(res=>{
-				plus.nativeUI.closeWaiting();
-				if(res.code == 200){
-					vm.totle = res.data.totle;
-					vm.last_day = res.data.last_day;
-					vm.tomorrow = res.data.tomorrow;
-					vm.sign_in = res.data.sign_in;
-					vm.point_detail = res.data.point_detail;
-					vm.current_detail = res.data.point_detail;
-				}
-			})
-			
-		}
+		mui.init({
+			pullRefresh:{
+				container:"#app",
+				down : {
+					style:'circle',
+					color:'#3383FC', 
+					height:'50px',
+					range:'100px', 
+					offset:'0px',  
+					auto: false,
+					callback :function(){
+						load(vm.uid);
+						mui('#app').pullRefresh().endPulldown();
+					}
+			    }
+			}
+		});
+		
 		
 		mui.plusReady(function () {
 			mui.statusAndSetAfterBack('light','#FF7F24');
 			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+			vm.uid = accountInfo.id;
 			
 			//初始加载
 			load(accountInfo.id);
-			
 			mui.judgeIsSign(accountInfo.id)
 			
 			// 切换明细
 			mui('.detail-title').on('tap','.sign-detail',function(){
 				vm.currentTab = this.dataset.id;
+				if(this.dataset.id == 1){
+					vm.current_detail = vm.point_detail;
+				}else{
+					vm.current_detail = vm.exchange_detail;
+				}
 			})
 			
 			// 点击签到

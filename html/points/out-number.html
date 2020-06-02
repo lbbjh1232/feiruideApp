@@ -12,9 +12,9 @@
 		</script>
 		<script type="text/javascript">
 			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/point/index.css'],true);
-		</script>
+		</script> 
 	</head> 
- 
+  
 	<body>
 		<header class="mui-bar mui-bar-nav no-shadow">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -23,26 +23,27 @@
 		   
 		<div class="mui-content"  id="app">
 			<div class="content">
-				<div class="totle-point">当前积分总数:&nbsp;<span class="red">22</span></div>
+				<div class="totle-point">当前剩余积分&nbsp;<span class="red">{{totle}}</span></div>
 				<div class="exchange-input">
 					<div class="actiton-text">兑换出库</div>
 					<div class="input-box">
 						<input type="number" min="10" v-model="number" readonly />
 						<div class="up-down">
-							<div @tap="inc" id="up" class="up iconfont1 icon-out-up"></div>
+							<div @tap="inc" class="up iconfont1 icon-out-up"></div>
 							<div @tap="dec" class="down iconfont1 icon-out-down"></div>
-						</div>
-					</div>
+						</div> 
+					</div> 
 					<div class="unit">条</div>
 				</div>
+				
+				<div class="consumption">将消耗积分&nbsp;<span class="red" v-cloak>{{number/step*100}}</span></div>
 				
 				<div class="exchange-sure" id="sure">确认兑换</div>
 				
 				<!-- 兑换说明 -->
 				<div class="explain">
-					兑换说明&nbsp;:&nbsp;每满100积分可兑换两票出库条数10条;兑换的出库条数的有效期限为当前月份，超过当前月份即为无效。
+					兑换说明&nbsp;:&nbsp;每满100积分可兑换两票出库条数{{step}}条;兑换的出库条数的有效期限为当前月份，超过当前月份即为无效。
 				</div>
-				
 			</div>
 			
 			
@@ -57,23 +58,31 @@
 		mui.init();
 		// 获取积分规则
 		function getRule(){
-			let res = mui.http_post(API.GET_POINT_RULE,{});
+			plus.nativeUI.showWaiting();
+			let res = mui.http_post(API.GET_POINT_RULE,{uid:vm.accountInfo.id});
 			res.then(res=>{
-				
+				plus.nativeUI.closeWaiting();
+				if(res.code == 200){
+					vm.number = res.data.exchange_out_number;
+					vm.step = res.data.exchange_out_number;
+					vm.totle = res.data.totle;
+				} 
 			})
 		}
 		let vm = new Vue({
 			el : '#app',
 			data : {
 				number:10,
-				step:10
+				step:10,
+				accountInfo:{},
+				totle:0
 			},
 			methods:{
 				inc(){
 					this.number += this.step;
 				},
 				dec(){
-					if(this.number <= 10){
+					if(this.number <= this.step){
 						return;
 					}
 					this.number -= this.step;
@@ -82,11 +91,25 @@
 		});
 		mui.plusReady(function () {
 			let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
-			
+			vm.accountInfo = accountInfo;
+			getRule();
 			document.getElementById('sure').addEventListener('tap',function(){
-				
+				if(vm.number / vm.step * 100 > vm.totle){
+					mui.toast('积分不足');
+					return;
+				}
+				mui.confirm('确认兑换吗?','兑换提示',['确认','取消'],function(e){
+					if(e.index == 0){
+						plus.nativeUI.showWaiting();
+						let res = mui.http_post(API.EXCHANGE_OUT,{uid:accountInfo.id,cid:accountInfo.userid,out:vm.number});
+						res.then(res=>{
+							plus.nativeUI.closeWaiting();
+							mui.toast(res.message);
+							mui.back();
+						})
+					}
+				})
 			})
-			
 		})
 	</script>
 	

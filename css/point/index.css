@@ -196,10 +196,10 @@ html,body,.mui-content{
 	padding:1rem;
 }
 .content .red{
-	font-size: 2rem;
+	font-size: 3rem;
 }
 .totle-point{
-	font-size: 1.6rem;
+	font-size: 2rem;
 }
 .exchange-input{
 	display: flex;
@@ -243,6 +243,13 @@ html,body,.mui-content{
 	border: 1px solid rgba(181,181,181,.3);
 	/* text-align: right; */
 }
+.consumption{
+	font-size: 1.6rem;
+	margin-top: 1rem;
+}
+.consumption .red{
+	font-size: 1.6rem;
+}
 .exchange-sure{
 	background-color:#FF7F24;
 	color: white;
@@ -260,6 +267,12 @@ html,body,.mui-content{
 	text-align: justify;
 	margin-top: 1.2rem;
 	color: gray;
+}
+.disabled{
+	background-color: rgba(181,181,181,.2);
+}
+.disabled .exchange-text{
+	color: darkgray;
 }
 
 

@@ -308,10 +308,10 @@
                     "plists" : {}
                 },
                 "privacyDescription" : {
-                    "NSPhotoLibraryUsageDescription" : "是否允许此App访问相册",
-                    "NSPhotoLibraryAddUsageDescription" : "是否允许此App添加相册",
-                    "NSCameraUsageDescription" : "是否允许此App使用你的相机？",
-                    "NSMicrophoneUsageDescription" : "是否允许此App使用你的麦克风？",
+                    "NSPhotoLibraryUsageDescription" : "发送图片信息或上传图片文件需要此App访问相册",
+                    "NSPhotoLibraryAddUsageDescription" : "存储图片需要此App添加相册",
+                    "NSCameraUsageDescription" : "发送图片信息或上传图片文件需要此App使用你的相机",
+                    "NSMicrophoneUsageDescription" : "发送语音消息需要此App使用你的麦克风",
                     "NSCalendarsUsageDescription" : "是否允许此App使用日历？"
                 },
                 "urltypes" : [

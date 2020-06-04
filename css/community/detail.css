@@ -146,6 +146,17 @@ body{
 	color:rgba(0,0,0,.5);
 	padding-right: 1rem;
 }
+.time-box .report-reply{
+	/* width: 50%; */
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-shrink: 0;
+}
+.time-box .report-reply .comment-report{
+	padding-right: 2rem;
+}
 .reply:active{
 	color:rgba(0,0,0,.8);
 }

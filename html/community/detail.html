@@ -66,7 +66,7 @@
 						<img class="avatar" :src="item.avatar" onerror="this.src='../../images/logo.png'" >
 						<div class="username">{{item.username}}</div>
 						<div v-show="item.is_lord" class="landlord">楼主</div>
-					</div>
+					</div> 
 					
 					<div class="item-at-info-time">
 						<div class="at" v-show="item.parent_id != 0">
@@ -77,7 +77,10 @@
 						</div>
 						<div class="time-box">
 							<div class="time">{{item.create_time}}</div>
-							<div :data-index="index" class="reply">回复</div>
+							<div class="report-reply">
+								<div class="comment-report">举报</div>
+								<div :data-index="index" class="reply">回复</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -216,6 +219,10 @@
 							aniShow:'slide-in-bottom'
 						}
 					});
+				});
+				
+				mui('.comment-box').on('tap','.comment-report',function(){
+					mui.toast('举报成功,平台会在24小时给出答复');
 				})
 				
 				//点赞

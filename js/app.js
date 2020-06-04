@@ -1260,6 +1260,11 @@
 							<div class="share-icon iconfont1 icon-copy-url"></div>
 							<div class="share-text">复制链接</div>
 						</div>
+						
+						<div class="share-item report">
+							<div class="share-icon iconfont1 icon-jubao"></div>
+							<div class="share-text">举报</div>
+						</div>
 					</div>
 				</div>
 			`;
@@ -1291,6 +1296,9 @@
 			
 			document.getElementsByClassName('toCopy')[0].addEventListener('tap',function(){
 				$.pasteBoard(msg.href);
+			})
+			document.getElementsByClassName('report')[0].addEventListener('tap',function(){
+				$.toast('举报成功,平台会在24小时给出回复');
 			})
 			
 		}

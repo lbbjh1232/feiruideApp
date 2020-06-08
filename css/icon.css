@@ -76,6 +76,11 @@
 	font-size: 5rem;
 	
 }
+.icon-code-info::before{
+	content: "\e62b";
+	color:rgba(255,255,255,.9);
+	font-size: 2.5rem;
+}
 .icon-material::before{
 	content: "\e640";
 	color:rgba(255,255,255,.9);

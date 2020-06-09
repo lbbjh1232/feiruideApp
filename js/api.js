@@ -117,6 +117,9 @@ var API = {
 	//挂网耗材查询
 	GET_APPLIANCE : '/drug/getAppliance',
 	
+	// 药品编码查询
+	GET_DRUG_CODE : '/drug/getDrugCode',
+	
 	// 账号注册 身份认证
 	REGISTER : '/user/register',
 	UPLOAD_AUTH : '/user/uploadAuth',

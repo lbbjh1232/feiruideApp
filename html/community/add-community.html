@@ -282,6 +282,8 @@
 			plus.webview.currentWebview().setStyle({
 				softinputMode: "adjustResize"
 			});
+			// 选择话题
+			var picker = new mui.PopPicker();
 			
 			//获取话题
 			let topic = mui.http_post(API.COMMUNITY_TAB);
@@ -289,6 +291,12 @@
 				vm.topic = res.data;
 				vm.currentTopicText = res.data[0].text;
 				vm.currentTopicValue = res.data[0].value;
+				picker.setData(vm.topic);
+				picker.show(function(item){
+					value = item[0];
+					vm.currentTopicValue = value.value;
+					vm.currentTopicText = value.text;
+				});
 			})
 			
 			var accountInfo = JSON.parse(plus.storage.getItem('accountInfo')) ;
@@ -296,8 +304,7 @@
 			
 			mui.previewImage();
 			
-			// 选择话题
-			var picker = new mui.PopPicker();
+			
 			document.getElementById('selectTopic').addEventListener('tap',function(){
 				picker.setData(vm.topic);
 				picker.show(function(item){

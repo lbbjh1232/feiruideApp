@@ -30,6 +30,12 @@ html ,body{
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
+	text-align: center;
+}
+.com-text{
+	font-size: 1.5rem;
+	text-align: center;
+	color: red;
 }
 .community-item-box{
 	display: flex;

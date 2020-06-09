@@ -26,7 +26,8 @@
 			<div class="search-left" style="width:100%;background-color: white;">
 				<form action="" method="">
 				<input type="search" id="search" v-model="searchValue" name="name" placeholder="药品名称/剂型" /></form><button class="mui-icon iconfont icon-sousuo" id="searchBtn"></button>
-			</div><!-- 
+			</div>
+			<!--  
 			<div class="search-right" >
 				<span class="filter">筛选</span> <span class="mui-icon iconfont icon-shaixuan"></span>
 			</div> -->
@@ -35,18 +36,17 @@
 		<!-- 滚动组件区域 -->
 		<div class="mui-scroll-wrapper" id="scroll-one">
 			<div class="mui-scroll" v-cloak>
-
 				<template v-for="(item,index) in searchResult">
 					<div class='drug-list-box' v-bind:data-index="index" v-cloak>
 						<div class='drug-list-left-part' >
-							<div class='text-clip'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name font-drug-color'>{{item.drug_name}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name font-drug-color'>{{item.generic_name}}</span></div>
+							<div class='text-clip'><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name font-drug-color'>{{item.supplier_name}}</span></div>
 							<div class=''><span class='drug-list-title standard'>剂型:</span> <span class='drug-list-name'> {{item.dosage_form?item.dosage_form:'-'}}</span></div>
-							<div class=''><span class='drug-list-title'>药品类别:</span> <span class='drug-list-name'>{{item.classify}}</span></div>
-							<div class=''><span class='drug-list-title'>药品分类:</span> <span class='drug-list-name'>{{(item.class_name_1?item.class_name_1:'') + (item.class_name_2?' / '+item.class_name_2:'') +  (item.class_name_3?' / ' +item.class_name_3:'') +  (item.class_name_4?' / ' +item.class_name_4:'')}}</span></div>
-							<div class=''><span class='drug-list-title'>支付标准:</span> <span class='drug-list-name'>{{item.payment_standard?item.payment_standard:'-'}}</span></div>
-							<div class=''><span class='drug-list-title'>收费等级:</span> <span class='drug-list-name'>{{item.manage_category?item.manage_category + '类':'-'}}</span></div>
+							<div class=''><span class='drug-list-title standard'>规格:</span> <span class='drug-list-name'>{{item.specifications}}</span></div>
+							<div class=''><span class='drug-list-title'>药品类型:</span> <span class='drug-list-name'>{{item.type==1?'国产':'进口'}}</span></div>
+							<div class=''><span class='drug-list-title'>注册证号:</span> <span class='drug-list-name'>{{item.registration_certificate}}</span></div>
+							<div class=''><span class='drug-list-title' style="color: red;">本位码:&nbsp;&nbsp;&nbsp;&nbsp;</span> <span class='drug-list-name red'>{{item.standard_code}}</span></div>
 							<div class=''><span class='drug-list-title standard'>备注:</span> <span class='drug-list-name'> {{item.remarks?item.remarks:'-'}}</span></div>
-							
 						</div>
 						<!-- <div  id='' class='drug-list-right-part'><span class="iconfont icon-icon--"></span></div> -->
 					</div>
@@ -60,55 +60,6 @@
 
 			</div>
 		</div>
-		
-		<!-- 药品详情 -->
-		<template  v-if="detailShow">
-		<div class='mask'>
-		<div class='drug-detail-box'>
-			<div class='detail-box-top'>
-				<div class='text-detail'>药品详情</div>
-				<div class='iconfont icon-guanbi close'></div>
-			</div>
-			<div class="mui-scroll-wrapper" id="scroll-two">
-				<div class="mui-scroll">
-					
-					<div class=''><span class='drug-list-title'>药品名称:</span> <span class='drug-list-name'>{{current.generic_name}}</span></div>
-					<div class=''><span class='drug-list-title'>规格:</span> <span class='drug-list-name'>{{current.specifications}}*{{current.conversion_ratio}}</span></div>
-					<div class=''><span class='drug-list-title'>生产企业:</span> <span class='drug-list-name'>{{current.production_enterprise}}</span></div>
-					<div class=''><span class='drug-list-title'>包装:</span> <span class='drug-list-name'>{{current.packaging}}</span></div>
-					<div class='text-clip'><span class='drug-list-title'>药品编号:</span> <span class='drug-list-name'>{{current.system_number}}</span></div>
-					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>基药类别:</span> <span class='drug-list-name'>{{current.base_medicine_category==0?'-':JyCategory[current.base_medicine_category].text}}</span></div>
-						<div class='text-clip'><span class='drug-list-title'>新农合:</span> <span class='drug-list-name'>{{current.new_farming_and==1?'是':'否'}}</span></div>
-					</div>
-					
-					<!-- <div class="detail-row"> -->
-						<div class=''><span class='drug-list-title'>采购类别:</span> <span class='drug-list-name'>{{current.procurement_categories==0?'-':BuyCategory[current.procurement_categories].text}}</span></div>
-						<div class='text-clip'><span class='drug-list-title'>国产:</span> <span class='drug-list-name'>{{current.domestic==1?'是':'否'}}</span></div>
-					<!-- </div> -->
-					
-					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>批准文号:</span> <span class='drug-list-name'>{{current.approved_by}}</span></div>
-						<div class='text-clip'><span class='drug-list-title'>川产:</span> <span class='drug-list-name'>{{current.sichuan_is_produced==0?'-':IsChuanProduce[current.sichuan_is_produced].text}}</span></div>
-					</div>
-					
-					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>{{NewCountryCode}}:</span> <span class='drug-list-name'>{{current.new_country_code}}</span></div>
-						<div class='text-clip'><span class='drug-list-title'>医保:</span> <span class='drug-list-name'>{{current.health_care==1 ?'是':'否'}}</span></div>
-					</div>
-					
-					<div class="detail-row">
-						<div class='text-clip'><span class='drug-list-title'>挂网限价:</span> <span class='drug-list-name'><span class='red'>{{current.the_net_price?current.the_net_price:'自主定价'}}</span>{{current.the_net_price?'元':''}}</span></div>
-						<div class='text-clip'><span class='drug-list-title'>贵重:</span> <span class='drug-list-name'>{{current.precious==1?'是':'否'}}</span></div>
-					</div>
-					
-					
-					
-				</div>
-			</div>
-		</div>
-		</div>
-		</template>
 		
 		<!-- 返回顶部 -->
 		<div id="backtop" v-if="scrollY" class="iconfont1 icon-fanhuidingbu">
@@ -150,8 +101,7 @@
 		// 加载数据函数
 		function getNetDrug(first){
 			first = first == undefined || first == false ? false : true;
-
-			var url =API.GET_ENSURANCE_DRUG,params = vm.searchData;
+			var url =API.GET_DRUG_CODE,params = vm.searchData;
 			plus.nativeUI.showWaiting('加载中',{width:'20%'});
 			var res = mui.http_post(url,params);
 			
@@ -166,7 +116,6 @@
 					}
 				}
 			})
-			
 		}
 			
 		window.onload = function(){

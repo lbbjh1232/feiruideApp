@@ -389,14 +389,14 @@
 				
 				// 获取新闻
 				function getNews(){
-					let news = mui.http_post(API.GET_NEWS,{num : 3,sign:1});
+					let news = mui.http_post(API.GET_NEWS,{num : 5,sign:1});
 					news.then(data=>{
 						if(data.code == 200){
 							vm.newsData = data.data.data;
 						}
 					});
 					
-					let policy = mui.http_post(API.GET_NEWS,{num : 3,sign:2});
+					let policy = mui.http_post(API.GET_NEWS,{num : 5,sign:2});
 					policy.then(data=>{
 						if(data.code == 200){
 							vm.policyData = data.data.data;

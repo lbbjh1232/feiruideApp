@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>     
+ 
+	<head>
+		<meta charset="utf-8">
+		<title>综合统计</title> 
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>'); 
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/iconfont.css','../../css/icon.css','../../css/my/statis.css'],true);
+		</script>  
+	</head>  
+ 
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">APP统计</h1>
+		</header>
+		<div class="mui-content" id="app">
+			<div class="content-box">
+				<!-- 下载量统计 -->
+				<div class="statis-title">下载量</div>
+				<div class="chart-view" id="download"></div>
+				<div class="statis-title">注册量</div>
+				<div class="chart-view" id="register"></div>
+			</div>
+			
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/lib/echarts.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/app.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		// mui.plusReady(function () {
+		   let download = echarts.init(document.getElementById('download'));
+		   let register = echarts.init(document.getElementById('register'));
+		   let setOption = function(title=0,x,y){
+			   return {
+				   title:{
+					   text:'累计总数: '+title,
+					   left:'left',
+					   textStyle:{
+						   width:'100%',
+						   fontSize:'14',
+						   color:'#4F4F4F'
+					   }
+				   },
+				   legend:{
+						right:'right',
+						data: ['近一周情况']
+				   },
+				   grid:{
+						left:'50',
+						right:'20',
+						top:'30',
+						bottom:'30',
+				   },
+				   xAxis: [{
+					type: 'category',
+					data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+				   }],
+				   yAxis: [{
+					type: 'value',
+					splitArea:{
+						show: true
+					}
+				   }],
+				   series: [{
+					name: '近一周情况',
+					type: 'line',
+					data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 1115.6, 22.2, 32.6, 20.0, 6.4, 3.3],
+					label:{
+						show:true,
+					}
+				   }]
+			   }
+		   }
+		   download.setOption(setOption())
+		   register.setOption(setOption())
+			
+		// });
+	</script>
+</html>

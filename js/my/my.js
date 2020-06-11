@@ -143,6 +143,18 @@ mui.plusReady(function () {
 		});
 	});
 	
+	//综合统计
+	mui('#business').on('tap','#statis',function(){
+		//mui.loginPageShow();
+		mui.openWindow({
+			url:"my/statis.html",
+			id : 'statis',
+			show : {
+				autoShow : true,
+			}
+		})
+	});
+	
 	// 点击签到
 	document.getElementById('sign-in').addEventListener('tap',function(){
 		mui.loginPageShow();

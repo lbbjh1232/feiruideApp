@@ -1,0 +1,53 @@
+html,body,.mui-content{
+	background-color: #FFFAFA;
+}
+.statis-box{
+	padding: 1rem;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	/* justify-content: space-between; */
+	flex-wrap: wrap;
+}
+.statis-box .statis-item{
+	height: 7rem;
+	width: 20%;
+	line-height: 7rem;
+	font-size: 1.5rem;
+	text-align: center;
+	border-radius: 5px;
+	margin-left: 2.5%;
+	margin-right: 2.5%;
+	flex-shrink: 0;
+	margin-bottom:5%;
+	color: white;
+	font-weight: bold;
+	background: linear-gradient(#B5B5B5,#9C9C9C);
+	background: -webkit-linear-gradient(#B5B5B5,#9C9C9C);
+	letter-spacing: 0.05rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.statis-box .statis-item:active{
+	background:	#696969;
+}
+
+/* 统计页面 */
+.content-box{
+	padding: 1rem;
+}
+.statis-title{
+	text-align: center;
+	font-size: 1.6rem;
+	color: gray;
+}
+.chart-view{
+	height: 220px;
+	width: 100%;
+}
+
+
+
+
+

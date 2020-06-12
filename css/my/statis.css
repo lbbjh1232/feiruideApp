@@ -46,6 +46,23 @@ html,body,.mui-content{
 	height: 220px;
 	width: 100%;
 }
+.name-list{
+	padding: 0.5rem 0;
+	height: 350px;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: none;
+	overflow: -moz-scrollbars-none;
+}
+.name-list .list-item{
+	font-size: 1.5rem;
+	padding-bottom: 0.2rem;
+	text-align: center;
+}
+.name-list::-webkit-scrollbar{
+	display: none;
+	width: 0 !important
+}
 
 
 

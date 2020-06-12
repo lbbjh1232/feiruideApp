@@ -22,13 +22,20 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">APP统计</h1>
 		</header>
-		<div class="mui-content" id="app">
+		<div class="mui-content" >
 			<div class="content-box">
 				<!-- 下载量统计 -->
 				<div class="statis-title">下载量</div>
 				<div class="chart-view" id="download"></div>
 				<div class="statis-title">注册量</div>
 				<div class="chart-view" id="register"></div>
+				<div id="app">
+					<div class="statis-title" v-cloak>认证用户使用总数：{{authCount}}</div>
+					<div class="statis-title" v-cloak>使用的企业或医疗机构名单(如下) - {{listCount}} 家</div>
+					<div class="name-list">
+						<div class="list-item" v-for="item in nameList">{{item.comp_name}}</div>
+					</div>
+				</div>
 			</div>
 			
 		</div>
@@ -40,13 +47,21 @@
 	<script src="../../js/app.js"></script>
 	<script type="text/javascript">
 		mui.init();
-		// mui.plusReady(function () {
-		   let download = echarts.init(document.getElementById('download'));
-		   let register = echarts.init(document.getElementById('register'));
-		   let setOption = function(title=0,x,y){
+		let download = echarts.init(document.getElementById('download'));
+		let register = echarts.init(document.getElementById('register'));
+		let vm = new Vue({
+			el:'#app',
+			data:{
+				authCount:0,
+				nameList:[],
+				listCount:0,
+			}
+		});
+		mui.plusReady(function () {
+		   let setOption = function(count=0,xData,yData){
 			   return {
 				   title:{
-					   text:'累计总数: '+title,
+					   text:'累计总数: '+count,
 					   left:'left',
 					   textStyle:{
 						   width:'100%',
@@ -66,7 +81,7 @@
 				   },
 				   xAxis: [{
 					type: 'category',
-					data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+					data: xData
 				   }],
 				   yAxis: [{
 					type: 'value',
@@ -77,16 +92,30 @@
 				   series: [{
 					name: '近一周情况',
 					type: 'line',
-					data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 1115.6, 22.2, 32.6, 20.0, 6.4, 3.3],
+					data: yData,
 					label:{
 						show:true,
 					}
 				   }]
 			   }
 		   }
-		   download.setOption(setOption())
-		   register.setOption(setOption())
+		   
+		   // 请求数据
+		   plus.nativeUI.showWaiting();
+		   let res = mui.http_post(API.APP_STATIS,{});
+		   res.then(res=>{
+			   plus.nativeUI.closeWaiting();
+			   if(res.code == 200){
+				   download.setOption(setOption(res.data.downCount,res.data.date,res.data.downY));
+				   register.setOption(setOption(res.data.regCount,res.data.date,res.data.regY));
+				   vm.authCount = res.data.authCount;
+				   vm.nameList = res.data.nameList;
+				   vm.listCount = res.data.listCount;
+				   // console.log(res.data.nameList.length)
+			   }
+		   })
+		   
 			
-		// });
+		});
 	</script>
 </html>

@@ -65,22 +65,22 @@
 						</div>
 					</a>
 				</li>
-				<li class="mui-table-view-cell">
-					<a href="javascript:void(0)" id="statis" class="mui-navigate-right" >
+				<li class="mui-table-view-cell" v-show="accountInfo.roleid == 1">
+					<a href="javascript:void(0)" id="statis" class="mui-navigate-right"  >
 						<div class="menu-item-box">
 							<div class="mui-icon iconfont1 icon-tongji icon-left"></div>
 							<div class="operate-text"> 综合统计</div>
 						</div>
 					</a> 
 				</li> 
-				<!-- <li class="mui-table-view-cell" v-show="accountInfo.roleid == 1 ">
+				<li class="mui-table-view-cell">
 					<a href="javascript:void(0)" id="add-topic" class="mui-navigate-right" >
 						<div class="menu-item-box">
 							<div class="mui-icon iconfont1 icon-add-topic icon-left"></div>
 							<div class="operate-text"> 话题管理</div>
 						</div>
 					</a> 
-				</li> -->
+				</li>
 				
 			</ul>
 			

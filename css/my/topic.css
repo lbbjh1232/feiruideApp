@@ -1,0 +1,40 @@
+html,body,#app{
+	background-color: white;
+}
+.topic-item-box{
+	margin: 1rem;
+	border: 1px solid rgba(181,181,181,.1);
+	border-radius: 5px;
+	padding: 0.5rem;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.topic-title{
+	width: 80%;
+	font-size: 1.7rem;
+	color:#696969;
+	padding-right: 0.5rem;
+	border-right: 1px solid rgba(181,181,181,.1);
+}
+.topic-tool{
+	width: 15%;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.add-btn{
+	margin: 2rem 1rem;
+	padding: 0.5rem 0;
+	text-align: center;
+	font-size: 1.7rem;
+	background-color: #0062CC;
+	color: white;
+	border-radius: 5px;
+}
+.add-btn:active{
+	background-color: #0074f0;
+}

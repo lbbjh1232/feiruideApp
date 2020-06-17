@@ -10,6 +10,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-topic-del::before{
+	content: "\e678";
+	font-size: 1.6rem;
+}
+.icon-topic-edit::before{
+	content: "\e608";
+	font-size: 1.6rem;
+}
 .icon-out-up::before{
 	content: "\e891";
 	font-size: 1.3rem;

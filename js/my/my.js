@@ -145,7 +145,7 @@ mui.plusReady(function () {
 	
 	//综合统计
 	mui('#business').on('tap','#statis',function(){
-		//mui.loginPageShow();
+		mui.loginPageShow();
 		mui.openWindow({
 			url:"my/statis.html",
 			id : 'statis',
@@ -154,6 +154,18 @@ mui.plusReady(function () {
 			}
 		})
 	});
+	
+	//话题管理
+	mui('#business').on('tap','#add-topic',function(){
+		//mui.loginPageShow();
+		mui.openWindow({
+			url:"my/com-topic.html",
+			show : {
+				autoShow : true,
+			}
+		})
+	});
+	
 	
 	// 点击签到
 	document.getElementById('sign-in').addEventListener('tap',function(){

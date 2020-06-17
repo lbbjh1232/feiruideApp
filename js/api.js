@@ -142,7 +142,7 @@ var API = {
 	GET_POINT_RULE : '/point/getPointRule',
 	EXCHANGE_OUT : '/point/exchangeOut',
 	
-	// 论坛
+	// 论坛社区
 	COMMUNITY_IMG_UPLOAD : '/community/uploadImg',
 	COMMUNITY_IMG_DELETE : '/community/deleteImg',
 	COMMUNITY_RELEASE : '/community/release',
@@ -155,6 +155,10 @@ var API = {
 	COMMUNITY_ZAN : '/community/zan',
 	COMMUNITY_SEARCH : '/community/search',
 	COMMUNITY_MY : '/community/my',
+	//话题管理
+	COMMUNITY_GET_TOPIC : '/community/getTopic',
+	ADD_TOPIC : '/community/addTopic',
+	EDIT_TOPIC : '/community/editTopic',
 
 	//客服
 	CHAT_IMG_UPLOAD : '/chat/chatImgUpload',

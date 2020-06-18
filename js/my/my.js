@@ -157,7 +157,7 @@ mui.plusReady(function () {
 	
 	//话题管理
 	mui('#business').on('tap','#add-topic',function(){
-		//mui.loginPageShow();
+		mui.loginPageShow();
 		mui.openWindow({
 			url:"my/com-topic.html",
 			show : {

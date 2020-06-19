@@ -597,7 +597,6 @@
 									return
 								}
 								let targetNav = vm.accountInfo.roleid == 6 ? 'html/purchase/com-index.html':'html/purchase/index.html';
-
 								 mui.openWindow({
 									 url:targetNav,
 									 id:targetNav,
@@ -606,7 +605,18 @@
 									 }
 								 });
 								break;
-								
+							case 'news':
+								mui.openWindow({
+									url : 'html/news/news-detail.html',
+								    id : Math.random().toString(),
+									show:{
+										autoShow : true
+									},
+									extras:{
+										nid : payload.nid,
+									}
+								});
+								break;
 							default:
 								break;
 						}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		<script type="text/javascript">
+			link(['../../css/mui.min.css',"../../css/icon.css",'../../css/common.css','../../css/my/login.css'],true);
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" style="color: gray;">修改昵称</h1>
+		</header>
+		
+		<div class="mui-content" id="app">
+			<div class="reg-box">
+				<div class="reg-input-item">
+					<div class="label-text text-clip">昵称</div>
+					<div class="input-box"><input type="text" v-model="username" placeholder="请输入昵称" /></div>
+				</div>
+				
+				<!-- login-button -->
+				<div class="login-btn" style="width: 100%;">
+					<button type="button" id="add-btn" class="mui-btn mui-btn-blue mui-btn-block">修 改</button>
+				</div>
+				
+				
+			</div>
+		</div>
+		
+		
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/api.js"></script> 
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			
+			// 挂载实例
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					username : '',
+				}
+			});
+			
+			mui.plusReady(function () {
+				mui.statusAndSetAfterBack('dark','#ffffff');
+				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				vm.username = accountInfo.username;
+				
+				document.getElementById('add-btn').addEventListener('tap',function(){
+					let username = vm.username;
+					if(!username){
+						mui.toast('请输入昵称');
+						return;
+					}
+					
+					plus.nativeUI.showWaiting();
+					let res = mui.http_post(API.EDIT_USERNAME,{username,uid:accountInfo.id});
+					res.then(res=>{
+						plus.nativeUI.closeWaiting();
+						if(res.code == 200){
+							mui.updateInfo('username',username);
+							mui.fire(mui.currentWebview.opener(),'refresh');
+							mui.fire(plus.webview.getWebviewById('html/my.html'),'loginLoad');
+							mui.back();
+						}else{ 
+							mui.alert(res.message);
+						}
+					})
+					
+				})
+				
+			})
+		</script>
+	</body>
+
+</html>

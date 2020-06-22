@@ -20,13 +20,13 @@
 	<body> 
 		<div class="mui-content" id="app">
 			<!-- 个人信息展示 -->  
-			<div class="userinfo-box" v-cloak>
-				<div class="userinfo-left" id="edit-info">
+			<div class="userinfo-box" v-cloak id="edit-info">
+				<div class="userinfo-left">
 					<img id="avatar" :src="accountInfo ? accountInfo.avatar : '../images/60x60.gif'" onerror="this.src='../images/logo.png'">
 				</div>
 				<div class="userinfo-right">
 					<div v-show="accountInfo" class="username" v-cloak>
-						{{ accountInfo.openid ? accountInfo.nickname : accountInfo.username}}
+						{{accountInfo.username || '设置昵称'}} 
 					</div>
 					
 					<div v-show="!accountInfo" id="toLogin" class="username">
@@ -47,7 +47,7 @@
 			</div>
 			  
 			<!-- 操作菜单 -->
-			<ul class="mui-table-view" id="business"  v-cloak> 
+			<ul class="mui-table-view" id="business"  v-cloak>
 				<li class="mui-table-view-cell" v-show="accountInfo.roleid == 12 ">
 					<a href="javascript:void(0)" id="auth" class="mui-navigate-right" >
 						<div class="menu-item-box">
@@ -103,14 +103,14 @@
 							</div>
 						</a>
 					</li>
-					<!-- <li class="mui-table-view-cell">
+					<li class="mui-table-view-cell">
 						<a href="javascript:void(0)" id="" class="mui-navigate-right" >
 							<div class="menu-item-box">
 								<div class="mui-icon iconfont1 icon-address icon-left"></div>
 								<div class="operate-text"> 我的地址</div>
 							</div>
 						</a>
-					</li> -->
+					</li>
 					
 					<!-- <li class="mui-table-view-cell">
 						<a href="javascript:void(0)" id="" class="mui-navigate-right" >
@@ -125,7 +125,6 @@
 			<div class="divided-line"></div>
 			
 			<ul class="mui-table-view" id="service">
-
 					<li class="mui-table-view-cell">
 						<a href="javascript:void(0)" id="feedback" class="mui-navigate-right" >
 							<div class="menu-item-box">
@@ -143,7 +142,6 @@
 							</div>
 						</a>
 					</li>
-				    
 			</ul>
 			<!-- <div class="divided-line"></div> -->
 		</div>

@@ -592,7 +592,7 @@
 								let roleid = '6,7';
 								if(roleid.indexOf(vm.accountInfo.roleid.toString()) == -1 ){
 									mui.alert('权限受限,前往认证','提示','确认',function(e){
-										mui.authPageShow()
+										mui.authPageShow();
 									});
 									return
 								}

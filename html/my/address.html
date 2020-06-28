@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head> 
+		<meta charset="utf-8"> 
+		<title>通讯录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript">
+			document.write('<script src="../../js/fix.js?rd=?rd=' + Math.random() + '"><\/script>');
+		</script>
+		  
+		<script type="text/javascript">
+			link(['../../css/mui.min.css','../../css/common.css','../../css/icon.css','../../css/community/search.css','../../css/my/address.css'],true);
+		</script>
+		<style type="text/css">
+			.mui-bar-nav{
+				background-color: #3383FC;
+			}
+		</style>
+	</head>  
+     
+	<body contextmenu="return false;">
+		<div id="app">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的地址</h1>
+		</header>
+		
+		<div class="mui-content" >
+			<div id="content-box">
+				<template v-for="(item,index) in result">
+				<div class="address-item">
+					<div class="consignee-phone">
+						<div class="consignee">{{item.consignee}}</div>
+						<div class="phone">{{item.phone}}</div>
+					</div>
+					<div class="address-text">
+						{{item.address}}
+					</div>
+					
+					<div class="address-edit-box">
+						<div class="default">
+							<div class="default-icon iconfont1 " :class="item.default == 1 ? 'icon-selected':'icon-non-selected'" :data-id="item.id"></div>
+							<div class="default-text">默认地址</div>
+						</div>
+						<div class="edit-delete">
+							<div class="delete" :data-id="item.id">删除</div>
+							<div class="edit" :data-index="index">编辑</div>
+						</div>
+					</div>
+				</div>
+				<div class="divided-line"></div>
+				</template>
+				
+				<!-- 新增按钮 -->
+				<div class="add-btn" id="add-btn">添加新地址</div>
+				
+			</div>
+		</div>
+		</div>
+		<script type="text/javascript">
+			script(['../../js/mui.min.js','../../js/vue.js','../../js/api.js','../../js/app.js']);
+		</script>
+		
+		<script type="text/javascript">
+			function load(){
+				plus.nativeUI.showWaiting();
+				let res = mui.http_post(API.GET_ADDRESS,{uid:vm.uid});
+				res.then(res=>{
+					plus.nativeUI.closeWaiting();
+					if(res.code == 200){
+						vm.result = res.data;
+					}
+				})
+			}
+			mui.init();
+			var vm = new Vue({
+				el : '#app',
+				data : {
+					result:[],
+					uid : 0,
+				}
+			}); 
+			mui.plusReady(function () {
+				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
+				vm.uid = accountInfo.id;
+				load();
+				
+				// 添加地址
+				document.getElementById('add-btn').addEventListener('tap',function(){
+					mui.openWindow({
+						url : 'add-address.html'
+					})
+				});
+				// 编辑
+				mui('#content-box').on('tap','.edit',function(){
+					let index = this.dataset.index;
+					mui.openWindow({
+						url : 'edit-address.html',
+						extras : {
+							datas : vm.result[index]
+						}
+					})
+				});
+				// 删除
+				mui('#content-box').on('tap','.delete',function(){
+					let aid = this.dataset.id;
+					mui.confirm('确认删除?','删除提示',['确认','取消'],function(e){
+						if(e.index === 0){
+							plus.nativeUI.showWaiting();
+							let res = mui.http_post(API.EDIT_ADDRESS,{act:2,aid});
+							res.then(res=>{
+								plus.nativeUI.closeWaiting();
+								if(res.code == 200){
+									load()
+								}else{
+									mui.alert(res.message);
+								}
+							});
+						}
+					})
+					
+				});
+				//设置默认地址
+				mui('#content-box').on('tap','.icon-non-selected',function(){
+					let aid = this.dataset.id;
+					plus.nativeUI.showWaiting();
+					let res = mui.http_post(API.EDIT_ADDRESS,{act:3,aid,uid:accountInfo.id});
+					res.then(res=>{
+						plus.nativeUI.closeWaiting();
+						if(res.code == 200){
+							load()
+						}else{
+							mui.alert(res.message);
+						}
+					});
+				});
+				
+				window.addEventListener('refresh',load);
+				
+			});
+			
+		</script>
+	</body>
+</html>

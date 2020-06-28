@@ -120,6 +120,7 @@ var API = {
 	//综合统计
 	APP_STATIS : '/drug/appStatis',
 	
+	
 	// 账号注册 身份认证
 	REGISTER : '/user/register',
 	UPLOAD_AUTH : '/user/uploadAuth',
@@ -129,8 +130,11 @@ var API = {
 	CANCLE : '/user/cancle',
 	UPLOAD_AVATAR : '/user/uploadAvatar',
 	EDIT_USERNAME : '/user/editUserName',
-	
 	FEED_BACK : '/user/feedBack',
+	//地址管理
+	GET_ADDRESS : '/user/getAddress',
+	ADD_ADDRESS : '/user/addAddress',
+	EDIT_ADDRESS : '/user/editAddress',
 	
 	// 新闻资讯
 	GET_NEWS : '/news/getNews',

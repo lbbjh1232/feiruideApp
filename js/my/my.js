@@ -108,6 +108,16 @@ mui.plusReady(function () {
 			}
 		})
 	})
+	//我的地址
+	mui('#my-manage').on('tap','#myaddress',function(){
+		// mui.loginPageShow();
+		mui.openWindow({
+			url:"my/address.html",
+			show : {
+				autoShow : true,
+			}
+		})
+	})
 	
 	// 联系客服,随机分配在线客服(默认超级管理员为客服)
 	mui('#service').on('tap','#custmer',function(){

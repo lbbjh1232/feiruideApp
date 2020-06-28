@@ -16,17 +16,27 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title" style="color: gray;">修改昵称</h1>
+			<h1 class="mui-title" style="color: gray;">修改地址</h1>
 		</header>
 		
 		<div class="mui-content" id="app">
 			<div class="reg-box">
 				<div class="reg-input-item">
-					<div class="label-text text-clip">昵称</div>
-					<div class="input-box"><input type="text" v-model="username" placeholder="请输入昵称" /></div>
+					<div class="label-text text-clip">收货人</div>
+					<div class="input-box"><input type="text" v-model="name" placeholder="请输入收货人" /></div>
 				</div>
 				
-				<!-- login-button -->
+				<div class="reg-input-item">
+					<div class="label-text text-clip">手机号</div>
+					<div class="input-box"><input  type="number" v-model="phone" placeholder="请输入手机号" /></div>
+				</div>
+				
+				<div class="reg-input-item">
+					<div class="label-text text-clip">地&nbsp;&nbsp;&nbsp;址</div>
+					<div class="input-box"><input  type="text" v-model="address" placeholder="请输入地址" /></div>
+				</div>
+				
+				
 				<div class="login-btn" style="width: 100%;">
 					<button type="button" id="add-btn" class="mui-btn mui-btn-blue mui-btn-block">修 改</button>
 				</div>
@@ -39,39 +49,55 @@
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/vue.js"></script>
 		<script src="../../js/api.js"></script> 
-		<script src="../../js/app.js"></script>
+		<script src="../../js/app.js"></script> 
 		<script type="text/javascript">
 			mui.init();
-			
 			// 挂载实例
 			var vm = new Vue({
 				el:'#app',
 				data:{
-					username : '',
+					name : '',
+					phone:'',
+					address: '',
 				}
 			});
 			
 			mui.plusReady(function () {
 				mui.statusAndSetAfterBack('dark','#ffffff');
-				let accountInfo = JSON.parse(plus.storage.getItem('accountInfo'));
-				vm.username = accountInfo.username;
+				let params = mui.currentWebview.datas;
+				vm.name = params.consignee;
+				vm.phone = params.phone;
+				vm.address = params.address;
 				
 				document.getElementById('add-btn').addEventListener('tap',function(){
-					let username = vm.username;
-					if(!username){
-						mui.toast('请输入昵称');
+					let name = vm.name;
+					let phone = vm.phone;
+					let addr = vm.address;
+					if(!name){
+						mui.toast('请输入收货人');
 						return;
 					}
+					if(!phone){
+						mui.toast('请输入手机号');
+						return;
+					}
+					if(!(/^1\d{10}$/.test(phone))){
+						mui.toast('手机号格式错误');
+						return;
+					}
+					if(!addr){
+						mui.toast('请输入地址');
+						return;
+					}
+					
 					plus.nativeUI.showWaiting();
-					let res = mui.http_post(API.EDIT_USERNAME,{username,uid:accountInfo.id});
+					let res = mui.http_post(API.EDIT_ADDRESS,{name,phone,addr,aid:params.id,act:1});
 					res.then(res=>{
 						plus.nativeUI.closeWaiting();
 						if(res.code == 200){
-							mui.updateInfo('username',username);
 							mui.fire(mui.currentWebview.opener(),'refresh');
-							mui.fire(plus.webview.getWebviewById('html/my.html'),'loginLoad');
 							mui.back();
-						}else{ 
+						}else{
 							mui.alert(res.message);
 						}
 					})

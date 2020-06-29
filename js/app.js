@@ -1481,5 +1481,32 @@
 			};
 	    };
 	  
+	 /**
+	  * 创建新窗口（无原始标题栏），
+	  * @param {URIString} id : 要打开页面url
+	  * @param {JSON} ws : Webview窗口属性
+	  */
+	 let openw = null;
+	 $.createWithoutTitle=function(id, ws){
+	 	if(openw){//避免多次打开同一个页面
+	 		return null;
+	 	}
+	 	if(window.plus){
+	 		ws=ws||{};
+	 		ws.scrollIndicator||(ws.scrollIndicator='none');
+	 		ws.scalable||(ws.scalable=false);
+	 		ws.backButtonAutoControl||(ws.backButtonAutoControl='close');
+	 		openw = plus.webview.create(id, id, ws);
+	 		openw.addEventListener('close', function(){
+	 			openw=null;
+	 		}, false);
+	 		return openw;
+	 	}else{
+	 		window.open(id);
+	 	}
+	 	return null;
+	 };
+	 
+	 
 })(mui)
 

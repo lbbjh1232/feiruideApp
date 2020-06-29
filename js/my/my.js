@@ -110,14 +110,33 @@ mui.plusReady(function () {
 	})
 	//我的地址
 	mui('#my-manage').on('tap','#myaddress',function(){
-		// mui.loginPageShow();
+		mui.loginPageShow();
 		mui.openWindow({
 			url:"my/address.html",
 			show : {
 				autoShow : true,
 			}
 		})
-	})
+	});
+	//扫一扫
+	mui('#my-manage').on('tap','#saosao',function(){
+		// mui.loginPageShow();
+		mui.createWithoutTitle('my/barcode/barcode-scan.html',{
+			titleNView:{
+				type: 'float',
+				backgroundColor: 'rgba(215,75,40,0)',
+				titleText: '扫一扫',
+				titleColor: '#FFFFFF',
+				autoBackButton: true,
+				buttons: [{
+					text: '相册',
+					fontSize: '14px',
+					width:'60px',
+					onclick: 'javascript:scanPicture()'
+				}]
+			}
+		})
+	});
 	
 	// 联系客服,随机分配在线客服(默认超级管理员为客服)
 	mui('#service').on('tap','#custmer',function(){

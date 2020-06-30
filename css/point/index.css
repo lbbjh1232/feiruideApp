@@ -274,6 +274,27 @@ html,body,.mui-content{
 .disabled .exchange-text{
 	color: darkgray;
 }
+.myinvitation{
+	font-size: 16px;
+}
+.invitation-code{
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px 8px;
+	font-size: 14px;
+	background-color:#F0F8FF;
+	border-radius: 5px;
+	margin-top: 5px;
+}
+.invitation-code .code{
+	color: gray;
+}
+.invitation-code .copy{
+	color: red;
+}
 
 
 
